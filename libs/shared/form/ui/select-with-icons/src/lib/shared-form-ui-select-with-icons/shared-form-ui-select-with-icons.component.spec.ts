@@ -36,11 +36,13 @@ describe('SharedFormUiSelectWithIconsComponent', () => {
 
   it('should render the label', () => {
     const label = fixture.nativeElement.querySelector('mat-label');
+
     expect(label.textContent).toContain('Status');
   });
 
   it('should not show selection trigger when no value is selected', () => {
     const trigger = fixture.nativeElement.querySelector('mat-select-trigger div');
+
     expect(trigger).toBeNull();
   });
 
@@ -50,6 +52,7 @@ describe('SharedFormUiSelectWithIconsComponent', () => {
     await fixture.whenStable();
 
     const trigger = fixture.nativeElement.querySelector('mat-select-trigger div');
+
     expect(trigger).toBeTruthy();
     expect(trigger.classList).toContain('select-type-warning');
     expect(trigger.querySelector('mat-icon').textContent).toContain('pending');
@@ -59,11 +62,13 @@ describe('SharedFormUiSelectWithIconsComponent', () => {
   it('should render all options with icons', async () => {
     // Open the select to render options
     const select = fixture.nativeElement.querySelector('mat-select');
+
     select.click();
     fixture.detectChanges();
     await fixture.whenStable();
 
     const options = document.querySelectorAll('mat-option');
+
     expect(options.length).toBe(2);
 
     expect(options[0].classList).toContain('select-type-warning');

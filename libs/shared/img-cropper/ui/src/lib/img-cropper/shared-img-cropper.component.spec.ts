@@ -32,6 +32,7 @@ describe('SharedImgCropperComponent', () => {
 
   it('should reset state on cancel', () => {
     const cancelSpy = vi.spyOn(component.cropCancelled, 'emit');
+
     component.onCancel();
     expect(cancelSpy).toHaveBeenCalled();
     expect(component['imageBase64']()).toBeUndefined();
@@ -78,6 +79,7 @@ describe('SharedImgCropperComponent', () => {
 
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   });
 });

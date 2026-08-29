@@ -39,6 +39,7 @@ export class NasaImagesSearchFeatureComponent {
 
   onChange(model: Partial<NasaImagesSearchApiParams>): void {
     const length = model.q?.length ?? -1;
+
     if (length === 0 || length >= 2) {
       this.#facade.search(model as NasaImagesSearchApiParams);
     }

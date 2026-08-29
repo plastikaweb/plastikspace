@@ -52,6 +52,7 @@ describe('OrderTableActionsElementsPipe', () => {
     ] as any;
 
     const result = pipe.transform(actions);
+
     // Basic check that it doesn't crash and returns both
     expect(result.length).toBe(2);
     expect(result[0].value.order).toBe(1);

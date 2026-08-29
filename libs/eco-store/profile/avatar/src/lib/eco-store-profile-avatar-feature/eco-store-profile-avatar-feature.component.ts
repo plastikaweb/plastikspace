@@ -36,6 +36,7 @@ export class EcoStoreProfileAvatarFeatureComponent {
 
   async onCropConfirmed(file: File): Promise<void> {
     const ok = await this.profileStore.updateAvatar(file);
+
     if (ok) this.isEditing.set(false);
   }
 

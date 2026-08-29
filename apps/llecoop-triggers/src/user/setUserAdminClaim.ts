@@ -7,6 +7,7 @@ const { auth } = pkg;
 
 export default async id => {
   functions.logger.debug(`Running setUserAdminClaim trigger for ${id}`);
+
   return auth()
     .getUser(id)
     .then(user => {
@@ -21,8 +22,10 @@ export default async id => {
     })
     .then(() => {
       const message = `User with ID:${id} is now an admin`;
+
       functions.logger.debug(message);
       const userCollection = firestore.collection('user');
+
       userCollection.doc(id).update({ isAdmin: true });
 
       return {

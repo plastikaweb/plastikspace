@@ -53,6 +53,7 @@ export class RouterStateEffects {
         tap(() => {
           this.#zone.runOutsideAngular(() => {
             const mainElement = document.getElementById('mainContent');
+
             mainElement?.scrollTo(0, 0);
           });
         })

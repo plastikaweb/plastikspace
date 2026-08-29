@@ -95,6 +95,7 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
   #getValueFromRow(property: string, item: T extends BaseEntity ? T : never): FormattingOutput {
     return property.split('.').reduce((accObject: unknown, currentProp: string) => {
       const object = (accObject as T)[currentProp as keyof T];
+
       return isNil(object) ? '' : (object as FormattingOutput);
     }, item);
   }

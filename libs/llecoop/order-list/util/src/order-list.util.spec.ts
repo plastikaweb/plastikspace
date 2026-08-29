@@ -6,6 +6,7 @@ import { UserOrderUtilsService } from './order-list.util';
 
 vi.mock('@plastik/llecoop/entities', async importOriginal => {
   const actual = await importOriginal<typeof import('@plastik/llecoop/entities')>();
+
   return {
     ...actual,
     // Inject a malicious delivery-date label to exercise the escapeHtml path (SEC-05).
@@ -39,6 +40,7 @@ describe('order-list-util', () => {
         deliveryDate: 'tuesday' as LlecoopUserOrder['deliveryDate'],
       };
       const result = service.formatDeliveryDateAndTime(order);
+
       expect(result).toEqual({
         changingThisBreaksApplicationSecurity: '<p>dijous entre les 16h i les 17h</p>',
       });
@@ -71,6 +73,7 @@ describe('order-list-util', () => {
         ['min-w-[145px]'],
         'status'
       );
+
       expect(format).toEqual({
         key: 'status',
         title: 'Estat',
@@ -92,6 +95,7 @@ describe('order-list-util', () => {
         ['min-w-[145px]'],
         'status'
       );
+
       expect(() => format.formatting?.execute?.(null)).toThrow('Element is required');
     });
   });

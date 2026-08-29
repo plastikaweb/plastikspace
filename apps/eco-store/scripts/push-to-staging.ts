@@ -84,6 +84,7 @@ async function pushToStaging() {
             if (fileFields.includes(key)) continue;
 
             const val = record[key];
+
             if (val !== null && val !== undefined) {
               if (Array.isArray(val) || typeof val === 'object') {
                 formData.append(key, JSON.stringify(val));
@@ -96,16 +97,20 @@ async function pushToStaging() {
           // Handle Files: Download from local and append to FormData
           for (const field of fileFields) {
             const filenames = record[field];
+
             if (!filenames) continue;
 
             const fileList = Array.isArray(filenames) ? filenames : [filenames];
+
             for (const filename of fileList) {
               if (!filename) continue;
               try {
                 const fileUrl = pbLocal.files.getURL(record, filename);
                 const response = await fetch(fileUrl);
+
                 if (response.ok) {
                   const blob = await response.blob();
+
                   formData.append(field, blob, filename);
                 } else {
                   console.warn(
@@ -114,6 +119,7 @@ async function pushToStaging() {
                 }
               } catch (fErr) {
                 const msg = fErr instanceof Error ? fErr.message : String(fErr);
+
                 console.warn(`      ⚠️ Excepció descarregant fitxer ${filename}:`, msg);
               }
             }
@@ -121,6 +127,7 @@ async function pushToStaging() {
 
           // Check if exists in staging
           let existsInStaging = false;
+
           try {
             await pbStaging.collection(collectionName).getOne(id);
             existsInStaging = true;
@@ -145,6 +152,7 @@ async function pushToStaging() {
           }
         } catch (err) {
           const pbErr = err as { message: string; response?: { data: Record<string, unknown> } };
+
           console.error(`   ❌ Error amb el registre ${id}:`, pbErr.message);
           if (pbErr.response?.data) {
             console.error('      Detalls:', JSON.stringify(pbErr.response.data));
@@ -156,6 +164,7 @@ async function pushToStaging() {
     console.log('\n✨ Push a STAGING completat! ✨');
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
+
     console.error('\n💥 Error crític:', msg);
     process.exit(1);
   }

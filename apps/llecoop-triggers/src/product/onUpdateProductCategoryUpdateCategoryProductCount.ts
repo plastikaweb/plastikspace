@@ -11,6 +11,7 @@ export default async (snapshot, context) => {
 
   if (updatedProductCategoryId === previousProductCategoryId) {
     functions.logger.debug(`Product category did not change, skipping update`);
+
     return;
   }
 
@@ -29,6 +30,7 @@ export default async (snapshot, context) => {
 
     if (updatedProductCategoryId) {
       const newCategoryDoc = firestore.doc(`category/${updatedProductCategoryId}`);
+
       transaction.update(newCategoryDoc, {
         productCount: FieldValue.increment(1),
       });

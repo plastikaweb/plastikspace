@@ -54,8 +54,10 @@ export class CartConfirmationComponent {
     computation: s => {
       if (s.isSyncing && !s.isSynced) {
         const count = s.count > 0 ? s.count : 3;
+
         return Array(count).fill(0);
       }
+
       return [];
     },
   });

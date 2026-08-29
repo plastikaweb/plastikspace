@@ -7,5 +7,6 @@ import { AbstractControl } from '@angular/forms';
  */
 export function urlValidator(control: AbstractControl) {
   const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/;
+
   return !control.value || urlRegex.test(control.value) ? null : { url: true };
 }

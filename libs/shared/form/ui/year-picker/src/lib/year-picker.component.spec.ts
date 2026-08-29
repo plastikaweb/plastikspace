@@ -24,6 +24,7 @@ describe('YearPickerComponent', () => {
 
   it('on writeValue', () => {
     const value = 2000;
+
     component.writeValue(value);
     expect(component.formControl.value).toEqual(value);
   });

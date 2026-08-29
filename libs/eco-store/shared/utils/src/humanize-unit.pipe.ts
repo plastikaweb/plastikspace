@@ -28,6 +28,7 @@ export class HumanizeUnitPipe implements PipeTransform {
         if (value < 1 && value > 0) {
           return `${format(value * 1000)}${spacer}mL`;
         }
+
         return `${format(value)}${spacer}L`;
       }
       case 'weight':
@@ -36,6 +37,7 @@ export class HumanizeUnitPipe implements PipeTransform {
         if (value < 1 && value > 0) {
           return `${format(value * 1000)}${spacer}g`;
         }
+
         return `${format(value)}${spacer}kg`;
       }
       case 'unit':

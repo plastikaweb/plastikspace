@@ -13,11 +13,13 @@ export default async (snapshot, context) => {
     .get()
     .then(querySnapshot => {
       const batch = firestore.batch();
+
       querySnapshot.docs.forEach(doc => {
         functions.logger.debug(`Deleting category${deletedCategory} in product ${doc.id}`);
 
         batch.update(doc.ref, { categoryRef: null });
       });
+
       return batch.commit();
     });
 };

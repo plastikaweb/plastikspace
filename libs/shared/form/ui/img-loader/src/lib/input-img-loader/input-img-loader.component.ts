@@ -72,6 +72,7 @@ export class InputImgLoaderComponent implements ControlValueAccessor {
   writeValue(value: string | null): void {
     if (!value) {
       this.value.set(null);
+
       return;
     }
 
@@ -100,6 +101,7 @@ export class InputImgLoaderComponent implements ControlValueAccessor {
   async onSelectFile(event: Event): Promise<void> {
     const files = (event.target as HTMLInputElement).files;
     const file = files?.[0];
+
     if (!file) return;
 
     try {
@@ -126,8 +128,10 @@ export class InputImgLoaderComponent implements ControlValueAccessor {
   private validateImageDimensions(file: File): Promise<void> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
+
       reader.onload = () => {
         const image = new Image();
+
         image.onload = () => {
           if (image.height < this.minHeight() || image.width < this.minWidth()) {
             reject(
@@ -164,6 +168,7 @@ export class InputImgLoaderComponent implements ControlValueAccessor {
   onDrop(event: DragEvent) {
     event.preventDefault();
     const files = event.dataTransfer?.files;
+
     if (files && files.length > 0) {
       this.onSelectFile({ target: { files } } as unknown as Event);
     }

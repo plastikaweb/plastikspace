@@ -45,6 +45,7 @@ export class AddressCardComponent {
   /** Computed aria-label with full address context for screen readers. */
   protected fullAriaLabel = computed(() => {
     const a = this.address();
+
     return [a.name, a.address, [a.zip, a.city].filter(Boolean).join(' ')]
       .filter(Boolean)
       .join(', ');

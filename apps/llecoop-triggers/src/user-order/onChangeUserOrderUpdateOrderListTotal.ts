@@ -62,6 +62,7 @@ export default async context => {
     functions.logger.debug(
       `Order list ${JSON.stringify(orderListOrdersGroup)} did not have a id, skipping update`
     );
+
     return;
   }
 

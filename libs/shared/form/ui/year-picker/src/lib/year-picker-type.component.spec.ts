@@ -36,6 +36,7 @@ describe('YearPickerTypeComponent', () => {
         placeholder: 'Year',
       },
     };
+
     component.field = fieldConfig;
     fixture.detectChanges();
   });

@@ -53,6 +53,7 @@ describe('SharedTableUiComponent', () => {
       pageIndex: 1,
       pageSize: 5,
     };
+
     component.changePagination.subscribe(value => (data = value));
     component.onChangePagination(pagination);
     expect(data).toEqual(pagination);
@@ -60,6 +61,7 @@ describe('SharedTableUiComponent', () => {
 
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   });
 });

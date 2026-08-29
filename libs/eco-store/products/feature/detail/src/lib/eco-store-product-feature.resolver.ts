@@ -31,6 +31,7 @@ export const ecoStoreProductResolver: ResolveFn<boolean | RedirectCommand> = asy
       map(async () => {
         try {
           await productStore.loadProductBySlug(slug);
+
           return true;
         } catch {
           return new RedirectCommand(router.parseUrl('/'));

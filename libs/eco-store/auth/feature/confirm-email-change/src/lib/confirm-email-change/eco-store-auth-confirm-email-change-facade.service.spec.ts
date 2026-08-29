@@ -41,12 +41,14 @@ describe('EcoStoreAuthConfirmEmailChangeFacadeService', () => {
         },
       ],
     });
+
     return TestBed.inject(AUTH_FORM_FACADE) as EcoStoreAuthConfirmEmailChangeFacadeService;
   }
 
   it('on success: confirms with token+password, toasts success, navigates to /accedir', async () => {
     confirmEmailChange.mockResolvedValueOnce(true);
     const facade = setup('abc');
+
     await facade.onSubmit({ password: 'pw' });
     expect(confirmEmailChange).toHaveBeenCalledWith({ token: 'abc', password: 'pw' });
     expect(logout).toHaveBeenCalled();
@@ -57,6 +59,7 @@ describe('EcoStoreAuthConfirmEmailChangeFacadeService', () => {
   it('on failure: toasts error and does not navigate to /accedir', async () => {
     confirmEmailChange.mockResolvedValueOnce(false);
     const facade = setup('abc');
+
     await facade.onSubmit({ password: 'pw' });
     expect(logout).not.toHaveBeenCalled();
     expect(create).toHaveBeenCalledWith('auth.confirmEmailChange.error', 'ERROR');
@@ -65,6 +68,7 @@ describe('EcoStoreAuthConfirmEmailChangeFacadeService', () => {
 
   it('with no token: toasts error, no confirm call', async () => {
     const facade = setup('');
+
     await facade.onSubmit({ password: 'pw' });
     expect(confirmEmailChange).not.toHaveBeenCalled();
     expect(create).toHaveBeenCalledWith('auth.confirmEmailChange.error', 'ERROR');

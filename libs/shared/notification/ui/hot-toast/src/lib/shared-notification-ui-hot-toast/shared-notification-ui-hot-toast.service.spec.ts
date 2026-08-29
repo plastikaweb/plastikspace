@@ -10,6 +10,7 @@ describe('SharedNotificationUiHotToastService', () => {
   const setup = () => {
     const ref = { afterClosed: new Subject(), updateMessage: vi.fn(), close: vi.fn() };
     const show = vi.fn().mockReturnValue(ref);
+
     TestBed.configureTestingModule({
       providers: [
         provideZonelessChangeDetection(),

@@ -27,6 +27,7 @@ export class LlecoopUserCreateFacadeService implements DetailItemViewFacade<Llec
         `El correu electrònic ${item.email} ja està en la llista d'usuaris`,
         'ERROR'
       );
+
       return;
     }
     this.#store.create({ item });

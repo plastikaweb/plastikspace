@@ -23,6 +23,7 @@ export const categoryDetailResolver: ResolveFn<Observable<boolean>> = (
       if (!category) {
         store.getItem(id);
       }
+
       return !!category;
     }),
     filter(Boolean)

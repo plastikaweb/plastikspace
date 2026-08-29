@@ -40,6 +40,7 @@ describe('InputSearchTypeComponent', () => {
         maxLength: 25,
       },
     };
+
     component.field = fieldConfig;
     fixture.detectChanges();
   });
@@ -51,6 +52,7 @@ describe('InputSearchTypeComponent', () => {
   describe('triggerSearch', () => {
     it('should NOT call onSearch if term length is 1', () => {
       const onSearchSpy = vi.fn();
+
       component.field.props!.onSearch = onSearchSpy;
       component.formControl.setValue('a');
       component['syncControl']();
@@ -61,6 +63,7 @@ describe('InputSearchTypeComponent', () => {
 
     it('should call onSearch if term length is >= 2', () => {
       const onSearchSpy = vi.fn();
+
       component.field.props!.onSearch = onSearchSpy;
       component.formControl.setValue('abc');
       component['syncControl']();
@@ -71,6 +74,7 @@ describe('InputSearchTypeComponent', () => {
 
     it('should call onSearch if term is empty (reset)', () => {
       const onSearchSpy = vi.fn();
+
       component.field.props!.onSearch = onSearchSpy;
       component.formControl.setValue('');
       component['syncControl']();
@@ -83,6 +87,7 @@ describe('InputSearchTypeComponent', () => {
   describe('triggerPartialSearch', () => {
     it('should NOT call onPartialSearch if term length is 1', () => {
       const onPartialSearchSpy = vi.fn();
+
       component.field.props!.onPartialSearch = onPartialSearchSpy;
       component.formControl.setValue('a');
       component['syncControl']();
@@ -93,6 +98,7 @@ describe('InputSearchTypeComponent', () => {
 
     it('should call onPartialSearch if term length is >= 2', () => {
       const onPartialSearchSpy = vi.fn();
+
       component.field.props!.onPartialSearch = onPartialSearchSpy;
       component.formControl.setValue('abc');
       component['syncControl']();
@@ -127,11 +133,13 @@ describe('InputSearchTypeComponent', () => {
       // No translations loaded → `| translate` returns the key, so both bindings
       // resolve to the same string; this asserts the tooltip↔aria-label sync.
       const tooltipHosts = fixture.debugElement.queryAll(By.directive(MatTooltip));
+
       expect(tooltipHosts.length).toBeGreaterThan(0);
 
       for (const host of tooltipHosts) {
         const ariaLabel = host.nativeElement.getAttribute('aria-label');
         const tooltipMessage = host.injector.get(MatTooltip).message;
+
         expect(tooltipMessage).toBe(ariaLabel);
       }
     });
@@ -143,6 +151,7 @@ describe('InputSearchTypeComponent', () => {
       fixture.detectChanges();
 
       const clearButton = fixture.nativeElement.querySelector('.reset-search-button');
+
       expect(clearButton).toBeTruthy();
       expect(clearButton.disabled).toBe(false);
       // The search button, by contrast, stays disabled for the same 1-char term.
@@ -153,11 +162,13 @@ describe('InputSearchTypeComponent', () => {
   describe('A11Y-010: keyboard support and focus management', () => {
     it('should trigger a full search on Enter', () => {
       const onSearchSpy = vi.fn();
+
       component.field.props!.onSearch = onSearchSpy;
       component.formControl.setValue('abc');
       component['syncControl']();
 
       const input = fixture.debugElement.query(By.css('input')).nativeElement;
+
       input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
 
       expect(onSearchSpy).toHaveBeenCalledWith('abc', component.field);
@@ -167,12 +178,14 @@ describe('InputSearchTypeComponent', () => {
       // keyup also reacts to typing, so Enter must be owned by keydown alone —
       // otherwise a noButton consumer fires two searches (and two fetches) per Enter.
       const onSearchSpy = vi.fn();
+
       component.field.props!.noButton = true;
       component.field.props!.onSearch = onSearchSpy;
       component.formControl.setValue('abc');
       component['syncControl']();
 
       const input = fixture.debugElement.query(By.css('input')).nativeElement;
+
       input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
       input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
 
@@ -182,6 +195,7 @@ describe('InputSearchTypeComponent', () => {
     it('should reset the search and restore focus to the input on Escape', () => {
       component.field.props!.resetSearch = true;
       const onPartialSearchSpy = vi.fn();
+
       component.field.props!.onPartialSearch = onPartialSearchSpy;
       component.formControl.setValue('abc');
       component['syncControl']();

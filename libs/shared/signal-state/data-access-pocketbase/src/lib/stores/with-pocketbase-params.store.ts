@@ -20,8 +20,10 @@ const parseNumber = (value: unknown): number | undefined => {
   }
   if (typeof value === 'string' && value.trim().length > 0) {
     const parsed = Number(value);
+
     return Number.isFinite(parsed) ? parsed : undefined;
   }
+
   return undefined;
 };
 
@@ -58,11 +60,13 @@ const normalizeFilterValue = (value: unknown): string | boolean | null => {
     if (value === 'null') {
       return null;
     }
+
     return value;
   }
   if (Array.isArray(value) && value.length > 0) {
     return normalizeFilterValue(value[0]);
   }
+
   return null;
 };
 
@@ -88,9 +92,11 @@ const normalizePocketBaseParams = (
         return acc;
       }
       const normalizedValue = normalizeFilterValue(value);
+
       if (normalizedValue !== null) {
         acc[key] = normalizedValue;
       }
+
       return acc;
     },
     {}
@@ -118,6 +124,7 @@ export function withPocketBaseParamsFeature({
   customInitialState: Partial<PocketBaseGetListState>;
 }) {
   const defaultState = initialGetListState(customInitialState);
+
   return signalStoreFeature(
     {
       state: type<PocketBaseGetListState>(),

@@ -67,8 +67,10 @@ export class CartShippingComponent {
     computation: s => {
       if (s.isSyncing && !s.isSynced) {
         const count = s.count > 0 ? s.count : 3;
+
         return Array(count).fill(0);
       }
+
       return [];
     },
   });
@@ -94,6 +96,7 @@ export class CartShippingComponent {
     const type = this.cartStore.method() ?? 'pickup';
     const amount = this.cartStore.subtotal();
     const offer = this.tenantStore.getTenantDeliveryPriceForFreeShipping(type, amount);
+
     return offer > 0 ? offer : 0;
   }
 }

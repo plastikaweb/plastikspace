@@ -113,6 +113,7 @@ describe('ecoStoreOrdersStore', () => {
         { provide: notificationStore, useValue: mockNotificationStore },
       ],
     });
+
     return TestBed.inject(ecoStoreOrdersStore);
   };
 
@@ -122,16 +123,19 @@ describe('ecoStoreOrdersStore', () => {
 
   it('should be created', () => {
     const store = setup();
+
     expect(store).toBeTruthy();
   });
 
   it('should have initial isLoading state as false', () => {
     const store = setup();
+
     expect(store.isLoading()).toBe(false);
   });
 
   it('should have status in sortOptions', () => {
     const store = setup();
+
     expect(store.sortOptions()).toHaveProperty('status');
   });
 
@@ -175,6 +179,7 @@ describe('ecoStoreOrdersStore', () => {
 
     it('should navigate to the order confirmation page with the new order ID', async () => {
       const navigateSpy = vi.spyOn(router, 'navigate');
+
       await store.createOrder();
       expect(navigateSpy).toHaveBeenCalledWith(['/comandes', 'nova', mockOrder.id]);
     });

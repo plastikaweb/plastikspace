@@ -41,6 +41,7 @@ describe('NavigationFilterService', () => {
 
   describe('checkRouterNavigation method', () => {
     let streamOn: boolean;
+
     // eslint-disable-next-line jsdoc/require-jsdoc
     function routerNavigationMocked(url: string): Subscription {
       return of({

@@ -50,6 +50,7 @@ describe('LlecoopUserSearchFeatureTableConfig', () => {
 
     expect(confirmService.confirm).toHaveBeenCalledTimes(1);
     const message = confirmService.confirm.mock.calls[0][1] as string;
+
     expect(message).not.toContain('<img');
     expect(message).toContain('&lt;img');
     expect(store.setAdmin).not.toHaveBeenCalled();

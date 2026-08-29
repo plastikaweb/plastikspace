@@ -107,6 +107,7 @@ export class PwaInstallService {
     this.#promptShown = true;
     const data = this.#getAppData();
     const injector = this.#injector;
+
     Promise.all([
       import('@angular/material/bottom-sheet'),
       import('../components/pwa-prompt/pwa-prompt.component'),
@@ -139,6 +140,7 @@ export class PwaInstallService {
   isIosAndNotSafari(): boolean {
     if (!this.#platform.IOS || this.isStandalone()) return false;
     const ua = this.#window()?.navigator.userAgent ?? '';
+
     return /CriOS|EdgiOS|FxiOS|OPiOS/.test(ua); // cspell:ignore EdgiOS OPiOS
   }
 
@@ -150,9 +152,11 @@ export class PwaInstallService {
   isOldIos(): boolean {
     if (!this.#platform.IOS || !this.#window()?.navigator) return false;
     const match = this.#window()?.navigator.userAgent.match(/OS (\d+)_/);
+
     if (match?.[1]) {
       return parseInt(match[1], 10) < 17;
     }
+
     return false;
   }
 
@@ -162,7 +166,9 @@ export class PwaInstallService {
    */
   isStandalone(): boolean {
     const win = this.#window();
+
     if (!win || typeof win.matchMedia !== 'function') return false;
+
     return win.matchMedia('(display-mode: standalone)').matches;
   }
 
@@ -172,6 +178,7 @@ export class PwaInstallService {
    */
   async installPwa(): Promise<'accepted' | 'dismissed' | 'no-prompt'> {
     const deferred = this.#deferredPrompt;
+
     if (!deferred) return 'no-prompt';
     try {
       // Browsers may hang on prompt() in simulated/unsupported environments — time out after 10 s.
@@ -182,18 +189,22 @@ export class PwaInstallService {
         ),
       ]);
       const choice = await deferred.userChoice;
+
       if (choice?.outcome === 'accepted') {
         this.#window()?.localStorage.setItem(INSTALLED_KEY, '1');
         this.#window()?.localStorage.removeItem(DISMISS_KEY);
         this.#deferredPrompt = null;
         this.promptAvailable.set(false);
+
         return 'accepted';
       }
       this.dismissForLater();
+
       return 'dismissed';
     } catch {
       this.#deferredPrompt = null;
       this.promptAvailable.set(false);
+
       return 'no-prompt';
     }
   }
@@ -213,8 +224,10 @@ export class PwaInstallService {
   shouldShowPrompt(): boolean {
     if (this.#window()?.localStorage.getItem(INSTALLED_KEY)) return false;
     const dismissed = this.#window()?.localStorage.getItem(DISMISS_KEY);
+
     if (!dismissed) return true;
     const daysSince = (Date.now() - Number(dismissed)) / (1000 * 60 * 60 * 24);
+
     return daysSince >= DISMISS_DAYS;
   }
 }

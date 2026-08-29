@@ -14,16 +14,19 @@ describe('Layout Reducer', () => {
   describe('valid Layout actions', () => {
     it('setIsMobile should return the state with passed value', () => {
       const newState = reducer(initialState, layoutActions.setIsMobile({ isMobile: true }));
+
       expect(newState.isMobile).toBeTruthy();
     });
 
     it('toggleSidenav should toggle sidenavOpened property with no payload', () => {
       const newState = reducer(initialState, layoutActions.toggleSidenav({}));
+
       expect(newState.sidenavOpened).toEqual(!initialState.sidenavOpened);
     });
 
     it('toggleSidenav should set sidenavOpened property with passed payload', () => {
       const newState = reducer(initialState, layoutActions.toggleSidenav({ opened: true }));
+
       expect(newState.sidenavOpened).toBeTruthy();
     });
   });

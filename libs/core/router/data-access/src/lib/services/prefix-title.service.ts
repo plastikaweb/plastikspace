@@ -19,6 +19,7 @@ export class PrefixTitleService extends TitleStrategy {
     super();
     effect(() => {
       const fullTitle = this.computeFullTitle();
+
       this.title.setTitle(fullTitle);
     });
   }
@@ -45,6 +46,7 @@ export class PrefixTitleService extends TitleStrategy {
    */
   protected computeFullTitle(): string {
     const translatedTitle = this.getTranslatedTitle(this.titleSignal());
+
     return this.getPrefixedTitle(translatedTitle);
   }
 
@@ -60,6 +62,7 @@ export class PrefixTitleService extends TitleStrategy {
     if (!this.translateService) {
       return title;
     }
+
     return this.translateService.instant(title);
   }
 
@@ -72,6 +75,7 @@ export class PrefixTitleService extends TitleStrategy {
     if (!title) {
       return `${this.environment.name}`;
     }
+
     return `${this.environment.name} - ${title}`;
   }
 }

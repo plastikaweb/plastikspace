@@ -37,6 +37,7 @@ describe('AddressCardComponent', () => {
   it('should emit selectionChange event when clicked', () => {
     const emitSpy = vi.spyOn(component.selectionChange, 'emit');
     const cardElement = fixture.nativeElement.querySelector('.address-card');
+
     cardElement.click();
     expect(emitSpy).toHaveBeenCalled();
   });
@@ -45,6 +46,7 @@ describe('AddressCardComponent', () => {
     fixture.componentRef.setInput('selected', true);
     fixture.detectChanges();
     const cardElement = fixture.nativeElement.querySelector('.address-card');
+
     expect(cardElement.classList.contains('selected')).toBe(true);
   });
 
@@ -52,12 +54,14 @@ describe('AddressCardComponent', () => {
     fixture.componentRef.setInput('disabled', true);
     fixture.detectChanges();
     const cardElement = fixture.nativeElement.querySelector('.address-card');
+
     expect(cardElement.classList.contains('opacity-50')).toBe(true);
   });
 
   it('should compute fullAriaLabel correctly', () => {
     fixture.detectChanges();
     const cardElement = fixture.nativeElement.querySelector('.address-card');
+
     expect(cardElement.getAttribute('aria-label')).toBe('Home, Main Street 123, 08001 Barcelona');
   });
 });

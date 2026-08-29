@@ -68,6 +68,7 @@ describe('SharedConfirmFeatureComponent', () => {
     });
 
     const rendered = messageOf();
+
     expect(rendered).not.toContain('<img');
     expect(rendered).toContain('&lt;img');
   });
@@ -81,6 +82,7 @@ describe('SharedConfirmFeatureComponent', () => {
     );
 
     const rendered = messageOf();
+
     expect(rendered).toContain('<strong>');
     expect(rendered).toContain('&lt;b&gt;');
     expect(rendered).not.toContain('<b>x</b>');

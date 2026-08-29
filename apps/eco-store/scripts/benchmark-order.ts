@@ -19,6 +19,7 @@ async function benchmark() {
     await pb.collection('_superusers').authWithPassword(PB_ADMIN_EMAIL, PB_ADMIN_PASSWORD);
 
     const users = await pb.collection('users').getFullList({ limit: 1 });
+
     if (users.length === 0) throw new Error('No users found');
     const user = users[0];
     const tenantId = user.tenant;
@@ -32,8 +33,8 @@ async function benchmark() {
       console.warn(`Only found ${products.length} products, using them all.`);
     }
 
-    const items = products.map(p => ({
-      productId: p.id,
+    const items = products.map(product => ({
+      productId: product.id,
       requestedQuantity: 1,
     }));
 
@@ -56,6 +57,7 @@ async function benchmark() {
 
     console.log(`🚀 Starting benchmark: Creating order with ${items.length} items...`);
     const start = performance.now();
+
     await pb.collection('orders').create(orderData);
     const end = performance.now();
 

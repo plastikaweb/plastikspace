@@ -72,17 +72,21 @@ export const pocketBaseUserProfileStore = signalStore(
   withComputed(store => ({
     isTrialExpired: () => {
       const endsAt = store.trialEndsAtDate();
+
       return store.isTrial() && !!endsAt && isAfter(new Date(), endsAt);
     },
     trialDaysLeft: () => {
       const endsAt = store.trialEndsAtDate();
+
       if (!store.isTrial() || !endsAt) return 0;
       const days = differenceInDays(endsAt, new Date());
+
       return days > 0 ? days : 0;
     },
     roleIcon: () => {
       if (store.isTrial()) return 'history_toggle_off';
       const role = store.user()?.role;
+
       switch (role) {
         case 'PARTNER':
           return 'verified';
@@ -149,11 +153,13 @@ export const pocketBaseUserProfileStore = signalStore(
           data.confirmPassword
         );
         updateState(store, `[profile] confirm password reset success`, { isLoading: false });
+
         return true;
       } catch (error) {
         updateState(store, `[profile] confirm password reset failed ${error}`, {
           isLoading: false,
         });
+
         return false;
       }
     },
@@ -165,6 +171,7 @@ export const pocketBaseUserProfileStore = signalStore(
         await store._authService.requestEmailChange(newEmail);
         updateState(store, `[profile] request email change success`, { isLoading: false });
         store._notificationService.create('profile.accessSecurity.success.requested', 'SUCCESS');
+
         return true;
       } catch (error) {
         updateState(store, `[profile] request email change failed ${error}`, { isLoading: false });
@@ -173,12 +180,14 @@ export const pocketBaseUserProfileStore = signalStore(
         const isInvalidNewEmail =
           (error as { status?: number; data?: { data?: { newEmail?: unknown } } }).status === 400 &&
           !!(error as { data?: { data?: { newEmail?: unknown } } }).data?.data?.['newEmail'];
+
         store._notificationService.create(
           isInvalidNewEmail
             ? 'profile.accessSecurity.error.invalidNewEmail'
             : 'profile.accessSecurity.error.requested',
           'ERROR'
         );
+
         return false;
       }
     },
@@ -189,9 +198,11 @@ export const pocketBaseUserProfileStore = signalStore(
       try {
         await store._authService.confirmEmailChange(data.token, data.password);
         updateState(store, `[profile] confirm email change success`, { isLoading: false });
+
         return true;
       } catch (error) {
         updateState(store, `[profile] confirm email change failed ${error}`, { isLoading: false });
+
         return false;
       }
     },
@@ -201,6 +212,7 @@ export const pocketBaseUserProfileStore = signalStore(
 
       try {
         const user = store.user();
+
         if (!user?.id || !user?.email) throw new Error('User not found');
 
         const authData = await store._authService.changePassword(user.id, user.email, data);
@@ -215,6 +227,7 @@ export const pocketBaseUserProfileStore = signalStore(
           'profile.accessSecurity.password.success.changed',
           'SUCCESS'
         );
+
         return true;
       } catch (error) {
         updateState(store, `[profile] change password failed ${error}`, { isLoading: false });
@@ -224,12 +237,14 @@ export const pocketBaseUserProfileStore = signalStore(
           (error as { status?: number; data?: { data?: { oldPassword?: unknown } } }).status ===
             400 &&
           !!(error as { data?: { data?: { oldPassword?: unknown } } }).data?.data?.['oldPassword'];
+
         store._notificationService.create(
           isInvalidOldPassword
             ? 'profile.accessSecurity.password.error.invalidOldPassword'
             : 'profile.accessSecurity.password.error.changed',
           'ERROR'
         );
+
         return false;
       }
     },
@@ -239,6 +254,7 @@ export const pocketBaseUserProfileStore = signalStore(
 
       try {
         const id = store.user()?.id;
+
         if (!id) throw new Error('User not found');
 
         const updatedUser = await store._authService.updateAvatar(id, file);
@@ -249,10 +265,12 @@ export const pocketBaseUserProfileStore = signalStore(
         });
 
         store._notificationService.create('profile.success.update', 'SUCCESS');
+
         return true;
       } catch (error) {
         updateState(store, `[profile] update avatar failed ${error}`, { isLoading: false });
         store._notificationService.create('profile.error.update', 'ERROR');
+
         return false;
       }
     },
@@ -262,6 +280,7 @@ export const pocketBaseUserProfileStore = signalStore(
 
       try {
         const id = store.user()?.id;
+
         if (!id) throw new Error('User not found');
 
         const updatedUser = await store._authService.deleteAvatar(id);
@@ -272,10 +291,12 @@ export const pocketBaseUserProfileStore = signalStore(
         });
 
         store._notificationService.create('profile.success.update', 'SUCCESS');
+
         return true;
       } catch (error) {
         updateState(store, `[profile] delete avatar failed ${error}`, { isLoading: false });
         store._notificationService.create('profile.error.update', 'ERROR');
+
         return false;
       }
     },
@@ -285,6 +306,7 @@ export const pocketBaseUserProfileStore = signalStore(
 
       try {
         const id = store.user()?.id;
+
         if (!id) throw new Error('User not found');
 
         const updatedUser = await store._authService.updateProfile(id, data);
@@ -295,29 +317,35 @@ export const pocketBaseUserProfileStore = signalStore(
         });
 
         store._notificationService.create('profile.success.update', 'SUCCESS');
+
         return true;
       } catch (error) {
         updateState(store, `[profile] update profile failed ${error}`, {
           isLoading: false,
         });
         store._notificationService.create('profile.error.update', 'ERROR');
+
         return false;
       }
     },
 
     async updateLanguage(language: string): Promise<boolean> {
       const user = store.user();
+
       if (!user?.id || user.language === language) return false;
 
       try {
         const updatedUser = await store._authService.updateLanguage(user.id, language);
+
         // Silent sync: no toast and no isLoading — a language switch must not flash the UI.
         updateState(store, `[profile] update language success`, {
           user: updatedUser as PocketBaseUser,
         });
+
         return true;
       } catch (error) {
         updateState(store, `[profile] update language failed ${error}`, {});
+
         return false;
       }
     },
@@ -327,6 +355,7 @@ export const pocketBaseUserProfileStore = signalStore(
 
       try {
         const id = store.user()?.id;
+
         if (!id) throw new Error('User not found');
 
         const updatedUser = await store._authService.convertTrialToActive(id);
@@ -337,12 +366,14 @@ export const pocketBaseUserProfileStore = signalStore(
         });
 
         store._notificationService.create('store.trial.snackbar.success', 'SUCCESS');
+
         return true;
       } catch (error) {
         updateState(store, `[profile] convert trial to active failed ${error}`, {
           isLoading: false,
         });
         store._notificationService.create('store.trial.snackbar.error', 'ERROR');
+
         return false;
       }
     },
@@ -392,8 +423,10 @@ export const pocketBaseUserProfileStore = signalStore(
 
     async createAddress(data: UserContactForm): Promise<boolean> {
       const userId = store.user()?.id;
+
       if (!userId) {
         store._notificationService.create('profile.addresses.error.create', 'ERROR');
+
         return false;
       }
 
@@ -414,12 +447,14 @@ export const pocketBaseUserProfileStore = signalStore(
         );
 
         const currentAddresses = store.addresses();
+
         updateState(store, `[profile] create address success`, {
           addresses: [...currentAddresses.slice(0, currentAddresses.length - 1), created],
           isLoading: false,
         });
 
         store._notificationService.create('profile.addresses.success.create', 'SUCCESS');
+
         return true;
       } catch (error) {
         updateState(store, `[profile] create address failed ${error}`, {
@@ -427,6 +462,7 @@ export const pocketBaseUserProfileStore = signalStore(
           isLoading: false,
         });
         store._notificationService.create('profile.addresses.error.create', 'ERROR');
+
         return false;
       }
     },
@@ -443,10 +479,12 @@ export const pocketBaseUserProfileStore = signalStore(
         });
 
         store._notificationService.create('profile.addresses.success.delete', 'SUCCESS');
+
         return true;
       } catch (error) {
         updateState(store, `[profile] delete address failed ${error}`, { isLoading: false });
         store._notificationService.create('profile.addresses.error.delete', 'ERROR');
+
         return false;
       }
     },
@@ -478,6 +516,7 @@ export const pocketBaseUserProfileStore = signalStore(
         });
 
         store._notificationService.create('profile.addresses.success.update', 'SUCCESS');
+
         return true;
       } catch (error) {
         updateState(store, `[profile] update address failed ${error}`, {
@@ -485,6 +524,7 @@ export const pocketBaseUserProfileStore = signalStore(
           isLoading: false,
         });
         store._notificationService.create('profile.addresses.error.update', 'ERROR');
+
         return false;
       }
     },
@@ -506,16 +546,19 @@ export const pocketBaseUserProfileStore = signalStore(
         });
 
         store._notificationService.create('profile.addresses.success.setDefault', 'SUCCESS');
+
         return true;
       } catch (error) {
         updateState(store, `[profile] set default address failed ${error}`, { isLoading: false });
         store._notificationService.create('profile.addresses.error.setDefault', 'ERROR');
+
         return false;
       }
     },
 
     async getFiscalProfile(): Promise<void> {
       const user = store.user();
+
       if (!user || store.fiscalProfileLoaded()) return;
 
       try {
@@ -538,6 +581,7 @@ export const pocketBaseUserProfileStore = signalStore(
 
     async saveFiscalProfile(data: UserFiscalProfileForm): Promise<boolean> {
       const user = store.user();
+
       if (!user) return false;
 
       // Built explicitly (not spread from `data`) because UserFiscalProfileForm
@@ -560,10 +604,12 @@ export const pocketBaseUserProfileStore = signalStore(
 
         updateState(store, `[profile] save fiscal profile success`, { fiscalProfile: saved });
         store._notificationService.create('profile.fiscalData.success.save', 'SUCCESS');
+
         return true;
       } catch (error) {
         updateState(store, `[profile] save fiscal profile failed ${error}`, {});
         store._notificationService.create('profile.fiscalData.error.save', 'ERROR');
+
         return false;
       }
     },

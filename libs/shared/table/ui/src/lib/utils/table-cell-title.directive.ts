@@ -13,6 +13,7 @@ export class TableCellTitleDirective implements AfterViewInit {
       const childElement = this.#elementRefElement.children[0];
 
       const titleText = this.#getTextContent(childElement);
+
       this.#elementRefElement.setAttribute('title', titleText.trim());
       this.#elementRefElement.setAttribute('aria-label', titleText.trim());
 
@@ -45,10 +46,13 @@ export class TableCellTitleDirective implements AfterViewInit {
   #addTitleToLiElements(node: Node): void {
     if (node.nodeType === Node.ELEMENT_NODE) {
       const element = node as HTMLElement;
+
       if (element.tagName.toLowerCase() === 'ul') {
         const liElements = element.getElementsByTagName('li');
+
         for (let i = 0; i < liElements.length; i++) {
           const liTextContent = this.#getTextContent(liElements[i]);
+
           liElements[i].setAttribute('title', liTextContent);
           liElements[i].setAttribute('aria-label', liTextContent);
         }

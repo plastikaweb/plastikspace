@@ -19,6 +19,7 @@ export function checkCustomLabelValidation(
   const controls = linkedFieldKeys.map(key => field.form?.get(key)) as AbstractControl[];
   const isValid = controls.every(control => control?.valid);
   const isTouched = controls.every(control => control?.touched);
+
   if (field?.props) {
     field.props['isValid'] = isValid ? 'valid' : isTouched ? 'error' : 'untouched';
   }
@@ -30,6 +31,7 @@ export function checkCustomLabelValidation(
  */
 export function setCustomLabelValue(field: FormlyFieldConfig): void {
   const method = field.model?.method ?? 'pickup';
+
   if (field.props) {
     field.props['label'] =
       method === 'pickup'

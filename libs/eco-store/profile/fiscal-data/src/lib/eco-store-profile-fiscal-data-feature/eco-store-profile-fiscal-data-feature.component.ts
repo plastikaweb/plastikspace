@@ -20,6 +20,7 @@ export class EcoStoreProfileFiscalDataFeatureComponent {
 
   protected readonly model = computed<UserFiscalProfileForm>(() => {
     const profile = this.#profileStore.fiscalProfile();
+
     return {
       fiscalName: profile?.fiscalName || '',
       nif: profile?.nif || '',

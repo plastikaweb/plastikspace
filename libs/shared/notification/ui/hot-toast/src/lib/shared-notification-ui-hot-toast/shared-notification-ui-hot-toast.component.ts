@@ -41,9 +41,11 @@ export class SharedNotificationUiHotToastComponent implements OnDestroy {
 
   readonly mergedNotification = computed(() => {
     const notification = this.notification();
+
     if (!notification) {
       return null;
     }
+
     return {
       ...this.#notificationGlobalConfig[notification.type],
       ...this.#notificationGlobalPosition,

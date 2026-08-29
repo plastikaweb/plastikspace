@@ -7,6 +7,7 @@ import { AbstractControl } from '@angular/forms';
  */
 export function passwordMatchValidator(control: AbstractControl) {
   const { newPassword, confirmPassword } = control.value;
+
   if (!confirmPassword || !newPassword) {
     return null;
   }

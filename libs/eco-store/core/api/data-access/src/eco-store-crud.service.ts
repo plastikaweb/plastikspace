@@ -21,6 +21,7 @@ export abstract class EcoStoreCrudService<
   private addTenantToCrudData(data: Partial<T>): T {
     const tenantId = this.tenantStore.tenant()?.id;
     const dataWithTenant = tenantId ? { ...data, tenant: tenantId } : data;
+
     return dataWithTenant as T;
   }
 }

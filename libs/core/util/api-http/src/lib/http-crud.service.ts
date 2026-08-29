@@ -88,6 +88,7 @@ export abstract class HttpCrudService<
    */
   getOne(id: IdType<T>, options?: unknown): Observable<T> {
     void options;
+
     return this.httpClient.get(`${this.apiUrl}/${id}`).pipe(
       map(response => this.mapItemResponse(response)),
       catchError(this.handleError)
@@ -102,6 +103,7 @@ export abstract class HttpCrudService<
    */
   create(data: Partial<T>, options?: unknown): Observable<T> {
     void options;
+
     return this.httpClient.post(this.apiUrl, data).pipe(
       map(response => this.mapItemResponse(response)),
       catchError(this.handleError)
@@ -117,6 +119,7 @@ export abstract class HttpCrudService<
    */
   update(id: IdType<T>, data: Partial<T>, options?: unknown): Observable<T> {
     void options;
+
     return this.httpClient.patch(`${this.apiUrl}/${id}`, data).pipe(
       map(response => this.mapItemResponse(response)),
       catchError(this.handleError)

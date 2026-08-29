@@ -67,8 +67,10 @@ export default class EcoStoreProductsFeatureComponent {
 
         const remaining = selectedCategoryCount - s.page * s.perPage;
         const count = Math.max(0, Math.min(s.perPage, remaining));
+
         return Array(count).fill(0);
       }
+
       return [];
     },
   });
@@ -84,7 +86,9 @@ export default class EcoStoreProductsFeatureComponent {
   /** The current category information including translated name and icon. */
   readonly category = computed<(Pick<ProductCategory, 'icon'> & { name: string }) | null>(() => {
     const slug = this.categorySlug() ?? null;
+
     this.#categoriesStore.currentLang();
+
     return this.#categoriesStore.getCategoryBySlug(slug, 'products.all');
   });
 

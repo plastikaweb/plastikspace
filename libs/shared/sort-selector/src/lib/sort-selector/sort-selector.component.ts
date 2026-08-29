@@ -36,6 +36,7 @@ export class SortSelectorComponent {
 
   readonly currentSortIcon = computed(() => {
     const { active, direction } = this.currentSort();
+
     return this.options()[active]?.find(item => item.direction === direction)?.icon ?? 'sort';
   });
 

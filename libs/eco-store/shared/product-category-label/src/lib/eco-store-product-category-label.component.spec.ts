@@ -23,6 +23,7 @@ describe('EcoStoreProductCategoryLabelComponent', () => {
 
   it('should display the category name', () => {
     const element = fixture.nativeElement as HTMLElement;
+
     expect(element.textContent).toContain('Test Category');
   });
 

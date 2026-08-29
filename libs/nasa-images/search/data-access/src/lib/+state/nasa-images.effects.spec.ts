@@ -131,6 +131,7 @@ describe('NasaImagesEffects', () => {
 
   describe('load$', () => {
     const action = nasaImagesPageActions.load({ params: { q: 'pluto', media_type: 'image' } });
+
     it('should work on success', () => {
       vi.spyOn(dataService, 'getList').mockImplementation(() => of({ items, count }));
       actions = hot('-a-|', { a: action });
@@ -159,10 +160,12 @@ describe('NasaImagesEffects', () => {
 
   describe('activeOn$', () => {
     const action = nasaImagesPageActions.load({ params: { q: 'pluto' } });
+
     it('should work', () => {
       actions = hot('-a-|', { a: action });
       // Mock para verificar que se llama a setActivity
       const mockAction = { type: '[Activity] Set Activity True' };
+
       vi.spyOn(activityStoreInstance, 'setActivity').mockImplementation(() => mockAction);
       const expected = hot('-a-|', { a: mockAction });
 
@@ -188,10 +191,12 @@ describe('NasaImagesEffects', () => {
 
   describe('activeOff$', () => {
     const action = nasaImagesAPIActions.loadSuccess({ items, count });
+
     it('should work', () => {
       actions = hot('-a-|', { a: action });
       // Mock para verificar que se llama a setActivity
       const mockAction = { type: '[Activity] Set Activity False' };
+
       vi.spyOn(activityStoreInstance, 'setActivity').mockReturnValue(mockAction);
       const expected = hot('-a-|', { a: mockAction });
 

@@ -92,6 +92,7 @@ export abstract class HttpBaseService extends BaseDataService {
           return mapItemResponse(data);
         }
       };
+
       return new ServiceClass();
     });
   }

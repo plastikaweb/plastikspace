@@ -10,6 +10,7 @@ export default async (snapshot, context) => {
 
   if (previousProductImg === updatedProductImg || !previousProductImg) {
     functions.logger.debug(`Product image did not change or was not set, skipping update`);
+
     return;
   }
 
@@ -19,10 +20,13 @@ export default async (snapshot, context) => {
 
   const bucket = storage.bucket();
   const sanitizedPreviousProductImg = extractEncodedStoragePath(previousProductImg);
+
   if (sanitizedPreviousProductImg) {
     functions.logger.debug(`Deleting previous product image: ${sanitizedPreviousProductImg}`);
+
     return await bucket.file(sanitizedPreviousProductImg).delete();
   }
+
   return;
 };
 
@@ -33,5 +37,6 @@ export default async (snapshot, context) => {
  */
 function extractEncodedStoragePath(url: string): string | null {
   const match = url.match(/\/o\/([^?]+)/);
+
   return match ? decodeURIComponent(match[1]) : null;
 }

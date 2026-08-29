@@ -39,6 +39,7 @@ export class OrderListUserOrderResumeTableConfig implements TableStructureConfig
         const info = element?.['info']
           ? `<p class="font-bold">${escapeHtml(element['info'] ?? '')}</p>`
           : '';
+
         return this.#sanitizer.bypassSecurityTrustHtml(`${name}${info}`) as SafeHtml;
       },
     },
@@ -56,6 +57,7 @@ export class OrderListUserOrderResumeTableConfig implements TableStructureConfig
         const unit = item?.unit ?? { type: 'unit' };
         const suffix = this.#productUnitSuffixPipe.transform(unit);
         const numberDigitsInfo = suffix === 'kg' ? '1.2-2' : '1.0-0';
+
         return {
           suffix,
           numberDigitsInfo,
@@ -109,6 +111,7 @@ export class OrderListUserOrderResumeTableConfig implements TableStructureConfig
           finalQuantity: quantity,
           finalPrice: price,
         };
+
         return newProduct;
       },
     }),
@@ -174,6 +177,7 @@ export class OrderListUserOrderResumeTableConfig implements TableStructureConfig
           ...orderProduct,
           reviewed,
         };
+
         return newProduct;
       },
     }),

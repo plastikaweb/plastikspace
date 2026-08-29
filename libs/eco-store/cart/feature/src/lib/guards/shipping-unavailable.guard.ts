@@ -18,6 +18,7 @@ export const shippingUnavailableGuard: CanActivateFn = async (): Promise<boolean
         if (tenantStore.isShippingAvailable()) {
           return router.createUrlTree(['/cistella/resum']);
         }
+
         return true;
       })
     )

@@ -72,6 +72,7 @@ export default class EcoStoreProductFeatureComponent {
 
   protected readonly pendingChanges = computed(() => {
     const product = this.product();
+
     if (!product) return false;
 
     const currentQty = this.quantity();
@@ -95,6 +96,7 @@ export default class EcoStoreProductFeatureComponent {
 
   readonly product = computed(() => {
     const selectedId = this.#productsStore.selectedItemId();
+
     if (!selectedId) return null;
 
     return this.#productsStore.productsWithTranslatedText().find(p => p.id === selectedId) || null;
@@ -102,6 +104,7 @@ export default class EcoStoreProductFeatureComponent {
 
   readonly storeQuantity = computed(() => {
     const product = this.product();
+
     return product ? this.#cartStore.entityMap()[product.id]?.quantity || 0 : 0;
   });
 
@@ -109,9 +112,11 @@ export default class EcoStoreProductFeatureComponent {
 
   readonly quantity = linkedSignal(() => {
     const product = this.product();
+
     if (!product) return 0;
 
     const cartCount = this.storeQuantity();
+
     if (cartCount) return cartCount;
 
     return product.minQuantity > 0
@@ -142,8 +147,10 @@ export default class EcoStoreProductFeatureComponent {
 
   readonly isVariableWeight = computed(() => {
     const product = this.product();
+
     if (!product) return false;
     const type = product.unitType;
+
     return type !== 'unit' && !type.startsWith('unitWithFixed');
   });
 
@@ -214,6 +221,7 @@ export default class EcoStoreProductFeatureComponent {
 
   protected readonly breadcrumbItems = computed((): BreadcrumbItem[] => {
     const product = this.product();
+
     return [
       {
         labelKey: 'store.menu.store',

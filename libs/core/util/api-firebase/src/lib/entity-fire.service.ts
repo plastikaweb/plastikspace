@@ -60,6 +60,7 @@ export abstract class EntityFireService<T extends BaseEntity> extends FirebaseSe
         this.firebaseAssignTypes()
       );
     }
+
     return this.collection;
   }
 
@@ -73,6 +74,7 @@ export abstract class EntityFireService<T extends BaseEntity> extends FirebaseSe
     return runInInjectionContext(this.injectionContext, () => {
       try {
         const firestoreCollection = this.firestoreCollection;
+
         if (!firestoreCollection) {
           return of([]);
         }
@@ -100,17 +102,20 @@ export abstract class EntityFireService<T extends BaseEntity> extends FirebaseSe
     try {
       return runInInjectionContext(this.injectionContext, () => {
         const firestoreCollection = this.firestoreCollection;
+
         if (!firestoreCollection) {
           return throwError(() => new Error('No collection available'));
         }
 
         const docRef = doc(firestoreCollection, id.toString());
+
         return docData(docRef, { idField: 'id' }).pipe(
           takeUntil(this.destroy$),
           map(item => {
             if (!item) {
               throw new Error(`Entity with id ${id} not found`);
             }
+
             return item as T;
           }),
           catchError(error => throwError(() => error))
@@ -125,6 +130,7 @@ export abstract class EntityFireService<T extends BaseEntity> extends FirebaseSe
     return runInInjectionContext(this.injectionContext, () => {
       try {
         const firestoreCollection = this.firestoreCollection;
+
         if (!firestoreCollection) {
           return throwError(() => new Error('No collection available'));
         }
@@ -134,9 +140,11 @@ export abstract class EntityFireService<T extends BaseEntity> extends FirebaseSe
           const snapshot = await firstValueFrom(
             docData(docRef, { idField: 'id' }).pipe(map(data => data as T))
           );
+
           if (!snapshot) {
             throw new Error('Failed to retrieve created document');
           }
+
           return snapshot;
         };
 
@@ -154,6 +162,7 @@ export abstract class EntityFireService<T extends BaseEntity> extends FirebaseSe
     return runInInjectionContext(this.injectionContext, () => {
       try {
         const firestoreCollection = this.firestoreCollection;
+
         if (!firestoreCollection) {
           return throwError(() => new Error('No collection available'));
         }
@@ -176,11 +185,13 @@ export abstract class EntityFireService<T extends BaseEntity> extends FirebaseSe
     return runInInjectionContext(this.injectionContext, () => {
       try {
         const firestoreCollection = this.firestoreCollection;
+
         if (!firestoreCollection) {
           return throwError(() => new Error('No collection available'));
         }
 
         const docRef = doc(firestoreCollection, id.toString());
+
         return from(deleteDoc(docRef)).pipe(
           takeUntil(this.destroy$),
           catchError(error => throwError(() => error))
@@ -195,6 +206,7 @@ export abstract class EntityFireService<T extends BaseEntity> extends FirebaseSe
     return runInInjectionContext(this.injectionContext, () => {
       try {
         const firestoreCollection = this.firestoreCollection;
+
         if (!firestoreCollection) {
           return of(0);
         }
@@ -225,6 +237,7 @@ export abstract class EntityFireService<T extends BaseEntity> extends FirebaseSe
 
     if (pageIndex > 0 && pageLastElements?.has(pageIndex - 1)) {
       const lastDoc = pageLastElements.get(pageIndex - 1);
+
       conditions.push(startAfter((lastDoc as Record<string, unknown>)?.[activeField]));
     }
 
@@ -234,6 +247,7 @@ export abstract class EntityFireService<T extends BaseEntity> extends FirebaseSe
   protected getSortingConditions(sorting: TableSortingConfig): QueryConstraint[] {
     const [active, direction] = sorting;
     const conditions: QueryConstraint[] = [];
+
     conditions.push(orderBy(active, direction || 'asc'));
 
     return conditions;
@@ -251,6 +265,7 @@ export abstract class EntityFireService<T extends BaseEntity> extends FirebaseSe
       },
       fromFirestore(snapshot: QueryDocumentSnapshot): T {
         const data = snapshot.data() as T;
+
         return data;
       },
     };
@@ -272,6 +287,7 @@ export abstract class EntityFireService<T extends BaseEntity> extends FirebaseSe
     ) {
       return of(defaultValue);
     }
+
     return throwError(() => error);
   }
 }

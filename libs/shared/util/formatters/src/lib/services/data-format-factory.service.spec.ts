@@ -40,6 +40,7 @@ describe('DataFormatFactoryService', () => {
         type: 'TEXT',
       },
     });
+
     expect(result).toEqual({ changingThisBreaksApplicationSecurity: '12' });
   });
 
@@ -50,6 +51,7 @@ describe('DataFormatFactoryService', () => {
       pathToKey: 'text.child.value',
       formatting: { type: 'TEXT' },
     });
+
     expect(result).toEqual({ changingThisBreaksApplicationSecurity: 'value' });
   });
 
@@ -60,6 +62,7 @@ describe('DataFormatFactoryService', () => {
       pathToKey: 'link',
       formatting: { type: 'LINK' },
     });
+
     expect(result).toBe('www.example.com');
   });
 
@@ -70,6 +73,7 @@ describe('DataFormatFactoryService', () => {
       pathToKey: 'time',
       formatting: { type: 'DATE', extras: () => ({ locale: 'en-US' }) },
     });
+
     expect(result).toBe('9/1/21');
   });
 
@@ -80,6 +84,7 @@ describe('DataFormatFactoryService', () => {
       pathToKey: 'time',
       formatting: { type: 'DATE_TIME', extras: () => ({ locale: 'en-US', timezone: '+0200' }) },
     });
+
     expect(result).toBe('9/1/21, 04:10:06');
   });
 
@@ -90,6 +95,7 @@ describe('DataFormatFactoryService', () => {
       pathToKey: 'percentage',
       formatting: { type: 'PERCENTAGE' },
     });
+
     expect(result).toBe('80.00%');
   });
 
@@ -100,6 +106,7 @@ describe('DataFormatFactoryService', () => {
       pathToKey: 'truthy',
       formatting: { type: 'BOOLEAN_WITH_CONTROL' },
     });
+
     expect(result).toBeTruthy();
   });
 
@@ -113,6 +120,7 @@ describe('DataFormatFactoryService', () => {
           type: 'CURRENCY',
         },
       });
+
       expect(result).toBe('€3.08');
     });
 
@@ -126,6 +134,7 @@ describe('DataFormatFactoryService', () => {
           extras: () => ({ currency: '$', numberDigitsInfo: '1.2-2' }),
         },
       });
+
       expect(result).toBe('$3.08');
     });
   });
@@ -137,6 +146,7 @@ describe('DataFormatFactoryService', () => {
       pathToKey: 'price',
       formatting: { type: 'NUMBER' },
     });
+
     expect(result).toBe('3.08');
 
     result = service.getFormattedValue(objectMocked, {
@@ -155,6 +165,7 @@ describe('DataFormatFactoryService', () => {
       pathToKey: 'percentage',
       formatting: { type: 'PERCENTAGE' },
     });
+
     expect(result).toBe('80.00%');
   });
 
@@ -167,6 +178,7 @@ describe('DataFormatFactoryService', () => {
         type: 'TITLE_CASE',
       },
     });
+
     expect(result).toBe(`Value`);
   });
 
@@ -180,6 +192,7 @@ describe('DataFormatFactoryService', () => {
           type: 'CUSTOM',
         },
       });
+
       expect(result).toBe(`---`);
     });
 
@@ -193,6 +206,7 @@ describe('DataFormatFactoryService', () => {
           execute: title => `This is the ${title}`,
         },
       });
+
       expect(result).toBe(`This is the TITLE`);
     });
   });

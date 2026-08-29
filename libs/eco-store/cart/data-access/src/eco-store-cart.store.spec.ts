@@ -87,6 +87,7 @@ describe('ecoStoreCartStore', () => {
         },
       ],
     });
+
     return { store: TestBed.inject(ecoStoreCartStore), mockCartsService, mockProductsService };
   };
 
@@ -130,14 +131,17 @@ describe('ecoStoreCartStore', () => {
 
   it('should be created', () => {
     const { store } = setup();
+
     expect(store).toBeTruthy();
   });
 
   it('should add item to cart', () => {
     const { store } = setup();
+
     store.addToCart(mockProduct, 2);
 
     const item = store.items()[0];
+
     expect(item.quantity).toBe(2);
     expect(item.product.id).toBe(mockProduct.id);
     expect(store.itemsCount()).toBe(1);
@@ -146,6 +150,7 @@ describe('ecoStoreCartStore', () => {
 
   it('should update item quantity in cart', () => {
     const { store } = setup();
+
     store.addToCart(mockProduct, 1);
     store.addToCart(mockProduct, 3); // Updates to 3
 
@@ -156,6 +161,7 @@ describe('ecoStoreCartStore', () => {
 
   it('should remove item if quantity is <= 0', () => {
     const { store } = setup();
+
     store.addToCart(mockProduct, 1);
     store.addToCart(mockProduct, 0);
 
@@ -165,6 +171,7 @@ describe('ecoStoreCartStore', () => {
 
   it('should clear cart', () => {
     const { store } = setup();
+
     store.addToCart(mockProduct, 1);
     store.clearCart();
 
@@ -173,12 +180,15 @@ describe('ecoStoreCartStore', () => {
 
   it('should get item count via signal', () => {
     const { store } = setup();
+
     store.addToCart(mockProduct, 5);
 
     const countSignal = store.getItemCount('1');
+
     expect(countSignal()).toBe(5);
 
     const countSignalEmpty = store.getItemCount('2');
+
     expect(countSignalEmpty()).toBe(0);
   });
 
@@ -239,6 +249,7 @@ describe('ecoStoreCartStore', () => {
     store.addToCart(product2, 1);
 
     const grouped = store.itemsGroupedByCategory();
+
     expect(grouped.length).toBe(2);
     expect(grouped[0].category).toBe('Category 1');
     expect(grouped[0].items[0].product.id).toBe('1');
@@ -281,6 +292,7 @@ describe('ecoStoreCartStore', () => {
 
   it('should reset state when last item is removed', () => {
     const { store } = setup();
+
     store.addToCart(mockProduct, 1);
     store.updateLogistics({ method: 'pickup' as any });
     expect(store.method()).toBe('pickup');
@@ -417,6 +429,7 @@ describe('ecoStoreCartStore', () => {
 
     it('should show price update notification when product price changed', async () => {
       const updatedProduct = { ...mockProduct, priceWithIva: 15, price: 12 };
+
       localStorage.setItem('test-tenant-cart-v1', JSON.stringify(localCartState));
 
       const { store } = setup({
@@ -428,6 +441,7 @@ describe('ecoStoreCartStore', () => {
 
       // Override products service to return updated prices
       const productsService = TestBed.inject(EcoStoreProductsApiService) as any;
+
       productsService.getFullList = vi.fn().mockReturnValue(of([updatedProduct]));
 
       await store.loadAndMergeUserCart();

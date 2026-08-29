@@ -48,6 +48,7 @@ export class EcoStoreProductCardComponent {
 
   onQuantityChange(quantity: number) {
     const product = this.product();
+
     if (product) {
       this.addToCart.emit({ product, quantity });
     }
@@ -58,6 +59,7 @@ export class EcoStoreProductCardComponent {
     event.stopPropagation();
     event.stopImmediatePropagation();
     const product = this.product();
+
     if (product) {
       this.toggleFavorite.emit(product.id);
     }

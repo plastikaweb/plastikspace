@@ -64,6 +64,7 @@ export const llecoopUserStore = signalStore(
             if (!id) {
               throw new Error('User ID is undefined');
             }
+
             return store._dataService.addAdminClaim(id).pipe(
               tapResponse({
                 next: () =>

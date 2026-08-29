@@ -20,9 +20,11 @@ export class EcoStoreOrdersApiService extends EcoStoreCrudService<EcoStoreOrder>
       // PocketBase will search for this term anywhere in the JSON blob.
       params.filter = params.filter.replace(/items='([^']*)'/g, (_, value) => {
         const normalizedValue = latinize(value).toLowerCase();
+
         return `items~'${normalizedValue}'`;
       });
     }
+
     return super.getList(params);
   }
 }

@@ -26,6 +26,7 @@ describe('ShippingUnavailableComponent', () => {
   it('should have no accessibility violations', async () => {
     fixture.detectChanges();
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   });
 });

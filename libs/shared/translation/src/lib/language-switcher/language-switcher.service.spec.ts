@@ -23,6 +23,7 @@ describe('LanguageSwitcherService', () => {
   it('should initialize with language from localStorage', () => {
     localStorage.setItem(STORAGE_KEY, 'es');
     const lang = service.init(['ca', 'es']);
+
     expect(lang).toBe('es');
     expect(service.currentLanguage()).toBe('es');
   });
@@ -32,12 +33,14 @@ describe('LanguageSwitcherService', () => {
     // Since we didn't mock navigator.language here, it will depend on the test runner's lang.
     // Let's at least test that if not in available, it fallbacks to first one.
     const lang = service.init(['fr', 'en']);
+
     // Fallback to first available if browser language not in list (assuming browser is not 'fr' or 'en')
     expect(['fr', 'en']).toContain(lang);
   });
 
   it('should fallback to first available language if storage is empty and browser not in list', () => {
     const lang = service.init(['ca', 'es']);
+
     expect(['ca', 'es']).toContain(lang);
   });
 

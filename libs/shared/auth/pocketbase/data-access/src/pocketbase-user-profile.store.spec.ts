@@ -33,6 +33,7 @@ describe('pocketBaseUserProfileStore \u2014 email change', () => {
         { provide: PocketBaseUserFiscalProfileService, useValue: {} },
       ],
     });
+
     return TestBed.inject(pocketBaseUserProfileStore);
   }
 
@@ -45,6 +46,7 @@ describe('pocketBaseUserProfileStore \u2014 email change', () => {
     requestEmailChange.mockResolvedValueOnce(true);
     const store = setup();
     const ok = await store.requestEmailChange('new@mail.com');
+
     expect(requestEmailChange).toHaveBeenCalledWith('new@mail.com');
     expect(ok).toBe(true);
     expect(createNotification).toHaveBeenCalledWith(
@@ -56,6 +58,7 @@ describe('pocketBaseUserProfileStore \u2014 email change', () => {
   it('requestEmailChange returns false on error and shows the generic toast', async () => {
     requestEmailChange.mockRejectedValueOnce(new Error('boom'));
     const store = setup();
+
     expect(await store.requestEmailChange('new@mail.com')).toBe(false);
     expect(createNotification).toHaveBeenCalledWith(
       'profile.accessSecurity.error.requested',
@@ -69,6 +72,7 @@ describe('pocketBaseUserProfileStore \u2014 email change', () => {
       data: { data: { newEmail: { code: 'validation_invalid_new_email' } } },
     });
     const store = setup();
+
     expect(await store.requestEmailChange('used@mail.com')).toBe(false);
     expect(createNotification).toHaveBeenCalledWith(
       'profile.accessSecurity.error.invalidNewEmail',
@@ -80,6 +84,7 @@ describe('pocketBaseUserProfileStore \u2014 email change', () => {
     confirmEmailChange.mockResolvedValueOnce(true);
     const store = setup();
     const ok = await store.confirmEmailChange({ token: 'tok', password: 'pw' });
+
     expect(confirmEmailChange).toHaveBeenCalledWith('tok', 'pw');
     expect(ok).toBe(true);
   });
@@ -87,11 +92,13 @@ describe('pocketBaseUserProfileStore \u2014 email change', () => {
   it('confirmEmailChange returns false on error', async () => {
     confirmEmailChange.mockRejectedValueOnce(new Error('bad token'));
     const store = setup();
+
     expect(await store.confirmEmailChange({ token: 'tok', password: 'pw' })).toBe(false);
   });
 
   it('updateLanguage PATCHes users.language silently and updates the state', async () => {
     const record = { id: 'u1', email: 'old@mail.com', language: 'ca' };
+
     update.mockResolvedValueOnce({ ...record, language: 'es' });
     const store = setup({ isValid: true, record });
 
@@ -141,6 +148,7 @@ describe('pocketBaseUserProfileStore — password change', () => {
         { provide: PocketBaseUserFiscalProfileService, useValue: {} },
       ],
     });
+
     return TestBed.inject(pocketBaseUserProfileStore);
   }
 
@@ -242,6 +250,7 @@ describe('pocketBaseUserProfileStore — fiscal profile', () => {
         { provide: PocketBaseUserFiscalProfileService, useValue: fiscalProfileService },
       ],
     });
+
     return TestBed.inject(pocketBaseUserProfileStore);
   }
 
@@ -275,6 +284,7 @@ describe('pocketBaseUserProfileStore — fiscal profile', () => {
 
   it('saveFiscalProfile creates when none exists and normalizes the nif', async () => {
     const created = { ...fiscalProfileFixture };
+
     create.mockReturnValueOnce(of(created));
     const store = setup();
 
@@ -289,9 +299,11 @@ describe('pocketBaseUserProfileStore — fiscal profile', () => {
   it('saveFiscalProfile updates when a profile exists', async () => {
     getFirstListItem.mockReturnValueOnce(of(fiscalProfileFixture));
     const store = setup();
+
     await store.getFiscalProfile();
 
     const updated = { ...fiscalProfileFixture, fiscalName: 'Updated SL' };
+
     update.mockReturnValueOnce(of(updated));
 
     const ok = await store.saveFiscalProfile(formFixture);

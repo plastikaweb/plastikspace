@@ -64,13 +64,17 @@ export class InputTableComponent<T extends BaseEntity> implements ControlValueAc
         const isSelected = this.value().find(selectedElement => {
           return selectedElement.id === element.id;
         });
+
         if (isSelected) {
           return isSelected;
         }
+
         return element;
       });
+
       return data || [];
     }
+
     return this.tableData();
   });
 
@@ -97,12 +101,14 @@ export class InputTableComponent<T extends BaseEntity> implements ControlValueAc
 
     const currentValue = this.value();
     const dataExists = currentValue.some(element => element.id === data?.id);
+
     if (addOrRemoveElement && !dataExists && data) {
       this.value.set([...currentValue, data]);
     } else if (!addOrRemoveElement && dataExists) {
       this.value.set(currentValue.filter(element => element.id !== data?.id));
     } else if (addOrRemoveElement && dataExists && data) {
       const updatedValue = currentValue.map(element => (element.id === data?.id ? data : element));
+
       this.value.set(updatedValue);
     } else {
       this.value.set(currentValue);

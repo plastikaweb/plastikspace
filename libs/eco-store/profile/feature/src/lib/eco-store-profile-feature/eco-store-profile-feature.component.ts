@@ -51,19 +51,25 @@ export class EcoStoreProfileFeatureComponent {
 
   protected readonly title = computed(() => {
     const v = this.titleInput?.();
+
     if (v) return v;
+
     return this.#routeData()?.['title'] ?? '';
   });
 
   protected readonly icon = computed(() => {
     const v = this.iconInput?.();
+
     if (v) return v;
+
     return this.#routeData()?.['icon'] ?? '';
   });
 
   #getDeepestSnapshotData() {
     let s = this.#route.snapshot;
+
     while (s.firstChild) s = s.firstChild;
+
     return s.data ?? {};
   }
 

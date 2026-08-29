@@ -63,8 +63,10 @@ export class EcoHeaderComponent {
   constructor() {
     effect(() => {
       const tenant = this.tenant();
+
       if (tenant) {
         const lang = this.#languageSwitcherService.init(tenant.languages);
+
         this.#translateService.use(lang);
       }
     });

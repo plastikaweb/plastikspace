@@ -20,10 +20,12 @@ export class OrderListUserOrderResumeFormConfig {
 
   readonly #userOrderCartEditable = computed(() => {
     const orderListId = this.userOrderData()?.orderListId;
+
     if (!orderListId) {
       return false;
     }
     const orderList = this.#store.getItemById(orderListId);
+
     if (!orderList) {
       return false;
     }

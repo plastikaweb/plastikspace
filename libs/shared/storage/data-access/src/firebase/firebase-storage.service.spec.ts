@@ -7,6 +7,7 @@ import { FirebaseStorageService } from './firebase-storage.service';
 
 vi.mock('@angular/fire/storage', async importOriginal => {
   const actual = await importOriginal<typeof import('@angular/fire/storage')>();
+
   return {
     ...actual,
     ref: vi.fn(() => ({ fullPath: 'test-folder/test.txt' })),
@@ -42,6 +43,7 @@ describe('FirebaseStorageService', () => {
 
   it('should upload a file', async () => {
     const file = new File([''], 'test.txt', { type: 'text/plain' });
+
     await service.upload(file, 'test-folder');
     expect(service.progress()).toBe(0);
   });

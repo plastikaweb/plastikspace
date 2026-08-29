@@ -51,6 +51,7 @@ describe('EcoStoreUnitChipComponent', () => {
       fixture.componentRef.setInput('label', 'Test Label');
       fixture.detectChanges();
       const results = await axe(fixture.nativeElement);
+
       expect(results).toHaveNoViolations();
     });
 
@@ -60,6 +61,7 @@ describe('EcoStoreUnitChipComponent', () => {
       fixture.componentRef.setInput('label', 'Test Label');
       fixture.detectChanges();
       const results = await axe(fixture.nativeElement);
+
       expect(results).toHaveNoViolations();
     });
   });

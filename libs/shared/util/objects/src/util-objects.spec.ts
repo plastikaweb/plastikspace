@@ -80,28 +80,34 @@ describe('Object Util', () => {
 
   describe('getQueryParams method', () => {
     const defaultParams = { test: 'test' };
+
     it('should return an object from a url query string', () => {
       const result = getQueryParams('https://example.com?example=something&data=13');
+
       expect(result).toEqual({ example: 'something', data: '13' });
     });
 
     it('should return an object from a url query string with default parameters', () => {
       const result = getQueryParams('https://example.com?example=something&data=13', defaultParams);
+
       expect(result).toEqual({ example: 'something', data: '13', test: 'test' });
     });
 
     it('should return an object from a name/value pairs', () => {
       const result = getQueryParams({ example: 'something', data: '13' });
+
       expect(result).toEqual({ example: 'something', data: '13' });
     });
 
     it('should return an object from a name/value pairs with default parameters', () => {
       const result = getQueryParams({ example: 'something', data: '13' }, defaultParams);
+
       expect(result).toEqual({ example: 'something', data: '13', test: 'test' });
     });
 
     it('should return an empty object if no url query string is passed as a parameter', () => {
       const result = getQueryParams({});
+
       expect(result).toEqual({});
     });
 
@@ -126,6 +132,7 @@ describe('Object Util', () => {
         param4: false,
         param6: 'test',
       });
+
       expect(result).toEqual({ param2: '', param3: true, param4: false, param6: 'test' });
     });
   });
@@ -139,6 +146,7 @@ describe('Object Util', () => {
         param4: false,
         param6: 'test',
       });
+
       expect(result).toEqual({
         param1: null,
         param2: null,
@@ -152,11 +160,13 @@ describe('Object Util', () => {
   describe('areObjectEntriesEqual method', () => {
     it('compare the entries of two objects returning a boolean value', () => {
       const result = areObjectEntriesEqual({ key: 'test' }, { key: 'test' });
+
       expect(result).toEqual(true);
     });
 
     it('should return true for same object reference', () => {
       const obj = { a: 1 };
+
       expect(areObjectEntriesEqual(obj, obj)).toBe(true);
     });
 
@@ -196,6 +206,7 @@ describe('Object Util', () => {
     it('should ignore inherited enumerable properties (own keys only)', () => {
       const proto = { inherited: 'value' };
       const withInherited = Object.create(proto) as Record<string, unknown>;
+
       withInherited['a'] = 1;
       // `for...in` walks inherited keys too; the `hasOwnProperty` guard must skip `inherited`
       // so the comparison matches `Object.keys()` (own-enumerable) semantics.
@@ -212,6 +223,7 @@ describe('Object Util', () => {
         param4: false,
         param6: 'test',
       });
+
       expect(result).toEqual({
         param1: false,
         param2: true,
@@ -225,11 +237,13 @@ describe('Object Util', () => {
   describe('allAreFalsy method', () => {
     it('should return false if any element in passed array is truthy', () => {
       const result = allAreFalsy([false, false, true]);
+
       expect(result).toBeFalsy();
     });
 
     it('should return true if all elements in passed array are falsy', () => {
       const result = allAreFalsy([false, false, false]);
+
       expect(result).toBeTruthy();
     });
   });
@@ -237,32 +251,38 @@ describe('Object Util', () => {
   describe('transformToString method', () => {
     it('should return a value if we set an object as input', () => {
       const result = transformToString({});
+
       expect(result).toBe('{}');
     });
 
     it('should return a value if we set an array as input', () => {
       const result = transformToString([]);
+
       expect(result).toBe('[]');
     });
 
     it('should return a value if we set a string as input', () => {
       const result = transformToString('test');
+
       expect(result).toBe('test');
     });
 
     it('should return a value if we set a number as input', () => {
       const result = transformToString(4);
+
       expect(result).toBe('4');
     });
 
     it('should return a value if we set a boolean as input', () => {
       const result = transformToString(true);
+
       expect(result).toBe('true');
     });
 
     it('should return an empty string if we set a function as input', () => {
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       const result = transformToString(() => {});
+
       expect(result).toBe('');
     });
   });
@@ -280,6 +300,7 @@ describe('Object Util', () => {
       },
     };
     const result = collectionToArray(collection);
+
     expect(result).toEqual([
       {
         id: 1,
@@ -297,11 +318,13 @@ describe('Object Util', () => {
     it('should escape HTML special characters', () => {
       const input = '& < > " \' / ` =';
       const expected = '&amp; &lt; &gt; &quot; &#39; &#x2F; &#x60; &#x3D;';
+
       expect(escapeHtml(input)).toBe(expected);
     });
 
     it('should return same string if no special characters', () => {
       const input = 'Hello World 123';
+
       expect(escapeHtml(input)).toBe(input);
     });
   });
@@ -318,6 +341,7 @@ describe('Object Util', () => {
     it('should clone arrays into a new, independent structure', () => {
       const arr = [1, 2, [3, 4]];
       const cloned = deepClone(arr);
+
       expect(cloned).toEqual(arr);
       expect(cloned).not.toBe(arr);
       expect(cloned[2]).not.toBe(arr[2]);
@@ -326,6 +350,7 @@ describe('Object Util', () => {
     it('should clone objects into a new, independent structure', () => {
       const obj = { a: 1, b: { c: 2 } };
       const cloned = deepClone(obj);
+
       expect(cloned).toEqual(obj);
       expect(cloned).not.toBe(obj);
       expect(cloned.b).not.toBe(obj.b);
@@ -334,6 +359,7 @@ describe('Object Util', () => {
     it('should clone Date objects', () => {
       const date = new Date();
       const cloned = deepClone(date);
+
       expect(cloned).toEqual(date);
       expect(cloned).not.toBe(date);
       expect(cloned instanceof Date).toBe(true);
@@ -342,6 +368,7 @@ describe('Object Util', () => {
     it('should clone RegExp objects', () => {
       const regexp = /abc/g;
       const cloned = deepClone(regexp);
+
       expect(cloned).toEqual(regexp);
       expect(cloned).not.toBe(regexp);
       expect(cloned instanceof RegExp).toBe(true);
@@ -350,8 +377,10 @@ describe('Object Util', () => {
     it('should copy only own-enumerable keys, not inherited ones', () => {
       const proto = { inherited: 'nope' };
       const source = Object.create(proto) as Record<string, unknown>;
+
       source['own'] = 'yes';
       const cloned = deepClone(source);
+
       expect(cloned).toEqual({ own: 'yes' });
       expect(Object.prototype.hasOwnProperty.call(cloned, 'inherited')).toBe(false);
     });

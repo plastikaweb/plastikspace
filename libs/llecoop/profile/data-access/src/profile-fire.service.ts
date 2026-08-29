@@ -40,6 +40,7 @@ export class LlecoopProfileFireService {
     if (!this.collection && this.activeConnection()) {
       this.collection = collection(this.firestore, this.path);
     }
+
     return this.collection;
   }
 
@@ -47,6 +48,7 @@ export class LlecoopProfileFireService {
     return {
       toFirestore: (doc: LlecoopUser): DocumentData => {
         const name = (doc.name as string) || (doc.email as string);
+
         return {
           ...doc,
           name,
@@ -62,6 +64,7 @@ export class LlecoopProfileFireService {
     return runInInjectionContext(this.injectionContext, () => {
       try {
         const firestoreCollection = this.firestoreCollection;
+
         if (!firestoreCollection) {
           return throwError(() => new Error('No collection available'));
         }
@@ -84,11 +87,13 @@ export class LlecoopProfileFireService {
     try {
       return runInInjectionContext(this.injectionContext, () => {
         const firestoreCollection = this.firestoreCollection;
+
         if (!firestoreCollection) {
           return of(null);
         }
 
         const docRef = doc(firestoreCollection, id.toString());
+
         return docData(docRef, { idField: 'id' }).pipe(
           takeUntil(this.destroy$),
           map(item => item as LlecoopUser),
@@ -104,14 +109,17 @@ export class LlecoopProfileFireService {
     return runInInjectionContext(this.injectionContext, () => {
       try {
         const userId = this.#firebaseAuthService.currentUser()?.uid;
+
         if (!userId) {
           throw new Error('User not authenticated');
         }
+
         return this.getItem(userId).pipe(
           map(user => {
             if (!user) {
               throw new Error('User not found');
             }
+
             return user;
           })
         );
@@ -128,6 +136,7 @@ export class LlecoopProfileFireService {
     ) {
       return of(defaultValue);
     }
+
     return throwError(() => error);
   }
 

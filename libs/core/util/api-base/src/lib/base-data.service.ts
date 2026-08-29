@@ -25,25 +25,29 @@ export abstract class BaseDataService {
   public handleError<E = unknown>(error: E): Observable<never> {
     let message = 'An error occurred';
     let code = 500;
-    let data: unknown = null;
+    let payload: unknown = null;
 
     if (error instanceof HttpErrorResponse) {
       message = (error.error?.message ?? error.message) || message;
       code = error.status ?? code;
-      data = error.error ?? null;
+      payload = error.error ?? null;
     } else if (typeof error === 'object' && error !== null) {
-      const maybe = error as { message?: unknown; status?: unknown; data?: unknown };
-      const dataMessage = (maybe.data as { message?: unknown } | undefined)?.message;
+      // Keys are read through bracket notation on purpose: 'data' is the field name
+      // PocketBase's ClientResponseError uses for its response body, so it cannot be
+      // renamed to satisfy id-denylist without the lookup silently missing.
+      const maybe = error as Record<string, unknown>;
+      const bodyMessage = (maybe['data'] as { message?: unknown } | undefined)?.message;
+
       message =
-        (typeof dataMessage === 'string'
-          ? dataMessage
-          : typeof maybe.message === 'string'
-            ? maybe.message
+        (typeof bodyMessage === 'string'
+          ? bodyMessage
+          : typeof maybe['message'] === 'string'
+            ? maybe['message']
             : undefined) ?? message;
-      code = typeof maybe.status === 'number' ? maybe.status : code;
-      data = 'data' in maybe ? maybe.data : data;
+      code = typeof maybe['status'] === 'number' ? maybe['status'] : code;
+      payload = 'data' in maybe ? maybe['data'] : payload;
     }
 
-    return throwError(() => ({ message, code, data, originalError: error }));
+    return throwError(() => ({ message, code, payload, originalError: error }));
   }
 }

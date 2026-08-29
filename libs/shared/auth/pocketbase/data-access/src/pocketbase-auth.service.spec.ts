@@ -25,6 +25,7 @@ describe('PocketBaseAuthService', () => {
 
   it('should call authWithPassword on login', async () => {
     const result = await service.login('test@test.com', 'password');
+
     expect(mockPocketBase.collection).toHaveBeenCalledWith('users');
     expect(result.record).toEqual({ id: '123', email: 'test@test.com' });
   });
@@ -40,6 +41,7 @@ describe('PocketBaseAuthService', () => {
       .update.mockResolvedValueOnce({ id: '123', email: 'test@test.com' });
 
     const result = await service.convertTrialToActive('123');
+
     expect(mockPocketBase.collection).toHaveBeenCalledWith('users');
     expect(mockPocketBase.collection('users').update).toHaveBeenCalledWith('123', {
       membershipStatus: 'ACTIVE',
@@ -51,6 +53,7 @@ describe('PocketBaseAuthService', () => {
 
   it('should update password fields and re-authenticate on changePassword', async () => {
     const usersCollection = mockPocketBase.collection('users');
+
     usersCollection.update.mockResolvedValueOnce({ id: '123' });
 
     const result = await service.changePassword('123', 'test@test.com', {

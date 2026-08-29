@@ -10,6 +10,7 @@ class FieldGroupTranslateExtension implements FormlyExtension {
 
   prePopulate(field: FormlyFieldConfig): void {
     const props = field.props || {};
+
     if (!field.fieldGroup || !props['translate'] || props['translated']) {
       return;
     }

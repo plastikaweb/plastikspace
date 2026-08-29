@@ -58,6 +58,7 @@ describe('PwaManifestService', () => {
         providers: [PwaManifestService, { provide: PLATFORM_ID, useValue: 'server' }],
       });
       const ssrService = TestBed.inject(PwaManifestService);
+
       ssrService.applyBranding(mockData);
       expect(appleIcon.getAttribute('href')).toBe('/icons/apple-touch-icon.png');
     });

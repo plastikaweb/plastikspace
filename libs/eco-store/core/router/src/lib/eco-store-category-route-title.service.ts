@@ -13,11 +13,13 @@ export class EcoStoreCategoryRouteTitleService {
    */
   resolve(route: ActivatedRouteSnapshot): string {
     const slug: string | null = route.paramMap.get('slug');
+
     if (slug) {
       return `PRODUCT_TITLE:${slug}`;
     }
 
     const categorySlug: string | null = route.paramMap.get('category');
+
     if (!categorySlug) {
       return 'products.category';
     }

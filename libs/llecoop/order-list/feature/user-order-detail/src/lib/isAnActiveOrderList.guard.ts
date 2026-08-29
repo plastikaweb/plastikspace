@@ -21,6 +21,7 @@ export const isAnActiveOrderListGuard: CanActivateFn = () => {
       if (!currentUserOrder && !!currentOrderList) {
         return true;
       }
+
       return new RedirectCommand(router.parseUrl('/comandes'));
     })
   );

@@ -112,6 +112,7 @@ export const ecoStoreCartStore = signalStore(
       isShippingOk: () => {
         const currentMethod = method();
         const currentAddress = address();
+
         if (!currentMethod || !currentAddress) return false;
 
         const slotDays = _tenantStore.getTenantDeliveryOptionSlotsDays(
@@ -130,6 +131,7 @@ export const ecoStoreCartStore = signalStore(
           entities(),
           (item: EcoStoreCartItem) => item.product.categoryName
         );
+
         return Object.entries(grouped).map(([category, items]) => ({
           category,
           items: items as EcoStoreCartItem[],
@@ -150,12 +152,15 @@ export const ecoStoreCartStore = signalStore(
 
     const checkStoreStatus = (): boolean => {
       const status = store._tenantStore.storeStatus();
+
       if (status === 'CLOSED' || status === 'CLOSED_MANUALLY') {
         const message = store._translateService.instant('store.status.closedMessage');
+
         store._notificationService.create(message, 'ERROR');
 
         return false;
       }
+
       return true;
     };
 
@@ -193,6 +198,7 @@ export const ecoStoreCartStore = signalStore(
       const currentMethod = method();
       const totalAmount = subtotal() + tax() || 0;
       let shipping = 0;
+
       if (currentMethod) {
         shipping = store._tenantStore.getTenantDeliveryOptionCost(currentMethod, totalAmount);
       }
@@ -231,6 +237,7 @@ export const ecoStoreCartStore = signalStore(
         store.entityMap()[productId]?.product,
         store.entityMap()[productId]?.product.images?.[0]
       );
+
       updateState(store, `[cart] remove item ${productId}`, removeEntity(productId));
       // Same groupKey as add/update: a pending add/update toast for this product is replaced by the
       // removal toast (the old "cancel pending" behaviour falls out of the shared-key replacement).
@@ -256,14 +263,17 @@ export const ecoStoreCartStore = signalStore(
       if (!isPlatformBrowser(store._platformId)) return [];
       try {
         const raw = localStorage.getItem(store.storageKey());
+
         if (!raw) return [];
         const parsed = JSON.parse(raw) as {
           ids?: string[];
           entityMap?: Record<string, EcoStoreCartItem>;
         };
+
         if (parsed?.ids?.length && parsed?.entityMap) {
           return parsed.ids.map(id => parsed.entityMap?.[id]).filter(Boolean) as EcoStoreCartItem[];
         }
+
         return [];
       } catch {
         return [];
@@ -274,6 +284,7 @@ export const ecoStoreCartStore = signalStore(
       if (store.isSyncing() || !store._tenantStore.loaded()) return;
 
       const user = store._userProfileStore.user();
+
       if (!user) return;
 
       updateState(store, '[cart] save cart to remote', state => ({
@@ -305,6 +316,7 @@ export const ecoStoreCartStore = signalStore(
           await firstValueFrom(store._cartsService.update(remoteCartId, cartData));
         } else {
           const newCart = await firstValueFrom(store._cartsService.create(cartData));
+
           updateState(store, '[cart] save cart to remote', state => ({
             ...state,
             remoteCartId: newCart.id,
@@ -334,11 +346,13 @@ export const ecoStoreCartStore = signalStore(
       }));
 
       const user = store._userProfileStore.user();
+
       if (!user) {
         updateState(store, '[cart] merge cancel - no user', state => ({
           ...state,
           isSyncing: false,
         }));
+
         return;
       }
 
@@ -362,12 +376,14 @@ export const ecoStoreCartStore = signalStore(
 
         if (remoteCart) {
           const mergedMap = new Map<string, EcoStoreCartItem>();
+
           (remoteCart.items || []).forEach((item: EcoStoreCartItem) => {
             mergedMap.set(item.product.id, { ...item });
           });
 
           localItems.forEach(local => {
             const existing = mergedMap.get(local.product.id);
+
             if (existing) {
               existing.quantity += local.quantity;
             } else {
@@ -394,6 +410,7 @@ export const ecoStoreCartStore = signalStore(
 
           itemsToProcess = itemsToProcess.map(item => {
             const latest = productMap.get(item.product.id);
+
             if (latest && latest.priceWithIva !== item.product.priceWithIva) {
               updateState(store, '[cart] price change', state => ({
                 ...state,
@@ -412,12 +429,14 @@ export const ecoStoreCartStore = signalStore(
                 oldPriceWithIva: item.product.priceWithIva,
               };
             }
+
             return item;
           });
         }
 
         // 3. Final remote synchronization
         let finalRemoteId = remoteCart?.id || null;
+
         if (remoteCart || localItems.length > 0) {
           const syncData: Partial<EcoStoreCart> = {
             items: _stripUIProps(itemsToProcess),
@@ -435,6 +454,7 @@ export const ecoStoreCartStore = signalStore(
             const newCart = await firstValueFrom(
               store._cartsService.create(fullData).pipe(take(1))
             );
+
             finalRemoteId = newCart.id;
           }
         }
@@ -526,6 +546,7 @@ export const ecoStoreCartStore = signalStore(
           if (store._userProfileStore.isAuthenticated()) {
             saveCartToRemote();
           }
+
           return;
         }
 
@@ -564,17 +585,20 @@ export const ecoStoreCartStore = signalStore(
           if (logistics.method && logistics.method !== state.method) {
             newState.day = null;
             newState.time = null;
+
             return newState;
           }
 
           if (logistics.address && logistics.address.id !== state.address?.id) {
             newState.day = null;
             newState.time = null;
+
             return newState;
           }
 
           if (logistics.day && logistics.day !== state.day) {
             newState.time = null;
+
             return newState;
           }
 
@@ -672,9 +696,11 @@ export const ecoStoreCartStore = signalStore(
       // Restore anonymous cart from localStorage once the tenant name is known.
       // Runs once per session (or after logout) when the tenant loads and user is anonymous.
       let anonymousCartRestored = false;
+
       effect(() => {
         if (store._userProfileStore.isAuthenticated()) {
           anonymousCartRestored = false;
+
           return;
         }
         if (anonymousCartRestored || !store._tenantStore.loaded()) return;
@@ -683,18 +709,22 @@ export const ecoStoreCartStore = signalStore(
         untracked(() => {
           if (!isPlatformBrowser(store._platformId)) return;
           const key = store.storageKey();
+
           try {
             const raw = localStorage.getItem(key);
+
             if (!raw) return;
             const parsed = JSON.parse(raw) as {
               ids?: string[];
               entityMap?: Record<string, EcoStoreCartItem>;
             };
+
             if (parsed?.ids?.length && parsed?.entityMap) {
               const entityMap = parsed.entityMap;
               const items = parsed.ids
                 .map(id => entityMap[id])
                 .filter((item): item is EcoStoreCartItem => item != null);
+
               if (items.length > 0) {
                 updateState(
                   store,
@@ -715,6 +745,7 @@ export const ecoStoreCartStore = signalStore(
         if (store._userProfileStore.isAuthenticated() || !isPlatformBrowser(store._platformId))
           return;
         const normalizedName = store._tenantStore.tenant()?.normalizedName;
+
         if (!normalizedName) return;
 
         const key = store.storageKey();

@@ -67,24 +67,29 @@ describe('EcoStoreOrdersListComponent', () => {
 
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   });
 
   it('should display empty state when no orders', () => {
     const emptyTitle = fixture.nativeElement.querySelector('[no-results-title], h3');
+
     expect(emptyTitle.textContent).toContain('orders.list.empty');
 
     const emptyDesc = fixture.nativeElement.querySelector(
       '[no-results-description], .text-on-surface-variant'
     );
+
     expect(emptyDesc.textContent).toContain('orders.list.emptyDescription');
 
     const goToStoreBtn = fixture.nativeElement.querySelector('button[routerLink="/botiga"]');
+
     expect(goToStoreBtn).toBeTruthy();
   });
 
   it('should display the filter form', () => {
     const filterForm = fixture.nativeElement.querySelector('plastik-shared-form-feature');
+
     expect(filterForm).toBeTruthy();
   });
 
@@ -94,11 +99,13 @@ describe('EcoStoreOrdersListComponent', () => {
     fixture.detectChanges();
 
     const emptyTitle = fixture.nativeElement.querySelector('[no-results-title], h3');
+
     expect(emptyTitle.textContent).toContain('orders.list.emptyWithStatus');
 
     const emptyDesc = fixture.nativeElement.querySelector(
       '[no-results-description], .text-on-surface-variant'
     );
+
     expect(emptyDesc.textContent).toContain('orders.list.emptyDescriptionWithStatus');
   });
 

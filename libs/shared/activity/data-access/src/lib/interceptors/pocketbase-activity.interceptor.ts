@@ -42,6 +42,7 @@ export function pocketBaseActivityInterceptor() {
 
     try {
       const result = await (originalSend.call(pb, path, params as SendOptions) as Promise<T>);
+
       return result;
     } finally {
       activeRequest--;

@@ -89,6 +89,7 @@ describe('PwaPromptComponent', () => {
     it('renders the custom logo when provided', () => {
       createComponent();
       const img = fixture.debugElement.query(By.css('plastik-img-container'));
+
       expect(img).toBeTruthy();
       expect(img.componentInstance.src()).toBe(mockData.logo);
     });
@@ -99,6 +100,7 @@ describe('PwaPromptComponent', () => {
       });
       createComponent();
       const iconDebug = fixture.debugElement.query(By.directive(MatIcon));
+
       expect(iconDebug).toBeTruthy();
       expect(iconDebug.componentInstance.svgIcon).toBe(mockData.defaultLogo);
     });
@@ -106,6 +108,7 @@ describe('PwaPromptComponent', () => {
     it('uses data.name in the heading', () => {
       createComponent();
       const h2 = fixture.nativeElement.querySelector('h2');
+
       expect(h2.textContent).toContain(mockData.name);
     });
 
@@ -113,6 +116,7 @@ describe('PwaPromptComponent', () => {
       TestBed.overrideProvider(MAT_BOTTOM_SHEET_DATA, { useValue: { ...mockData, name: '' } });
       createComponent();
       const h2 = fixture.nativeElement.querySelector('h2');
+
       expect(h2.textContent).toContain('common.pwa.title');
     });
   });
@@ -180,6 +184,7 @@ describe('PwaPromptComponent', () => {
 
     it('renders an install and a later button', () => {
       const buttons = fixture.nativeElement.querySelectorAll('button');
+
       expect(buttons.length).toBe(2);
       expect(buttons[0].textContent).toContain('common.pwa.install');
       expect(buttons[1].textContent).toContain('common.pwa.later');
@@ -199,11 +204,13 @@ describe('PwaPromptComponent', () => {
 
     it('renders three installation steps', () => {
       const steps = fixture.nativeElement.querySelectorAll('ol li');
+
       expect(steps.length).toBe(3);
     });
 
     it('renders step 1 for modern iOS by default', () => {
       const step1 = fixture.nativeElement.querySelector('ol li');
+
       expect(step1.textContent).toContain('common.pwa.iosInstructionsStep1');
     });
 
@@ -212,11 +219,13 @@ describe('PwaPromptComponent', () => {
       cdr.markForCheck();
       fixture.detectChanges();
       const step1 = fixture.nativeElement.querySelector('ol li');
+
       expect(step1.textContent).toContain('common.pwa.iosInstructionsStep1Old');
     });
 
     it('renders a single close button (no install button)', () => {
       const buttons = fixture.nativeElement.querySelectorAll('button');
+
       expect(buttons.length).toBe(1);
       expect(buttons[0].textContent).toContain('common.pwa.close');
     });
@@ -238,6 +247,7 @@ describe('PwaPromptComponent', () => {
 
     it('renders a single close button', () => {
       const buttons = fixture.nativeElement.querySelectorAll('button');
+
       expect(buttons.length).toBe(1);
     });
   });
@@ -246,6 +256,7 @@ describe('PwaPromptComponent', () => {
     it('has a dialog role and proper aria-label', () => {
       createComponent();
       const container = fixture.nativeElement.querySelector('div[role="dialog"]');
+
       expect(container).toBeTruthy();
       expect(container.getAttribute('aria-label')).toBe('common.pwa.title');
     });

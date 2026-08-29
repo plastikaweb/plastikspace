@@ -74,9 +74,11 @@ export function withPocketBaseCrud<
 
                 // Re-sort ids based on current sort config to maintain UI consistency
                 const { active, direction } = state.sort;
+
                 newIds.sort((a, b) => {
                   const entityA = newEntityMap[a];
                   const entityB = newEntityMap[b];
+
                   if (!entityA || !entityB) return 0;
 
                   const valA = entityA[active as keyof T];
@@ -84,6 +86,7 @@ export function withPocketBaseCrud<
 
                   if (valA < valB) return direction === 'asc' ? -1 : 1;
                   if (valA > valB) return direction === 'asc' ? 1 : -1;
+
                   return 0;
                 });
 
@@ -101,9 +104,11 @@ export function withPocketBaseCrud<
                 groupKey: `${featureName}:create`,
               });
             }
+
             return createdItem;
           } catch (error) {
             const message = (error as ClientResponseError).message ?? `${featureName}.create.error`;
+
             if (showNotification.error) {
               store._notificationService.create(message, 'ERROR', {
                 groupKey: `${featureName}:create`,
@@ -129,6 +134,7 @@ export function withPocketBaseCrud<
           updateState(store, `[${featureName}] update`);
           try {
             const updatedItem = await firstValueFrom(store._apiService.update(id, data, options));
+
             if (updatedItem) {
               updateState(
                 store,
@@ -144,9 +150,11 @@ export function withPocketBaseCrud<
                 groupKey: `${featureName}:update`,
               });
             }
+
             return updatedItem as T;
           } catch (error) {
             const message = (error as ClientResponseError).message ?? `${featureName}.update.error`;
+
             if (showNotification.error) {
               store._notificationService.create(message, 'ERROR', {
                 groupKey: `${featureName}:update`,
@@ -177,14 +185,17 @@ export function withPocketBaseCrud<
                 groupKey: `${featureName}:delete`,
               });
             }
+
             return true;
           } catch (error) {
             const message = (error as ClientResponseError).message ?? `${featureName}.delete.error`;
+
             if (showNotification.error) {
               store._notificationService.create(message, 'ERROR', {
                 groupKey: `${featureName}:delete`,
               });
             }
+
             return false;
           }
         },

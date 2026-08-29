@@ -33,10 +33,12 @@ export const ecoStoreNotLoggedShippingGuard: CanActivateFn = (
                   queryParams: { returnUrl: state.url },
                 });
               }
+
               return router.createUrlTree(['/cistella/resum'], { relativeTo: null });
             })
           );
       }
+
       return of(true);
     })
   );

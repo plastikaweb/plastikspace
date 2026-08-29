@@ -21,6 +21,7 @@ export default async () => {
 
     // Process all user orders within this list
     const ordersProcessingPromise = processUserOrders(doc);
+
     ordersPromises.push(ordersProcessingPromise);
   });
 
@@ -31,6 +32,7 @@ export default async () => {
   await Promise.all(ordersPromises);
 
   functions.logger.debug('Finished updating list order state and user orders');
+
   return;
 };
 

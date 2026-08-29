@@ -19,6 +19,7 @@ export class LanguageSwitcherService {
 
     if (!lang) {
       const browserLang = window.navigator.language.split('-')[0];
+
       lang = availableLanguages.includes(browserLang) ? browserLang : null;
     }
 

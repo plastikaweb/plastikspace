@@ -69,6 +69,7 @@ describe('StoreStatusBannerComponent', () => {
     fixture.detectChanges();
     const dismissSpy = vi.spyOn(component.dismiss, 'emit');
     const closeBtn = fixture.debugElement.query(By.css('button[matIconButton]'));
+
     closeBtn.nativeElement.click();
     expect(dismissSpy).toHaveBeenCalledOnce();
   });
@@ -88,6 +89,7 @@ describe('StoreStatusBannerComponent', () => {
       fixture.componentRef.setInput('status', 'OPENING_SOON');
       fixture.detectChanges();
       const results = await axe(fixture.nativeElement);
+
       expect(results).toHaveNoViolations();
     });
 
@@ -95,6 +97,7 @@ describe('StoreStatusBannerComponent', () => {
       fixture.componentRef.setInput('status', 'CLOSED');
       fixture.detectChanges();
       const results = await axe(fixture.nativeElement);
+
       expect(results).toHaveNoViolations();
     });
   });

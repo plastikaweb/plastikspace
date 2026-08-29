@@ -39,6 +39,7 @@ export class NasaImagesEffects {
         if (!queryParams['q']) {
           return nasaImagesPageActions.cleanUp();
         }
+
         return nasaImagesPageActions.load({
           params: { ...(queryParams as NasaImagesSearchApiParams), ...{ media_type: 'image' } },
         });
@@ -99,6 +100,7 @@ export class NasaImagesEffects {
         ofType(nasaImagesAPIActions.loadFailure),
         map(({ error }) => {
           const message = error || 'The request has failed. Please try it again.';
+
           this.#liveAnnouncer.announce(message, 'assertive', 5000);
           this.#notificationStore.show(
             this.#notificationService.getInstance({

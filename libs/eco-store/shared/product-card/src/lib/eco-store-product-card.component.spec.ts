@@ -65,6 +65,7 @@ describe('EcoStoreProductCardComponent', () => {
   it('should have no accessibility violations', async () => {
     await fixture.whenStable();
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   });
 });

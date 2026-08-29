@@ -79,6 +79,7 @@ export class SharedUtilFormattersService {
         ...extras(),
       };
     }
+
     return formatDate(value, 'M/d/yy, HH:mm:ss', format.locale, format.timezone) || '';
   }
 
@@ -125,6 +126,7 @@ export class SharedUtilFormattersService {
       numberDigitsInfo: '1.2-2',
       locale: this.#locale,
     };
+
     if (extras) {
       format = {
         ...format,
@@ -156,12 +158,14 @@ export class SharedUtilFormattersService {
       currency: '€',
       currencyCode: 'EUR',
     };
+
     if (extras) {
       format = {
         ...format,
         ...extras(),
       };
     }
+
     return (
       formatCurrency(
         value,
@@ -188,12 +192,14 @@ export class SharedUtilFormattersService {
       numberDigitsInfo: '1.2-2',
       locale: this.#locale,
     };
+
     if (extras) {
       format = {
         ...format,
         ...extras(),
       };
     }
+
     return formatNumber(Number(value), format.locale, format.numberDigitsInfo) || '';
   }
 
@@ -220,6 +226,7 @@ export class SharedUtilFormattersService {
       suffix: '',
       prefix: '',
     };
+
     if (extras) {
       format = {
         ...format,
@@ -227,6 +234,7 @@ export class SharedUtilFormattersService {
       };
     }
     const formattedNumber = formatNumber(Number(value), format.locale, format.numberDigitsInfo);
+
     return `${format.prefix || ''}${formattedNumber}${format.suffix || ''}`.trim();
   }
 
@@ -254,12 +262,14 @@ export class SharedUtilFormattersService {
       iconTrue: 'check',
       iconFalse: 'close',
     };
+
     if (extras) {
       format = {
         ...format,
         ...extras(),
       };
     }
+
     return this.#sanitizer.bypassSecurityTrustHtml(
       `<span class="material-icons">${escapeHtml(value ? format.iconTrue : format.iconFalse)}</span>`
     );

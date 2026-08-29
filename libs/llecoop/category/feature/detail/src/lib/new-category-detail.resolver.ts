@@ -6,5 +6,6 @@ export const newCategoryDetailResolver: ResolveFn<boolean> = () => {
   const store = inject(llecoopCategoryStore);
 
   store.setSelectedItemId(null);
+
   return true;
 };

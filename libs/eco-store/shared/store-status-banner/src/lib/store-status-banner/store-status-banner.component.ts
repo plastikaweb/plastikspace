@@ -72,20 +72,25 @@ export class StoreStatusBannerComponent {
 
   protected readonly title = computed(() => {
     const status = this.status();
+
     if (status === 'CLOSED') return 'store.status.statusBanner.closedTitle';
     if (status === 'OPENING_SOON') return 'store.status.statusBanner.openingSoonTitle';
     if (status === 'CLOSING_SOON') return 'store.status.statusBanner.closingSoonTitle';
     if (status === 'CLOSED_MANUALLY') return 'store.status.statusBanner.closedManuallyTitle';
     if (status === 'CANCELLED') return 'store.status.statusBanner.cancelledTitle';
+
     return '';
   });
 
   protected readonly description = computed<{ key: string; params?: Record<string, unknown> }>(
     () => {
       const status = this.status();
+
       if (status === 'CLOSED' && this.nextOpenDate()) {
         const nextDate = this.nextOpenDate();
+
         if (!nextDate) return { key: '' };
+
         return {
           key: 'store.status.statusBanner.closedDescription',
           params: {
@@ -98,6 +103,7 @@ export class StoreStatusBannerComponent {
         return { key: 'store.status.statusBanner.openingSoonDescription' };
       if (status === 'CLOSING_SOON') {
         const nextDate = this.nextOpenDate();
+
         return {
           key: 'store.status.statusBanner.closingSoonDescription',
           params: {
@@ -107,6 +113,7 @@ export class StoreStatusBannerComponent {
       }
       if (status === 'CLOSED_MANUALLY') return { key: this.closedReason() || '' };
       if (status === 'CANCELLED') return { key: 'store.status.statusBanner.cancelledDescription' };
+
       return { key: '' };
     }
   );

@@ -60,6 +60,7 @@ export class AppComponent implements OnInit {
 
     effect(() => {
       const description = this.#tenantStore.tenantDescriptionTranslated();
+
       if (description) {
         this.#meta.updateTag({ name: 'description', content: description });
       }
@@ -87,12 +88,14 @@ export class AppComponent implements OnInit {
 
   #addPreconnectLink(): void {
     const apiLink = this.#document.createElement('link');
+
     apiLink.rel = 'preconnect';
     apiLink.href = this.#environment.baseApiUrl;
     apiLink.setAttribute('crossorigin', '');
     this.#document.head.appendChild(apiLink);
 
     const appLink = this.#document.createElement('link');
+
     appLink.rel = 'preconnect';
     appLink.href = this.#document.location.origin;
     this.#document.head.appendChild(appLink);

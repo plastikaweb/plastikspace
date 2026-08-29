@@ -87,6 +87,7 @@ export class UserOrderUtilsService {
           const orderStatus = this.isLlecoopUserOrder(element)
             ? llecoopUserOrderStatus[status as LlecoopUserOrder['status']]
             : llecoopOrderStatus[status as LlecoopOrder['status']];
+
           return {
             component: UiOrderStatusChipComponent,
             inputs: {

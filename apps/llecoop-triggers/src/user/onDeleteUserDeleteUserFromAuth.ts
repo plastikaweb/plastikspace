@@ -8,6 +8,7 @@ initializeApp();
 
 export default async user => {
   const userId = user.id;
+
   functions.logger.debug(`Running delete trigger for ${userId}`);
 
   return auth()
@@ -15,6 +16,7 @@ export default async user => {
     .then(userRecord => {
       if (!userRecord) {
         functions.logger.debug(`L'usuari ${userId} no existeix`);
+
         return;
       }
 
@@ -22,7 +24,9 @@ export default async user => {
         .deleteUser(userId)
         .then(() => {
           const message = `L'usuari amb el id ${userId} s'ha eliminat`;
+
           functions.logger.debug(message);
+
           return {
             message,
           };

@@ -43,8 +43,10 @@ export class NavigationService {
     if (this.#history.length && regex) {
       this.#history.shift();
       const url = this.#history.find(url => regex.test(url));
+
       if (url !== undefined) {
         await this.#router.navigateByUrl(url);
+
         return;
       }
     }

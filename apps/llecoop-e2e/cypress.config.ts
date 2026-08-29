@@ -16,6 +16,7 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       config.defaultCommandTimeout = 120000;
       config.requestTimeout = 120000;
+
       return config;
     },
     // Please ensure you use `cy.origin()` when navigating between domains and remove this option.

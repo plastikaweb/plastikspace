@@ -6,9 +6,11 @@ import { EcoStoreProfileFiscalDataFeatureComponent } from './eco-store-profile-f
 
 const fiscalProfileResolver: ResolveFn<boolean> = async () => {
   const profileStore = inject(pocketBaseUserProfileStore);
+
   if (!profileStore.fiscalProfileLoaded()) {
     await profileStore.getFiscalProfile();
   }
+
   return true;
 };
 

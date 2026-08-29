@@ -22,6 +22,7 @@ describe('SharedChipComponent', () => {
 
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   });
 
@@ -29,6 +30,7 @@ describe('SharedChipComponent', () => {
     fixture.componentRef.setInput('label', 'Test Label');
     fixture.detectChanges();
     const element = fixture.nativeElement.querySelector('span');
+
     expect(element.textContent).toContain('Test Label');
   });
 
@@ -36,6 +38,7 @@ describe('SharedChipComponent', () => {
     fixture.componentRef.setInput('type', 'success');
     fixture.detectChanges();
     const element = fixture.nativeElement.querySelector('span');
+
     expect(element.className).toContain('bg-success-50');
   });
 
@@ -43,6 +46,7 @@ describe('SharedChipComponent', () => {
     fixture.componentRef.setInput('icon', 'check');
     fixture.detectChanges();
     const iconElement = fixture.nativeElement.querySelector('mat-icon');
+
     expect(iconElement).toBeTruthy();
   });
 });

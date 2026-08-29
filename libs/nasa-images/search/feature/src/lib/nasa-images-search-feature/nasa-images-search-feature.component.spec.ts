@@ -68,24 +68,28 @@ describe.skip('NasaImagesSearchFeatureComponent', () => {
   describe('onChange', () => {
     it('should call search facade method', () => {
       const params: NasaImagesSearchApiParams = { q: 'pluto' };
+
       component.onChange(params);
       expect(facade.search).toHaveBeenCalledWith(params);
     });
 
     it('should not call search facade method', () => {
       const params: NasaImagesSearchApiParams = { q: 'a' };
+
       component.onChange(params);
       expect(facade.search).not.toHaveBeenCalled();
     });
 
     it('should not call search facade method with empty q param', () => {
       const params: NasaImagesSearchApiParams = { q: '' };
+
       component.onChange(params);
       expect(facade.search).toHaveBeenCalled();
     });
 
     it('should not call search facade method with no q param', () => {
       const params: Partial<NasaImagesSearchApiParams> = { page: 1 };
+
       component.onChange(params);
       expect(facade.search).not.toHaveBeenCalled();
     });
@@ -93,12 +97,14 @@ describe.skip('NasaImagesSearchFeatureComponent', () => {
 
   it('onChangePagination should call search changePagination method', () => {
     const tablePagination: PageEventConfig = { pageIndex: 1, pageSize: 100 };
+
     component.onChangePagination(tablePagination);
     expect(facade.changePagination).toHaveBeenCalledWith(tablePagination);
   });
 
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   });
 });

@@ -28,6 +28,7 @@ export class NotificationUiMatSnackbarDirective implements OnDestroy {
   constructor() {
     effect(() => {
       const notification = this.plastikSnackbar();
+
       if (notification) {
         this.open(notification);
       } else {

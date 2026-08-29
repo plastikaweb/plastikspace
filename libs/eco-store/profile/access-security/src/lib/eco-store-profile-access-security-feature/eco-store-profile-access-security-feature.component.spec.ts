@@ -86,6 +86,7 @@ describe('EcoStoreProfileAccessSecurityFeatureComponent', () => {
     const currentPasswordInput = fixture.nativeElement.querySelector(
       'input[autocomplete="current-password"]'
     ) as HTMLInputElement;
+
     expect(currentPasswordInput).toBeTruthy();
     const focusSpy = vi.spyOn(currentPasswordInput, 'focus');
     const selectSpy = vi.spyOn(currentPasswordInput, 'select');

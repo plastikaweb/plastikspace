@@ -36,26 +36,31 @@ describe('LlecoopProductBaseUnitTextPipe', () => {
 
   it('transforms a "unit" type unit correctly', () => {
     const unit: LlecoopProductUnit = { type: 'unit' };
+
     expect(pipe.transform(unit)).toBe('unitat');
   });
 
   it('transforms a "weight" type unit correctly', () => {
     const unit: LlecoopProductUnit = { type: 'weight' };
+
     expect(pipe.transform(unit)).toBe('per kg');
   });
 
   it('transforms a "unitWithFixedVolume" type unit correctly', () => {
     const unit: LlecoopProductUnit = { type: 'unitWithFixedVolume', base: 1.5 };
+
     expect(pipe.transform(unit)).toBe('1.5 l unitat');
   });
 
   it('transforms a "unitWithFixedWeight" type unit correctly', () => {
     const unit: LlecoopProductUnit = { type: 'unitWithFixedWeight', base: 2 };
+
     expect(pipe.transform(unit)).toBe('2 kg unitat');
   });
 
   it('transforms a "unitWithVariableWeight" type unit correctly', () => {
     const unit: LlecoopProductUnit = { type: 'unitWithVariableWeight', base: 0.5 };
+
     expect(pipe.transform(unit)).toBe('0.5 kg per unitat. Pes aproximat');
   });
 });

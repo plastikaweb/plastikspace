@@ -18,6 +18,7 @@ describe('PocketBaseUserFiscalProfileService', () => {
 
   it('targets the user_fiscal_profiles collection', () => {
     const service = TestBed.inject(PocketBaseUserFiscalProfileService);
+
     expect(service['collectionName']()).toBe('user_fiscal_profiles');
   });
 });

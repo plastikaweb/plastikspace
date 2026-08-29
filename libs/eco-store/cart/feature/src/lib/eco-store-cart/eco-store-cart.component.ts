@@ -73,10 +73,12 @@ export class EcoStoreCartComponent {
 
   #getStepIndexFromUrl(): number {
     const childRoute = this.#route.snapshot.firstChild;
+
     if (!childRoute) return 0;
 
     const path = childRoute.url[0]?.path;
     const index = this.steps.findIndex(s => s.route === path);
+
     return index !== -1 ? index : 0;
   }
 }

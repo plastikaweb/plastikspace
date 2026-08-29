@@ -111,6 +111,7 @@ export default class EcoLayoutComponent {
     // carries it through the header.
     effect(() => {
       const language = this.#languageSwitcherService.currentLanguage();
+
       if (language && this.profileStore.isAuthenticated()) {
         this.profileStore.updateLanguage(language);
       }
@@ -119,9 +120,11 @@ export default class EcoLayoutComponent {
 
   #getSidenavDataFromActiveRoute(): boolean {
     let route = this.#activatedRoute;
+
     while (route.firstChild) {
       route = route.firstChild;
     }
+
     return Boolean(route.snapshot?.data['hasSidenav']);
   }
 

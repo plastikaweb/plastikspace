@@ -14,6 +14,7 @@ class ButtonTranslateExtension implements FormlyExtension {
     }
 
     const props = field.props || {};
+
     if (!props['translate']) {
       return;
     }

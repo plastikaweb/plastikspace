@@ -32,6 +32,7 @@ export class NotificationConfigService {
       type,
       message,
     };
+
     return this.#notification;
   }
 }

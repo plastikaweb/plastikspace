@@ -41,6 +41,7 @@ function setUnitBaseProps(
           : unitType === 'unitWithVariableWeight'
             ? 'Pes aproximat per unitat'
             : '';
+
     formlyProps.label = label;
     formlyProps.placeholder = label;
   }
@@ -114,6 +115,7 @@ export function productFeatureDetailFormConfig(newProduct: boolean): FormConfig<
           hooks: {
             onInit: (formly: FormlyFieldConfig) => {
               getCdnUrl(formly);
+
               return formly.options?.fieldChanges?.pipe(
                 filter(e => e.type === 'valueChanges' && e.field['key'] === 'imgUrl'),
                 tap(() => getCdnUrl(formly))
@@ -249,10 +251,12 @@ export function productFeatureDetailFormConfig(newProduct: boolean): FormConfig<
                     ),
                     tap(({ field }) => {
                       let { price, iva } = field.model;
+
                       price = Number(price);
                       iva = Number(iva);
                       if (!isNaN(price) && !isNaN(iva)) {
                         const priceWithIva = parseFloat((price + price * (iva / 100)).toFixed(2));
+
                         formly.formControl?.setValue(priceWithIva);
                       }
                     })

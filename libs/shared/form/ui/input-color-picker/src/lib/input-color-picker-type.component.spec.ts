@@ -39,6 +39,7 @@ describe('InputColorPickerTypeComponent', () => {
         hideTextInput: false,
       },
     };
+
     component.field = fieldConfig;
     fixture.detectChanges();
   });

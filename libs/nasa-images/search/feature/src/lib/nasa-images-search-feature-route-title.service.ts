@@ -17,6 +17,7 @@ export class NasaImagesSearchSearchRouterTitleService {
     return this.#store.select(selectRouteQueryParams).pipe(
       map(params => {
         const validSearchTitle = `search by "${params?.['q']}" (pag. ${params?.['page']})`;
+
         return params['q'] ? validSearchTitle : 'search';
       })
     );

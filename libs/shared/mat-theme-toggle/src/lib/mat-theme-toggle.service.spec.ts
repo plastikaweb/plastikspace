@@ -21,6 +21,7 @@ describe('MatThemeToggleService', () => {
 
   it('should return all themes', () => {
     const themes = service.getThemes();
+
     expect(themes).toBeDefined();
     expect(themes.length).toBe(3);
     expect(themes).toContainEqual(expect.objectContaining({ id: 'light' }));

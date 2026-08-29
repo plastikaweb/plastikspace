@@ -82,6 +82,7 @@ describe('SharedNotificationUiHotToastComponent', () => {
   it('emits sendDismiss when the toast closes so the store can drop the entry', () => {
     const notification = { type: 'SUCCESS', message: 'added', id: 'cart:1' } as Notification;
     const dismissed: Notification[] = [];
+
     component.sendDismiss.subscribe(n => dismissed.push(n));
 
     fixture.componentRef.setInput('notification', notification);
@@ -95,6 +96,7 @@ describe('SharedNotificationUiHotToastComponent', () => {
 
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   });
 });

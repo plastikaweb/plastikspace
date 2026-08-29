@@ -60,12 +60,15 @@ export const layoutRoutes: Route[] = [
               const id = route.paramMap.get('id');
               const ordersStore = inject(ecoStoreOrdersStore);
               const translate = inject(TranslateService);
+
               if (id) {
                 const orderNumber = ordersStore.entityMap()[id]?.orderNumber;
+
                 if (orderNumber !== undefined) {
                   return translate.instant('orders.detail.title', { orderNumber });
                 }
               }
+
               return '';
             },
             loadChildren: () =>

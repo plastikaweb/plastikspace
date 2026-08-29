@@ -34,6 +34,7 @@ describe('NasaImagesApiService', () => {
 
   it('should have a method `getList` that handles the API call that returns NASA images', () => {
     let response;
+
     service.getList({ q: 'pluto' }).subscribe(res => (response = res));
 
     const req = httpMock.expectOne({ method: 'GET', url: 'https://api/search?q=pluto' });

@@ -46,12 +46,14 @@ describe('CartProductCardComponent', () => {
 
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   });
 
   it('should render product name and price', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
+
     expect(compiled.querySelector('a')?.textContent).toContain('Test Product');
     expect(compiled.textContent).toContain('24.20'); // 12.1 * 2
   });
@@ -60,6 +62,7 @@ describe('CartProductCardComponent', () => {
     fixture.componentRef.setInput('editable', false);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
+
     expect(compiled.textContent).toContain('2');
     expect(compiled.querySelector('eco-store-product-quantity')).toBeFalsy();
   });
@@ -68,18 +71,21 @@ describe('CartProductCardComponent', () => {
     fixture.componentRef.setInput('editable', true);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
+
     expect(compiled.querySelector('eco-store-product-quantity')).toBeTruthy();
     expect(compiled.querySelector('.cart-delete-button')).toBeTruthy();
   });
 
   it('should emit quantityChange when quantity is updated', () => {
     const spy = vi.spyOn(component.quantityChange, 'emit');
+
     fixture.componentRef.setInput('editable', true);
     fixture.detectChanges();
 
     const quantityComponent = fixture.debugElement.query(
       el => el.name === 'eco-store-product-quantity'
     ).componentInstance;
+
     quantityComponent.quantityChange.emit(3);
 
     expect(spy).toHaveBeenCalledWith({ quantity: 3, product: mockProduct });
@@ -87,10 +93,12 @@ describe('CartProductCardComponent', () => {
 
   it('should emit quantityChange with 0 when delete button is clicked', () => {
     const spy = vi.spyOn(component.quantityChange, 'emit');
+
     fixture.componentRef.setInput('editable', true);
     fixture.detectChanges();
 
     const deleteButton = fixture.nativeElement.querySelector('.cart-delete-button');
+
     deleteButton.click();
 
     expect(spy).toHaveBeenCalledWith({ quantity: 0, product: mockProduct });

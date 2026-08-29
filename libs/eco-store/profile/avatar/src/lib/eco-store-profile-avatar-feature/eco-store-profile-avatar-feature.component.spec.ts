@@ -52,6 +52,7 @@ describe('EcoStoreProfileAvatarFeatureComponent', () => {
   it('should handle crop confirmed', async () => {
     component.onStartEdit();
     const file = new File([''], 'avatar.png', { type: 'image/png' });
+
     await component.onCropConfirmed(file);
     expect(mockProfileStore.updateAvatar).toHaveBeenCalledWith(file);
     expect(component['isEditing']()).toBe(false);

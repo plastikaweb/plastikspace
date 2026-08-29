@@ -31,17 +31,20 @@ describe('LanguageSwitcherComponent', () => {
   it('should render the language icon', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     const icon = compiled.querySelector('mat-icon');
+
     expect(icon?.textContent).toContain('language');
   });
 
   it('should emit languageChange when a language is selected', () => {
     const emitSpy = vi.spyOn(component.languageChange, 'emit');
+
     component.onSelect('es');
     expect(emitSpy).toHaveBeenCalledWith('es');
   });
 
   it('should not emit languageChange if the same language is selected', () => {
     const emitSpy = vi.spyOn(component.languageChange, 'emit');
+
     component.onSelect('ca');
     expect(emitSpy).not.toHaveBeenCalled();
   });

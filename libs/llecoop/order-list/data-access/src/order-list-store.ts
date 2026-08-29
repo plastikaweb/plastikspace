@@ -94,6 +94,7 @@ export const llecoopOrderListStore = signalStore(
     selectedItemUserOrder: computed(() => {
       const id = selectedItemId();
       const selectedOrderList = id !== null ? entityMap()[id] : null;
+
       return selectedOrderList && selectedOrderList.orders
         ? selectedOrderList.orders.find(order => order.id === selectedItemUserOrderId())
         : null;
@@ -107,6 +108,7 @@ export const llecoopOrderListStore = signalStore(
           // Share one groupKey across this order's status notifications so the optimistic +
           // confirmation duplicates collapse to a single toast (and an error replaces the success).
           const groupKey = `order-status:${order.id}`;
+
           store._storeNotificationService.create(
             `Estat de la comanda "${order['name']}" actualitzat correctament`,
             'SUCCESS',
@@ -152,6 +154,7 @@ export const llecoopOrderListStore = signalStore(
           // Share one groupKey across this order's cancellation notifications so the optimistic +
           // confirmation duplicates collapse to a single toast (and an error replaces the success).
           const groupKey = `order-status:${order.id}`;
+
           store._storeNotificationService.create(
             `Estat de la comanda "${order['name']}" cancel·lada correctament`,
             'SUCCESS',
@@ -213,6 +216,7 @@ export const llecoopOrderListStore = signalStore(
                     store.selectedItemUserPagination()?.pageIndex,
                     orders[orders.length - 1]
                   );
+
                 updateState(
                   store,
                   `[order-list] update pagination for selected order list with id ${id}`,

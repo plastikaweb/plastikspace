@@ -51,15 +51,18 @@ describe('ShippingMethodSelectorTypeComponent', () => {
 
   it('should render all shipping method options', () => {
     const cards = fixture.nativeElement.querySelectorAll('mat-card');
+
     expect(cards.length).toBe(2);
 
     const titles = fixture.nativeElement.querySelectorAll('mat-card-title');
+
     expect(titles[0].textContent).toContain('cart.shipping.method.delivery.title');
     expect(titles[1].textContent).toContain('cart.shipping.method.pickup.title');
   });
 
   it('should update form control when a card is clicked', () => {
     const cards = fixture.nativeElement.querySelectorAll('mat-card');
+
     cards[0].click();
     fixture.detectChanges();
 
@@ -74,18 +77,21 @@ describe('ShippingMethodSelectorTypeComponent', () => {
   it('should display free label when cost is 0', () => {
     fixture.detectChanges();
     const badges = fixture.nativeElement.querySelectorAll('mat-card-subtitle span');
+
     expect(badges[1].textContent).toContain('cart.shipping.freeAlways');
   });
 
   it('should show free from label when cost is greater than 0', () => {
     fixture.detectChanges();
     const badges = fixture.nativeElement.querySelectorAll('mat-card-subtitle span');
+
     expect(badges[0].textContent).toContain('cart.shipping.freeFrom');
   });
 
   it('should have no accessibility violations', async () => {
     await fixture.whenStable();
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   });
 });

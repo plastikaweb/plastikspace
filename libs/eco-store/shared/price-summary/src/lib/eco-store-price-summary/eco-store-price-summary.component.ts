@@ -42,6 +42,7 @@ export class EcoStorePriceSummaryComponent {
   protected handleAction() {
     if (this.isTrialExpired()) {
       this.trialExpiredClick.emit();
+
       return;
     }
 

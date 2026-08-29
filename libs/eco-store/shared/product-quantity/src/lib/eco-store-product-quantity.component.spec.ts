@@ -55,6 +55,7 @@ describe('EcoStoreProductQuantityComponent', () => {
 
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   });
 
@@ -67,6 +68,7 @@ describe('EcoStoreProductQuantityComponent', () => {
     expect(tooltips.length).toBeGreaterThan(0);
     tooltips.forEach(({ nativeElement, injector }) => {
       const tooltip = injector.get(MatTooltip);
+
       expect(tooltip.message).toBe(nativeElement.getAttribute('aria-label'));
     });
   });

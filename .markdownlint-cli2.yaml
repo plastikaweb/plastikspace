@@ -48,6 +48,7 @@ ignores:
   - apps/eco-store/pocketbase/**
   - apps/eco-store/TASKS.md
   - apps/eco-store/BACKLOG.md
+  - apps/eco-admin/*.md
   - docs/superpowers/**
   - '**/CLAUDE.md'
 # Disable inline config comments

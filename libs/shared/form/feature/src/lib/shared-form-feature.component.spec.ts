@@ -36,6 +36,7 @@ describe('SharedFormFeatureComponent', () => {
   describe('onSubmit', () => {
     it('should emit changeEvent', () => {
       let submit;
+
       component.changeEvent.subscribe(() => (submit = true));
       component.onSubmit(new Event('submit'));
 
@@ -44,6 +45,7 @@ describe('SharedFormFeatureComponent', () => {
 
     it('should not emit changeEvent', () => {
       let submitEvent = false;
+
       componentRef.setInput('model', null);
       component.changeEvent.subscribe(() => (submitEvent = true));
       // Make form invalid by manually setting errors
@@ -59,6 +61,7 @@ describe('SharedFormFeatureComponent', () => {
     it('should update model and emit changeEvent', () => {
       let submitEvent = false;
       const model = { q: 'pluto' };
+
       componentRef.setInput('model', null);
       componentRef.setInput('submitConfig', { submitAvailable: false });
       component.changeEvent.subscribe(() => (submitEvent = true));
@@ -70,6 +73,7 @@ describe('SharedFormFeatureComponent', () => {
     it('should emit temporaryChangeEvent when emitOnChange is true and form is valid', () => {
       let emittedModel = null;
       const model = { name: 'test' };
+
       componentRef.setInput('submitConfig', { emitOnChange: true });
       component.temporaryChangeEvent.subscribe(m => (emittedModel = m));
 
@@ -81,6 +85,7 @@ describe('SharedFormFeatureComponent', () => {
     it('should NOT emit temporaryChangeEvent when form is invalid', () => {
       let emitted = false;
       const model = { name: 't' };
+
       componentRef.setInput('submitConfig', { emitOnChange: true });
       component.temporaryChangeEvent.subscribe(() => (emitted = true));
 
@@ -96,6 +101,7 @@ describe('SharedFormFeatureComponent', () => {
   describe('resetForm', () => {
     it('forces a full form reset when resetForm changes to a truthy value', () => {
       const resetSpy = vi.spyOn((component as any).form, 'reset');
+
       componentRef.setInput('resetForm', 1);
       fixture.detectChanges();
 
@@ -104,6 +110,7 @@ describe('SharedFormFeatureComponent', () => {
 
     it('resets again on each counter increment', () => {
       const resetSpy = vi.spyOn((component as any).form, 'reset');
+
       componentRef.setInput('resetForm', 1);
       fixture.detectChanges();
       componentRef.setInput('resetForm', 2);
@@ -115,6 +122,7 @@ describe('SharedFormFeatureComponent', () => {
     it('clears the NgForm submitted state so untouched errors stay hidden after reset', () => {
       const formDebugEl = fixture.debugElement.query(By.directive(FormGroupDirective));
       const directive = formDebugEl.injector.get(FormGroupDirective);
+
       formDebugEl.triggerEventHandler('submit', new Event('submit'));
       expect(directive.submitted).toBe(true);
 
@@ -126,6 +134,7 @@ describe('SharedFormFeatureComponent', () => {
 
     it('does not reset form values while resetForm stays falsy', () => {
       const resetSpy = vi.spyOn((component as any).form, 'reset');
+
       fixture.detectChanges();
 
       expect(resetSpy).not.toHaveBeenCalled();
@@ -134,6 +143,7 @@ describe('SharedFormFeatureComponent', () => {
 
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   });
 });

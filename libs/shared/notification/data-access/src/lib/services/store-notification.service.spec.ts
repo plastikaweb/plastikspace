@@ -8,6 +8,7 @@ import { StoreNotificationService } from './store-notification.service';
 describe('StoreNotificationService', () => {
   const setup = () => {
     const announce = vi.fn();
+
     TestBed.configureTestingModule({
       providers: [
         provideZonelessChangeDetection(),
@@ -33,6 +34,7 @@ describe('StoreNotificationService', () => {
     service.create('hello', 'SUCCESS');
 
     const config = store.configuration();
+
     expect(config).toHaveLength(1);
     expect(config[0]).toMatchObject({ message: 'hello', type: 'SUCCESS' });
     expect(announce).toHaveBeenCalledWith('hello', 'assertive', 1000);

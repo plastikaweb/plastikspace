@@ -8,11 +8,14 @@ initializeApp();
 
 export default async (snapshot, context) => {
   const userId = context.params.userId;
+
   functions.logger.debug(`Running update trigger for ${userId}`);
 
   const authUser = await auth().getUser(userId);
+
   if (!authUser) {
     functions.logger.debug(`User with ID ${userId} doesn't exist`);
+
     return;
   }
 
@@ -20,9 +23,11 @@ export default async (snapshot, context) => {
 
   // Format phone number to E.164
   let phoneNumber = null;
+
   if (user.phone) {
     // Remove spaces and hyphens
     const cleanPhone = user.phone.replace(/[\s-]/g, '');
+
     // Ensure it starts with +34 (Spain code)
     phoneNumber = cleanPhone.startsWith('+34')
       ? cleanPhone
@@ -56,7 +61,9 @@ export default async (snapshot, context) => {
     }
 
     const message = `User with ID ${userId} has been updated${user.email && user.email !== authUser.email ? ' and verification email sent' : ''}`;
+
     functions.logger.debug(message);
+
     return { message };
   } catch (error) {
     functions.logger.error(error);

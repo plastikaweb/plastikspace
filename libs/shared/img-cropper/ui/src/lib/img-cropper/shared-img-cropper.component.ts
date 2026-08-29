@@ -105,6 +105,7 @@ export class SharedImgCropperComponent {
     this.errorMessage.set(null);
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
+
     this.#handleFile(file);
     input.value = '';
   }
@@ -127,11 +128,13 @@ export class SharedImgCropperComponent {
     this.errorMessage.set(null);
     this.isDragging.set(false);
     const file = event.dataTransfer?.files?.[0];
+
     this.#handleFile(file);
   }
 
   onImageLoaded(image: LoadedImage): void {
     const { original } = image;
+
     this.errorMessage.set(null);
 
     if (original.size.width < this.minWidth() || original.size.height < this.minHeight()) {
@@ -169,10 +172,12 @@ export class SharedImgCropperComponent {
 
   onConfirm(): void {
     const blob = this.#croppedBlob();
+
     if (!blob) return;
 
     const baseName = this.#originalFileName().replace(/\.[^.]+$/, '');
     const file = new File([blob], `${baseName}.webp`, { type: 'image/webp' });
+
     this.cropConfirmed.emit(file);
     this.#reset();
   }
@@ -192,6 +197,7 @@ export class SharedImgCropperComponent {
 
     if (!file.type.startsWith('image/')) {
       this.errorMessage.set({ key: 'common.image.error.notImage' });
+
       return;
     }
 
@@ -200,12 +206,14 @@ export class SharedImgCropperComponent {
         key: 'common.image.error.maxSize',
         params: { maxSize: this.maxSizeMb() },
       });
+
       return;
     }
 
     this.#originalFileName.set(file.name);
 
     const reader = new FileReader();
+
     reader.onload = () => {
       this.imageBase64.set(reader.result as string);
     };

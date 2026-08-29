@@ -44,6 +44,7 @@ export default class EcoStoreProductsSidenavFeatureComponent {
 
   groupedCategoriesWithNames = computed(() => {
     const currentLang = this.lang() as keyof LocalizedFields;
+
     return this.groupedCategories().map(group => {
       const gName = group.group.name;
       const translatedGroupName =
@@ -56,6 +57,7 @@ export default class EcoStoreProductsSidenavFeatureComponent {
           const cName = category.name;
           const translatedName =
             typeof cName === 'string' ? cName : cName[currentLang] || cName['ca'];
+
           return {
             ...category,
             translatedName,

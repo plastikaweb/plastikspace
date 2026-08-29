@@ -75,6 +75,7 @@ describe('pocketBaseActivityInterceptor', () => {
 
   it('should call the original send function with the correct arguments', async () => {
     const params = { headers: { 'require-global-loading': 'true' } };
+
     await mockPb.send('/test-path', params);
 
     expect(mockPbSend).toHaveBeenCalledWith('/test-path', params);

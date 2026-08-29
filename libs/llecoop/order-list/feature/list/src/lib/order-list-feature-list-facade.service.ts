@@ -129,6 +129,7 @@ export class LlecoopOrderListFeatureListFacadeService implements TableWithFilter
   #getNewOrderDate(): Date {
     const now = new Date();
     const nextMonday = addDays(now, (8 - now.getDay()) % 7 || 7);
+
     return setHours(setMinutes(nextMonday, 0), 12);
   }
 

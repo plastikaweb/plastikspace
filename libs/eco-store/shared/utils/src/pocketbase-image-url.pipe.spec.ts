@@ -18,6 +18,7 @@ describe('PocketBaseImageUrlPipe', () => {
 
   it('should return null if image is missing', () => {
     const source = { id: '123', collectionId: 'abc' };
+
     expect(pipe.transform(source, null)).toBeNull();
     expect(pipe.transform(source, undefined)).toBeNull();
     expect(pipe.transform(source, '')).toBeNull();
@@ -30,6 +31,7 @@ describe('PocketBaseImageUrlPipe', () => {
 
   it('should return correct URL fragment', () => {
     const source = { id: '123', collectionId: 'abc' };
+
     expect(pipe.transform(source, 'image.jpg')).toBe('abc/123/image.jpg');
   });
 });
@@ -37,6 +39,7 @@ describe('PocketBaseImageUrlPipe', () => {
 describe('getPocketBaseImageUrl', () => {
   it('should return correct URL fragment', () => {
     const source = { id: '123', collectionId: 'abc' };
+
     expect(getPocketBaseImageUrl(source, 'image.jpg')).toBe('abc/123/image.jpg');
   });
 

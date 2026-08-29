@@ -68,6 +68,7 @@ export class LlecoopProductSearchFeatureTableConfig implements TableStructureCon
         const unitType = item?.unit?.type;
         const suffix = unitType === 'weight' ? 'kg' : 'u';
         const numberDigitsInfo = unitType === 'weight' ? '1.2-2' : '1.0-0';
+
         return {
           suffix,
           numberDigitsInfo,

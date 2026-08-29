@@ -33,6 +33,7 @@ export class LlecoopCategorySearchFeatureTableConfig implements TableStructureCo
         if (!category) {
           throw new Error('Category is required');
         }
+
         return {
           component: UiCategoryNameCellComponent,
           inputs: { category, nameStyle: 'uppercase font-bold', withLink: true },
