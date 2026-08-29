@@ -17,7 +17,21 @@ describe('OrderTableActionsElementsPipe', () => {
     );
   });
 
-  it('should sort actions based on order property', () => {
+  it('should return empty array directly for empty list without copying', () => {
+    const actions: any[] = [];
+    const result = pipe.transform(actions);
+    expect(result).toBe(actions);
+    expect(result).toEqual([]);
+  });
+
+  it('should return single element array directly without copying', () => {
+    const actions = [{ key: 'ACTION1', value: { order: 1 } }] as any;
+    const result = pipe.transform(actions);
+    expect(result).toBe(actions);
+    expect(result.length).toBe(1);
+  });
+
+  it('should sort actions based on order property and not mutate the original array', () => {
     const actions = [
       { key: 'ACTION2', value: { order: 2 } },
       { key: 'ACTION1', value: { order: 1 } },
@@ -26,9 +40,11 @@ describe('OrderTableActionsElementsPipe', () => {
 
     const result = pipe.transform(actions);
 
+    expect(result).not.toBe(actions);
     expect(result[0].key).toBe('ACTION1');
     expect(result[1].key).toBe('ACTION2');
     expect(result[2].key).toBe('ACTION3');
+    expect(actions[0].key).toBe('ACTION2');
   });
 
   it('should treat missing order property as 0', () => {
@@ -45,14 +61,13 @@ describe('OrderTableActionsElementsPipe', () => {
     expect(result[2].key).toBe('ACTION2');
   });
 
-  it('should maintain order for equal order values (unstable sort handling depends on browser but generally stable in modern JS)', () => {
+  it('should maintain order for equal order values', () => {
     const actions = [
       { key: 'A', value: { order: 1 } },
       { key: 'B', value: { order: 1 } },
     ] as any;
 
     const result = pipe.transform(actions);
-    // Basic check that it doesn't crash and returns both
     expect(result.length).toBe(2);
     expect(result[0].value.order).toBe(1);
     expect(result[1].value.order).toBe(1);
