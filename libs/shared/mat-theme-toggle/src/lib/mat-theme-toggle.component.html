@@ -8,8 +8,11 @@
 </button>
 <mat-menu #themeToggle="matMenu">
   @for (theme of matThemeToggleService.getThemes(); track $index) {
-    <button mat-menu-item (click)="matThemeToggleService.setTheme(theme.id)">
-      @let selected = theme.id === matThemeToggleService.selectedTheme().id;
+    @let selected = theme.id === matThemeToggleService.selectedTheme().id;
+    <button
+      mat-menu-item
+      [attr.aria-current]="selected ? 'true' : undefined"
+      (click)="matThemeToggleService.setTheme(theme.id)">
       <mat-icon
         matMenuItemIcon
         [class.text-on-surface-variant]="selected"
