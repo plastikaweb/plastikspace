@@ -58,7 +58,25 @@
               },
               {
                 "sourceTag": "scope:eco-store",
-                "onlyDependOnLibsWithTags": ["scope:eco-store", "scope:core", "scope:shared"]
+                "onlyDependOnLibsWithTags": [
+                  "scope:eco-store",
+                  "scope:eco",
+                  "scope:core",
+                  "scope:shared"
+                ]
+              },
+              {
+                "sourceTag": "scope:eco",
+                "onlyDependOnLibsWithTags": ["scope:eco", "scope:core", "scope:shared"]
+              },
+              {
+                "sourceTag": "scope:eco-admin",
+                "onlyDependOnLibsWithTags": [
+                  "scope:eco-admin",
+                  "scope:eco",
+                  "scope:core",
+                  "scope:shared"
+                ]
               },
               {
                 "sourceTag": "type:feature",

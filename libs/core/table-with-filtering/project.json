@@ -1,7 +1,7 @@
 {
   "name": "core-table-with-filtering",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/core/layouts/feature/table-with-filtering/src",
+  "sourceRoot": "libs/core/table-with-filtering/src",
   "prefix": "plastik",
   "projectType": "library",
   "tags": ["type:feature", "scope:core"],

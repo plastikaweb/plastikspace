@@ -307,7 +307,11 @@
       "@plastik/shared/pocketbase-user-fiscal-profiles": [
         "libs/shared/pocketbase-user-fiscal-profiles/data-access/src/index.ts"
       ],
-      "@plastik/eco-store/profile/fiscal-data": ["libs/eco-store/profile/fiscal-data/src/index.ts"]
+      "@plastik/eco-store/profile/fiscal-data": ["libs/eco-store/profile/fiscal-data/src/index.ts"],
+      "@plastik/eco/entities": ["libs/eco/entities/src/index.ts"],
+      "@plastik/eco-admin/entities": ["libs/eco-admin/core/entities/src/index.ts"],
+      "@plastik/eco-admin/tenant-context": ["libs/eco-admin/core/tenant-context/src/index.ts"],
+      "@plastik/eco-admin/layout-config": ["libs/eco-admin/core/layout-config/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

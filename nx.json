@@ -103,7 +103,7 @@
       "e2eTestRunner": "cypress",
       "linter": "eslint",
       "style": "scss",
-      "unitTestRunner": "vitest"
+      "unitTestRunner": "vitest-analog"
     },
     "@nx/angular:component": {
       "style": "scss",
@@ -114,7 +114,8 @@
     },
     "@nx/angular:library": {
       "linter": "eslint",
-      "unitTestRunner": "vitest",
+      "style": "scss",
+      "unitTestRunner": "vitest-analog",
       "standalone": true,
       "changeDetection": "OnPush"
     },

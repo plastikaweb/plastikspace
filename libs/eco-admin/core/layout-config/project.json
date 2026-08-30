@@ -1,0 +1,16 @@
+{
+  "name": "eco-admin-layout-config",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/eco-admin/core/layout-config/src",
+  "prefix": "eco-admin",
+  "projectType": "library",
+  "tags": ["scope:eco-admin", "type:data-access"],
+  "targets": {
+    "test": {
+      "executor": "@nx/vitest:test"
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

@@ -4,7 +4,7 @@
   "projectType": "library",
   "sourceRoot": "libs/shared/notification/entities/src",
   "prefix": "plastik",
-  "tags": ["scope:core", "type:entity"],
+  "tags": ["scope:shared", "type:entity"],
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint"
