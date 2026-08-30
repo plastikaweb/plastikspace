@@ -6,6 +6,12 @@ import { EcoStoreUnitChipComponent } from './eco-store-unit-chip.component';
 
 export type ProductPriceSize = 'sm' | 'md' | 'lg' | 'detail';
 
+// Cached Intl.NumberFormat instance to avoid expensive re-instantiations during change detection calls
+const CURRENCY_FORMATTER = new Intl.NumberFormat('ca-ES', {
+  style: 'currency',
+  currency: 'EUR',
+});
+
 @Component({
   selector: 'eco-store-product-price',
   imports: [TranslateModule, CurrencyPipe, EcoStoreUnitChipComponent],
@@ -52,10 +58,7 @@ export class EcoStoreProductPriceComponent {
   unitChipVisible = input<boolean>(true);
 
   protected getPriceParts() {
-    const formatted = new Intl.NumberFormat('ca-ES', {
-      style: 'currency',
-      currency: 'EUR',
-    }).format(this.price());
+    const formatted = CURRENCY_FORMATTER.format(this.price());
 
     const symbol = '€';
     const numericPart = formatted.replace(symbol, '').trim();
