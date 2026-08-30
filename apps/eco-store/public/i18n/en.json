@@ -73,6 +73,7 @@
     },
     "a11y": {
       "skipToContent": "Skip to main content",
+      "skipToContentAnnounce": "You have navigated to the main content",
       "loading": "Loading data",
       "mainNavigation": "Main navigation",
       "userActions": "User actions",
