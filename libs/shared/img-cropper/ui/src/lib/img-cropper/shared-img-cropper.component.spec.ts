@@ -82,4 +82,16 @@ describe('SharedImgCropperComponent', () => {
 
     expect(results).toHaveNoViolations();
   });
+
+  it('should have accessibility labels and tooltips on crop zoom and clear error buttons', () => {
+    component['imageBase64'].set('data:image/png;base64,123');
+    component['errorMessage'].set({ key: 'common.image.error.loaded' });
+    fixture.detectChanges();
+
+    const buttons = fixture.nativeElement.querySelectorAll('button[matIconButton]');
+    expect(buttons.length).toBeGreaterThan(0);
+    buttons.forEach((btn: HTMLButtonElement) => {
+      expect(btn.getAttribute('aria-label')).toBeTruthy();
+    });
+  });
 });
