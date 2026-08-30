@@ -1,7 +1,7 @@
 import {
   notificationStore,
   provideNotificationConfig
-} from "./chunk-Q3YHIEIV.js";
+} from "./chunk-7BEJU7I4.js";
 import {
   CORE_CMS_LAYOUT_HEADER_CONFIG,
   CustomRouterSerializer,
@@ -19,7 +19,7 @@ import {
   provideWithApiEnv,
   routerReducers,
   selectLayoutFeature
-} from "./chunk-IMCORL3X.js";
+} from "./chunk-R7HHJJQ6.js";
 import {
   SvgIconComponent,
   provideAngularSvgIcon
@@ -5043,7 +5043,7 @@ var SharedActivityUiOverlayComponent = class _SharedActivityUiOverlayComponent {
 
 // libs/core/cms-layout/feature/src/lib/core-cms-layout-feature/core-cms-layout-feature.component.ts
 var _c07 = ["widgetsContainer"];
-var CoreCmsLayoutFeatureComponent_Defer_8_DepsFn = () => [import("./src-BZ5XIS3G.js").then((m) => m.NotificationUiMatSnackbarDirective)];
+var CoreCmsLayoutFeatureComponent_Defer_8_DepsFn = () => [import("./src-SYPBRBP5.js").then((m) => m.NotificationUiMatSnackbarDirective)];
 var CoreCmsLayoutFeatureComponent_Defer_14_DepsFn = () => [NgTemplateOutlet];
 var CoreCmsLayoutFeatureComponent_Defer_34_DepsFn = () => [import("./src-7INKYE3E.js").then((m) => m.CoreCmsLayoutUiFooterComponent), DatePipe];
 var _c16 = () => ["/"];
@@ -5417,7 +5417,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
   ], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(CoreCmsLayoutFeatureComponent, () => [import("./src-BZ5XIS3G.js").then((m) => m.NotificationUiMatSnackbarDirective), import("./src-7INKYE3E.js").then((m) => m.CoreCmsLayoutUiFooterComponent)], (NotificationUiMatSnackbarDirective, CoreCmsLayoutUiFooterComponent) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(CoreCmsLayoutFeatureComponent, () => [import("./src-SYPBRBP5.js").then((m) => m.NotificationUiMatSnackbarDirective), import("./src-7INKYE3E.js").then((m) => m.CoreCmsLayoutUiFooterComponent)], (NotificationUiMatSnackbarDirective, CoreCmsLayoutUiFooterComponent) => {
     setClassMetadata(CoreCmsLayoutFeatureComponent, [{
       type: Component,
       args: [{ selector: "plastik-core-cms-layout-feature", imports: [
@@ -6548,11 +6548,11 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-63JBKWCE.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-OHNWV4EC.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",
-    loadChildren: () => import("./src-UCBYDZFX.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
+    loadChildren: () => import("./src-HA4CYYS2.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
   },
   { path: "**", redirectTo: "search", pathMatch: "full" }
 ];
@@ -6568,7 +6568,7 @@ var headerConfig = {
     widgets: [
       {
         id: 1,
-        component: () => import("./src-7N6YNU56.js").then((c) => c.SharedButtonUiComponent),
+        component: () => import("./src-JF5GAJGD.js").then((c) => c.SharedButtonUiComponent),
         inputs: {
           buttonConfig: {
             type: "link",

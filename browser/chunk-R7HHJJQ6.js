@@ -1877,19 +1877,19 @@ var BaseDataService = class _BaseDataService {
   handleError(error) {
     let message = "An error occurred";
     let code = 500;
-    let data = null;
+    let payload = null;
     if (error instanceof HttpErrorResponse) {
       message = (error.error?.message ?? error.message) || message;
       code = error.status ?? code;
-      data = error.error ?? null;
+      payload = error.error ?? null;
     } else if (typeof error === "object" && error !== null) {
       const maybe = error;
-      const dataMessage = maybe.data?.message;
-      message = (typeof dataMessage === "string" ? dataMessage : typeof maybe.message === "string" ? maybe.message : void 0) ?? message;
-      code = typeof maybe.status === "number" ? maybe.status : code;
-      data = "data" in maybe ? maybe.data : data;
+      const bodyMessage = maybe["data"]?.message;
+      message = (typeof bodyMessage === "string" ? bodyMessage : typeof maybe["message"] === "string" ? maybe["message"] : void 0) ?? message;
+      code = typeof maybe["status"] === "number" ? maybe["status"] : code;
+      payload = "data" in maybe ? maybe["data"] : payload;
     }
-    return throwError(() => ({ message, code, data, originalError: error }));
+    return throwError(() => ({ message, code, payload, originalError: error }));
   }
   static \u0275fac = function BaseDataService_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _BaseDataService)();
@@ -3467,4 +3467,4 @@ export {
   NavigationFilterService,
   PrefixTitleService
 };
-//# sourceMappingURL=chunk-IMCORL3X.js.map
+//# sourceMappingURL=chunk-R7HHJJQ6.js.map

@@ -4346,7 +4346,7 @@ function escapeHtml(text) {
   if (!ESCAPE_HTML_CHARS.test(text)) {
     return text;
   }
-  return text.replace(ESCAPE_HTML_CHARS_GLOBAL, (s) => HTML_ESCAPE_MAP[s]);
+  return text.replace(ESCAPE_HTML_CHARS_GLOBAL, (replacer) => HTML_ESCAPE_MAP[replacer]);
 }
 
 // node_modules/@angular/material/fesm2022/_internal-form-field-chunk.mjs
@@ -5796,4 +5796,4 @@ export {
   isDynamicComponentTypeGuard,
   DEFAULT_TABLE_CONFIG
 };
-//# sourceMappingURL=chunk-7GOREER6.js.map
+//# sourceMappingURL=chunk-UZCMVAXL.js.map
