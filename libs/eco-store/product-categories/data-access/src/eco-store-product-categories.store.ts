@@ -70,6 +70,7 @@ export const ecoStoreProductCategoriesStore = signalStore(
         entities().forEach(stat => {
           const groupName =
             typeof stat.groupName === 'string' ? stat.groupName : stat.groupName[lang];
+
           if (!groups.has(groupName)) {
             groups.set(groupName, {
               group: { id: groupName, name: stat.groupName } as ProductCategoryGroup,
@@ -101,6 +102,7 @@ export const ecoStoreProductCategoriesStore = signalStore(
 
     const getLocalizedCategoryName = (category: ProductCategory | ProductCategoryStats): string => {
       const name: string | LocalizedFields<string> | undefined = category.name;
+
       if (!name) {
         return store._translateService.instant('products.all');
       }
@@ -110,9 +112,11 @@ export const ecoStoreProductCategoriesStore = signalStore(
       const currentLangCode = store.currentLang();
       const localizedName: string | undefined =
         name[currentLangCode as keyof LocalizedFields<string>];
+
       if (!localizedName) {
         return store._translateService.instant('products.all');
       }
+
       return localizedName;
     };
 
@@ -145,6 +149,7 @@ export const ecoStoreProductCategoriesStore = signalStore(
                   },
                   error: error => {
                     const message = error.message ?? `products.categories.error`;
+
                     updateState(store, '[product-categories] getStats error', {
                       isLoading: false,
                       error: message,
@@ -185,6 +190,7 @@ export const ecoStoreProductCategoriesStore = signalStore(
             icon: defaultIcon,
           };
         }
+
         return {
           name: store.getLocalizedCategoryName(category),
           icon: category.icon,
@@ -196,6 +202,7 @@ export const ecoStoreProductCategoriesStore = signalStore(
     onInit(store) {
       effect(() => {
         const tenantLoaded = store._tenantStore.loaded();
+
         if (tenantLoaded && !store.loaded()) {
           untracked(() => store.getStats());
         }

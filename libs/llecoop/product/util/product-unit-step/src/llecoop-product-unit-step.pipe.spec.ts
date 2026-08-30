@@ -36,6 +36,7 @@ describe('LlecoopProductUnitStepPipe', () => {
 
   it('transforms a "weight" type unit correctly returning 0.1', () => {
     const unit: LlecoopProductUnit = { type: 'weight' };
+
     expect(pipe.transform(unit)).toBe(0.1);
   });
 

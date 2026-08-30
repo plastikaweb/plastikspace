@@ -90,6 +90,7 @@ describe('UiUserOrderProductCardComponent', () => {
 
   it('should display product price with correct format', () => {
     const priceElement = fixture.debugElement.query(By.css('mat-card-content div'));
+
     expect(priceElement.nativeElement.textContent).toContain(mockProduct.priceWithIva.toFixed(2));
   });
 
@@ -97,6 +98,7 @@ describe('UiUserOrderProductCardComponent', () => {
     const viewDetailsSpy = vi.spyOn(component.viewDetails, 'emit');
 
     const card = fixture.debugElement.query(By.css('mat-card'));
+
     card.triggerEventHandler('click', null);
 
     expect(viewDetailsSpy).toHaveBeenCalledWith(mockProduct.id);
@@ -107,6 +109,7 @@ describe('UiUserOrderProductCardComponent', () => {
     fixture.detectChanges();
 
     const addButton = fixture.debugElement.query(By.css('button'));
+
     expect(addButton).toBeTruthy();
     expect(addButton.nativeElement.textContent).toContain('Afegir');
   });
@@ -118,6 +121,7 @@ describe('UiUserOrderProductCardComponent', () => {
     const addToCartSpy = vi.spyOn(component.addToCart, 'emit');
 
     const addButton = fixture.debugElement.query(By.css('button'));
+
     addButton.triggerEventHandler('click', {
       stopPropagation: () => {
         return;
@@ -135,6 +139,7 @@ describe('UiUserOrderProductCardComponent', () => {
     fixture.detectChanges();
 
     const input = fixture.debugElement.query(By.css('input'));
+
     expect(input).toBeTruthy();
   });
 
@@ -145,6 +150,7 @@ describe('UiUserOrderProductCardComponent', () => {
     expect(component.totalPrice()).toBe(mockProduct.priceWithIva * 2);
 
     const chipElement = fixture.debugElement.query(By.css('mat-chip'));
+
     expect(chipElement.nativeElement.textContent).toContain('5.88');
   });
 
@@ -155,6 +161,7 @@ describe('UiUserOrderProductCardComponent', () => {
     const addToCartSpy = vi.spyOn(component.addToCart, 'emit');
 
     const removeButton = fixture.debugElement.query(By.css('button[matChipRemove]'));
+
     removeButton.triggerEventHandler('click', {
       preventDefault: () => {
         return;

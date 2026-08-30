@@ -34,18 +34,21 @@ describe('HighlightPipe', () => {
 
   it('should highlight matching text', () => {
     const result = pipe.transform('Hello World', 'Hello') as string;
+
     expect(result).toContain('<mark');
     expect(result).toContain('Hello');
   });
 
   it('should be case insensitive', () => {
     const result = pipe.transform('Hello World', 'hello') as string;
+
     expect(result).toContain('<mark');
     expect(result).toContain('Hello');
   });
 
   it('should be accent insensitive', () => {
     const result = pipe.transform('Héllò World', 'hello') as string;
+
     expect(result).toContain('<mark');
     expect(result).toContain('Héllò');
   });
@@ -57,6 +60,7 @@ describe('HighlightPipe', () => {
   it('should escape HTML to prevent XSS', () => {
     const maliciousInput = '<script>alert("xss")</script> Hello';
     const result = pipe.transform(maliciousInput, 'Hello') as string;
+
     expect(result).toContain('&lt;script&gt;alert(&quot;xss&quot;)&lt;&#x2F;script&gt;');
     expect(result).toContain('<mark');
     expect(result).toContain('Hello');

@@ -20,11 +20,13 @@ const DISMISS_DAYS_MS = 15 * 24 * 60 * 60 * 1000;
  */
 function makeInstallEvent(outcome: 'accepted' | 'dismissed' = 'accepted'): Event {
   const e = new Event('beforeinstallprompt');
+
   Object.assign(e, {
     preventDefault: vi.fn(),
     prompt: vi.fn().mockResolvedValue(undefined),
     userChoice: Promise.resolve({ outcome, platform: '' }),
   });
+
   return e;
 }
 
@@ -246,6 +248,7 @@ describe('PwaInstallService', () => {
   describe('installPwa()', () => {
     it('returns no-prompt when no deferred prompt is stored', async () => {
       const result = await service.installPwa();
+
       expect(result).toBe('no-prompt');
     });
 
@@ -253,6 +256,7 @@ describe('PwaInstallService', () => {
       localStorage.setItem(INSTALLED_KEY, '1');
       window.dispatchEvent(makeInstallEvent('accepted'));
       const result = await service.installPwa();
+
       expect(result).toBe('accepted');
       expect(localStorage.getItem(INSTALLED_KEY)).toBe('1');
       expect(service.promptAvailable()).toBe(false);
@@ -262,6 +266,7 @@ describe('PwaInstallService', () => {
       localStorage.setItem(INSTALLED_KEY, '1');
       window.dispatchEvent(makeInstallEvent('dismissed'));
       const result = await service.installPwa();
+
       expect(result).toBe('dismissed');
       expect(localStorage.getItem(DISMISS_KEY)).toBeTruthy();
     });
@@ -270,6 +275,7 @@ describe('PwaInstallService', () => {
       vi.useFakeTimers();
       localStorage.setItem(INSTALLED_KEY, '1');
       const event = new Event('beforeinstallprompt');
+
       Object.assign(event, {
         preventDefault: vi.fn(),
         prompt: vi.fn().mockReturnValue(new Promise(() => {})),
@@ -278,8 +284,10 @@ describe('PwaInstallService', () => {
       window.dispatchEvent(event);
 
       const resultPromise = service.installPwa();
+
       await vi.advanceTimersByTimeAsync(10_001);
       const result = await resultPromise;
+
       expect(result).toBe('no-prompt');
       vi.useRealTimers();
     });

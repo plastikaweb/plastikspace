@@ -33,6 +33,7 @@ export class SharedButtonUiComponent {
    */
   linkHref = computed(() => {
     const cfg = this.buttonConfig();
+
     return buttonHasALinkGuard(cfg) ? cfg.link : undefined;
   });
 
@@ -44,6 +45,7 @@ export class SharedButtonUiComponent {
   onClick(): void {
     if (!buttonHasALinkGuard(this.buttonConfig())) {
       const action = (this.buttonConfig() as ButtonConfigWithAction).doAction?.();
+
       if (action) {
         this.sendAction.emit(() => action);
       }

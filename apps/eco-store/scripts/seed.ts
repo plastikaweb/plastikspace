@@ -22,6 +22,7 @@ const PB_ADMIN_EMAIL = process.env.POCKETBASE_DEV_ADMIN_EMAIL || 'admin@example.
 const PB_ADMIN_PASSWORD = process.env.POCKETBASE_DEV_ADMIN_PASSWORD || 'password123';
 
 const pb = new PocketBase(PB_URL);
+
 pb.autoCancellation(false);
 
 interface SeedOrderCycle {
@@ -67,6 +68,7 @@ async function seed() {
 
     // 3. Generació de Cicles de Comanda (order_cycles) per "el-llevat"
     const orderCyclesCreated: SeedOrderCycle[] = [];
+
     if (elLlevatTenant) {
       console.log('\n📅 Generant cicles de comanda per a "el-llevat" (20 setmanes)...');
 
@@ -84,6 +86,7 @@ async function seed() {
 
         // startsAt: Dijous a les 12:00h de la setmana ANTERIOR a la de lliurament
         let startsAt = addDays(mondayOfDelivery, -4); // Dijous anterior
+
         startsAt = setHours(setMinutes(startsAt, 0), 12);
 
         // endsAt: Dilluns a les 12:00h de la setmana de lliurament
@@ -96,6 +99,7 @@ async function seed() {
 
         // Determinar status
         let status = 'COMPLETED';
+
         if (isBefore(now, startsAt)) {
           status = 'DRAFT';
         } else if (isAfter(now, startsAt) && isBefore(now, endsAt)) {
@@ -111,6 +115,7 @@ async function seed() {
             try {
               // Check if exists
               let existingCycle;
+
               try {
                 existingCycle = await pb
                   .collection('order_cycles')
@@ -130,14 +135,17 @@ async function seed() {
               };
 
               let cycle;
+
               if (existingCycle) {
                 cycle = await pb.collection('order_cycles').update(existingCycle.id, data);
               } else {
                 cycle = await pb.collection('order_cycles').create(data);
               }
+
               return cycle as unknown as SeedOrderCycle;
             } catch (err) {
               console.error(`❌ Error creant cicle ${code}:`, (err as Error).message);
+
               return null;
             }
           })()
@@ -145,6 +153,7 @@ async function seed() {
       }
 
       const results = await Promise.all(cyclePromises);
+
       for (const cycle of results) {
         if (cycle) orderCyclesCreated.push(cycle);
       }
@@ -182,6 +191,7 @@ async function seed() {
       } else {
         // Altres tenants: 3-8 comandes aleatòries
         const numOrders = Math.floor(Math.random() * 6) + 3;
+
         for (let j = 0; j < numOrders; j++) {
           orderPromises.push(createRandomOrder(user, tenantId, userProducts));
           totalOrders++;
@@ -196,6 +206,7 @@ async function seed() {
   } catch (err) {
     console.error('\n💥 Error crític durant el seeding:', (err as Error).message);
     const pbErr = err as { response?: { data: Record<string, unknown> } };
+
     if (pbErr.response?.data) {
       console.error('Detalls:', JSON.stringify(pbErr.response.data, null, 2));
     }
@@ -220,14 +231,17 @@ async function createRandomOrder(
 
   // Seleccionar productes únics
   const tempProducts = [...availableProducts];
+
   for (let i = 0; i < Math.min(numItems, tempProducts.length); i++) {
     const idx = Math.floor(Math.random() * tempProducts.length);
+
     selectedProducts.push(tempProducts.splice(idx, 1)[0]);
   }
 
   const items = selectedProducts.map(p => {
     const qty = Math.floor(Math.random() * 3) + 1;
     const price = p.price || Math.random() * 10 + 2;
+
     return {
       productId: p.id,
       productName: p.name,
@@ -251,6 +265,7 @@ async function createRandomOrder(
     else shipping = 10;
 
     const slots = ['Dimecres 15:00 - 21:00', 'Divendres 10:00 - 13:00', 'Divendres 15:00 - 21:00'];
+
     deliverySlot = slots[Math.floor(Math.random() * slots.length)];
   }
 
@@ -263,6 +278,7 @@ async function createRandomOrder(
 
   // Status basat en el cicle o aleatori
   let status = 'DELIVERED'; // 'COMPLETED' no és vàlid a l'esquema
+
   if (cycle) {
     if (cycle.status === 'OPEN') status = 'PENDING';
     else if (cycle.status === 'PROCESSING') status = 'PREPARING';
@@ -271,6 +287,7 @@ async function createRandomOrder(
       status = Math.random() > 0.1 ? 'DELIVERED' : 'CANCELLED';
   } else {
     const statuses = ['PENDING', 'PREPARING', 'DELIVERED', 'CANCELLED'];
+
     status = statuses[Math.floor(Math.random() * statuses.length)];
   }
 
@@ -304,6 +321,7 @@ async function createRandomOrder(
     });
   } catch (err) {
     const pbErr = err as { message: string; response?: { data: Record<string, unknown> } };
+
     // Si falla per orderNumber duplicat, ignorem silenciosament o provem un altre
     if (pbErr.message.includes('unique')) {
       data.orderNumber += 'B';

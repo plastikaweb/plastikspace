@@ -113,6 +113,7 @@ export const appConfig: ApplicationConfig = {
       const translate = inject(TranslateService);
       const activity = inject(activityStore);
       const tenantStore = inject(ecoStoreTenantStore);
+
       inject(PwaInstallService);
       const pwaManifest = inject(PwaManifestService);
       const getAppData = inject(PWA_APP_DATA_FN);
@@ -156,6 +157,7 @@ export const appConfig: ApplicationConfig = {
           const tenant = store.tenant();
           const logoPath = getPocketBaseImageUrl(tenant, tenant?.logo);
           const logo = logoPath ? `${environment.baseApiUrl}api/files/${logoPath}` : undefined;
+
           return {
             name: tenant?.name,
             shortName: tenant?.shortName,

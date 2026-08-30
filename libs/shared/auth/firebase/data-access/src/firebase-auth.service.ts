@@ -49,6 +49,7 @@ export class FirebaseAuthService implements AuthFacade {
    */
   async updateEmail(): Promise<void> {
     const user = this.currentUser();
+
     if (!user) {
       throw new Error('No hi ha usuari autenticat');
     }
@@ -136,6 +137,7 @@ export class FirebaseAuthService implements AuthFacade {
 
     try {
       const credentials = await createUserWithEmailAndPassword(this.#auth, email, password);
+
       await updateProfile(credentials.user, { displayName: name });
       await this.logout();
       this.sendVerification(credentials.user);
@@ -284,6 +286,7 @@ export class FirebaseAuthService implements AuthFacade {
         await this.#auth.currentUser.getIdToken(true);
 
         const currentUser = this.#auth.currentUser;
+
         if (currentUser) {
           await currentUser.reload();
         }

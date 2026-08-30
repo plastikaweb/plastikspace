@@ -42,6 +42,7 @@ describe('InputPasswordWithVisibilityTypeComponent', () => {
         maxLength: 25,
       },
     };
+
     component.field = fieldConfig;
     fixture.detectChanges();
   });

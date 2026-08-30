@@ -27,6 +27,7 @@ describe('CoreCmsLayoutUiSidenavComponent', () => {
 
   it('should emit toggleSidenav Output value', () => {
     let result;
+
     component.toggleSidenav.subscribe(action => (result = action));
     component.onToggleSidenav();
     expect(result).toEqual(result);
@@ -34,6 +35,7 @@ describe('CoreCmsLayoutUiSidenavComponent', () => {
 
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   });
 });

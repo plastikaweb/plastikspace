@@ -56,8 +56,10 @@ export class EcoStoreProfileAddressesFeatureComponent implements CanDeactivateCo
   });
   protected readonly editModel = computed(() => {
     const id = this.editId();
+
     if (!id) return null;
     const address = this.profileStore.getUserContacts().find(a => a.id === id);
+
     return address
       ? ({
           name: address.name,
@@ -80,8 +82,10 @@ export class EcoStoreProfileAddressesFeatureComponent implements CanDeactivateCo
     computation: s => {
       if (s.isSyncing && !s.isSynced) {
         const count = s.count > 0 ? s.count : 0;
+
         return Array(count).fill(0);
       }
+
       return [];
     },
   });
@@ -93,6 +97,7 @@ export class EcoStoreProfileAddressesFeatureComponent implements CanDeactivateCo
 
   onUpdateAddress(address: UserContactForm): void {
     const id = this.editId();
+
     if (!id) return;
     this.profileStore.updateAddress(id, address);
     this.#router.navigate(['..'], { relativeTo: this.#route });

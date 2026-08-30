@@ -36,6 +36,7 @@ describe('SharedButtonUiComponent', () => {
 
   it('should output a button action on click', () => {
     let result;
+
     component.sendAction.subscribe(action => (result = action));
     component.onClick();
     expect(result).toEqual(result);
@@ -43,6 +44,7 @@ describe('SharedButtonUiComponent', () => {
 
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   });
 });

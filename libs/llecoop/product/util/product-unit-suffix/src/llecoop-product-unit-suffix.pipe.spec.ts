@@ -15,6 +15,7 @@ describe('LlecoopProductUnitSuffixPipe', () => {
 
   it('transforms a "weight" type unit correctly returning "kg"', () => {
     const unit: LlecoopProductUnit = { type: 'weight' };
+
     expect(pipe.transform(unit)).toBe('kg');
   });
 

@@ -29,6 +29,7 @@ describe('PaginationComponent', () => {
 
   it('should render mat-paginator with correct inputs', () => {
     const paginator = fixture.debugElement.query(By.css('mat-paginator')).componentInstance;
+
     expect(paginator.length).toBe(100);
     expect(paginator.pageSize).toBe(10);
     expect(paginator.pageIndex).toBe(0);

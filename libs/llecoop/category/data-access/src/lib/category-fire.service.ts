@@ -21,6 +21,7 @@ export class LlecoopCategoryFireService extends EntityFireService<LlecoopProduct
       Object.entries(filter).forEach(([key, value]) => {
         if (key === 'text' && value) {
           const normalizedText = latinize(value as string).toLowerCase();
+
           conditions.push(
             where('normalizedName', '>=', normalizedText),
             where('normalizedName', '<=', normalizedText + '\uf8ff')
@@ -36,6 +37,7 @@ export class LlecoopCategoryFireService extends EntityFireService<LlecoopProduct
     return runInInjectionContext(this.injectionContext, () => {
       try {
         const firestoreCollection = this.firestoreCollection;
+
         if (!firestoreCollection) {
           return throwError(() => new Error('No collection available'));
         }

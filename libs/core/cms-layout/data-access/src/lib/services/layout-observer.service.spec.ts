@@ -26,6 +26,7 @@ describe('LayoutObserverService', () => {
 
   it('should return handset Matches based on BreakpointObserver', async () => {
     const matches = await firstValueFrom(service.getMatches());
+
     expect(matches).toBe(true);
     expect(breakpointObserverMock.observe).toHaveBeenCalledWith([
       Breakpoints.Handset,

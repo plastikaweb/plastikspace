@@ -31,6 +31,7 @@ function buildShippingMethodOptions(
   return availableMethodTypes
     .map(methodType => {
       const option = logisticsConfig.options.find(opt => opt.type === methodType);
+
       if (!option) return null;
 
       return {

@@ -43,12 +43,14 @@ describe('InputImgLoaderTypeComponent', () => {
     // The component might render the title via plastik-input-img-loader which might have its own internal template
     // Let's check for the presence of the child component and its inputs
     const loaderComponent = fixture.nativeElement.querySelector('plastik-input-img-loader');
+
     expect(loaderComponent).toBeTruthy();
   });
 
   it('should have no accessibility violations', async () => {
     await fixture.whenStable();
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   });
 });

@@ -27,11 +27,13 @@ export class FormlyAddonsWrapperComponent extends FieldWrapper {
     super();
     effect(() => {
       const prefix = this.matPrefix();
+
       if (prefix && this.props['addonLeft']) {
         this.props['prefix'] = prefix;
       }
 
       const suffix = this.matSuffix();
+
       if (suffix && this.props['addonRight']) {
         this.props['suffix'] = suffix;
       }

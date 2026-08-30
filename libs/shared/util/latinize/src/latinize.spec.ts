@@ -40,11 +40,13 @@ describe('latinize', () => {
 
   it('takes the ASCII fast-path for the full \\x00-\\x7F range (control + punctuation)', () => {
     const ascii = 'a-b_c.d/e\t1 2\n3!@#';
+
     expect(latinize(ascii)).toBe(ascii);
   });
 
   it('leaves unmapped non-ASCII characters as-is', () => {
     const unmapped = '日本語';
+
     expect(latinize(unmapped)).toBe(unmapped);
   });
 });

@@ -44,6 +44,7 @@ export const notificationStore = signalStore(
           current[existingIndex].type === notification.type
         ) {
           const next: Notification = { ...notification, id: current[existingIndex].id };
+
           configuration = current.map((item, i) => (i === existingIndex ? next : item));
         } else {
           // New notification, an older grouped one, or a type change: assign a fresh id, drop any
@@ -51,6 +52,7 @@ export const notificationStore = signalStore(
           // stack (its new id makes the UI re-show it as the most recent toast).
           const next: Notification = { ...notification, id: `#${++seq}` };
           const base = groupKey ? current.filter(item => item.groupKey !== groupKey) : current;
+
           configuration = [...base, next];
 
           // Cap retained notifications, dropping the oldest beyond the configured maximum.

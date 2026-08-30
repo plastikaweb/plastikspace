@@ -39,6 +39,7 @@ export class EcoStoreAuthConfirmEmailChangeFacadeService implements AuthFormFaca
         token: this.token(),
         password: data.password,
       });
+
       if (success) {
         // The email change invalidates the current session token — clear it before
         // sending the user to log in again with the new address.

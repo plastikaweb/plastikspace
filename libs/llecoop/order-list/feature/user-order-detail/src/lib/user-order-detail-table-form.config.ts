@@ -42,6 +42,7 @@ export class LlecoopUserOrderDetailFormTableConfig implements TableStructureConf
         const info = element?.['info']
           ? `<p class="font-bold">${escapeHtml(element['info'] ?? '')}</p>`
           : '';
+
         return this.#sanitizer.bypassSecurityTrustHtml(`${name}${info}`) as SafeHtml;
       },
     },
@@ -113,6 +114,7 @@ export class LlecoopUserOrderDetailFormTableConfig implements TableStructureConf
           finalQuantity: quantity,
           finalPrice: price,
         };
+
         return newProduct;
       },
     }),

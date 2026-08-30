@@ -28,6 +28,7 @@ interface CustomLabelProps extends FormlyFieldProps {
 export class SharedFormUiCustomLabelComponent extends FieldType<FieldTypeConfig<CustomLabelProps>> {
   setContainerClasses(): string {
     let baseClasses = 'flex justify-between text-md items-center';
+
     if (this.props.iconPosition === 'right') {
       baseClasses += ' flex-row-reverse';
     }
@@ -37,6 +38,7 @@ export class SharedFormUiCustomLabelComponent extends FieldType<FieldTypeConfig<
     if (this.props.checkValidation) {
       baseClasses += ` ${this.props.isValid === 'valid' ? 'valid-message' : this.props.isValid === 'error' ? 'error-message' : 'pending-message'}`;
     }
+
     return baseClasses;
   }
 }

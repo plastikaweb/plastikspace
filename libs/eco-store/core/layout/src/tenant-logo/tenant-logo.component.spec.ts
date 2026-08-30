@@ -28,6 +28,7 @@ describe('TenantLogoComponent', () => {
     fixture.componentRef.setInput('tenant', mockTenant);
     fixture.detectChanges();
     const img = fixture.nativeElement.querySelector('plastik-img-container');
+
     expect(img).toBeTruthy();
   });
 
@@ -35,6 +36,7 @@ describe('TenantLogoComponent', () => {
     fixture.componentRef.setInput('tenant', mockTenantNoLogo);
     fixture.detectChanges();
     const icon = fixture.nativeElement.querySelector('mat-icon');
+
     expect(icon).toBeTruthy();
   });
 
@@ -42,6 +44,7 @@ describe('TenantLogoComponent', () => {
     fixture.componentRef.setInput('tenant', mockTenant);
     fixture.detectChanges();
     const nameSpan = fixture.nativeElement.querySelector('span');
+
     expect(nameSpan.textContent).toContain(mockTenant.name);
   });
 });

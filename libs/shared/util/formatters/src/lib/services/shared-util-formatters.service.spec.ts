@@ -35,11 +35,13 @@ describe('SharedUtilFormattersService', () => {
     it('defaultFormatter should escape HTML in user-controlled values', () => {
       const maliciousInput = '<img src=x onerror=alert(1)>';
       const result = service.defaultFormatter(maliciousInput) as string;
+
       expect(result).toBe('&lt;img src&#x3D;x onerror&#x3D;alert(1)&gt;');
     });
 
     it('defaultFormatter should leave plain text visually unchanged', () => {
       const result = service.defaultFormatter('Pomes Golden 1kg') as string;
+
       expect(result).toBe('Pomes Golden 1kg');
     });
 
@@ -59,6 +61,7 @@ describe('SharedUtilFormattersService', () => {
         iconTrue: 'check',
         iconFalse: 'close',
       })) as string;
+
       expect(result).toBe('<span class="material-icons">close</span>');
     });
   });

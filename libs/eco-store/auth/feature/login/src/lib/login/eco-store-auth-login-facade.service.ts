@@ -57,6 +57,7 @@ export class EcoStoreAuthLoginFacadeService implements AuthFormFacade<LoginData>
   // Only accept same-origin paths to prevent open-redirect via returnUrl.
   #getSafeReturnUrl(): string {
     const raw = this.#route.snapshot.queryParamMap.get('returnUrl');
+
     return raw && raw.startsWith('/') && !raw.startsWith('//') ? raw : '/';
   }
 }

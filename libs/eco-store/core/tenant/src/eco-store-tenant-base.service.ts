@@ -33,9 +33,11 @@ export abstract class EcoStoreTenantBaseService {
     if (cachedData) {
       try {
         const tenant = JSON.parse(cachedData) as EcoStoreTenant;
+
         this.tenant.set(tenant);
         // Refresh in background without awaiting
         this.fetchTenant(slug, cacheKey);
+
         return;
       } catch {
         if (isPlatformBrowser(this.platformId)) {

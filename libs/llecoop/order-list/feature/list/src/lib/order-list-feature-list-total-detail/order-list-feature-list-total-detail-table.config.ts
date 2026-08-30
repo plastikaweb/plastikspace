@@ -42,6 +42,7 @@ export class LlecoopOrderListFeatureListTotalDetailTableConfig implements TableS
         const unit = item?.unit ?? { type: 'unit' };
         const suffix = this.#productUnitSuffixPipe.transform(unit);
         const numberDigitsInfo = suffix === 'kg' ? '1.2-2' : '1.0-0';
+
         return {
           suffix,
           numberDigitsInfo,

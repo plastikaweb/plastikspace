@@ -37,6 +37,7 @@ export class LlecoopOrderListFireService extends EntityFireService<LlecoopOrder>
       Object.entries(filter).forEach(([key, value]) => {
         if (key === 'text' && value) {
           const normalizedText = latinize(value as string).toLowerCase();
+
           conditions.push(
             where('normalizedName', '>=', normalizedText),
             where('normalizedName', '<=', normalizedText + '\uf8ff')
@@ -53,6 +54,7 @@ export class LlecoopOrderListFireService extends EntityFireService<LlecoopOrder>
   protected override getSortingConditions(sorting: TableSortingConfig): QueryConstraint[] {
     const [active, direction] = sorting;
     const conditions: QueryConstraint[] = [];
+
     conditions.push(orderBy(active, direction || 'asc'));
 
     if (active === 'orderCount' || active === 'status') {
@@ -73,6 +75,7 @@ export class LlecoopOrderListFireService extends EntityFireService<LlecoopOrder>
 
     if (pageIndex > 0 && pageLastElements?.has(pageIndex - 1)) {
       const lastDoc = pageLastElements.get(pageIndex - 1);
+
       if (activeField === 'orderCount' || activeField === 'status') {
         conditions.push(startAfter(lastDoc?.[activeField], lastDoc?.normalizedName));
       } else {
@@ -131,6 +134,7 @@ export class LlecoopOrderListFireService extends EntityFireService<LlecoopOrder>
           pagination.pageLastElements?.has(pagination.pageIndex - 1)
         ) {
           const lastDoc = pagination.pageLastElements.get(pagination.pageIndex - 1);
+
           conditions.push(startAfter(lastDoc?.[sorting[0]]));
         }
         const q = query(
@@ -142,6 +146,7 @@ export class LlecoopOrderListFireService extends EntityFireService<LlecoopOrder>
           where('userName', '>=', filter.text),
           where('userName', '<=', filter.text + '\uf8ff')
         );
+
         return collectionData(q, { idField: 'id' }).pipe(
           takeUntil(this.destroy$),
           map(orders => orders as LlecoopUserOrder[]),

@@ -29,10 +29,12 @@ export const ecoStoreTrialExpiredGuard: CanActivateFn = (): Observable<boolean |
                 // TODO: Redirect to PRV-06 (sol·licitud d'adhesió)
                 return router.createUrlTree(['/perfil']);
               }
+
               return router.createUrlTree(['/botiga']);
             })
           );
       }
+
       return of(true);
     })
   );

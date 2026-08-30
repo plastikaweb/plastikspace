@@ -83,12 +83,14 @@ export class LlecoopUserOrderSearchFeatureTableConfig implements TableStructureC
     if (!order) return false;
 
     const cacheKey = `${order.orderListId}`;
+
     if (this.#orderDoneStatusCache.has(cacheKey)) {
       return this.#orderDoneStatusCache.get(cacheKey) as boolean;
     }
 
     const status = this.#orderListStore?.entityMap()?.[order.orderListId]?.status;
     const isDone = status === 'done' || status === 'cancelled';
+
     this.#orderDoneStatusCache.set(cacheKey, isDone);
 
     return isDone;

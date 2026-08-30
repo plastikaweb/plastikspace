@@ -70,6 +70,7 @@ export function resolveTenantSlug(hostname: string): string | null {
   const parts = hostname.split('.');
   const candidate = SKIP_SUBDOMAIN_PREFIXES.includes(parts[0]) ? parts[1] : parts[0];
   const slug = candidate?.replace(/[^a-z0-9-]/gi, '') ?? '';
+
   // A bare host with a single label (e.g. "localhost") is not a tenant.
   return slug && parts.length > 1 ? slug : null;
 }
@@ -109,12 +110,14 @@ export function buildManifest(branding: TenantBranding | null): Record<string, u
     name: branding.name,
     short_name: branding.shortName,
   };
+
   if (branding.logoUrl) {
     manifest['icons'] = [
       { src: branding.logoUrl, sizes: '512x512', type: 'image/png', purpose: 'any' },
       { src: branding.logoUrl, sizes: '512x512', type: 'image/png', purpose: 'maskable' },
     ];
   }
+
   return manifest;
 }
 

@@ -32,6 +32,7 @@ export class EcoStoreProfileAccessSecurityFeatureComponent {
     }
 
     const requested = await this.#profileStore.requestEmailChange(email);
+
     if (requested) {
       this.emailFormReset.update(count => count + 1);
     }

@@ -54,6 +54,7 @@ export const llecoopUserOrderCartStore = signalStore(
             `${CART_STORAGE_KEY}_${userId || 'anonymous'}`,
             JSON.stringify(cartData)
           );
+
           return;
         }
       },
@@ -65,6 +66,7 @@ export const llecoopUserOrderCartStore = signalStore(
         if (storedCart) {
           try {
             const parsedCart = JSON.parse(storedCart);
+
             updateState(store, `[user-order-cart] load persisted cart`, {
               cart: parsedCart,
             });

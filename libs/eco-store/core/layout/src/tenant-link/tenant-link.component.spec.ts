@@ -29,13 +29,16 @@ describe('EcoTenantLinkComponent', () => {
   it('should have a button with routerLink to"/"', () => {
     fixture.detectChanges();
     const button = fixture.nativeElement.querySelector('button');
+
     expect(button.getAttribute('routerLink')).toBe('/');
   });
 
   it('should emit linkClicked when button is clicked', () => {
     const emitSpy = vi.spyOn(component.linkClicked, 'emit');
+
     fixture.detectChanges();
     const button = fixture.nativeElement.querySelector('button');
+
     button.click();
     expect(emitSpy).toHaveBeenCalled();
   });
@@ -44,6 +47,7 @@ describe('EcoTenantLinkComponent', () => {
     fixture.componentRef.setInput('tenant', mockTenant);
     fixture.detectChanges();
     const logo = fixture.nativeElement.querySelector('eco-tenant-logo');
+
     expect(logo).toBeTruthy();
   });
 

@@ -29,6 +29,7 @@ describe('notificationStore', () => {
     store.show(notification({ message: 'b' }));
 
     const config = store.configuration();
+
     expect(config).toHaveLength(2);
     expect(config[0].id).not.toBe(config[1].id);
   });
@@ -38,9 +39,11 @@ describe('notificationStore', () => {
 
     store.show(notification({ message: 'added', groupKey: 'cart:1' }));
     const firstId = store.configuration()[0].id;
+
     store.show(notification({ message: 'updated', groupKey: 'cart:1' }));
 
     const config = store.configuration();
+
     expect(config).toHaveLength(1);
     expect(config[0].message).toBe('updated');
     expect(config[0].groupKey).toBe('cart:1');
@@ -53,9 +56,11 @@ describe('notificationStore', () => {
 
     store.show(notification({ message: 'ok', type: 'SUCCESS', groupKey: 'op:create' }));
     const successId = store.configuration()[0].id;
+
     store.show(notification({ message: 'failed', type: 'ERROR', groupKey: 'op:create' }));
 
     const config = store.configuration();
+
     expect(config).toHaveLength(1);
     expect(config[0].type).toBe('ERROR');
     expect(config[0].message).toBe('failed');
@@ -71,6 +76,7 @@ describe('notificationStore', () => {
     store.show(notification({ message: 'a2', groupKey: 'a' }));
 
     const config = store.configuration();
+
     expect(config).toHaveLength(2);
     expect(config.map(n => n.groupKey)).toEqual(['b', 'a']);
     expect(config[1].message).toBe('a2');
@@ -84,6 +90,7 @@ describe('notificationStore', () => {
     store.show(notification({ message: 'c' }));
 
     const config = store.configuration();
+
     expect(config).toHaveLength(2);
     expect(config.map(n => n.message)).toEqual(['b', 'c']);
   });
@@ -98,6 +105,7 @@ describe('notificationStore', () => {
     store.dismiss(first.id);
 
     const config = store.configuration();
+
     expect(config).toHaveLength(1);
     expect(config[0].id).toBe(second.id);
   });

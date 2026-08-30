@@ -14,6 +14,7 @@ describe('createFirebaseTimestampTableColumn', () => {
       pathToKey: 'timestamp',
       cssClasses: ['test-class'],
     });
+
     expect(config.key).toBe('timestamp');
     expect(config.title).toBe('Timestamp');
     expect(config.pathToKey).toBe('timestamp');
@@ -25,6 +26,7 @@ describe('createFirebaseTimestampTableColumn', () => {
 describe('createdAt', () => {
   it('should create a createdAt column', () => {
     const config = createdAt<BaseEntity>();
+
     expect(config.key).toBe('createdAt');
     expect(config.title).toBe('Data de creació');
     expect(config.pathToKey).toBe('createdAt');
@@ -35,6 +37,7 @@ describe('createdAt', () => {
 describe('updatedAt', () => {
   it('should create an updatedAt column', () => {
     const config = updatedAt<BaseEntity>();
+
     expect(config.key).toBe('updatedAt');
     expect(config.title).toBe('Data de modificació');
     expect(config.pathToKey).toBe('updatedAt');

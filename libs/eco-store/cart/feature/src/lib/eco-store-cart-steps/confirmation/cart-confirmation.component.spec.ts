@@ -61,6 +61,7 @@ describe('CartConfirmationComponent', () => {
 
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   });
 
@@ -71,6 +72,7 @@ describe('CartConfirmationComponent', () => {
 
   it('should render the order summary', () => {
     const compiled = fixture.nativeElement as HTMLElement;
+
     expect(compiled.querySelector('eco-store-price-summary')).toBeTruthy();
   });
 
@@ -84,6 +86,7 @@ describe('CartConfirmationComponent', () => {
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;
+
     expect(compiled.querySelector('eco-cart-product-card')).toBeTruthy();
   });
 });

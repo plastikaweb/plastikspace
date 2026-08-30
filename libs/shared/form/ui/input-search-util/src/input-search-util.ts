@@ -71,5 +71,6 @@ export function addSearchInput(
 function setAddOnRightVisibility(config: FormlyFieldConfig): void {
   const classes = config.formControl?.value ? '' : 'invisible';
   const addonRight = { ...config.props?.['addonRight'], classes };
+
   config.props = { ...config.props, addonRight };
 }

@@ -46,6 +46,7 @@ describe('EcoStoreProfileSidenavFeatureComponent', () => {
 
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   }, 30000);
 
@@ -75,6 +76,7 @@ describe('EcoStoreProfileSidenavFeatureComponent', () => {
     });
 
     const localFixture = TestBed.createComponent(EcoStoreProfileSidenavFeatureComponent);
+
     localFixture.detectChanges();
 
     expect(findListItemByLabel(localFixture.nativeElement, 'Dades fiscals')).toBeTruthy();

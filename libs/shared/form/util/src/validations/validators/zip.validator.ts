@@ -7,5 +7,6 @@ import { AbstractControl, ValidationErrors } from '@angular/forms';
  */
 export function zipValidator(control: AbstractControl): ValidationErrors | null {
   const zipRegex = /^(0[1-9]|[1-4]\d|5[0-2])\d{3}$/;
+
   return !control.value || zipRegex.test(control.value) ? null : { zip: true };
 }

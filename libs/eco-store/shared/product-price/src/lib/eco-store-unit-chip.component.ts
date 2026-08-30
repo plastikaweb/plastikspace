@@ -19,12 +19,14 @@ export class EcoStoreUnitChipComponent {
 
   protected readonly iconName = computed((): UnitIconName => {
     const unitTypeValue: string = this.unitType().toLowerCase();
+
     if (unitTypeValue.includes('weight')) {
       return 'balance';
     }
     if (unitTypeValue.includes('volume')) {
       return 'water_drop';
     }
+
     return 'package_2';
   });
 }

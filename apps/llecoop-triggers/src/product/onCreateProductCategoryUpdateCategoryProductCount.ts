@@ -10,9 +10,11 @@ export default async (snapshot, context) => {
 
   if (!product.categoryRef) {
     functions.logger.debug(`Product did not have a category, skipping update`);
+
     return;
   }
   const categoryId = product.categoryRef.split('/')[1];
+
   return firestore.doc(`category/${categoryId}`).update({
     productCount: FieldValue.increment(1),
   });

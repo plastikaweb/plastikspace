@@ -17,6 +17,7 @@ import {
 
 describe('NasaImages Reducer', () => {
   const { items, count } = createDummyNasaImagesSearch(3);
+
   describe('valid NasaImages actions', () => {
     it('loadNasaImages should return a valid state', () => {
       const action = nasaImagesPageActions.load({ params: { q: 'pluto' } });
@@ -127,6 +128,7 @@ describe('NasaImages Selectors', () => {
 
       it('should return undefined if ID is not set', () => {
         const customState = { ...state };
+
         customState[name].selectedId = null;
 
         const result = selectNasaImagesFeature.selectSelectedEntity(customState) as NasaImage;

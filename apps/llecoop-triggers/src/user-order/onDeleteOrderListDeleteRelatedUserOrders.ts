@@ -4,6 +4,7 @@ import { firestore } from '../init';
 
 export default async snapshot => {
   const orderListId = snapshot.id;
+
   functions.logger.debug(`Running delete related user orders trigger for ${orderListId}`);
 
   const userOrders = await firestore
@@ -12,6 +13,7 @@ export default async snapshot => {
     .get();
 
   const batch = firestore.batch();
+
   userOrders.docs.forEach(doc => {
     batch.delete(doc.ref);
   });

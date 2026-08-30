@@ -30,6 +30,7 @@ export class CartOrderPriceSlotsComponent {
 
   currentTier = computed(() => {
     const total = this.cartTotal();
+
     return this.sortedTiersDesc().find(tier => total >= tier.min);
   });
 
@@ -39,13 +40,16 @@ export class CartOrderPriceSlotsComponent {
 
   maxTier = computed(() => {
     const tiers = this.sortedTiersAsc();
+
     return tiers.length > 0 ? tiers[tiers.length - 1] : null;
   });
 
   remainingForFree = computed(() => {
     const total = this.cartTotal();
     const tier = this.maxTier();
+
     if (tier === null || tier.min <= total) return 0;
+
     return tier.min - total;
   });
 
@@ -53,9 +57,11 @@ export class CartOrderPriceSlotsComponent {
     const total = this.cartTotal();
     const max = this.maxTier()?.min || 1;
     let progress = (total / max) * 100;
+
     if (max === 0 || progress > 100) {
       progress = 100;
     }
+
     return progress;
   });
 }

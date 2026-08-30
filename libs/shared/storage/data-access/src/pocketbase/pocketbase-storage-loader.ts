@@ -38,6 +38,7 @@ export function pocketBaseStorageLoader(baseUrl: string) {
       const targetWidth = width || loaderParams?.width;
 
       let params = '';
+
       if (targetWidth) {
         // Find the smallest thumbnail size that is still large enough to cover the requested width
         const bestThumb =
@@ -53,6 +54,7 @@ export function pocketBaseStorageLoader(baseUrl: string) {
 
       // Add format=webp and quality if supported by PocketBase
       const queryParams: string[] = [];
+
       if (params) {
         queryParams.push(params);
       }

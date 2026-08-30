@@ -95,6 +95,7 @@ export class LlecoopOrderListUserOrderFeatureListTableConfig implements TableStr
     if (!order) return { allowBlock: false, allowView: false };
 
     const cacheKey = `${order.id}`;
+
     if (this.#orderDoneStatusCache.has(cacheKey)) {
       return this.#orderDoneStatusCache.get(cacheKey) as {
         allowBlock: boolean;
@@ -108,6 +109,7 @@ export class LlecoopOrderListUserOrderFeatureListTableConfig implements TableStr
       (orderListStatus === 'waiting' || orderListStatus === 'progress') &&
       (userOrderStatus === 'waitingReview' || userOrderStatus === 'reviewed');
     const allowView = userOrderStatus !== 'waitingReview';
+
     this.#orderDoneStatusCache.set(cacheKey, { allowBlock, allowView });
 
     return { allowBlock, allowView };

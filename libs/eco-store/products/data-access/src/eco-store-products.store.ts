@@ -86,34 +86,43 @@ export const ecoStoreProductsStore = signalStore(
           const category = categoryMap.get(product.category) as ProductCategoryStats;
 
           let categoryName = '';
+
           if (category && category.name && typeof category.name === 'object') {
             const nameObj = category.name as LocalizedFields<string>;
+
             categoryName = nameObj[currentLang] || '';
           }
 
           let productName = '';
+
           if (product.name && typeof product.name === 'object') {
             const nameObj = product.name as LocalizedFields<string>;
+
             productName = nameObj[currentLang] || '';
           } else if (typeof product.name === 'string') {
             productName = product.name;
           }
 
           let productDescription = '';
+
           if (product.description && typeof product.description === 'object') {
             const descriptionObj = product.description as LocalizedFields<string>;
+
             productDescription = descriptionObj[currentLang] || '';
           } else if (typeof product.description === 'string') {
             productDescription = product.description;
           }
 
           let productFeatures: string[] = [];
+
           if (product.features) {
             const featuresObj = product.features as LocalizedFields[];
+
             productFeatures = featuresObj.map(feature => {
               if (typeof feature === 'object') {
                 return feature[currentLang] || '';
               }
+
               return feature;
             });
           }
@@ -141,6 +150,7 @@ export const ecoStoreProductsStore = signalStore(
         }
 
         const product = entities().find(p => p.normalizedName === slug);
+
         if (!product) {
           return undefined;
         }
@@ -152,8 +162,10 @@ export const ecoStoreProductsStore = signalStore(
         ) as ProductCategoryStats;
 
         let productName = '';
+
         if (product.name && typeof product.name === 'object') {
           const nameObj = product.name as LocalizedFields<string>;
+
           productName = nameObj[currentLang] || '';
         } else if (typeof product.name === 'string') {
           productName = product.name;
@@ -178,10 +190,13 @@ export const ecoStoreProductsStore = signalStore(
      */
     setSelectedFromSlug(slug: EcoStoreProductWithTranslatedText['categorySlug']): boolean {
       const product = store.entities().find(p => p.normalizedName === slug);
+
       if (product) {
         updateState(store, '[products] setSelectedFromSlug', { selectedItemId: product.id });
+
         return true;
       }
+
       return false;
     },
 

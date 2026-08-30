@@ -40,44 +40,52 @@ describe('EcoStoreBreadcrumbsComponent', () => {
       { label: 'Products', routerLink: ['/botiga'] },
       { label: 'Detail' },
     ];
+
     fixture.componentRef.setInput('items', items);
     fixture.detectChanges();
     await fixture.whenStable();
 
     const listItems = fixture.debugElement.queryAll(By.css('li'));
+
     // +1 for the back button li
     expect(listItems.length).toBe(items.length + 1);
   });
 
   it('should render a link for items with routerLink', async () => {
     const items: BreadcrumbItem[] = [{ label: 'Home', routerLink: ['/'] }];
+
     fixture.componentRef.setInput('items', items);
     fixture.detectChanges();
     await fixture.whenStable();
 
     const link = fixture.debugElement.query(By.css('a'));
+
     expect(link).toBeTruthy();
     expect(link.nativeElement.textContent).toContain('Home');
   });
 
   it('should render a span (no link) for the current page item', async () => {
     const items: BreadcrumbItem[] = [{ label: 'Current page' }];
+
     fixture.componentRef.setInput('items', items);
     fixture.detectChanges();
     await fixture.whenStable();
 
     const span = fixture.debugElement.query(By.css('li > span'));
+
     expect(span).toBeTruthy();
     expect(span.nativeElement.textContent.trim()).toBe('Current page');
   });
 
   it('should render a skeleton placeholder when item.loading is true', async () => {
     const items: BreadcrumbItem[] = [{ loading: true, skeletonWidth: '4rem' }];
+
     fixture.componentRef.setInput('items', items);
     fixture.detectChanges();
     await fixture.whenStable();
 
     const skeleton = fixture.debugElement.query(By.css('[aria-hidden="true"].animate-pulse'));
+
     expect(skeleton).toBeTruthy();
   });
 
@@ -88,6 +96,7 @@ describe('EcoStoreBreadcrumbsComponent', () => {
 
     const goBackSpy = vi.spyOn(component.goBack, 'emit');
     const button = fixture.debugElement.query(By.css('button[matIconButton]'));
+
     button.nativeElement.click();
 
     expect(goBackSpy).toHaveBeenCalledOnce();
@@ -95,6 +104,7 @@ describe('EcoStoreBreadcrumbsComponent', () => {
 
   it('should mirror the back button aria-label with a matching matTooltip', async () => {
     const label = 'Tornar enrere';
+
     fixture.componentRef.setInput('backAriaLabel', label);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -109,12 +119,14 @@ describe('EcoStoreBreadcrumbsComponent', () => {
 
   it('should have no accessibility violations', async () => {
     const items: BreadcrumbItem[] = [{ label: 'Home', routerLink: ['/'] }, { label: 'Detail' }];
+
     fixture.componentRef.setInput('items', items);
     fixture.componentRef.setInput('backAriaLabel', 'Go back');
     fixture.detectChanges();
     await fixture.whenStable();
 
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   }, 10000);
 });

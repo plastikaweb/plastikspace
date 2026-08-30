@@ -50,14 +50,17 @@ describe('AddressSelectorTypeComponent', () => {
 
   it('should render address cards', () => {
     const cards = fixture.nativeElement.querySelectorAll('mat-card');
+
     expect(cards.length).toBe(1);
 
     const title = fixture.nativeElement.querySelector('h3');
+
     expect(title.textContent).toContain('Home');
   });
 
   it('should update form control when a card is clicked', () => {
     const card = fixture.nativeElement.querySelector('mat-card');
+
     card.click();
     fixture.detectChanges();
 
@@ -66,6 +69,7 @@ describe('AddressSelectorTypeComponent', () => {
 
   it('should call onEdit when edit button is clicked', () => {
     const onEditSpy = vi.fn();
+
     component.field = {
       ...component.field,
       props: {
@@ -77,6 +81,7 @@ describe('AddressSelectorTypeComponent', () => {
     fixture.detectChanges();
 
     const editButton = fixture.nativeElement.querySelector('button');
+
     expect(editButton).toBeTruthy();
     expect(editButton.textContent).toContain('cart.shipping.address.edit');
 
@@ -87,6 +92,7 @@ describe('AddressSelectorTypeComponent', () => {
   it('should have no accessibility violations', async () => {
     await fixture.whenStable();
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   });
 });

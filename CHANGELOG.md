@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-08-29] - Workspace: ESLint naming and statement-padding rules
+
+### Changed
+
+- **`.eslintrc.json`, `cspell.json`, `CLAUDE.md` + 330 source files across `apps/` and `libs/`**: four new TypeScript lint rules and the codebase-wide sweep that satisfies them. `padding-line-between-statements` now requires a blank line before every `return` and after a block of variable declarations; `id-length` (2-40, with `i`/`j`/`x`/`y`/`k`/`v`/`m`/`e`/`t`/`_`/`id`/`db`/`fs` whitelisted) and `id-denylist` (`data`, `info`, `temp`, `val`, `item`, `foo`, `bar`, `baz`) reject one-letter and vague identifiers; `@typescript-eslint/naming-convention` enforces camelCase members, PascalCase types, UPPER_CASE-or-camelCase-or-PascalCase variables, and an `is`/`has`/`can`/`should`/`will` prefix on boolean variables. The boolean selector is type-aware, so it is re-declared without it for `*.spec.ts`: root override sets `parserOptions.project: null` on spec files to keep them off type-aware linting, and a `types`-based selector in that context makes ESLint throw rather than report — it took down `api-pocketbase:lint`, the first project with a spec file, and would have hit every other spec in the workspace. All four rules are **warnings, not errors** — no `maxWarnings` is configured, so they guide new code without gating the lint target. The sweep is overwhelmingly mechanical: of 1421 inserted lines, 1253 are blank lines and only 25 are substantive TypeScript, all of them local renames in eight files (`item` → `cartItem` in `toOrderItemSnapshot`, `val` → `value`, `a`/`b` → `firstAddress`/`secondAddress`, `closed` → `isClosed` on a destructured boolean, `p` → `product`, `s` → `replacer`, `a` → `addr`). `libs/shared/util/latinize` opts out at file level — its character map is a table of accented-glyph keys that no naming convention can describe.
+
+### Fixed
+
+- **`libs/core/util/api-base`**: the automated `id-denylist` rename crossed from a local variable into property names on the _incoming_ error object, breaking `BaseDataService.handleError` for every non-`HttpErrorResponse` backend. `maybe.data` became `maybe.errData` and `'data' in maybe` became `'errData' in maybe`, but nothing ever writes an `errData` property — PocketBase's `ClientResponseError` carries its response body on `.data`. Field-level validation messages from PocketBase silently fell through to the generic `ClientResponseError.message`, and the payload forwarded to callers was always `null`. The reads are restored to the real field name through bracket notation (`maybe['data']`, on a `Record<string, unknown>` cast) — `data` is PocketBase's name for that field, not ours to rename, and writing it as a string literal rather than a property signature also keeps `id-denylist` quiet without a suppression comment. The value it feeds is renamed end to end from `data` to `payload`, so the thrown shape is now `{ message, code, payload, originalError }`; no consumer in the workspace reads that object's fields, so the rename is contained. There is no spec for `base-data.service.ts`, which is why nothing caught the regression.
+
+### Build
+
+- **`libs/core/entities`, `libs/shared/util/entities`, `libs/shared/util/latinize`, `apps/llecoop-e2e`**: `composite: true` added to the three lib tsconfigs, required by TypeScript for the project `references` declared in `libs/eco-store/core/entities/tsconfig.lib.json`; `apps/llecoop-e2e` moves from `module: commonjs` to `module: preserve`, matching the rest of the workspace. Not part of the lint work, folded in because they were already in the tree.
+
 ## [2026-07-21] - Eco Store: PRV-04b/04d — address form constraints vs. schema
 
 ### Fixed

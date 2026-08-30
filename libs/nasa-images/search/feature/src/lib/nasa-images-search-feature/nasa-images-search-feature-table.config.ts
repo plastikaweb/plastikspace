@@ -24,6 +24,7 @@ const index: TableColumnFormatting<NasaImage, 'CUSTOM'> = {
     type: 'CUSTOM',
     execute: (_, __, index = 0, extraConfig) => {
       const { pageIndex, pageSize } = extraConfig as PageEventConfig;
+
       return String(index + pageIndex * pageSize);
     },
   },

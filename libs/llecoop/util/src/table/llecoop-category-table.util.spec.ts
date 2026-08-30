@@ -19,6 +19,7 @@ describe('categoryNameCell', () => {
 
   it('should return a formatting configuration with default values', () => {
     const config = categoryNameCell<MockEntity>({});
+
     expect(config.key).toBe('name');
     expect(config.title).toBe('Categoria');
     expect(config.pathToKey).toBe('category.name');
@@ -42,6 +43,7 @@ describe('categoryNameCell', () => {
       entity.category?.name ?? '',
       entity
     ) as FormattingComponentOutput;
+
     expect(result?.inputs).toEqual({ category: entity.category, nameStyle: '', withLink: false });
   });
 
@@ -49,6 +51,7 @@ describe('categoryNameCell', () => {
     const entity: MockEntity = { id: 2, name: 'Oranges', normalizedName: 'oranges' };
     const config = categoryNameCell<MockEntity>({});
     const result = config.formatting.execute?.('', entity) as FormattingComponentOutput;
+
     expect(result?.inputs).toEqual({ category: null, nameStyle: '', withLink: false });
   });
 });

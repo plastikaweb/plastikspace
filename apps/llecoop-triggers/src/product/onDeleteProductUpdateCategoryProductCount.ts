@@ -14,6 +14,7 @@ export default async (snapshot, context) => {
 
   if (!categoryId) {
     functions.logger.debug(`Product did not have a category, skipping update`);
+
     return;
   }
 

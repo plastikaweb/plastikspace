@@ -28,6 +28,7 @@ describe('TrialBannerComponent', () => {
     fixture.detectChanges();
     const spy = vi.spyOn(component.becomeMember, 'emit');
     const button = fixture.nativeElement.querySelector('button');
+
     button.click();
     expect(spy).toHaveBeenCalled();
   });
@@ -48,6 +49,7 @@ describe('TrialBannerComponent', () => {
     fixture.componentRef.setInput('trialEndsAt', new Date(Date.now() + 1000000));
     fixture.detectChanges();
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   }, 30000);
 });

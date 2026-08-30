@@ -58,6 +58,7 @@ export class PocketBaseAuthService implements AuthFacade {
       password: data.password,
       passwordConfirm: data.passwordConfirm,
     });
+
     // Changing the password rotates the user's tokenKey, invalidating the current
     // JWT — re-authenticate with the new password to keep the session alive.
     return await this.#pb.collection('users').authWithPassword(email, data.password);
@@ -73,7 +74,9 @@ export class PocketBaseAuthService implements AuthFacade {
 
   async updateAvatar(id: string, file: File): Promise<AuthModel> {
     const formData = new FormData();
+
     formData.append('avatar', file, file.name);
+
     return await this.#pb.collection('users').update(id, formData);
   }
 
@@ -86,7 +89,9 @@ export class PocketBaseAuthService implements AuthFacade {
       membershipStatus: 'ACTIVE',
       trialEndsAt: null,
     });
+
     await this.#pb.collection('users').authRefresh();
+
     return updated;
   }
 

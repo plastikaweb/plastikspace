@@ -88,6 +88,7 @@ describe('UiOrderListOrdersStatusResumeComponent', () => {
     it('should render correct number of list items', () => {
       const listItems = fixture.debugElement.queryAll(By.css('li'));
       const expectedCount = Object.values(mockOrdersStatus).length;
+
       expect(listItems.length).toBe(expectedCount);
     });
 
@@ -111,16 +112,19 @@ describe('UiOrderListOrdersStatusResumeComponent', () => {
       const waitingItem = fixture.debugElement.query(
         By.css(`li.${llecoopUserOrderStatus.waitingReview.class} span:last-child`)
       );
+
       expect(waitingItem.nativeElement.textContent).toBe('5');
 
       const reviewedItem = fixture.debugElement.query(
         By.css(`li.${llecoopUserOrderStatus.reviewed.class} span:last-child`)
       );
+
       expect(reviewedItem.nativeElement.textContent).toBe('3');
     });
 
     it('should set correct aria-label for the list', () => {
       const list = fixture.debugElement.query(By.css('ul'));
+
       expect(list.attributes['aria-label']).toBe('Estat de les comandes de Test Order');
     });
 
@@ -128,6 +132,7 @@ describe('UiOrderListOrdersStatusResumeComponent', () => {
       const items = fixture.debugElement.queryAll(By.css('li'));
 
       const firstItemClass = items[0].classes[llecoopUserOrderStatus.waitingReview.class];
+
       expect(firstItemClass).toBe(true);
       const expectedOrder = [
         'waitingReview',
@@ -136,10 +141,12 @@ describe('UiOrderListOrdersStatusResumeComponent', () => {
         'notReviewed',
         'notDelivered',
       ] as const;
+
       items.forEach((item, index) => {
         if (index < expectedOrder.length) {
           const statusKey = expectedOrder[index];
           const expectedClass = llecoopUserOrderStatus[statusKey].class;
+
           expect(item.classes[expectedClass]).toBe(true);
         }
       });
@@ -148,6 +155,7 @@ describe('UiOrderListOrdersStatusResumeComponent', () => {
 
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   });
 });

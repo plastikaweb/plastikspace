@@ -45,6 +45,7 @@ export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade
   onFormTemporaryChange({ totalPrice }: Partial<LlecoopUserOrder>): void {
     this.viewExtraActions.update(actions => {
       let total = actions.filter(action => action.id === 'total')[0] as ExtraFormTextAction;
+
       if (total) {
         total = {
           ...total,
@@ -59,6 +60,7 @@ export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade
   onSubmit(item: Partial<LlecoopUserOrder>): void {
     if (this.model()?.id) {
       this.#userOrderStore.update({ item });
+
       return;
     }
 

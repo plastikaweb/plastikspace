@@ -22,10 +22,12 @@ export class SkipLinkComponent {
     event.preventDefault();
 
     const urlTree = this.#router.parseUrl(this.#router.url);
+
     urlTree.fragment = 'mainContent';
 
     this.#router.navigateByUrl(urlTree).then(() => {
       const mainContent = this.#document.getElementById('mainContent');
+
       if (mainContent) {
         mainContent.focus();
         mainContent.scrollIntoView({ behavior: 'smooth', block: 'start' });

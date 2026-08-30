@@ -42,6 +42,7 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
         ];
 
         const q = query(this.firestoreCollection, ...conditions);
+
         return collectionData(q, { idField: 'id' }).pipe(
           takeUntil(this.destroy$),
           distinctUntilChanged((prev, next) => JSON.stringify(prev) === JSON.stringify(next)),
@@ -56,10 +57,12 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
 
   override getFilterConditions(filter: StoreUserOrderFilter): QueryConstraint[] {
     const conditions: QueryConstraint[] = [];
+
     if (Object.entries(filter).length > 0) {
       Object.entries(filter).forEach(([key, value]) => {
         if (key === 'text' && value) {
           const normalizedText = latinize(value as string).toLowerCase();
+
           conditions.push(
             where('normalizedName', '>=', normalizedText),
             where('normalizedName', '<=', normalizedText + '\uf8ff')

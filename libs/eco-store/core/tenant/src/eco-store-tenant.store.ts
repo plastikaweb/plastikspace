@@ -75,27 +75,31 @@ export const ecoStoreTenantStore = signalStore(
       _currentLang: currentLang,
       closedReasonTranslated: computed(() => {
         const currentTenant = store.tenant();
+
         if (!currentTenant) {
           return null;
         }
 
-        const { closedReason, closed } = currentTenant;
+        const { closedReason, closed: isClosed } = currentTenant;
 
-        if (!closed) {
+        if (!isClosed) {
           return null;
         }
 
         const lang = currentLang();
+
         return closedReason?.[lang] || null;
       }),
 
       tenantLegalAddress: computed(() => {
         const currentTenant = store.tenant();
+
         if (!currentTenant) {
           return {} as EcoStoreTenantAddress;
         }
 
         const { id, name, address, city, zip, phone } = currentTenant;
+
         return {
           id,
           name,
@@ -111,11 +115,13 @@ export const ecoStoreTenantStore = signalStore(
       tenantAddressesContacts: computed(() => formatTenantAddresses(store.addresses())),
       tenantDescriptionTranslated: computed(() => {
         const currentTenant = store.tenant();
+
         if (!currentTenant) {
           return null;
         }
 
         const lang = currentLang();
+
         return currentTenant.description?.[lang] || null;
       }),
     };
@@ -162,6 +168,7 @@ export const ecoStoreTenantStore = signalStore(
 
     isStoreOpen: computed(() => {
       const status = store.storeStatus();
+
       return status === 'OPEN' || status === 'CLOSING_SOON';
     }),
   })),
@@ -173,6 +180,7 @@ export const ecoStoreTenantStore = signalStore(
   withComputed(store => ({
     nextOpenCountdownSegments: computed(() => {
       const text = store._nextOpenCountdown().text();
+
       return text
         ? text
             .split(/(:)/)
@@ -189,6 +197,7 @@ export const ecoStoreTenantStore = signalStore(
     isShippingAvailable: computed(() => {
       const currentTenant = store.tenant();
       const options = currentTenant?.logisticsConfig?.options;
+
       if (!options) return false;
 
       return ['pickup' as const, 'delivery' as const].some(type =>
@@ -208,6 +217,7 @@ export const ecoStoreTenantStore = signalStore(
         });
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'eco-store.error.getTenant';
+
         updateState(store, `[tenant] get tenant failed ${errorMessage}`, {
           tenant: null,
           loaded: false,
@@ -242,9 +252,11 @@ export const ecoStoreTenantStore = signalStore(
       type: EcoStoreTenantLogisticsDeliveryType
     ): EcoStoreTenantLogisticsDeliveryOption | null {
       const tenant = store.tenant();
+
       if (!tenant) return null;
 
       const option = tenant.logisticsConfig?.options?.find(option => option.type === type);
+
       return option?.enabled ? option : null;
     },
 
@@ -258,6 +270,7 @@ export const ecoStoreTenantStore = signalStore(
         ?.logisticsConfig?.options?.find(
           (option: EcoStoreTenantLogisticsDeliveryOption) => option.type === 'pickup'
         );
+
       if (!pickupOption?.enabled) return null;
 
       let addressSlots = store.addresses().find(address => address.id === addressId)?.slots || null;
@@ -265,6 +278,7 @@ export const ecoStoreTenantStore = signalStore(
       if (isEmpty(addressSlots) || isNil(addressSlots)) {
         addressSlots = pickupOption.slots || null;
       }
+
       return addressSlots;
     },
 
@@ -313,8 +327,10 @@ export const ecoStoreTenantStore = signalStore(
       }
       if (tiers) {
         const applicableTier = tiers.find(tier => amount >= tier.min);
+
         return applicableTier?.cost || 0;
       }
+
       return 0;
     },
 
@@ -330,6 +346,7 @@ export const ecoStoreTenantStore = signalStore(
 
         if (freeTier) {
           const remaining = freeTier.min - amount;
+
           return remaining > 0 ? remaining : 0;
         }
       }
@@ -339,11 +356,13 @@ export const ecoStoreTenantStore = signalStore(
 
     getTenantDeliveryPriceTiers() {
       const deliveryOption = this.getTenantDeliveryOption('delivery');
+
       return deliveryOption?.tiers || [];
     },
 
     getTenantDeliveryInstructions(type: EcoStoreTenantLogisticsDeliveryType = 'pickup') {
       const tenant = store.tenant();
+
       if (!tenant) return '';
 
       const currentLanguage = store._translateService.getCurrentLang();
@@ -375,14 +394,16 @@ export const ecoStoreTenantStore = signalStore(
       addressId: string | null = null
     ) {
       const tenant = store.tenant();
+
       if (!tenant) return null;
 
       const deliveryOption = tenant.logisticsConfig?.options?.find(option => option.type === type);
+
       if (!deliveryOption?.enabled) return null;
 
       // 1. Max priority: address specific configuration (only Pickup)
       if (type === 'pickup' && addressId) {
-        const address = store.addresses().find(a => a.id === addressId);
+        const address = store.addresses().find(addr => addr.id === addressId);
 
         if (address) {
           if (address.slots && Object.keys(address.slots).length > 0) {
@@ -424,6 +445,7 @@ export const ecoStoreTenantStore = signalStore(
     getTenantAvailableShippingMethods(): EcoStoreTenantLogisticsDeliveryType[] {
       const tenant = store.tenant();
       const options = tenant?.logisticsConfig?.options;
+
       if (!options) return [];
 
       return (['pickup', 'delivery'] as EcoStoreTenantLogisticsDeliveryType[]).filter(type =>
@@ -435,6 +457,7 @@ export const ecoStoreTenantStore = signalStore(
     onInit(store) {
       effect(() => {
         const tenant = store._tenantService.tenant();
+
         if (tenant) {
           updateState(store, '[tenant] service signal updated', {
             tenant,

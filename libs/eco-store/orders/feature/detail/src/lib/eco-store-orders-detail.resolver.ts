@@ -19,6 +19,7 @@ export const ecoStoreOrdersDetailResolver: ResolveFn<boolean | RedirectCommand> 
 
   try {
     await ordersStore.getOne(id);
+
     return true;
   } catch {
     return new RedirectCommand(router.parseUrl('/comandes'));

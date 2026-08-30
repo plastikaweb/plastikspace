@@ -13,6 +13,7 @@ export class EcoStoreCategoryProductTitleService {
    */
   resolve(route: ActivatedRouteSnapshot): string {
     const productSlug: string | null = route.paramMap.get('slug');
+
     if (!productSlug) {
       return 'products.details';
     }

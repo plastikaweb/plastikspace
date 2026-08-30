@@ -7,6 +7,7 @@ class FieldTranslateExtension implements FormlyExtension {
 
   prePopulate(field: FormlyFieldConfig) {
     const props = field.props || {};
+
     if (!props['translate'] || props['translated']) {
       return;
     }
@@ -36,6 +37,7 @@ class FieldTranslateExtension implements FormlyExtension {
 
           if (Array.isArray(options)) {
             const items = options as { label: string; value: unknown }[];
+
             return combineLatest(items.map(option => this.translate.stream(option.label))).pipe(
               map((labels: string[]) => items.map((option, i) => ({ ...option, label: labels[i] })))
             );
@@ -52,6 +54,7 @@ class FieldTranslateExtension implements FormlyExtension {
               )
             );
           }
+
           return props.options;
         })(),
       }),

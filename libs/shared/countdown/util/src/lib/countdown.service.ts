@@ -53,6 +53,7 @@ export class CountdownService {
     // Create a cache key based on the target date and interval
     const cacheKey = computed(() => {
       const targetDate = targetDateSignal();
+
       return targetDate ? `${targetDate.getTime()}-${intervalMs}` : 'null';
     });
 
@@ -95,6 +96,7 @@ export class CountdownService {
           if (!targetDate || targetDate.getTime() <= new Date().getTime()) {
             return of(null);
           }
+
           return timer(0, intervalMs).pipe(
             takeWhile(() => targetDate.getTime() > new Date().getTime(), true)
           );
@@ -114,6 +116,7 @@ export class CountdownService {
       if (!target) return null;
 
       const diffMs = target.getTime() - current.getTime();
+
       if (diffMs <= 0) return null;
 
       return this.calculateCountdown(diffMs);
@@ -121,12 +124,15 @@ export class CountdownService {
 
     const text = computed(() => {
       const countdown = data();
+
       return countdown ? this.formatCountdown(countdown) : '';
     });
 
     const isExpired = computed(() => {
       const target = targetDateSignal();
+
       if (!target) return false;
+
       return now().getTime() >= target.getTime();
     });
 

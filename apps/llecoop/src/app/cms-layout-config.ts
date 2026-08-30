@@ -108,6 +108,7 @@ export function viewConfig(): Signal<ViewConfig<LlecoopViews>[]> {
 
       if (view.includedInNavigation) {
         view.children = view.children.filter(child => child.includedInNavigation);
+
         return true;
       }
 

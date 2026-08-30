@@ -130,10 +130,12 @@ export function withFirebaseCrud<
       return {
         selectedItem: computed(() => {
           const id = selectedItemId();
+
           return id !== null ? entityMap()[id] : null;
         }),
         selectedItemName: computed(() => {
           const id = selectedItemId();
+
           return id !== null ? entityMap()[id]?.name : '';
         }),
       };
@@ -283,6 +285,7 @@ export function withFirebaseCrud<
                     if (!item) {
                       const baseRoute = store.baseRoute();
                       const route = typeof baseRoute === 'string' ? baseRoute : baseRoute?.onError;
+
                       router.navigate([route]);
                       throw new Error();
                     }
@@ -322,6 +325,7 @@ export function withFirebaseCrud<
                     const route =
                       redirectUrl ||
                       (typeof baseRoute === 'string' ? baseRoute : baseRoute?.onCreate);
+
                     router.navigate([route]);
                     if (store.showNotification()) {
                       store._storeNotificationService.create(
@@ -364,6 +368,7 @@ export function withFirebaseCrud<
                     const route =
                       redirectUrl ||
                       (typeof baseRoute === 'string' ? baseRoute : baseRoute?.onUpdate);
+
                     router.navigate([route]);
                     if (store.showNotification()) {
                       store._storeNotificationService.create(

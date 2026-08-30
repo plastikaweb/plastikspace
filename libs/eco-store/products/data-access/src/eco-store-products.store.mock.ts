@@ -13,7 +13,9 @@ export const mockEcoStoreProductsStore = {
   error: signal(null),
   findProductBySlug: vi.fn().mockImplementation(() => (slug: string) => {
     const product = mockEcoStoreProductsStore.entities().find(p => p.normalizedName === slug);
+
     if (!product) return undefined;
+
     return {
       ...product,
       name: product.name['ca'],

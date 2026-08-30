@@ -18,6 +18,7 @@ export const isStoreOpenGuard: CanActivateFn = async (): Promise<boolean | UrlTr
         if (!tenantStore.isStoreOpen()) {
           return router.createUrlTree(['/cistella/resum']);
         }
+
         return true;
       })
     )

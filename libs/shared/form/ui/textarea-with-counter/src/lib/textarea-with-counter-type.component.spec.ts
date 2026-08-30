@@ -43,6 +43,7 @@ describe('TextareaWithCounterTypeComponent', () => {
         maxLength: 100,
       },
     };
+
     component.field = fieldConfig;
     fixture.detectChanges();
   });
@@ -53,6 +54,7 @@ describe('TextareaWithCounterTypeComponent', () => {
 
   test('should expose aria-live="polite" on the character counter hint', () => {
     const hint = fixture.nativeElement.querySelector('mat-hint');
+
     expect(hint.getAttribute('aria-live')).toBe('polite');
   });
 
@@ -61,16 +63,19 @@ describe('TextareaWithCounterTypeComponent', () => {
     fixture.detectChanges();
 
     const hint = fixture.nativeElement.querySelector('mat-hint');
+
     expect(hint.classList.contains('text-warning')).toBe(true);
     expect(hint.classList.contains('text-error')).toBe(false);
   });
 
   test('should apply text-error (not text-warning) when the count reaches maxLength', () => {
     const maxLength = 100;
+
     component.formControl.setValue('a'.repeat(maxLength));
     fixture.detectChanges();
 
     const hint = fixture.nativeElement.querySelector('mat-hint');
+
     expect(hint.classList.contains('text-error')).toBe(true);
     expect(hint.classList.contains('text-warning')).toBe(false);
   });
@@ -80,6 +85,7 @@ describe('TextareaWithCounterTypeComponent', () => {
     fixture.detectChanges();
 
     const hint = fixture.nativeElement.querySelector('mat-hint');
+
     expect(hint.classList.contains('text-warning')).toBe(false);
     expect(hint.classList.contains('text-error')).toBe(false);
   });

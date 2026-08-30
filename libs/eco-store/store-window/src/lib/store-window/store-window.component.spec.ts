@@ -51,6 +51,7 @@ describe('StoreWindowComponent', () => {
     fixture.detectChanges();
 
     const chip = fixture.nativeElement.querySelector('.status-chip');
+
     expect(chip).toBeTruthy();
     expect(chip.classList).toContain('open');
 
@@ -69,6 +70,7 @@ describe('StoreWindowComponent', () => {
     fixture.detectChanges();
 
     const chip = fixture.nativeElement.querySelector('.status-chip');
+
     expect(chip).toBeTruthy();
     expect(chip.classList).toContain('closed');
     expect(chip.textContent).toContain('store.status.closed');
@@ -79,6 +81,7 @@ describe('StoreWindowComponent', () => {
     fixture.detectChanges();
 
     const chip = fixture.nativeElement.querySelector('.status-chip');
+
     expect(chip).toBeTruthy();
     expect(chip.classList).toContain('soon');
     expect(chip.textContent).toContain('store.status.openingSoon');

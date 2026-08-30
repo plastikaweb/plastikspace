@@ -48,12 +48,14 @@ describe('TableCellTitleDirective', () => {
 
   it('should set title and aria-label for simple text', () => {
     const el = cells[0].nativeElement;
+
     expect(el.getAttribute('title')).toBe('Simple Text');
     expect(el.getAttribute('aria-label')).toBe('Simple Text');
   });
 
   it('should extract text from nested elements and ignore material icons', () => {
     const el = cells[1].nativeElement;
+
     //"Nested Text" + ignored icon
     expect(el.getAttribute('title')).toBe('Nested Text');
   });
@@ -61,17 +63,20 @@ describe('TableCellTitleDirective', () => {
   it('should set title on li elements', () => {
     const el = cells[2].nativeElement;
     const lis = el.querySelectorAll('li');
+
     expect(lis[0].getAttribute('title')).toBe('Item 1');
     expect(lis[1].getAttribute('title')).toBe('Item 2');
   });
 
   it('should not set title if disabled', () => {
     const el = cells[3].nativeElement;
+
     expect(el.getAttribute('title')).toBeNull();
   });
 
   it('should handle br tags with separator', () => {
     const el = cells[4].nativeElement;
+
     expect(el.getAttribute('title')).toBe('Line - Break');
   });
 });

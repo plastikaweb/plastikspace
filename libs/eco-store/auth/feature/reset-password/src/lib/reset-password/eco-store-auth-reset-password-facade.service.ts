@@ -19,6 +19,7 @@ export class EcoStoreAuthResetPasswordFacadeService implements AuthFormFacade<Re
   readonly #activityStore = inject(activityStore);
   readonly token = computed(() => {
     const url = new URL(window.location.href);
+
     return url.searchParams.get('token') || '';
   });
   readonly isLoading = this.#profileStore.isLoading;

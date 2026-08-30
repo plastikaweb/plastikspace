@@ -92,9 +92,11 @@ export function createAddressField(deps: FieldDependencies): FormlyFieldConfig[]
               method === 'pickup'
                 ? tenantStore.tenantAddressesContacts()
                 : userProfileStore.getUserContacts();
+
             if (field.props) {
               field.props['addresses'] = addresses;
             }
+
             return addresses;
           };
 
@@ -106,6 +108,7 @@ export function createAddressField(deps: FieldDependencies): FormlyFieldConfig[]
           // when nothing is selected yet, so we never clobber the user's pick.
           if (!field.formControl?.value) {
             const initialAddress = pickDefaultShippingAddress(initialAddresses);
+
             if (initialAddress) {
               field.formControl?.patchValue(initialAddress);
             }
@@ -121,6 +124,7 @@ export function createAddressField(deps: FieldDependencies): FormlyFieldConfig[]
               if (defaultAddress) {
                 field.formControl?.patchValue(defaultAddress);
                 const parentGroup = field.parent?.formControl;
+
                 if (parentGroup) {
                   parentGroup.get('day')?.patchValue(null);
                   parentGroup.get('time')?.patchValue(null);
@@ -166,6 +170,7 @@ export function createSlotLabelFields(deps: FieldDependencies): FormlyFieldConfi
             field.model.method ?? 'pickup',
             field.model.address?.id
           );
+
           return config?.type !== 'slots';
         },
       },
@@ -187,7 +192,9 @@ export function createSlotLabelFields(deps: FieldDependencies): FormlyFieldConfi
             field.model.method ?? 'pickup',
             field.model.address?.id
           );
+
           if (!tiersOrInstructions) return false;
+
           return tiersOrInstructions.type === 'slots';
         },
       },
@@ -212,6 +219,7 @@ export function createSlotFields(deps: FieldDependencies): FormlyFieldConfig[] {
             field.model.method ?? 'pickup',
             field.model.address?.id
           );
+
           return config?.type !== 'slots';
         },
       },
@@ -241,6 +249,7 @@ export function createSlotFields(deps: FieldDependencies): FormlyFieldConfig[] {
                 addressId: string | null = null
               ): FormSelectOption[] => {
                 const options = tenantStore.getTenantDeliveryOptionSlotsDays(method, addressId);
+
                 return options.map((option: FormSelectOption) => ({
                   ...option,
                   label: translateService.instant(`common.weekdays.${option.label}`),
@@ -249,6 +258,7 @@ export function createSlotFields(deps: FieldDependencies): FormlyFieldConfig[] {
 
               const updateOptions = (model: unknown) => {
                 const { method, address } = model as { method?: string; address?: { id: string } };
+
                 if (field.props && method && address) {
                   field.props['options'] = getTranslatedOptions(
                     method as EcoStoreTenantLogisticsDeliveryType,
@@ -297,6 +307,7 @@ export function createSlotFields(deps: FieldDependencies): FormlyFieldConfig[] {
                   address?: { id: string };
                   day?: SlotDays;
                 };
+
                 if (field.props && method && address && day) {
                   field.props['options'] = tenantStore.getTenantDeliveryOptionSlotsTimes(
                     method as EcoStoreTenantLogisticsDeliveryType,
@@ -342,6 +353,7 @@ export function createInstructionsField(deps: FieldDependencies): FormlyFieldCon
             field.model.method ?? 'pickup',
             field.model.address?.id
           );
+
           return config?.type !== 'instructions';
         },
         'props.text': (field: FormlyFieldConfig) => {
@@ -351,6 +363,7 @@ export function createInstructionsField(deps: FieldDependencies): FormlyFieldCon
             method as 'pickup' | 'delivery',
             addressId
           );
+
           return tiersOrInstructions?.instructions || '';
         },
       },

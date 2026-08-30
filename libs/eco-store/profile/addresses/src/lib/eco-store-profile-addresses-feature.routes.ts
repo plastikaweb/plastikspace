@@ -19,6 +19,7 @@ import { EcoStoreProfileAddressesFeatureComponent } from './eco-store-profile-ad
 
 const profileAddressesResolver: ResolveFn<boolean> = () => {
   const profileStore = inject(pocketBaseUserProfileStore);
+
   if (!profileStore.addressesLoaded()) {
     profileStore.getUserAddresses();
   }

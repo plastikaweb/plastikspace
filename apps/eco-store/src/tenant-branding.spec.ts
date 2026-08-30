@@ -48,16 +48,19 @@ describe('tenantRecordToBranding', () => {
 
   it('falls back to a 12-char truncation of the name when shortName is empty', () => {
     const branding = tenantRecordToBranding({ ...record, name: 'Associació El Llevat' }, PB_URL);
+
     expect(branding?.shortName).toBe('Associació E');
   });
 
   it('uses an explicit, trimmed shortName when present', () => {
     const branding = tenantRecordToBranding({ ...record, shortName: '  El Llevat  ' }, PB_URL);
+
     expect(branding?.shortName).toBe('El Llevat');
   });
 
   it('builds the absolute logo URL from the file path parts', () => {
     const branding = tenantRecordToBranding(record, PB_URL);
+
     expect(branding?.logoUrl).toBe(
       'https://eco-botiga.pockethost.io/api/files/pbc_2442875294/tcqkp8j1h6uzext/logo_abc.png'
     );
@@ -65,6 +68,7 @@ describe('tenantRecordToBranding', () => {
 
   it('leaves the logo URL undefined when no logo file is set', () => {
     const branding = tenantRecordToBranding({ ...record, logo: '' }, PB_URL);
+
     expect(branding?.logoUrl).toBeUndefined();
   });
 });
@@ -72,6 +76,7 @@ describe('tenantRecordToBranding', () => {
 describe('buildManifest', () => {
   it('returns the generic manifest when no branding resolves', () => {
     const manifest = buildManifest(null);
+
     expect(manifest['name']).toBe('Botiga Eco');
     expect(manifest['short_name']).toBe('Eco');
     expect(manifest['icons']).toEqual(BASE_MANIFEST.icons);
@@ -79,6 +84,7 @@ describe('buildManifest', () => {
 
   it('overrides name and short_name and keeps base icons when there is no logo', () => {
     const manifest = buildManifest({ name: 'El Llevat', shortName: 'El Llevat' });
+
     expect(manifest['name']).toBe('El Llevat');
     expect(manifest['short_name']).toBe('El Llevat');
     expect(manifest['icons']).toEqual(BASE_MANIFEST.icons);
@@ -88,6 +94,7 @@ describe('buildManifest', () => {
     const logoUrl = 'https://eco-botiga.pockethost.io/api/files/c/i/logo.png';
     const manifest = buildManifest({ name: 'El Llevat', shortName: 'El Llevat', logoUrl });
     const icons = manifest['icons'] as { src: string; purpose: string }[];
+
     expect(icons).toHaveLength(2);
     expect(icons.every(icon => icon.src === logoUrl)).toBe(true);
     expect(icons.map(icon => icon.purpose)).toEqual(['any', 'maskable']);

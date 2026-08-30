@@ -78,16 +78,19 @@ describe('OrderCardComponent', () => {
 
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   });
 
   it('should display the order number', () => {
     const element = fixture.nativeElement.querySelector('.text-lg.font-bold');
+
     expect(element.textContent).toContain('#ECO-001');
   });
 
   it('should display the formatted total', () => {
     const totalElements = fixture.nativeElement.querySelectorAll('.text-lg.font-bold');
+
     // The second .text-lg.font-bold should contain the total
     expect(totalElements[1].textContent).toContain('121');
   });
@@ -97,11 +100,13 @@ describe('OrderCardComponent', () => {
       ...mockOrder,
       items: [{ name: { ca: 'Pizza Margarita' }, quantity: 1, price: 10, total: 10 } as any],
     };
+
     fixture.componentRef.setInput('order', mockOrderWithItems);
     fixture.componentRef.setInput('highlight', 'mar');
     fixture.detectChanges();
 
     const itemElements = fixture.nativeElement.querySelectorAll('.text-on-surface-variant span');
+
     // We expect the item name to contain the highlighted part (wrapped in <mark>)
     // Since we mock the DomSanitizer in pipe tests, here we just check if it contains the text
     expect(itemElements[0].innerHTML).toContain('Pizza <mark');

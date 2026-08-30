@@ -57,39 +57,47 @@ export class EcoStoreOrdersDetailComponent {
   protected readonly isLoading = computed(() => this.#ordersStore.isLoading());
   protected readonly order = computed(() => {
     const selectedId = this.#ordersStore.selectedItemId();
+
     if (!selectedId) {
       return null;
     }
+
     return this.#ordersStore.getItemById(selectedId);
   });
 
   protected readonly statusLabel = computed(() => {
     const status = this.order()?.status;
+
     return status ? ORDER_STATUS_LABEL_MAP[status] : '';
   });
 
   protected readonly statusType = computed(() => {
     const status = this.order()?.status;
+
     return status ? ORDER_STATUS_TYPE_MAP[status] : 'neutral';
   });
 
   protected readonly statusIcon = computed(() => {
     const status = this.order()?.status;
+
     return status ? ORDER_STATUS_ICON_MAP[status] : '';
   });
 
   protected readonly statusConfig = computed(() => {
     const status = this.order()?.status;
+
     return ORDER_STATUS_OPTIONS.find(opt => opt.value === status);
   });
 
   protected readonly deliveryIcon = computed(() => {
     const method = this.order()?.deliveryMethod;
+
     return method ? ORDER_DELIVERY_ICON_MAP[method] : '';
   });
 
   protected readonly deliveryLabel = computed(() => {
     const method = this.order()?.deliveryMethod;
+
     return method ? ORDER_DELIVERY_LABEL_MAP[method] : '';
   });
 
@@ -102,13 +110,16 @@ export class EcoStoreOrdersDetailComponent {
   protected readonly taxRate = computed(() => {
     const items = this.order()?.items ?? [];
     const firstTaxRate = items.find(i => i.taxRate != null)?.taxRate;
+
     return firstTaxRate != null ? firstTaxRate * 100 : 10;
   });
 
   protected readonly cartItems = computed(() => {
     const order = this.order();
     const lang = this.currentLanguage();
+
     if (!order) return [];
+
     return order.items.map(item => ({
       product: {
         id: item.productId,
@@ -131,12 +142,14 @@ export class EcoStoreOrdersDetailComponent {
     const items: BreadcrumbItem[] = [
       { labelKey: 'orders.list.title', icon: 'receipt_long', routerLink: ['/comandes'] },
     ];
+
     if (order) {
       items.push({
         labelKey: 'orders.detail.title',
         labelParams: { orderNumber: order.orderNumber },
       });
     }
+
     return items;
   });
 
@@ -146,6 +159,7 @@ export class EcoStoreOrdersDetailComponent {
 
   protected getItemName(name: string | Record<string, string>, lang: string): string {
     if (typeof name === 'string') return name;
+
     return name[lang] ?? name['ca'] ?? Object.values(name)[0] ?? '';
   }
 }

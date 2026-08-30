@@ -28,6 +28,7 @@ export const mockEcoStoreProductCategoriesStore = {
     const category = mockEcoStoreProductCategoriesStore
       .entities()
       .find(item => item.normalizedName === slug);
+
     return category ? { ...category, name: category.name['ca'] } : null;
   }),
   getLocalizedCategoryName: vi.fn().mockImplementation(category => {

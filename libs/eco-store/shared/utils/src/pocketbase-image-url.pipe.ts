@@ -36,5 +36,6 @@ export function getPocketBaseImageUrl(
   if (!source?.collectionId || !source?.id || !image) {
     return null;
   }
+
   return `${source.collectionId}/${source.id}/${image}`;
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention, id-length */
 const characters: Record<string, string> = {
   Á: 'A',
   Ă: 'A',
@@ -918,5 +919,6 @@ export function latinize(str: string): string {
   if (!NON_ASCII.test(str)) {
     return str;
   }
+
   return str.replace(NON_ASCII_GLOBAL, x => characters[x] || x);
 }

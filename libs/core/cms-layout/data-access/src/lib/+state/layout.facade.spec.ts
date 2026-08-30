@@ -42,6 +42,7 @@ describe('LayoutFacade', () => {
     it('should dispatch a toggleSidenav action', () => {
       const opened = true;
       const action = layoutActions.toggleSidenav({ opened });
+
       facade.toggleSidenav(opened);
       expect(store.dispatch).toHaveBeenCalledWith(action);
     });
@@ -49,12 +50,14 @@ describe('LayoutFacade', () => {
     it('should dispatch a setIsMobile action', () => {
       const isMobile = true;
       const action = layoutActions.setIsMobile({ isMobile });
+
       facade.setIsMobile(isMobile);
       expect(store.dispatch).toHaveBeenCalledWith(action);
     });
 
     it('should dispatch a dispatchAction action', () => {
       const anyAction = createAction('[Action] do');
+
       facade.dispatchAction(anyAction);
       expect(store.dispatch).toHaveBeenCalledWith(anyAction());
     });

@@ -38,6 +38,7 @@ describe('EcoStoreProductsApiService', () => {
 
   it('should use getList with limit 1 instead of getFullList for performance when getting one by slug', async () => {
     const slug = 'test-slug';
+
     await firstValueFrom(service.getOneBySlug(slug));
 
     expect(mockCrudService.getFullList).not.toHaveBeenCalled();

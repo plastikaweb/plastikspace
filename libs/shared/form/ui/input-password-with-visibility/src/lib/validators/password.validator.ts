@@ -9,6 +9,7 @@ export function passwordValidator(control: AbstractControl) {
   if (!control.value || isValidPassword(control.value)) {
     return null;
   }
+
   return { password: true };
 }
 
@@ -34,5 +35,6 @@ function isValidPassword(password: string): boolean {
   if (!/\d/.test(password)) {
     return false;
   }
+
   return true;
 }

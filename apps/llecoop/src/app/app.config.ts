@@ -48,31 +48,39 @@ export const appConfig = {
     provideFirebaseApp(() => initializeApp(environment.firebase, 'llecoop')),
     provideAuth(() => {
       const auth = getAuth(getApp('llecoop'));
+
       if (environment['useEmulators']) {
         connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });
       }
+
       return auth;
     }),
     provideFirestore(() => {
       const firestore = getFirestore(getApp('llecoop'));
+
       if (environment['useEmulators']) {
         connectFirestoreEmulator(firestore, '127.0.0.1', 8080);
       }
       persistentMultipleTabManager();
+
       return firestore;
     }),
     provideStorage(() => {
       const storage = getStorage(getApp('llecoop'));
+
       if (environment['useEmulators']) {
         connectStorageEmulator(storage, '127.0.0.1', 9199);
       }
+
       return storage;
     }),
     provideFunctions(() => {
       const functions = getFunctions(getApp('llecoop'));
+
       if (environment['useEmulators']) {
         connectFunctionsEmulator(functions, '127.0.0.1', 5001);
       }
+
       return functions;
     }),
     provideRouter(appRoutes, withViewTransitions(), withComponentInputBinding()),
@@ -88,6 +96,7 @@ export const appConfig = {
     provideAppInitializer(() => {
       const liveAnnouncer = inject(LiveAnnouncer);
       const isActive = inject(activityStore).isActive;
+
       effect(() => {
         if (isActive()) {
           liveAnnouncer.announce('Carregant dades...', 'polite', 100);

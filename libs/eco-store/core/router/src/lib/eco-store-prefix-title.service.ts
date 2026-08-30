@@ -19,12 +19,14 @@ export class EcoStorePrefixTitleService extends PrefixTitleService {
       const slug = title.split(':')[1];
       const categoriesStore = this.#injector.get(ecoStoreProductCategoriesStore);
       const category = categoriesStore.findCategoryBySlug(slug);
+
       return category ? categoriesStore.getLocalizedCategoryName(category) : undefined;
     }
 
     if (title?.startsWith('PRODUCT_TITLE:')) {
       const slug = title.split(':')[1];
       const productsStore = this.#injector.get(ecoStoreProductsStore);
+
       return productsStore.findProductBySlug()(slug)?.name;
     }
 
@@ -44,6 +46,7 @@ export class EcoStorePrefixTitleService extends PrefixTitleService {
     if (!title) {
       return `${prefix}`;
     }
+
     return `${prefix} - ${title}`;
   }
 }

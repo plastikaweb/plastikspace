@@ -64,10 +64,13 @@ export const ecoStoreOrdersStore = signalStore(
     return {
       setSelected(id: IdType<EcoStoreOrder>): boolean {
         const order = store.entities().find(p => p.id === id);
+
         if (order) {
           updateState(store, '[orders] setSelected', { selectedItemId: order.id });
+
           return true;
         }
+
         return false;
       },
 

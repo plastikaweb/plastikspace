@@ -70,6 +70,7 @@ export class EcoStoreProductPriceComponent {
 
   protected containerClass() {
     const base = 'flex';
+
     return this.size() === 'detail' ? `${base} w-full` : `${base} space-y-1`;
   }
 
@@ -88,6 +89,7 @@ export class EcoStoreProductPriceComponent {
 
   protected priceContainerClass() {
     const base = 'flex items-baseline';
+
     return this.size() === 'detail' ? `${base} gap-4 mb-4` : `${base} gap-sub`;
   }
 

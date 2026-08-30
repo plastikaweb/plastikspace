@@ -36,6 +36,7 @@ describe('SharedCountdownUiComponent', () => {
 
   it('should have timer role and aria-live attribute', () => {
     const compiled = fixture.nativeElement as HTMLElement;
+
     expect(compiled.getAttribute('role')).toBe('timer');
     expect(compiled.getAttribute('aria-live')).toBe('polite');
   });
@@ -44,6 +45,7 @@ describe('SharedCountdownUiComponent', () => {
     fixture.componentRef.setInput('segments', ['1d', '2h', '30m']);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
+
     expect(compiled.textContent).toContain('1d');
     expect(compiled.textContent).toContain('2h');
     expect(compiled.textContent).toContain('30m');
@@ -54,6 +56,7 @@ describe('SharedCountdownUiComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     const separator = compiled.querySelector('.countdown-separator-test');
+
     expect(separator).toBeTruthy();
     expect(separator?.textContent).toContain(':');
   });
@@ -62,6 +65,7 @@ describe('SharedCountdownUiComponent', () => {
     fixture.componentRef.setInput('class', 'custom-class');
     fixture.detectChanges();
     const pElement = fixture.nativeElement.querySelector('p');
+
     expect(pElement?.classList).toContain('custom-class');
   });
 });

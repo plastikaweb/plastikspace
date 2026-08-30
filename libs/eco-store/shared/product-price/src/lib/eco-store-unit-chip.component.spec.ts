@@ -12,6 +12,7 @@ describe('EcoStoreUnitChipComponent', () => {
     }).compileComponents();
 
     const translate = TestBed.inject(TranslateService);
+
     translate.setTranslation('en', { 'products.unit.measure.weight': '{{value}}' });
     translate.use('en');
 
@@ -28,6 +29,7 @@ describe('EcoStoreUnitChipComponent', () => {
 
   it('should display the unit base', () => {
     const element = fixture.nativeElement as HTMLElement;
+
     expect(element.textContent).toContain('kg');
   });
 });

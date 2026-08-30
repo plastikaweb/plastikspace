@@ -20,6 +20,7 @@ export function getMinutesFromStartOfWeek(day: number, time: string): number {
   // date-fns/JS getDay(): Sunday=0, Monday=1, ...
   // We want Monday=0 to Sunday=6 for linear week comparison
   const adjustedDay = day === 0 ? 6 : day - 1;
+
   return adjustedDay * 24 * 60 + hours * 60 + minutes;
 }
 
@@ -39,11 +40,13 @@ export function getNextDateFromTime(
   const currentDay = getDay(currentDate);
 
   let daysUntil = targetDay - currentDay;
+
   if (daysUntil < 0) {
     daysUntil += 7;
   }
 
   let nextDate = addDays(currentDate, daysUntil);
+
   nextDate = set(nextDate, { hours, minutes, seconds: 0, milliseconds: 0 });
 
   if (isBefore(nextDate, currentDate)) {
@@ -69,7 +72,10 @@ export function formatTenantAddresses(addresses: EcoStoreTenantAddress[]): UserC
       phone: address.phone,
       default: address.default,
     }))
-    .sort((a, b) => (b.default ? 1 : 0) - (a.default ? 1 : 0)) as UserContact[];
+    .sort(
+      (firstAddress, secondAddress) =>
+        (secondAddress.default ? 1 : 0) - (firstAddress.default ? 1 : 0)
+    ) as UserContact[];
 }
 
 /**
@@ -107,6 +113,7 @@ export function calculateStoreWindowStatus(
   const closeVal = getMinutesFromStartOfWeek(DAYS_MAP[closeDay], closeTime);
 
   let isOpen = false;
+
   if (openVal < closeVal) {
     isOpen = nowVal >= openVal && nowVal < closeVal;
   } else {
@@ -149,6 +156,7 @@ export function isShippingMethodConfigured(
   addresses: EcoStoreTenantAddress[]
 ): boolean {
   const option = options.find(opt => opt.type === type);
+
   if (!option?.enabled) return false;
 
   if (type === 'pickup') {

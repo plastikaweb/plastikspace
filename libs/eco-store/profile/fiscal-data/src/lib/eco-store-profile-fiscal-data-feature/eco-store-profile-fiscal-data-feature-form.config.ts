@@ -78,6 +78,7 @@ export function ecoStoreProfileFiscalDataFeatureFormConfig(): FormConfig<UserFis
       ],
     },
   ];
+
   return {
     getConfig: () => formConfig,
     getSubmitFormConfig: () => ({

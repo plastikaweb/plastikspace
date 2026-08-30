@@ -14,6 +14,7 @@ export const productDetailResolver: ResolveFn<Observable<boolean>> = (
   const firebaseStorage = inject(FirebaseStorageService);
 
   const id = route.paramMap.get('id');
+
   firebaseStorage.reset();
 
   if (!id) {
@@ -27,6 +28,7 @@ export const productDetailResolver: ResolveFn<Observable<boolean>> = (
       if (!product) {
         store.getItem(id);
       }
+
       return !!product;
     }),
     filter(Boolean)

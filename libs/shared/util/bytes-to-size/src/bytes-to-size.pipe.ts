@@ -28,10 +28,12 @@ export class BytesToSizePipe implements PipeTransform {
       return `0 ${this.#sizes[0]}`;
     }
     const size = Math.floor(Math.log(value) / LOG1024);
+
     if (size === 0) {
       return `${value} ${this.#sizes[size]}`;
     }
     const power = POWERS[size] ?? 1024 ** size;
+
     return `${(value / power).toFixed(fixed)} ${this.#sizes[size]}`;
   }
 }

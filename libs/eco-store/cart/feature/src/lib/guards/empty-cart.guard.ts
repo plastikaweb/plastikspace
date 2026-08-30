@@ -32,6 +32,7 @@ export const emptyCartGuard: CanActivateFn = (): Observable<boolean | UrlTree> |
       if (isEmpty) {
         return router.createUrlTree(['/botiga']);
       }
+
       return true;
     })
   );

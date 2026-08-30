@@ -116,6 +116,7 @@ export function withPocketBaseListFeature<
                   },
                   error: error => {
                     const message = error.message ?? `${featureName}.list.error`;
+
                     updateState(store, `[${featureName}] getList error`, {
                       isLoading: false,
                       error: message,
@@ -143,6 +144,7 @@ export function withPocketBaseListFeature<
                 params: store.formattedParams(),
               };
             }
+
             return null;
           })
         );
@@ -183,6 +185,7 @@ export function withPocketBaseGetOneFeature<
             store._notificationService.create(`${featureName}.getOne.notFound`, 'ERROR', {
               groupKey: `${featureName}:getOne`,
             });
+
             return;
           }
 

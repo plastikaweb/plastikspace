@@ -52,16 +52,19 @@ export class EcoStoreProductQuantityComponent {
 
   protected readonly step = computed(() => {
     const type = this.product().unitType;
+
     return type === 'unit' || type.startsWith('unitWithFixed') ? 1 : 0.1;
   });
 
   protected readonly minLimit = computed(() => {
     const min = this.product().minQuantity;
+
     return min > 0 ? min : this.step();
   });
 
   protected readonly maxLimit = computed(() => {
     const max = this.product().maxQuantity || this.product().stock;
+
     return max > 0 ? max : Infinity;
   });
 
@@ -82,6 +85,7 @@ export class EcoStoreProductQuantityComponent {
   increment() {
     if (this.quantity() === 0 && this.minLimit() > 0) {
       this.validateAndSet(this.minLimit());
+
       return;
     }
     this.updateQuantity(this.step());
@@ -99,6 +103,7 @@ export class EcoStoreProductQuantityComponent {
       if (this.mode() === 'detail') return;
 
       this.quantityChange.emit(0);
+
       return;
     }
 
@@ -112,6 +117,7 @@ export class EcoStoreProductQuantityComponent {
 
     if (isNaN(value)) {
       inputElement.value = this.quantity().toString();
+
       return;
     }
 

@@ -172,6 +172,7 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit, OnDestroy {
       // Reset through the directive when available — it also clears the `submitted`
       // flag Material's error-state matcher uses, so pristine fields show no errors.
       const formGroupDirective = this.formGroupDirective();
+
       if (formGroupDirective) {
         formGroupDirective.resetForm({});
       } else {

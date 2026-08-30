@@ -14,6 +14,7 @@ const getEnvironment = (): LlecoopEnvironment => inject(ENVIRONMENT) as LlecoopE
 const hasCustomClaim = (claim: string) => async (): Promise<boolean> => {
   const auth = inject(Auth);
   const idTokenResult = await auth.currentUser?.getIdTokenResult();
+
   return !!idTokenResult?.claims[claim];
 };
 
@@ -23,22 +24,26 @@ const customAuthGuard: CanActivateFn = async route => {
 
   if (!auth.currentUser) {
     await router.navigate(['/']);
+
     return false;
   }
 
   const authPipeType = route.data['authGuardPipe'];
+
   if (!authPipeType) return true;
 
   let isAuthorized = false;
 
   if (authPipeType === 'ADMIN_ONLY') {
     const adminCheck = hasCustomClaim('isAdmin');
+
     isAuthorized = await adminCheck();
   }
 
   if (!isAuthorized) {
     await router.navigate(['/']);
   }
+
   return isAuthorized;
 };
 

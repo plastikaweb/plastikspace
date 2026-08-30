@@ -24,6 +24,7 @@ export const userOrderDetailResolver: ResolveFn<Observable<boolean>> = (
       if (!userOrder) {
         store.getItem(id);
       }
+
       return !!userOrder;
     }),
     filter(Boolean)

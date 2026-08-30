@@ -109,6 +109,7 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterVi
     if (!this.headerWidgetsConfig) return;
 
     const container = this.widgetsContainer();
+
     if (container) {
       container.clear();
 

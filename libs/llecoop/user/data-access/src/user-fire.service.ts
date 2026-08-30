@@ -36,12 +36,14 @@ export class LlecoopUserFireService extends EntityFireService<LlecoopUser> {
       Object.entries(filter).forEach(([key, value]) => {
         if (key === 'name' && value) {
           const normalizedText = latinize(value as string).toLowerCase();
+
           conditions.push(
             where('normalizedName', '>=', normalizedText),
             where('normalizedName', '<=', normalizedText + '\uf8ff')
           );
         } else if (key === 'email' && value) {
           const normalizedEmail = latinize(value as string).toLowerCase();
+
           conditions.push(
             where('email', '>=', normalizedEmail),
             where('email', '<=', normalizedEmail + '\uf8ff')
@@ -58,6 +60,7 @@ export class LlecoopUserFireService extends EntityFireService<LlecoopUser> {
   protected override getSortingConditions(sorting: TableSortingConfig): QueryConstraint[] {
     const [active, direction] = sorting;
     const conditions: QueryConstraint[] = [];
+
     conditions.push(orderBy(active, direction || 'asc'));
 
     if (active === 'registered' || active === 'emailVerified') {
@@ -78,6 +81,7 @@ export class LlecoopUserFireService extends EntityFireService<LlecoopUser> {
 
     if (pageIndex > 0 && pageLastElements?.has(pageIndex - 1)) {
       const lastDoc = pageLastElements.get(pageIndex - 1);
+
       if (activeField === 'registered' || activeField === 'emailVerified') {
         conditions.push(startAfter(lastDoc?.[activeField], lastDoc?.email));
       } else {
@@ -109,11 +113,13 @@ export class LlecoopUserFireService extends EntityFireService<LlecoopUser> {
 
   override update(id: IdType<LlecoopUser>, item: Partial<LlecoopUser>) {
     this.#firebaseAuthService.updateEmail();
+
     return super.update(id, item);
   }
 
   addAdminClaim(userId: EntityId): Observable<HttpsCallableResult<unknown>> {
     const callable = httpsCallable(this.#functions, 'setUserAdminClaim');
+
     return from(callable(userId));
   }
 }

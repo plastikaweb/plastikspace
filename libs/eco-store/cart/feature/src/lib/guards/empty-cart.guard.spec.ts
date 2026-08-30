@@ -41,6 +41,7 @@ async function runGuard(): Promise<boolean | UrlTree> {
   const result = TestBed.runInInjectionContext(() =>
     (emptyCartGuard as CanActivateFn)({} as never, {} as never)
   );
+
   return firstValueFrom(isObservable(result) ? result : of(result)) as Promise<boolean | UrlTree>;
 }
 

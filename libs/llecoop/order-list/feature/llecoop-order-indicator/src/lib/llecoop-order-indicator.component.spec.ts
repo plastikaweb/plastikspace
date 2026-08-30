@@ -60,6 +60,7 @@ describe('LlecoopOrderIndicatorComponent', () => {
     expect(createUserOrderBtn).toBeFalsy();
 
     const matBadge = viewUserOrderBtn.nativeElement.querySelector('.mat-badge-content');
+
     expect(matBadge).toBeTruthy();
     expect(matBadge.textContent).toBe('2');
     expect(viewUserOrderBtn.nativeElement.textContent).toContain('#order A');
@@ -68,6 +69,7 @@ describe('LlecoopOrderIndicatorComponent', () => {
 
   it('should display correct badge count for cart items', () => {
     const matBadge = viewUserOrderBtn.nativeElement.querySelector('.mat-badge-content');
+
     expect(matBadge).toBeTruthy();
     expect(matBadge.textContent).toBe('2');
   });
@@ -79,15 +81,18 @@ describe('LlecoopOrderIndicatorComponent', () => {
       totalPrice: 165,
       cart: mockedCart,
     } as UserOrder;
+
     MockedUserOrderStore.currentUserOrder.set(newCurrentUserOrder);
     MockedOrderListStore.currentOrderList.set(mockedCurrentOrderList);
     fixture.detectChanges();
 
     const matBadge = viewUserOrderBtn.nativeElement.querySelector('.mat-badge-content');
+
     expect(matBadge).toBeTruthy();
     expect(matBadge.textContent).toBe('3');
 
     const totalPrice = viewUserOrderBtn.nativeElement.textContent.trim();
+
     expect(totalPrice).toContain(
       (newCurrentUserOrder.totalPrice + newCurrentUserOrder.deliveryPrice).toString()
     );

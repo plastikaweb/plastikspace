@@ -19,6 +19,7 @@ export class ServerTranslateLoader implements TranslateLoader {
     if (lang === 'en') {
       return of(enLang);
     }
+
     return of(caLang);
   }
 }

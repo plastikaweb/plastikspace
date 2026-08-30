@@ -33,6 +33,7 @@ export const shippingInfoGuard: CanActivateFn = async (): Promise<boolean | UrlT
         if (!isShippingOk) {
           return router.createUrlTree(['/cistella/enviament']);
         }
+
         return true;
       })
     )

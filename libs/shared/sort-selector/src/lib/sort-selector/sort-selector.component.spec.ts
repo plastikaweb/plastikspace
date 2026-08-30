@@ -49,6 +49,7 @@ describe('SortSelectorComponent', () => {
 
     expect(button).toBeTruthy();
     const text = button.textContent || '';
+
     expect(text).toContain('products.sort.label');
     expect(text).toContain('products.sort.nameAsc');
   });

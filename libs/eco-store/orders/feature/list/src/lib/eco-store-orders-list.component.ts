@@ -81,8 +81,10 @@ export default class EcoStoreOrdersListComponent {
         }
         const remaining = s.count - s.page * s.perPage;
         const count = Math.max(0, Math.min(s.perPage, remaining));
+
         return Array(count).fill(0);
       }
+
       return [];
     },
   });

@@ -9,6 +9,7 @@ export class EcoStoreTenantService extends EcoStoreTenantBaseService {
     const parts = hostname.split('.');
 
     const slug = SKIP_PREFIXES.includes(parts[0]) ? parts[1] : parts[0];
+
     return slug ?? null;
   }
 }

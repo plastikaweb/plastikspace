@@ -133,33 +133,34 @@ export const generateOrderNumber = (tenantNormalizedName: string): string => {
   const random = Math.floor(Math.random() * 1000)
     .toString()
     .padStart(3, '0');
+
   return `${tenantNormalizedName.toUpperCase()}-${timestamp}-${random}`;
 };
 
 /**
  * Converts a cart item into an order item snapshot, locking in the current price.
- * @param {EcoStoreCartItem} item - The cart item to convert.
+ * @param {EcoStoreCartItem} cartItem - The cart item to convert.
  * @returns {EcoStoreOrderItemSnapshot} An order item snapshot with locked pricing data.
  */
-export const toOrderItemSnapshot = (item: EcoStoreCartItem): EcoStoreOrderItemSnapshot => {
-  const name = item.product.name;
+export const toOrderItemSnapshot = (cartItem: EcoStoreCartItem): EcoStoreOrderItemSnapshot => {
+  const name = cartItem.product.name;
   const searchName =
     typeof name === 'object' && name !== null
       ? Object.values(name as unknown as LocalizedFields<string>)
-          .map(val => latinize(val).toLowerCase())
+          .map(value => latinize(value).toLowerCase())
           .join(' ')
       : latinize(name).toLowerCase();
 
   return {
-    productId: item.product.id,
-    name: item.product.name,
+    productId: cartItem.product.id,
+    name: cartItem.product.name,
     searchName,
-    categoryName: item.product.categoryName,
-    unitType: item.product.unitType,
-    lockedPrice: item.product.priceWithIva,
-    taxRate: item.product.iva,
-    requestedQuantity: item.quantity,
-    isAvailable: item.product.inStock,
-    lineTotal: item.quantity * item.product.priceWithIva,
+    categoryName: cartItem.product.categoryName,
+    unitType: cartItem.product.unitType,
+    lockedPrice: cartItem.product.priceWithIva,
+    taxRate: cartItem.product.iva,
+    requestedQuantity: cartItem.quantity,
+    isAvailable: cartItem.product.inStock,
+    lineTotal: cartItem.quantity * cartItem.product.priceWithIva,
   };
 };

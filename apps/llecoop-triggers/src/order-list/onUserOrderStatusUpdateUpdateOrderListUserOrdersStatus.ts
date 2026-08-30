@@ -8,12 +8,14 @@ export default async change => {
 
   if (before?.status === after?.status) {
     functions.logger.debug(`Status not changed, skipping update`);
+
     return;
   }
   const orderListId = before?.orderListId || after?.orderListId || '';
 
   if (!orderListId) {
     functions.logger.debug(`Order list id not found, skipping update`);
+
     return;
   }
 
@@ -27,6 +29,7 @@ export default async change => {
   const userOrdersStatus = orderListOrders.docs.reduce((acc, order) => {
     const orderData = order.data();
     const orderStatus = orderData?.status;
+
     return {
       ...acc,
       [orderStatus]: (acc[orderStatus] || 0) + 1,

@@ -26,6 +26,7 @@ export class LlecoopUserOrderResumeFacadeService {
 
   orderStatus = computed(() => {
     const status = this.userOrder()?.status as LlecoopUserOrder['status'];
+
     return llecoopUserOrderStatus[status] ?? null;
   });
 }

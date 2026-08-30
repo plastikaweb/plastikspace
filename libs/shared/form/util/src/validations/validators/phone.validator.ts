@@ -7,5 +7,6 @@ import { AbstractControl, ValidationErrors } from '@angular/forms';
  */
 export function phoneValidator(control: AbstractControl): ValidationErrors | null {
   const phoneRegex = /^[6-9]\d{8}$/;
+
   return !control.value || phoneRegex.test(control.value) ? null : { phone: true };
 }

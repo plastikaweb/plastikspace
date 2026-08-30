@@ -23,6 +23,7 @@ export class PwaNavigationService {
           typeof window !== 'undefined' &&
           'standalone' in window.navigator &&
           window.navigator['standalone'];
+
         return result.matches || isIosStandalone;
       })
     ),

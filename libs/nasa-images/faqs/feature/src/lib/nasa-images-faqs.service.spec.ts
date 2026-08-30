@@ -43,6 +43,7 @@ describe('NasaImagesFaqsService', () => {
 
     req.flush(faqs);
     const response = await responsePromise;
+
     expect(response).toStrictEqual(faqs);
     httpMock.verify();
   });

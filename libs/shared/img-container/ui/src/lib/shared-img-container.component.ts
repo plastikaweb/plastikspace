@@ -38,9 +38,11 @@ export class SharedImgContainerComponent {
 
   readonly aspectRatio = computed(() => {
     const dims = this.dimensions();
+
     if (dims?.width && dims?.height) {
       return `${dims.width} / ${dims.height}`;
     }
+
     return 'auto';
   });
 

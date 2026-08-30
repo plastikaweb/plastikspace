@@ -225,6 +225,7 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
                         value?.reduce((acc: number, item: LlecoopOrderProduct) => {
                           return acc + item.initPrice;
                         }, 0) || 0;
+
                       formly.formControl?.setValue(Number(total.toFixed(2)));
                     })
                   );
@@ -299,6 +300,7 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
                     tap(() => {
                       const deliveryPrice = formly.model?.deliveryPrice || 0;
                       const price = formly.model?.price || 0;
+
                       formly.formControl?.setValue(Number(price + deliveryPrice).toFixed(2));
                     })
                   );

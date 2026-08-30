@@ -236,6 +236,8 @@ Beyond architectural boundaries, the following code quality rules are enforced:
 - **Deprecation warnings**: Enabled for non-test files to catch deprecated API usage
 - **NgRx**: Select style is enforced; recommended NgRx patterns required
 - **Accessibility**: Comprehensive a11y rules for templates (no-positive-tabindex, alt-text, label-has-associated-control, etc.)
+- **Naming** (warnings, not errors): `id-length` 2-40 chars (short loop/callback names like `i`, `e`, `id` are whitelisted), `id-denylist` rejects vague names (`data`, `info`, `temp`, `val`, `item`), and `@typescript-eslint/naming-convention` enforces camelCase members, PascalCase types, and `is`/`has`/`can`/`should`/`will` prefixes on boolean variables. The boolean selector is the only type-aware part and is switched off for `*.spec.ts`, which lint without a TS program (`"project": null`) — leaving it on there crashes ESLint instead of reporting
+- **Statement padding**: `padding-line-between-statements` requires a blank line before every `return` and after a block of variable declarations
 
 ## Testing
 

@@ -16,6 +16,7 @@ export class EcoStoreProfileBasicFeatureComponent {
 
   protected readonly model = computed(() => {
     const user = this.#profileStore.user();
+
     return {
       name: user?.name || '',
       phone: user?.phone || '',

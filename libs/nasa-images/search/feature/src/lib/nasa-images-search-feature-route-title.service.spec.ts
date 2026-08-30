@@ -36,6 +36,7 @@ describe('NasaImagesSearchSearchRouterTitleService', () => {
   describe('resolve method', () => {
     it('should return the correct html title for nasa images route if "q" query param is present', () => {
       let result = '';
+
       service.resolve().subscribe(value => (result = value));
       expect(result).toBe('search by "pluto" (pag. 2)');
     });
@@ -44,6 +45,7 @@ describe('NasaImagesSearchSearchRouterTitleService', () => {
       store.overrideSelector(selectRouteQueryParams, { q: '', page: '3' });
 
       let result = '';
+
       service.resolve().subscribe(value => (result = value));
       expect(result).toBe('search');
     });

@@ -24,6 +24,7 @@ export class PwaManifestService {
   applyBranding(data: PwaAppData): void {
     if (!isPlatformBrowser(this.#platformId) || !data.logo) return;
     const appleIcon = this.#document.getElementById('apple-touch-icon') as HTMLLinkElement | null;
+
     appleIcon?.setAttribute('href', data.logo);
   }
 }

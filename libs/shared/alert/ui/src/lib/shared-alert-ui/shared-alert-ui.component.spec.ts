@@ -19,6 +19,7 @@ describe('SharedAlertUiComponent', () => {
     fixture.componentRef.setInput('type', type);
     fixture.componentRef.setInput('closable', closable);
     fixture.detectChanges();
+
     return fixture;
   }
 
@@ -35,9 +36,11 @@ describe('SharedAlertUiComponent', () => {
 
   it('should apply the correct host class for each type', () => {
     const types = ['INFO', 'WARNING', 'SUCCESS', 'ERROR'] as const;
+
     for (const type of types) {
       createComponent(type);
       const el: HTMLElement = fixture.nativeElement;
+
       expect(el.classList).toContain(`plastik-alert--${type.toLowerCase()}`);
     }
   });
@@ -53,6 +56,7 @@ describe('SharedAlertUiComponent', () => {
     for (const [type, icon] of Object.entries(iconMap)) {
       createComponent(type as keyof typeof iconMap);
       const matIcon = fixture.debugElement.query(By.css('mat-icon.plastik-alert__icon'));
+
       expect(matIcon.nativeElement.textContent.trim()).toBe(icon);
     }
   });
@@ -60,12 +64,14 @@ describe('SharedAlertUiComponent', () => {
   it('should not render the close button when closable is false', () => {
     createComponent('INFO', false);
     const closeBtn = fixture.debugElement.query(By.css('button[matIconButton]'));
+
     expect(closeBtn).toBeNull();
   });
 
   it('should render the close button when closable is true', () => {
     createComponent('INFO', true);
     const closeBtn = fixture.debugElement.query(By.css('button[matIconButton]'));
+
     expect(closeBtn).not.toBeNull();
   });
 
@@ -74,6 +80,7 @@ describe('SharedAlertUiComponent', () => {
     const closeBtn = fixture.debugElement.query(By.css('button[matIconButton]'));
     const tooltip = closeBtn.injector.get(MatTooltip);
     const ariaLabel = closeBtn.nativeElement.getAttribute('aria-label');
+
     expect(ariaLabel).toBe('common.close');
     expect(tooltip.message).toBe(ariaLabel);
   });
@@ -82,6 +89,7 @@ describe('SharedAlertUiComponent', () => {
     createComponent('INFO', true);
     const closedSpy = vi.spyOn(fixture.componentInstance.closed, 'emit');
     const closeBtn = fixture.debugElement.query(By.css('button[matIconButton]'));
+
     closeBtn.nativeElement.click();
     expect(closedSpy).toHaveBeenCalledOnce();
   });
@@ -94,6 +102,7 @@ describe('SharedAlertUiComponent', () => {
   it('should pass accessibility check for INFO type', async () => {
     createComponent('INFO');
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   });
 });

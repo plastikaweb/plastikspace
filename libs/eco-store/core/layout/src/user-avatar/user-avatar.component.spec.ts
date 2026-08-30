@@ -50,6 +50,7 @@ describe('EcoUserAvatarComponent', () => {
 
     const element: HTMLElement = fixture.nativeElement;
     const initialsSpan = element.querySelector('span');
+
     expect(initialsSpan).toBeTruthy();
     expect(initialsSpan?.textContent?.trim()).toBe('JD');
   });
@@ -60,6 +61,7 @@ describe('EcoUserAvatarComponent', () => {
 
     const element: HTMLElement = fixture.nativeElement;
     const imgContainer = element.querySelector('plastik-img-container');
+
     expect(imgContainer).toBeTruthy();
   });
 
@@ -69,6 +71,7 @@ describe('EcoUserAvatarComponent', () => {
       fixture.componentRef.setInput('initials', 'JD');
       fixture.detectChanges();
       const results = await axe(fixture.nativeElement);
+
       expect(results).toHaveNoViolations();
     });
 
@@ -80,6 +83,7 @@ describe('EcoUserAvatarComponent', () => {
       });
       fixture.detectChanges();
       const results = await axe(fixture.nativeElement);
+
       expect(results).toHaveNoViolations();
     });
   });

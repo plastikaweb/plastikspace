@@ -50,6 +50,7 @@ export class FirebaseStorageService extends StorageService implements StorageSer
         .subscribe(data => this.progress.set(Math.round(data)));
 
       const snapshot = await task;
+
       this.fileUrl.set(await getDownloadURL(snapshot.ref));
       this.progress.set(0);
     } catch (error) {
@@ -67,11 +68,14 @@ export class FirebaseStorageService extends StorageService implements StorageSer
   async getFileUrl(fileName: string, folder?: string): Promise<string> {
     const storageRef = ref(this.#firebaseStorage, `${folder}/${fileName}`);
     const getFile = await listAll(storageRef);
+
     if (getFile.items.length === 0) {
       throw new Error('File not found');
     }
     const url = await getDownloadURL(getFile.items[0]);
+
     this.fileUrl.set(url);
+
     return url;
   }
 

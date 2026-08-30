@@ -45,6 +45,7 @@ export class LlecoopUserOrderResumeTableConfig implements TableStructureConfig<L
           ? `<li>Procedència: ${escapeHtml(product?.origin ?? '')}</li>`
           : '';
         const extra = `<ul class="hidden md:block">${provider}${origin}</ul>`;
+
         return this.#sanitizer.bypassSecurityTrustHtml(`${name}${info}${unit}${extra}`) as SafeHtml;
       },
     },
@@ -61,6 +62,7 @@ export class LlecoopUserOrderResumeTableConfig implements TableStructureConfig<L
         const unit = item?.unit ?? { type: 'unit' };
         const suffix = this.#productUnitSuffixPipe.transform(unit);
         const numberDigitsInfo = suffix === 'kg' ? '1.2-2' : '1.0-0';
+
         return {
           suffix,
           numberDigitsInfo,
@@ -80,6 +82,7 @@ export class LlecoopUserOrderResumeTableConfig implements TableStructureConfig<L
         const unit = item?.unit ?? { type: 'unit' };
         const suffix = this.#productUnitSuffixPipe.transform(unit);
         const numberDigitsInfo = suffix === 'kg' ? '1.2-2' : '1.0-0';
+
         return {
           suffix,
           numberDigitsInfo,

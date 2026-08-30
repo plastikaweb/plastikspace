@@ -45,6 +45,7 @@ describe('SharedUtilDynamicBgColorDirective', () => {
   it('should update color input dynamically', () => {
     fixture.detectChanges(); // Initial render with orange
     const component = fixture.componentInstance;
+
     component.color.set('blue');
     fixture.detectChanges(); // Update binding
 

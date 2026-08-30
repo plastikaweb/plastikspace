@@ -38,10 +38,12 @@ const TENANT_FETCH_TIMEOUT_MS = 1500;
  */
 async function resolveBranding(hostname: string): Promise<TenantBranding | null> {
   const slug = resolveTenantSlug(hostname);
+
   if (!slug) return null;
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), TENANT_FETCH_TIMEOUT_MS);
+
   try {
     const params = new URLSearchParams({
       filter: `(normalizedName='${slug}' && active=true)`,
@@ -53,9 +55,11 @@ async function resolveBranding(hostname: string): Promise<TenantBranding | null>
       cf: { cacheTtl: TENANT_CACHE_TTL, cacheEverything: true },
       signal: controller.signal,
     });
+
     if (!res.ok) return null;
 
     const data = (await res.json()) as { items?: TenantRecord[] };
+
     return tenantRecordToBranding(data.items?.[0], POCKETBASE_URL);
   } catch {
     // Timeout / network / JSON failures fall back to the generic identity.
@@ -74,6 +78,7 @@ async function resolveBranding(hostname: string): Promise<TenantBranding | null>
  */
 function injectPwaHead(response: Response, branding: TenantBranding): Response {
   const title = escapeAttribute(branding.name);
+
   return new HTMLRewriter()
     .on('head', {
       element(head) {
@@ -122,7 +127,9 @@ function applySecurityHeaders(response: Response, isLocalDev: boolean): Response
  */
 function withTrailingSlash(req: Request): Request {
   const u = new URL(req.url);
+
   u.pathname = u.pathname + '/';
+
   return new Request(u.toString(), req);
 }
 
@@ -151,6 +158,7 @@ export const reqHandler = createRequestHandler(async request => {
         'Cache-Control': `public, max-age=${MANIFEST_MAX_AGE}`,
       },
     });
+
     return applySecurityHeaders(manifestResponse, isLocalDev);
   }
 
@@ -169,6 +177,7 @@ export const reqHandler = createRequestHandler(async request => {
     response?.status === 308
   ) {
     const location = response.headers.get('Location');
+
     if (location) {
       const redirectUrl = new URL(location, request.url);
       const isSameOriginTrailingSlash =
@@ -191,6 +200,7 @@ export const reqHandler = createRequestHandler(async request => {
   // covers the prerendered shop landing.
   if ((response.headers.get('Content-Type') ?? '').includes('text/html')) {
     const branding = await resolveBranding(url.hostname);
+
     if (branding) {
       response = injectPwaHead(response, branding);
     }

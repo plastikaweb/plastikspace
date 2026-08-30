@@ -179,6 +179,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   protected columnsToDisplay = computed(() => {
     const actions = this.actions();
     const cols = this.columnProperties().map(property => property.key) || [];
+
     return [
       ...(this.expandable() ? ['expand'] : []),
       ...cols,
@@ -208,6 +209,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
       if (typeof value === 'number') return value;
       if (typeof value === 'boolean') return value ? 1 : 0;
       if (value instanceof Date) return value.getTime();
+
       return String(value).toLowerCase();
     };
 
@@ -239,6 +241,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
     effect(() => {
       const matSortInstance = this.matSort();
       const sortConfig = this.sort();
+
       if (matSortInstance && sortConfig) {
         matSortInstance.active = sortConfig[0] || '';
         matSortInstance.direction = sortConfig[1] || 'asc';
@@ -251,6 +254,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
      */
     effect(() => {
       const paginator = this.matPaginator();
+
       if (paginator) {
         this.dataSource.paginator = paginator;
       }
@@ -287,6 +291,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
     editableAttr: EditableAttributeBase<T>
   ): void {
     let value: string | number | boolean;
+
     if (event instanceof MatSelectChange || event instanceof MatRadioChange) {
       value = event.value;
     } else if (event instanceof MatCheckboxChange || event instanceof MatSlideToggleChange) {
@@ -295,6 +300,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
       value = (event.target as HTMLInputElement).value;
     }
     const result = editableAttr.onChanges?.(value, element);
+
     this.getChangedData.emit(result);
   }
 

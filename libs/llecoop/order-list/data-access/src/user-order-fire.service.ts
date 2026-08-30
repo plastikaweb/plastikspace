@@ -32,6 +32,7 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
     if (!this.#ordersGroupCollection && this.activeConnection()) {
       this.#ordersGroupCollection = collectionGroup(this.firestore, this.path);
     }
+
     return this.#ordersGroupCollection;
   }
 
@@ -74,6 +75,7 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
         ];
 
         const q = query(this.firestoreOrderGroupCollection, ...conditions);
+
         return collectionData(q, { idField: 'id' }).pipe(
           takeUntil(this.destroy$),
           distinctUntilChanged((prev, next) => JSON.stringify(prev) === JSON.stringify(next)),
@@ -90,6 +92,7 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
     return runInInjectionContext(this.injectionContext, () => {
       try {
         const userId = this.#authService.currentUser()?.uid;
+
         if (!userId) {
           return of({} as LlecoopUserOrder);
         }
@@ -104,7 +107,9 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
           takeUntil(this.destroy$),
           map(orders => {
             const order = orders.find(o => o.id === id);
+
             if (!order) throw new Error(`Order ${id} not found`);
+
             return order as LlecoopUserOrder;
           }),
           catchError(error => this.handlePermissionError(error, {} as LlecoopUserOrder))
@@ -119,6 +124,7 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
     if ((item as LlecoopUserOrder).orderListId) {
       this.setCollection(item as LlecoopUserOrder);
     }
+
     return super.create(item);
   }
 
@@ -126,6 +132,7 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
     if ((item as LlecoopUserOrder).orderListId) {
       this.setCollection(item as LlecoopUserOrder);
     }
+
     return super.update(id, item);
   }
 
@@ -139,6 +146,7 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
         const { filter } = params;
         const userId = this.#authService.currentUser()?.uid;
         const isAdmin = this.#authService.isAdmin();
+
         if (!userId) {
           return of(0);
         }
@@ -152,6 +160,7 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
         }
 
         const q = query(this.firestoreOrderGroupCollection, ...conditions);
+
         return collectionData(q, { idField: 'id' }).pipe(
           takeUntil(this.destroy$),
           distinctUntilChanged((prev, next) => JSON.stringify(prev) === JSON.stringify(next)),
@@ -168,6 +177,7 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
     return runInInjectionContext(this.injectionContext, () => {
       try {
         const userId = this.#authService.currentUser()?.uid;
+
         if (!userId) {
           return of(null);
         }
@@ -195,16 +205,19 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
 
   override getFilterConditions(filter: StoreUserOrderFilter): QueryConstraint[] {
     const conditions: QueryConstraint[] = [];
+
     if (Object.entries(filter).length > 0) {
       Object.entries(filter).forEach(([key, value]) => {
         if (key === 'text' && value) {
           const normalizedText = latinize(value as string).toLowerCase();
+
           conditions.push(
             where('normalizedName', '>=', normalizedText),
             where('normalizedName', '<=', normalizedText + '\uf8ff')
           );
         } else if (key === 'userNormalizedName' && value) {
           const normalizedText = latinize(value as string).toLowerCase();
+
           conditions.push(
             where('userNormalizedName', '>=', normalizedText),
             where('userNormalizedName', '<=', normalizedText + '\uf8ff')

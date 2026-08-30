@@ -23,6 +23,7 @@ export abstract class HttpGetService<T extends BaseEntity, TList, PARAMS extends
    */
   getList(params?: PARAMS): Observable<TList> {
     const service = this.createHttpCrudService<T, TList, PARAMS>();
+
     return service.getList(params);
   }
 
@@ -35,6 +36,7 @@ export abstract class HttpGetService<T extends BaseEntity, TList, PARAMS extends
    */
   getOne(id: IdType<T>, options?: unknown): Observable<T> {
     const service = this.createHttpCrudService<T, TList, PARAMS>();
+
     return service.getOne(id, options);
   }
 }

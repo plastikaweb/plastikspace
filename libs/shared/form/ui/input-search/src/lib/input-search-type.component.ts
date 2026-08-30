@@ -59,9 +59,11 @@ export class InputSearchTypeComponent extends FieldType<FieldTypeConfig<InputSea
    */
   protected readonly isDisabled = computed(() => {
     const term = this.formValue();
+
     if (term.length > 0 && term.length < (this.props?.minLength || 2)) {
       return true;
     }
+
     return this.formStatus() === 'INVALID' && !this.props['buttonEnabledIfValue'];
   });
 

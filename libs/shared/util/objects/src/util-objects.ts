@@ -10,12 +10,14 @@ export function isEmpty(obj: unknown): boolean {
   if (obj === null || obj === undefined) return true;
 
   const constructor = (obj as object).constructor;
+
   if (constructor === Array || constructor === Object) {
     for (const key in obj as object) {
       if (Object.prototype.hasOwnProperty.call(obj, key)) {
         return false;
       }
     }
+
     return true;
   }
 
@@ -100,18 +102,22 @@ export function getQueryParams(
  */
 export function formatURLQueryParams(url: string): Record<string, unknown> {
   const parts = url.split('?');
+
   if (parts.length < 2) {
     return {};
   }
   const queryString = parts[1];
   const urlParams = queryString.split('&');
+
   return urlParams.reduce((prev: Record<string, unknown>, current) => {
     const pair = current.split('=');
     const key = pair[0];
     const value = pair[1];
+
     if (key) {
       prev[key] = decodeURIComponent(value);
     }
+
     return prev;
   }, {});
 }
@@ -126,14 +132,17 @@ export function removeNullProperties(
   collection: Record<string, string | number | boolean | null>
 ): Record<string, string | number | boolean> {
   const result: Record<string, string | number | boolean> = {};
+
   for (const property in collection) {
     if (Object.prototype.hasOwnProperty.call(collection, property)) {
       const value = collection[property];
+
       if (value !== null) {
         result[property] = value;
       }
     }
   }
+
   return result;
 }
 
@@ -147,12 +156,15 @@ export function setEmptyStringPropertiesToNull(
   collection: Record<string, string | number | boolean | null>
 ): Record<string, string | number | boolean | null> {
   const result: Record<string, string | number | boolean | null> = {};
+
   for (const property in collection) {
     if (Object.prototype.hasOwnProperty.call(collection, property)) {
       const value = collection[property];
+
       result[property] = isString(value) && !value.length ? null : value;
     }
   }
+
   return result;
 }
 
@@ -174,6 +186,7 @@ export function areObjectEntriesEqual(prev: object, curr: object): boolean {
   }
 
   let prevCount = 0;
+
   for (const key in prev) {
     if (Object.prototype.hasOwnProperty.call(prev, key)) {
       prevCount++;
@@ -184,6 +197,7 @@ export function areObjectEntriesEqual(prev: object, curr: object): boolean {
   }
 
   let currCount = 0;
+
   for (const key in curr) {
     if (Object.prototype.hasOwnProperty.call(curr, key)) {
       currCount++;
@@ -203,15 +217,18 @@ export function transformStringToBooleanProperties(
   collection: Record<string, string | number | boolean | null>
 ): Record<string, string | number | boolean> {
   const result: Record<string, string | number | boolean> = {};
+
   for (const property in collection) {
     if (Object.prototype.hasOwnProperty.call(collection, property)) {
       const value = collection[property];
+
       result[property] =
         isString(value) && (value === 'false' || value === 'true')
           ? coerceBooleanProperty(value)
           : (value as string | number | boolean);
     }
   }
+
   return result;
 }
 
@@ -286,18 +303,22 @@ export function deepClone<T>(obj: T): T {
   if (Array.isArray(obj)) {
     const length = obj.length;
     const cloned = new Array(length);
+
     for (let i = 0; i < length; i++) {
       cloned[i] = deepClone(obj[i]);
     }
+
     return cloned as T;
   }
 
   const cloned = {} as T;
+
   for (const key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
       (cloned as Record<string, unknown>)[key] = deepClone((obj as Record<string, unknown>)[key]);
     }
   }
+
   return cloned;
 }
 
@@ -329,5 +350,6 @@ export function escapeHtml(text: string): string {
   if (!ESCAPE_HTML_CHARS.test(text)) {
     return text;
   }
-  return text.replace(ESCAPE_HTML_CHARS_GLOBAL, s => HTML_ESCAPE_MAP[s]);
+
+  return text.replace(ESCAPE_HTML_CHARS_GLOBAL, (replacer: string) => HTML_ESCAPE_MAP[replacer]);
 }

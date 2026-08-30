@@ -41,6 +41,7 @@ describe('EcoStoreHeroHeaderComponent', () => {
     await fixture.whenStable();
 
     const subtitle = fixture.debugElement.query(By.css('.category-subtitle'));
+
     expect(subtitle).toBeTruthy();
     expect(subtitle.nativeElement.textContent).toContain('receipt_long');
     expect(subtitle.nativeElement.textContent).toContain('3 orders');
@@ -52,6 +53,7 @@ describe('EcoStoreHeroHeaderComponent', () => {
     await fixture.whenStable();
 
     const heading = fixture.debugElement.query(By.css('h2'));
+
     expect(heading).toBeTruthy();
     expect(heading.nativeElement.textContent.trim()).toBe('My Orders');
   });
@@ -69,6 +71,7 @@ describe('EcoStoreHeroHeaderComponent', () => {
     await fixture.whenStable();
 
     const header = fixture.debugElement.query(By.css('header'));
+
     expect(header.nativeElement.classList.contains('hero-header--compact')).toBe(true);
   });
 
@@ -77,6 +80,7 @@ describe('EcoStoreHeroHeaderComponent', () => {
     await fixture.whenStable();
 
     const header = fixture.debugElement.query(By.css('header'));
+
     expect(header.nativeElement.classList.contains('reveal-up')).toBe(true);
 
     fixture.componentRef.setInput('disableReveal', true);
@@ -92,6 +96,7 @@ describe('EcoStoreHeroHeaderComponent', () => {
     await fixture.whenStable();
 
     const header = fixture.debugElement.query(By.css('header'));
+
     expect(header.nativeElement.style.getPropertyValue('--delay')).toBe('120ms');
   });
 
@@ -101,6 +106,7 @@ describe('EcoStoreHeroHeaderComponent', () => {
     await fixture.whenStable();
 
     const header = fixture.debugElement.query(By.css('header'));
+
     expect(header.nativeElement.getAttribute('role')).toBe('presentation');
   });
 
@@ -116,10 +122,12 @@ describe('EcoStoreHeroHeaderComponent', () => {
     class HostComponent {}
 
     const hostFixture = TestBed.createComponent(HostComponent);
+
     hostFixture.detectChanges();
     await hostFixture.whenStable();
 
     const projected = hostFixture.debugElement.query(By.css('[data-testId="extra"]'));
+
     expect(projected).toBeTruthy();
     expect(projected.nativeElement.closest('.hero-content')).toBeTruthy();
   });
@@ -136,12 +144,15 @@ describe('EcoStoreHeroHeaderComponent', () => {
     class HostComponent {}
 
     const hostFixture = TestBed.createComponent(HostComponent);
+
     hostFixture.detectChanges();
     await hostFixture.whenStable();
 
     const action = hostFixture.debugElement.query(By.css('[data-testId="action"]'));
+
     expect(action).toBeTruthy();
     const titleRow = action.nativeElement.parentElement;
+
     expect(titleRow.querySelector('h2')).toBeTruthy();
   });
 
@@ -153,6 +164,7 @@ describe('EcoStoreHeroHeaderComponent', () => {
     await fixture.whenStable();
 
     const results = await axe(fixture.nativeElement);
+
     expect(results).toHaveNoViolations();
   });
 });
