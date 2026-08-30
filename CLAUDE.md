@@ -29,7 +29,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-Plastikspace is a personal Nx monorepo containing **6 applications** and **137 libraries**, using Angular 21, Astro, and multiple backend systems (Firebase, PocketBase, HTTP APIs).
+Plastikspace is a personal Nx monorepo containing **7 applications** and **180 libraries**, using Angular 21, Astro, and multiple backend systems (Firebase, PocketBase, HTTP APIs).
 The repository enforces strict architectural boundaries through ESLint module constraints.
 
 **Repository**: <https://github.com/plastikaweb/plastikspace>
@@ -158,9 +158,12 @@ yarn cz                              # Interactive commit with Commitizen
 | **llecoop-firebase** | Firebase Functions | -          | Cloud functions for Llecoop                  |
 | **llecoop-triggers** | Firebase Functions | -          | Event triggers for Llecoop                   |
 | **eco-store**        | Angular 21         | PocketBase | E-commerce demo                              |
+| **eco-admin**        | Angular 21         | PocketBase | Admin panel for eco-store (scaffold, AP-0)   |
 | **plastikaweb**      | Angular 21         | GraphQL    | Personal portfolio (static site)             |
 
 Each app has a corresponding `-e2e` project for Cypress testing.
+
+`eco-admin` shares the eco-store PocketBase instance and its `users` auth collection; it is a CSR SPA (no SSR) served from its own origin, and its docs live in `apps/eco-admin/{REQUIREMENTS,TASKS,DESIGN-BRIEF,DESIGN-REVIEWS}.md`.
 
 ## Library Architecture
 
@@ -170,7 +173,8 @@ Libraries are organized by **scope** (domain) and **type** (layer):
 
 - **core**: Foundation libraries used across all apps
 - **shared**: Cross-app reusable features and utilities
-- **app-specific**: Libraries scoped to individual apps (e.g., `llecoop/`, `eco-store/`, `nasa-images/`, `plastikaweb/`)
+- **product-family**: Domain code shared by the apps of one product but by no other app. Currently only `eco/` (`libs/eco/*`), the eco platform domain layer shared by `eco-store` and `eco-admin`
+- **app-specific**: Libraries scoped to individual apps (e.g., `llecoop/`, `eco-store/`, `eco-admin/`, `nasa-images/`, `plastikaweb/`)
 
 ### Types
 
@@ -221,9 +225,13 @@ The following dependency rules are enforced via `.eslintrc.json`:
 
 - `scope:core` → can depend on core, shared, util, entity
 - `scope:shared` → can depend on shared, util, entity only
+- `scope:eco` → can depend on eco, core, shared
 - App-scoped libs → can depend on own scope + core + shared
+- `scope:eco-store` and `scope:eco-admin` additionally depend on `scope:eco`; no other app scope may, and the two never import each other
 
 **No circular dependencies allowed**. These rules prevent architectural drift.
+
+Every library must carry **both** a `scope:*` and a `type:*` tag. The rules are ANDed, and the `type:app` rule lists no app scope — a library tagged with a scope alone cannot be imported by any app.
 
 ### Code Quality Rules (ESLint)
 
@@ -327,8 +335,8 @@ The sections below capture only workspace-specific patterns that go beyond those
 The repository has 200+ path aliases defined in `tsconfig.base.json` for clean imports:
 
 ```typescript
-import { ApiService } from '@plastikspace/core/util/api-http';
-import { AuthFeature } from '@plastikspace/shared/auth/feature';
+import { ApiService } from '@plastik/core/util/api-http';
+import { AuthFeature } from '@plastik/shared/auth/feature';
 ```
 
 ### Barrel Exports

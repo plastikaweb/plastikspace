@@ -1,0 +1,15 @@
+{
+  "defaults": {
+    "timeout": 120000,
+    "concurrency": 1,
+    "standard": "WCAG2AA",
+    "viewport": {
+      "width": 320,
+      "height": 480
+    },
+    "reporters": ["cli", ["json", { "fileName": "./apps/eco-admin/.pa11y-report.json" }]],
+    "ignore": ["notice", "warning"],
+    "chromeLaunchConfig": { "args": ["--no-sandbox"] }
+  },
+  "urls": ["http://localhost:8080/"]
+}

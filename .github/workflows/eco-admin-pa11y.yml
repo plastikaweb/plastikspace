@@ -1,0 +1,68 @@
+name: Eco Admin pa11y
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches:
+      - develop
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  pa11y:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: 'yarn'
+
+      - name: Install
+        run: yarn install --immutable --network-timeout 1000000
+
+      - name: Check Nx Cloud Availability
+        run: |
+          # Try a real nx command with record and capture output
+          npx nx-cloud record -- npx nx --version > nx_cloud_check.log 2>&1 || true
+          if grep -iE "disabled|authorized|exceeding|failed to record" nx_cloud_check.log; then
+            echo "NX_CLOUD_RECORD=" >> $GITHUB_ENV
+            echo "NX_CLOUD_FLAGS=--no-cloud" >> $GITHUB_ENV
+            echo "Nx Cloud is disabled or out of credits. Running locally."
+          else
+            echo "NX_CLOUD_RECORD=npx nx-cloud record --" >> $GITHUB_ENV
+            echo "NX_CLOUD_FLAGS=" >> $GITHUB_ENV
+            echo "Nx Cloud is active."
+          fi
+
+      - name: Build
+        run: ${{ env.NX_CLOUD_RECORD }} yarn eco-admin:build ${{ env.NX_CLOUD_FLAGS }}
+
+      - name: Run pa11y-ci
+        run: yarn eco-admin:a11y
+
+      - name: Read pa11y_output file.
+        id: pa11y_output
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./apps/eco-admin/.pa11y-report.json
+
+      - name: Check for pa11y failures.
+        if: contains(steps.pa11y_output.outputs.content, 'errno 2')
+        run: |
+          echo "::error::The site is failing accessibility tests. Please review the report for details."
+          exit 1

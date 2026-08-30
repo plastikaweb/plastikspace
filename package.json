@@ -136,7 +136,19 @@
     "eco-store:build:github": "nx run eco-store:build:prod",
     "eco-store:cf:dev": "wrangler dev -c apps/eco-store/wrangler.jsonc",
     "eco-store:cf:deploy": "wrangler deploy -c apps/eco-store/wrangler.jsonc",
-    "eco-store:cf:local": "cp apps/eco-store/.env apps/eco-store/.dev.vars && yarn eco-store:build-cf:local && npm-run-all --parallel --race eco-store:cf:dev eco-store:watch-scss"
+    "eco-store:cf:local": "cp apps/eco-store/.env apps/eco-store/.dev.vars && yarn eco-store:build-cf:local && npm-run-all --parallel --race eco-store:cf:dev eco-store:watch-scss",
+    "eco-admin:serve": "nx run eco-admin:serve",
+    "eco-admin:serve:prod": "nx run eco-admin:serve:production",
+    "eco-admin:lint": "nx run eco-admin:lint",
+    "eco-admin:build": "nx run eco-admin:build --parallel",
+    "eco-admin:build:prod": "nx run eco-admin:build:production",
+    "eco-admin:test": "nx run eco-admin:test",
+    "eco-admin:e2e": "nx run eco-admin-e2e:e2e",
+    "eco-admin:e2e:local": "yarn nx run eco-admin-e2e:e2e --browser=chrome --port='cypress-auto' --watch=true",
+    "eco-admin:http-server": "angular-http-server --path ./dist/apps/eco-admin/browser --port 8080",
+    "preeco-admin:a11y": "yarn eco-admin:build",
+    "eco-admin:a11y": "npm-run-all --parallel --race eco-admin:http-server eco-admin:a11y:run",
+    "eco-admin:a11y:run": "pa11y-ci --config ./apps/eco-admin/.pa11yci.json"
   },
   "dependencies": {
     "@angular-architects/ngrx-toolkit": "21.0.1",

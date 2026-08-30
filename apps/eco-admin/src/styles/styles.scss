@@ -1,0 +1,14 @@
+@use '@angular/material' as mat;
+@use 'core_tailwind_theme';
+@use 'tailwindcss';
+@use 'core_input_material';
+@use 'core_button_material';
+@use 'core_table_material';
+@use 'core_a11y';
+
+/* No brand palette yet. The shared eco M3/OKLCH token block still lives inside
+   `apps/eco-store/src/styles/eco-store-theme.css`; AREF-09 (TASKS AP-0 0.6b)
+   promotes it to `libs/eco/styles` so both apps consume one source.
+   Do NOT add `apps/eco-store/src/styles` to this app's `includePaths`:
+   SCSS include paths are build config, so Nx module boundaries would not catch
+   the resulting app-to-app coupling. */
