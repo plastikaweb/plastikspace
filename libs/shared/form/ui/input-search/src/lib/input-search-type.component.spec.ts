@@ -147,6 +147,7 @@ describe('InputSearchTypeComponent', () => {
     it('should keep the clear button enabled for a below-minLength term so it can be cleared', () => {
       component.field.props!.resetSearch = true;
       component.formControl.setValue('a');
+      component.formControl.setErrors({ minlength: true });
       component['syncControl']();
       fixture.detectChanges();
 

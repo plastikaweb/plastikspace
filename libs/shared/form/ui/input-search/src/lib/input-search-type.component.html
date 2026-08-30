@@ -37,7 +37,6 @@
       type="button"
       [attr.aria-label]="'common.form.clear' | translate"
       [matTooltip]="'common.form.clear' | translate"
-      [disabled]="formStatus() === 'INVALID' && !props.buttonEnabledIfValue"
       (click)="resetSearch()">
       <mat-icon aria-hidden="true">clear</mat-icon>
     </button>
