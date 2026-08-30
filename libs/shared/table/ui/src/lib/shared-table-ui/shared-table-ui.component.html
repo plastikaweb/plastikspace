@@ -275,12 +275,18 @@
             ><span class="invisible">expand</span></mat-header-cell
           >
           <mat-cell *matCellDef="let element" class="max-w-[70px]">
+            @let isExpanded = expandedElement()?.id === element.id;
+            @let labelKey = isExpanded ? 'common.a11y.collapseRow' : 'common.a11y.expandRow';
+            @let resolvedLabel = labelKey | translate: { name: resolveName(element) };
             <button
+              type="button"
               matIconButton
-              aria-label="expand row"
               class="-left-sub"
+              [attr.aria-expanded]="isExpanded"
+              [attr.aria-label]="resolvedLabel"
+              [matTooltip]="resolvedLabel"
               (click)="$event.stopPropagation(); updateExpandedElement(element)">
-              @if (expandedElement()?.id === element.id) {
+              @if (isExpanded) {
                 <mat-icon>keyboard_arrow_up</mat-icon>
               } @else {
                 <mat-icon>keyboard_arrow_down</mat-icon>
