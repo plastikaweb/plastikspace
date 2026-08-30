@@ -34,7 +34,11 @@
               {{ item.priceWithIva * item.quantity | number: '1.2-2' }} €
             </div>
           </div>
-          <button matIconButton aria-label="Eliminar producte" (click)="removeItemFromCart(item)">
+          <button
+            matIconButton
+            [attr.aria-label]="'Eliminar producte: ' + item.name"
+            [matTooltip]="'Eliminar producte: ' + item.name"
+            (click)="removeItemFromCart(item)">
             <mat-icon>delete</mat-icon>
           </button>
         </div>
