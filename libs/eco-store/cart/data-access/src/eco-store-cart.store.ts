@@ -126,14 +126,18 @@ export const ecoStoreCartStore = signalStore(
       itemsDictionary: () => entityMap(),
       items: () => entities(),
       itemsGroupedByCategory: (): { category: string; items: EcoStoreCartItem[] }[] => {
-        const grouped = Object.groupBy(
-          entities(),
-          (item: EcoStoreCartItem) => item.product.categoryName
-        );
-        return Object.entries(grouped).map(([category, items]) => ({
-          category,
-          items: items as EcoStoreCartItem[],
-        }));
+        // Single-pass Map accumulation to avoid Object.groupBy and Object.entries intermediate allocations
+        const map = new Map<string, EcoStoreCartItem[]>();
+        for (const item of entities()) {
+          const cat = item.product.categoryName;
+          const list = map.get(cat);
+          if (list) {
+            list.push(item);
+          } else {
+            map.set(cat, [item]);
+          }
+        }
+        return Array.from(map, ([category, items]) => ({ category, items }));
       },
     };
   }),
