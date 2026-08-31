@@ -39,7 +39,7 @@
           matIconButton
           type="button"
           routerLink="/favorits"
-          [aria-label]="'store.menu.viewFavorites' | translate"
+          [attr.aria-label]="'store.menu.viewFavorites' | translate"
           [matTooltip]="'store.menu.viewFavorites' | translate">
           <mat-icon aria-hidden="true">favorite</mat-icon>
         </button>
@@ -54,7 +54,7 @@
             class="user-pill"
             type="button"
             [matMenuTriggerFor]="userMenuComponent()?.menu() ?? null"
-            [aria-label]="'store.menu.profile' | translate: { name: user?.name }">
+            [attr.aria-label]="'store.menu.profile' | translate: { name: user?.name }">
             <div class="flex items-center gap-2">
               <eco-user-avatar [user]="user" [initials]="profileStore.userInitials()" />
               <span class="hidden font-medium sm:inline-block">{{
@@ -72,7 +72,7 @@
           <button
             matIconButton
             type="button"
-            [aria-label]="'store.menu.login' | translate"
+            [attr.aria-label]="'store.menu.login' | translate"
             [matTooltip]="'store.menu.login' | translate"
             (click)="login()">
             <mat-icon aria-hidden="true">account_circle</mat-icon>
@@ -88,7 +88,7 @@
           class="cart-button flex items-center gap-2"
           [disabled]="cartStore.isEmpty()"
           [routerLinkActive]="'active'"
-          [aria-label]="
+          [attr.aria-label]="
             'store.menu.viewCart'
               | translate
                 : {
