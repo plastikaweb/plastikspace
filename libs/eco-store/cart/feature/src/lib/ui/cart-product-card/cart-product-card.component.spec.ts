@@ -73,7 +73,10 @@ describe('CartProductCardComponent', () => {
     const compiled = fixture.nativeElement as HTMLElement;
 
     expect(compiled.querySelector('eco-store-product-quantity')).toBeTruthy();
-    expect(compiled.querySelector('.cart-delete-button')).toBeTruthy();
+    const deleteBtn = compiled.querySelector('.cart-delete-button');
+
+    expect(deleteBtn).toBeTruthy();
+    expect(deleteBtn?.getAttribute('aria-label')).toBeTruthy();
   });
 
   it('should emit quantityChange when quantity is updated', () => {

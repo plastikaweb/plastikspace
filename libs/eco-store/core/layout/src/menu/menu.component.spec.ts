@@ -58,4 +58,19 @@ describe('MenuComponent', () => {
 
     expect(results).toHaveNoViolations();
   });
+
+  it('should render aria-label attributes on secondary menu action buttons', () => {
+    const view = component.secondaryMenu().createEmbeddedView(null);
+
+    view.detectChanges();
+    const element = view.rootNodes.find(node => node instanceof HTMLElement) as HTMLElement;
+
+    const favoritesBtn = element.querySelector('button[routerLink="/favorits"]');
+    const loginBtn = element.querySelector('button[matIconButton]:not([routerLink])');
+    const cartBtn = element.querySelector('button.cart-button');
+
+    expect(favoritesBtn?.getAttribute('aria-label')).toBeTruthy();
+    expect(loginBtn?.getAttribute('aria-label')).toBeTruthy();
+    expect(cartBtn?.getAttribute('aria-label')).toBeTruthy();
+  });
 });
