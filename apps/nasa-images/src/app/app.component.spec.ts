@@ -8,6 +8,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
 
+import { headerConfig } from './cms-layout-config';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
@@ -37,5 +38,20 @@ describe('AppComponent', () => {
 
   it('should create the app', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should open github readme link securely with noopener,noreferrer', () => {
+    const windowOpenSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+    const buttonConfig = headerConfig.widgetsConfig?.widgets[0]?.inputs?.['buttonConfig'] as {
+      doAction?: () => void;
+    };
+
+    buttonConfig?.doAction?.();
+
+    expect(windowOpenSpy).toHaveBeenCalledWith(
+      'https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images/README.md',
+      '_blank',
+      'noopener,noreferrer'
+    );
   });
 });
