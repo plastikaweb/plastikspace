@@ -22,6 +22,7 @@
               matInput
               type="number"
               min="0"
+              [attr.aria-label]="'Quantitat de ' + item.name"
               [step]="item.unit | llecoopProductUnitStep"
               [ngModel]="item.quantity"
               (ngModelChange)="onQuantityChange(item, $event)" />
@@ -34,8 +35,12 @@
               {{ item.priceWithIva * item.quantity | number: '1.2-2' }} €
             </div>
           </div>
-          <button matIconButton aria-label="Eliminar producte" (click)="removeItemFromCart(item)">
-            <mat-icon>delete</mat-icon>
+          <button
+            matIconButton
+            [attr.aria-label]="'Eliminar ' + item.name + ' del cistell'"
+            [matTooltip]="'Eliminar ' + item.name"
+            (click)="removeItemFromCart(item)">
+            <mat-icon aria-hidden="true">delete</mat-icon>
           </button>
         </div>
       </mat-list-item>
