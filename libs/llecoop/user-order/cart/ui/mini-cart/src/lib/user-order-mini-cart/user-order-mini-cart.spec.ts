@@ -25,15 +25,15 @@ describe('UserOrderMiniCart', () => {
   });
 
   it('should set product-specific aria-label and matTooltip for cart items', () => {
-    fixture.componentRef.setInput('cart', [
-      {
-        id: '1',
-        name: 'Poma Eco',
-        priceWithIva: 2.5,
-        quantity: 2,
-        unit: { type: 'weight' },
-      },
-    ]);
+    const cartProduct = {
+      id: '1',
+      name: 'Poma Eco',
+      priceWithIva: 2.5,
+      quantity: 2,
+      unit: { type: 'weight' as const },
+    };
+
+    fixture.componentRef.setInput('cart', [cartProduct]);
     fixture.detectChanges();
 
     const inputEl: HTMLInputElement = fixture.nativeElement.querySelector('input[type="number"]');
@@ -45,5 +45,22 @@ describe('UserOrderMiniCart', () => {
 
     expect(buttonDebugEl.nativeElement.getAttribute('aria-label')).toBe('Eliminar Poma Eco del cistell');
     expect(tooltip.message).toBe('Eliminar Poma Eco');
+  });
+
+  it('should emit updateQuantity when quantity changes or item is removed', () => {
+    const cartProduct = {
+      id: '1',
+      name: 'Poma Eco',
+      priceWithIva: 2.5,
+      quantity: 2,
+      unit: { type: 'weight' as const },
+    };
+    const spy = vi.spyOn(component.updateQuantity, 'emit');
+
+    component.onQuantityChange(cartProduct, '5');
+    expect(spy).toHaveBeenCalledWith({ ...cartProduct, quantity: 5 });
+
+    component.removeItemFromCart(cartProduct);
+    expect(spy).toHaveBeenCalledWith({ ...cartProduct, quantity: 0 });
   });
 });
