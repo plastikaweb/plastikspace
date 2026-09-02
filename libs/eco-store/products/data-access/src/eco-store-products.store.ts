@@ -71,95 +71,25 @@ export const ecoStoreProductsStore = signalStore(
       }
     );
 
-    return {
-      _currentLang: currentLangSignal,
-      /** List of products with their name, description and features translated into the current language. */
-      productsWithTranslatedText: computed<EcoStoreProductWithTranslatedText[]>(() => {
-        const products = entities();
-        const categories = categoriesStore.stats();
-        const currentLang = currentLangSignal();
+    /** List of products with their name, description and features translated into the current language. */
+    const productsWithTranslatedText = computed<EcoStoreProductWithTranslatedText[]>(() => {
+      const products = entities();
+      const categories = categoriesStore.stats();
+      const currentLang = currentLangSignal();
 
-        // Pre-calculate category map for O(1) lookup during map
-        const categoryMap = new Map(categories.map(cat => [cat.category, cat]));
+      // Pre-calculate category map for O(1) lookup during map
+      const categoryMap = new Map(categories.map(cat => [cat.category, cat]));
 
-        return products.map(product => {
-          const category = categoryMap.get(product.category) as ProductCategoryStats;
+      return products.map(product => {
+        const category = categoryMap.get(product.category) as ProductCategoryStats;
 
-          let categoryName = '';
+        let categoryName = '';
 
-          if (category && category.name && typeof category.name === 'object') {
-            const nameObj = category.name as LocalizedFields<string>;
+        if (category && category.name && typeof category.name === 'object') {
+          const nameObj = category.name as LocalizedFields<string>;
 
-            categoryName = nameObj[currentLang] || '';
-          }
-
-          let productName = '';
-
-          if (product.name && typeof product.name === 'object') {
-            const nameObj = product.name as LocalizedFields<string>;
-
-            productName = nameObj[currentLang] || '';
-          } else if (typeof product.name === 'string') {
-            productName = product.name;
-          }
-
-          let productDescription = '';
-
-          if (product.description && typeof product.description === 'object') {
-            const descriptionObj = product.description as LocalizedFields<string>;
-
-            productDescription = descriptionObj[currentLang] || '';
-          } else if (typeof product.description === 'string') {
-            productDescription = product.description;
-          }
-
-          let productFeatures: string[] = [];
-
-          if (product.features) {
-            const featuresObj = product.features as LocalizedFields[];
-
-            productFeatures = featuresObj.map(feature => {
-              if (typeof feature === 'object') {
-                return feature[currentLang] || '';
-              }
-
-              return feature;
-            });
-          }
-
-          return {
-            ...product,
-            name: productName,
-            description: productDescription,
-            features: productFeatures,
-            categoryName,
-            categorySlug: category?.normalizedName || '',
-            categoryColor: category?.color || '',
-            categoryIcon: category?.icon || '',
-          };
-        });
-      }),
-
-      /**
-       * Factory function to find a product by its slug and return it with translated metadata.
-       * @returns { (slug: string | null) => EcoStoreProductWithTranslatedText | undefined }
-       */
-      findProductBySlug: computed(() => (slug: string | null) => {
-        if (!slug) {
-          return undefined;
+          categoryName = nameObj[currentLang] || '';
         }
-
-        const product = entities().find(p => p.normalizedName === slug);
-
-        if (!product) {
-          return undefined;
-        }
-
-        const categories = categoriesStore.stats();
-        const currentLang = currentLangSignal();
-        const category = categories.find(
-          cat => cat.category === product.category
-        ) as ProductCategoryStats;
 
         let productName = '';
 
@@ -171,15 +101,81 @@ export const ecoStoreProductsStore = signalStore(
           productName = product.name;
         }
 
+        let productDescription = '';
+
+        if (product.description && typeof product.description === 'object') {
+          const descriptionObj = product.description as LocalizedFields<string>;
+
+          productDescription = descriptionObj[currentLang] || '';
+        } else if (typeof product.description === 'string') {
+          productDescription = product.description;
+        }
+
+        let productFeatures: string[] = [];
+
+        if (product.features) {
+          const featuresObj = product.features as LocalizedFields[];
+
+          productFeatures = featuresObj.map(feature => {
+            if (typeof feature === 'object') {
+              return feature[currentLang] || '';
+            }
+
+            return feature;
+          });
+        }
+
         return {
           ...product,
           name: productName,
-          categoryName: category?.name
-            ? (category.name as LocalizedFields<string>)[currentLang] || ''
-            : '',
+          description: productDescription,
+          features: productFeatures,
+          categoryName,
           categorySlug: category?.normalizedName || '',
+          categoryColor: category?.color || '',
+          categoryIcon: category?.icon || '',
         };
-      }),
+      });
+    });
+
+    /** Map of translated products indexed by normalizedName (slug) for O(1) lookups. */
+    const productsBySlugMap = computed<Map<string, EcoStoreProductWithTranslatedText>>(() => {
+      const products = productsWithTranslatedText();
+      const map = new Map<string, EcoStoreProductWithTranslatedText>();
+
+      for (let i = 0; i < products.length; i++) {
+        const product = products[i];
+
+        if (product.normalizedName) {
+          map.set(product.normalizedName, product);
+        }
+      }
+
+      return map;
+    });
+
+    /**
+     * Factory function to find a product by its slug and return it with translated metadata.
+     * Uses pre-computed productsBySlugMap for O(1) lookups instead of O(N + C) array scans.
+     * @returns { (slug: string | null) => EcoStoreProductWithTranslatedText | undefined }
+     */
+    const findProductBySlug = computed(() => {
+      const productsMap = productsBySlugMap();
+
+      return (slug: string | null): EcoStoreProductWithTranslatedText | undefined => {
+        if (!slug) {
+          return undefined;
+        }
+
+        return productsMap.get(slug);
+      };
+    });
+
+    return {
+      _currentLang: currentLangSignal,
+      productsWithTranslatedText,
+      productsBySlugMap,
+      findProductBySlug,
     };
   }),
   withMethods(store => ({
@@ -189,7 +185,7 @@ export const ecoStoreProductsStore = signalStore(
      * @returns { boolean } True if the product was found and selected.
      */
     setSelectedFromSlug(slug: EcoStoreProductWithTranslatedText['categorySlug']): boolean {
-      const product = store.entities().find(p => p.normalizedName === slug);
+      const product = store.entities().find(productEntity => productEntity.normalizedName === slug);
 
       if (product) {
         updateState(store, '[products] setSelectedFromSlug', { selectedItemId: product.id });
