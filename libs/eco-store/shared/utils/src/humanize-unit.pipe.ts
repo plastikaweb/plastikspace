@@ -2,6 +2,38 @@ import { inject, Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ProductUnitType } from '@plastik/eco-store/entities';
 
+/**
+ * Module-level cache for `Intl.NumberFormat` instances keyed by language and fraction digit options.
+ * Prevents redundant `Intl.NumberFormat` object instantiations across repeated pipe transformations.
+ */
+const NUMBER_FORMATTER_CACHE = new Map<string, Intl.NumberFormat>();
+
+/**
+ * Helper to retrieve or create a cached `Intl.NumberFormat` instance.
+ * @param {string | undefined} lang The language code for formatting.
+ * @param {number} minimumFractionDigits The minimum number of fraction digits.
+ * @param {number} maximumFractionDigits The maximum number of fraction digits.
+ * @returns {Intl.NumberFormat} The cached or newly created Intl.NumberFormat instance.
+ */
+function getNumberFormatter(
+  lang: string | undefined,
+  minimumFractionDigits: number,
+  maximumFractionDigits: number
+): Intl.NumberFormat {
+  const cacheKey = `${lang || 'default'}_${minimumFractionDigits}_${maximumFractionDigits}`;
+  let formatter = NUMBER_FORMATTER_CACHE.get(cacheKey);
+
+  if (!formatter) {
+    formatter = new Intl.NumberFormat(lang, {
+      minimumFractionDigits,
+      maximumFractionDigits,
+    });
+    NUMBER_FORMATTER_CACHE.set(cacheKey, formatter);
+  }
+
+  return formatter;
+}
+
 @Pipe({
   name: 'humanizeUnit',
 })
@@ -15,11 +47,11 @@ export class HumanizeUnitPipe implements PipeTransform {
     // avoid unwanted line break
     const spacer = '\u00A0';
 
-    const format = (n: number) =>
-      new Intl.NumberFormat(lang, {
-        maximumFractionDigits: 2,
-        minimumFractionDigits: n % 1 === 0 ? 0 : 2,
-      }).format(n);
+    const format = (num: number) => {
+      const minFractionDigits = num % 1 === 0 ? 0 : 2;
+
+      return getNumberFormatter(lang, minFractionDigits, 2).format(num);
+    };
 
     switch (unitType) {
       case 'volume':
