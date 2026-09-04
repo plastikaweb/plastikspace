@@ -127,15 +127,29 @@ export const ecoStoreCartStore = signalStore(
       itemsDictionary: () => entityMap(),
       items: () => entities(),
       itemsGroupedByCategory: (): { category: string; items: EcoStoreCartItem[] }[] => {
-        const grouped = Object.groupBy(
-          entities(),
-          (item: EcoStoreCartItem) => item.product.categoryName
-        );
+        // Optimize grouping with a single-pass Map loop to avoid intermediate
+        // Object.groupBy and Object.entries() tuple array allocations.
+        const map = new Map<string, EcoStoreCartItem[]>();
 
-        return Object.entries(grouped).map(([category, items]) => ({
-          category,
-          items: items as EcoStoreCartItem[],
-        }));
+        for (const cartItem of entities()) {
+          const category = cartItem.product.categoryName;
+          let group = map.get(category);
+
+          if (!group) {
+            group = [];
+            map.set(category, group);
+          }
+
+          group.push(cartItem);
+        }
+
+        const result: { category: string; items: EcoStoreCartItem[] }[] = [];
+
+        for (const [category, categoryItems] of map) {
+          result.push({ category, items: categoryItems });
+        }
+
+        return result;
       },
     };
   }),
