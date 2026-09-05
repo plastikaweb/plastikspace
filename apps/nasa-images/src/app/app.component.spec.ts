@@ -9,6 +9,7 @@ import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
 
 import { AppComponent } from './app.component';
+import { headerConfig } from './cms-layout-config';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -37,5 +38,22 @@ describe('AppComponent', () => {
 
   it('should create the app', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('headerConfig', () => {
+    it('should open external URL with noopener,noreferrer features to prevent reverse-tabnabbing', () => {
+      const spy = vi.spyOn(window, 'open').mockImplementation(() => null);
+      const widget = headerConfig.widgetsConfig?.widgets?.[0];
+      const buttonConfig = (widget?.inputs as { buttonConfig?: { doAction?: () => void } })?.buttonConfig;
+
+      buttonConfig?.doAction?.();
+
+      expect(spy).toHaveBeenCalledWith(
+        'https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images/README.md',
+        '_blank',
+        'noopener,noreferrer'
+      );
+      spy.mockRestore();
+    });
   });
 });
