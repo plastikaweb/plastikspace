@@ -16,17 +16,11 @@ export class CartOrderPriceSlotsComponent {
   tiers = input.required<EcoStoreTenantLogisticsDeliveryTier[]>();
   cartTotal = input.required<number>();
 
-  sortedTiersAsc = computed(() =>
-    this.tiers()
-      .slice()
-      .sort((a, b) => a.min - b.min)
-  );
+  // Cache ascending sorted delivery tiers in a computed signal
+  sortedTiersAsc = computed(() => [...this.tiers()].sort((a, b) => a.min - b.min));
 
-  sortedTiersDesc = computed(() =>
-    this.tiers()
-      .slice()
-      .sort((a, b) => b.min - a.min)
-  );
+  // Derive descending sorted delivery tiers by reversing ascending array in O(N) time instead of re-sorting
+  sortedTiersDesc = computed(() => [...this.sortedTiersAsc()].reverse());
 
   currentTier = computed(() => {
     const total = this.cartTotal();
