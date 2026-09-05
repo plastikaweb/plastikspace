@@ -102,7 +102,9 @@
     },
     "image": {
       "crop": {
-        "title": "Edit your image"
+        "title": "Edit your image",
+        "zoomOut": "Zoom out",
+        "zoomIn": "Zoom in"
       },
       "upload": {
         "title": "Upload an image",

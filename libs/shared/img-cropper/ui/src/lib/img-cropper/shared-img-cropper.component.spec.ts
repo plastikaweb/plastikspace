@@ -77,6 +77,40 @@ describe('SharedImgCropperComponent', () => {
     expect(component['isDragging']()).toBe(false);
   });
 
+  it('should render zoom buttons with aria-label and matTooltip in crop mode', () => {
+    component['imageBase64'].set('data:image/png;base64,123');
+    fixture.detectChanges();
+
+    const buttons = fixture.nativeElement.querySelectorAll('.crop-zone-bg button[matIconButton]');
+
+    expect(buttons.length).toBe(2);
+
+    const zoomOutBtn = buttons[0];
+    const zoomInBtn = buttons[1];
+
+    expect(zoomOutBtn.getAttribute('aria-label')).toBe('common.image.crop.zoomOut');
+    expect(
+      zoomOutBtn.getAttribute('ng-reflect-message') || zoomOutBtn.getAttribute('matTooltip')
+    ).toBeDefined();
+
+    expect(zoomInBtn.getAttribute('aria-label')).toBe('common.image.crop.zoomIn');
+    expect(
+      zoomInBtn.getAttribute('ng-reflect-message') || zoomInBtn.getAttribute('matTooltip')
+    ).toBeDefined();
+  });
+
+  it('should render clear error button with aria-label and matTooltip', () => {
+    component['errorMessage'].set({ key: 'common.image.error.loaded' });
+    fixture.detectChanges();
+
+    const clearBtn = fixture.nativeElement.querySelector(
+      'div[role="alert"] button[matIconButton]'
+    );
+
+    expect(clearBtn).toBeTruthy();
+    expect(clearBtn?.getAttribute('aria-label')).toBe('common.close');
+  });
+
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
 
