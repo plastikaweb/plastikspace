@@ -73,7 +73,10 @@ describe('SkipLinkComponent', () => {
     await fixture.whenStable();
 
     expect(mainContentEl.focus).toHaveBeenCalled();
-    expect(mainContentEl.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' });
+    expect(mainContentEl.scrollIntoView).toHaveBeenCalledWith({
+      behavior: 'smooth',
+      block: 'start',
+    });
     expect(announceSpy).toHaveBeenCalledWith('common.a11y.navigatedToMainContent', 'assertive');
   });
 });

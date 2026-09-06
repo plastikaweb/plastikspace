@@ -34,7 +34,10 @@ export class SkipLinkComponent {
       if (mainContent) {
         mainContent.focus();
         mainContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        this.#liveAnnouncer.announce(this.#translate.instant('common.a11y.navigatedToMainContent'), 'assertive');
+        this.#liveAnnouncer.announce(
+          this.#translate.instant('common.a11y.navigatedToMainContent'),
+          'assertive'
+        );
       }
     });
   }
