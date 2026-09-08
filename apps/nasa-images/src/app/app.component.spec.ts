@@ -26,7 +26,7 @@ describe('AppComponent', () => {
         provideHttpClient(),
         provideRouter([]),
         provideMockStore({ initialState }),
-        { provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useValue: null },
+        { provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useValue: {} },
         { provide: VIEW_CONFIG, useValue: signal([]) },
       ],
     }).compileComponents();
@@ -37,5 +37,21 @@ describe('AppComponent', () => {
 
   it('should create the app', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should open GitHub readme link with noopener,noreferrer when header action is called', async () => {
+    const { headerConfig } = await import('./cms-layout-config');
+    const windowOpenSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+
+    const buttonConfig = headerConfig.widgetsConfig?.widgets?.[0]?.inputs?.['buttonConfig'];
+    expect(buttonConfig).toBeDefined();
+
+    buttonConfig?.doAction?.();
+
+    expect(windowOpenSpy).toHaveBeenCalledWith(
+      'https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images/README.md',
+      '_blank',
+      'noopener,noreferrer'
+    );
   });
 });
