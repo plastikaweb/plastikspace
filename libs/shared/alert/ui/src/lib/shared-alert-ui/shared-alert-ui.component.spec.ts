@@ -85,6 +85,13 @@ describe('SharedAlertUiComponent', () => {
     expect(tooltip.message).toBe(ariaLabel);
   });
 
+  it('should hide decorative icon inside close button from accessibility tree', () => {
+    createComponent('INFO', true);
+    const closeIcon = fixture.debugElement.query(By.css('button[matIconButton] mat-icon'));
+
+    expect(closeIcon.nativeElement.getAttribute('aria-hidden')).toBe('true');
+  });
+
   it('should emit closed event when close button is clicked', () => {
     createComponent('INFO', true);
     const closedSpy = vi.spyOn(fixture.componentInstance.closed, 'emit');
