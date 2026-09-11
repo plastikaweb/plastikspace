@@ -26,9 +26,11 @@ export const headerConfig: CoreCmsLayoutHeaderConfig = {
               },
             ],
             doAction: () =>
+              // SEC-02: Prevent reverse-tabnabbing security vulnerability when opening target="_blank"
               window.open(
                 'https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images/README.md',
-                '_blank'
+                '_blank',
+                'noopener,noreferrer'
               ),
           },
         },
