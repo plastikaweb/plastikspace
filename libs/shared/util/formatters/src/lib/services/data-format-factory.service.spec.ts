@@ -182,6 +182,45 @@ describe('DataFormatFactoryService', () => {
     expect(result).toBe(`Value`);
   });
 
+  describe('property path resolution optimization', () => {
+    it('should resolve direct non-nested property keys via fast path', () => {
+      const result = service.getFormattedValue(objectMocked, {
+        key: 'id',
+        title: 'ID',
+        pathToKey: 'id',
+        formatting: { type: 'TEXT' },
+      });
+
+      expect(result).toEqual({ changingThisBreaksApplicationSecurity: 'kkk0000ads' });
+    });
+
+    it('should resolve nested property keys repeatedly using path cache', () => {
+      const config = {
+        key: 'a',
+        title: 'Title',
+        pathToKey: 'text.child.value',
+        formatting: { type: 'TEXT' as const },
+      };
+
+      const firstCall = service.getFormattedValue(objectMocked, config);
+      const secondCall = service.getFormattedValue(objectMocked, config);
+
+      expect(firstCall).toEqual({ changingThisBreaksApplicationSecurity: 'value' });
+      expect(secondCall).toEqual({ changingThisBreaksApplicationSecurity: 'value' });
+    });
+
+    it('should return empty string for non-existent or nullish nested path segments', () => {
+      const result = service.getFormattedValue(objectMocked, {
+        key: 'a',
+        title: 'Title',
+        pathToKey: 'nonExistent.nested.field',
+        formatting: { type: 'TEXT' },
+      });
+
+      expect(result).toEqual({ changingThisBreaksApplicationSecurity: '' });
+    });
+  });
+
   describe('custom formatter', () => {
     it('should return a value with no formatting if no execute method is present', () => {
       const result = service.getFormattedValue(objectMocked, {

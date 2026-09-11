@@ -40,20 +40,12 @@ export class SharedUtilFormattersService {
     value: FormattingDateInput,
     extras?: () => Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>
   ): string {
-    let format = {
-      dateDigitsInfo: 'shortDate',
-      locale: this.#locale,
-      timezone: this.#timezone,
-    };
+    const ext = extras?.();
+    const dateDigitsInfo = ext?.dateDigitsInfo ?? 'shortDate';
+    const locale = ext?.locale ?? this.#locale;
+    const timezone = ext?.timezone ?? this.#timezone;
 
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
-    }
-
-    return formatDate(value, format.dateDigitsInfo, format.locale, format.timezone) || '';
+    return formatDate(value, dateDigitsInfo, locale, timezone) || '';
   }
 
   /**
@@ -68,19 +60,11 @@ export class SharedUtilFormattersService {
     value: FormattingDateInput,
     extras?: () => Partial<Pick<FormattingExtras<'DATE_TIME'>, 'locale' | 'timezone'>>
   ): string {
-    let format = {
-      locale: this.#locale,
-      timezone: this.#timezone,
-    };
+    const ext = extras?.();
+    const locale = ext?.locale ?? this.#locale;
+    const timezone = ext?.timezone ?? this.#timezone;
 
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
-    }
-
-    return formatDate(value, 'M/d/yy, HH:mm:ss', format.locale, format.timezone) || '';
+    return formatDate(value, 'M/d/yy, HH:mm:ss', locale, timezone) || '';
   }
 
   /**
@@ -94,22 +78,15 @@ export class SharedUtilFormattersService {
     value: Timestamp,
     extras?: () => Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>
   ): string {
-    let format = {
-      dateDigitsInfo: 'shortDate',
-      locale: this.#locale,
-      timezone: this.#timezone,
-    };
-
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
+    if (!value) {
+      return '-';
     }
+    const ext = extras?.();
+    const dateDigitsInfo = ext?.dateDigitsInfo ?? 'shortDate';
+    const locale = ext?.locale ?? this.#locale;
+    const timezone = ext?.timezone ?? this.#timezone;
 
-    return value
-      ? formatDate(value?.toDate(), format.dateDigitsInfo, format.locale, format.timezone)
-      : '-';
+    return formatDate(value.toDate(), dateDigitsInfo, locale, timezone) || '';
   }
 
   /**
@@ -122,19 +99,11 @@ export class SharedUtilFormattersService {
     value: number,
     extras?: () => Partial<Pick<FormattingExtras<'PERCENTAGE'>, 'numberDigitsInfo' | 'locale'>>
   ): string {
-    let format = {
-      numberDigitsInfo: '1.2-2',
-      locale: this.#locale,
-    };
+    const ext = extras?.();
+    const numberDigitsInfo = ext?.numberDigitsInfo ?? '1.2-2';
+    const locale = ext?.locale ?? this.#locale;
 
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
-    }
-
-    return formatPercent(Number(value) / 100, format.locale, format.numberDigitsInfo) || '';
+    return formatPercent(Number(value) / 100, locale, numberDigitsInfo) || '';
   }
 
   /**
@@ -152,28 +121,14 @@ export class SharedUtilFormattersService {
       >
     >
   ): string {
-    let format = {
-      numberDigitsInfo: '1.2-2',
-      locale: this.#locale,
-      currency: '€',
-      currencyCode: 'EUR',
-    };
-
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
-    }
+    const ext = extras?.();
+    const numberDigitsInfo = ext?.numberDigitsInfo ?? '1.2-2';
+    const locale = ext?.locale ?? this.#locale;
+    const currency = ext?.currency ?? '€';
+    const currencyCode = ext?.currencyCode ?? 'EUR';
 
     return (
-      formatCurrency(
-        value,
-        format.locale,
-        format.currency,
-        format.currencyCode,
-        format.numberDigitsInfo
-      ) || ''
+      formatCurrency(value, locale, currency, currencyCode, numberDigitsInfo) || ''
     );
   }
 
@@ -188,19 +143,11 @@ export class SharedUtilFormattersService {
     value: number,
     extras?: () => Partial<Pick<FormattingExtras<'NUMBER'>, 'numberDigitsInfo' | 'locale'>>
   ): string {
-    let format = {
-      numberDigitsInfo: '1.2-2',
-      locale: this.#locale,
-    };
+    const ext = extras?.();
+    const numberDigitsInfo = ext?.numberDigitsInfo ?? '1.2-2';
+    const locale = ext?.locale ?? this.#locale;
 
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
-    }
-
-    return formatNumber(Number(value), format.locale, format.numberDigitsInfo) || '';
+    return formatNumber(Number(value), locale, numberDigitsInfo) || '';
   }
 
   /**
@@ -220,22 +167,14 @@ export class SharedUtilFormattersService {
       Pick<FormattingExtras<'QUANTITY'>, 'numberDigitsInfo' | 'locale' | 'suffix' | 'prefix'>
     >
   ): string {
-    let format = {
-      numberDigitsInfo: '1.2-2',
-      locale: this.#locale,
-      suffix: '',
-      prefix: '',
-    };
+    const ext = extras?.(item);
+    const numberDigitsInfo = ext?.numberDigitsInfo ?? '1.2-2';
+    const locale = ext?.locale ?? this.#locale;
+    const prefix = ext?.prefix ?? '';
+    const suffix = ext?.suffix ?? '';
+    const formattedNumber = formatNumber(Number(value), locale, numberDigitsInfo);
 
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(item),
-      };
-    }
-    const formattedNumber = formatNumber(Number(value), format.locale, format.numberDigitsInfo);
-
-    return `${format.prefix || ''}${formattedNumber}${format.suffix || ''}`.trim();
+    return `${prefix}${formattedNumber}${suffix}`.trim();
   }
 
   /**
@@ -258,20 +197,12 @@ export class SharedUtilFormattersService {
     value: boolean,
     extras?: () => FormattingExtras<'BOOLEAN_WITH_ICON'>
   ): SafeHtml {
-    let format = {
-      iconTrue: 'check',
-      iconFalse: 'close',
-    };
-
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
-    }
+    const ext = extras?.();
+    const iconTrue = ext?.iconTrue ?? 'check';
+    const iconFalse = ext?.iconFalse ?? 'close';
 
     return this.#sanitizer.bypassSecurityTrustHtml(
-      `<span class="material-icons">${escapeHtml(value ? format.iconTrue : format.iconFalse)}</span>`
+      `<span class="material-icons">${escapeHtml(value ? iconTrue : iconFalse)}</span>`
     );
   }
 
