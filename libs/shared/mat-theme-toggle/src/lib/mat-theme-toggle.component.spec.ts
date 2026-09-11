@@ -22,4 +22,10 @@ describe('MatThemeToggleComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should have aria-hidden="true" on the toggle button icon', () => {
+    const iconElement = fixture.nativeElement.querySelector('button mat-icon');
+    expect(iconElement).toBeTruthy();
+    expect(iconElement.getAttribute('aria-hidden')).toBe('true');
+  });
 });
