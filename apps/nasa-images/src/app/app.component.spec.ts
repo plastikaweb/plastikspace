@@ -43,7 +43,8 @@ describe('AppComponent', () => {
   it('should trigger window.open with noopener,noreferrer when github button action is executed', () => {
     const windowOpenSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
     const widget = headerConfig.widgetsConfig?.widgets?.[0];
-    const buttonConfig = (widget?.inputs as { buttonConfig: { doAction?: () => void } })?.buttonConfig;
+    const buttonConfig = (widget?.inputs as { buttonConfig: { doAction?: () => void } })
+      ?.buttonConfig;
 
     buttonConfig.doAction?.();
 
