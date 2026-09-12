@@ -178,18 +178,28 @@ describe('ecoStoreCartStore', () => {
     expect(store.itemsCount()).toBe(0);
   });
 
-  it('should get item count via signal', () => {
+  it('should get item count via signal and memoize signal reference', () => {
     const { store } = setup();
 
     store.addToCart(mockProduct, 5);
 
-    const countSignal = store.getItemCount('1');
+    const countSignal1 = store.getItemCount('1');
+    const countSignal2 = store.getItemCount('1');
 
-    expect(countSignal()).toBe(5);
+    expect(countSignal1()).toBe(5);
+    // Verify memoization: consecutive calls return the exact same Signal instance reference
+    expect(countSignal1).toBe(countSignal2);
 
     const countSignalEmpty = store.getItemCount('2');
 
     expect(countSignalEmpty()).toBe(0);
+
+    // Verify memoized signal updates reactively when quantity changes
+    store.addToCart(mockProduct, 8);
+    expect(countSignal1()).toBe(8);
+
+    store.removeFromCart('1');
+    expect(countSignal1()).toBe(0);
   });
 
   it('should update logistics and reset day/time when address changes', () => {

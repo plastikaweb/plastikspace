@@ -6,7 +6,7 @@ import {
 } from '@angular-architects/ngrx-toolkit';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { isPlatformBrowser } from '@angular/common';
-import { computed, effect, inject, isDevMode, PLATFORM_ID, untracked } from '@angular/core';
+import { computed, effect, inject, isDevMode, PLATFORM_ID, Signal, untracked } from '@angular/core';
 import { signalStore, withComputed, withHooks, withMethods, withProps } from '@ngrx/signals';
 import {
   removeAllEntities,
@@ -141,6 +141,10 @@ export const ecoStoreCartStore = signalStore(
   }),
 
   withMethods(store => {
+    // Memoization cache for product quantity signals to avoid re-instantiating computed() Signals
+    // on every template change detection pass (e.g. [quantity]="cartStore.getItemCount(item.id)()").
+    const itemCountSignalCache = new Map<string, Signal<number>>();
+
     const _confirmation = (
       title: string,
       message: string,
@@ -528,9 +532,14 @@ export const ecoStoreCartStore = signalStore(
 
     return {
       getItemCount(productId: EcoStoreProductWithCategoryName['id']) {
-        return computed(() => {
-          return store.entityMap()[productId]?.quantity ?? 0;
-        });
+        let countSignal = itemCountSignalCache.get(productId);
+
+        if (!countSignal) {
+          countSignal = computed(() => store.entityMap()[productId]?.quantity ?? 0);
+          itemCountSignalCache.set(productId, countSignal);
+        }
+
+        return countSignal;
       },
 
       addToCart(product: EcoStoreProductWithCategoryName, quantity = 1) {
