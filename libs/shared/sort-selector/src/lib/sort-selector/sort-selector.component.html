@@ -5,7 +5,7 @@
   [matTooltip]="translationPrefix() + '.label' | translate"
   [matMenuTriggerFor]="sortMenu"
   [attr.aria-label]="translationPrefix() + '.label' | translate">
-  <mat-icon>{{ currentSortIcon() }}</mat-icon>
+  <mat-icon aria-hidden="true">{{ currentSortIcon() }}</mat-icon>
 </button>
 
 <!-- Desktop: label + chevron + current value + sort icon -->
@@ -15,12 +15,12 @@
   [matTooltip]="translationPrefix() + '.label' | translate"
   [matMenuTriggerFor]="sortMenu">
   <span>{{ translationPrefix() + '.label' | translate }}:</span>
-  <mat-icon>expand_more</mat-icon>
+  <mat-icon aria-hidden="true">expand_more</mat-icon>
   <span>{{
     `${translationPrefix()}.${currentSort().active}${currentSort().direction.charAt(0).toUpperCase() + currentSort().direction.slice(1)}`
       | translate
   }}</span>
-  <mat-icon class="scale-90!">{{ currentSortIcon() }}</mat-icon>
+  <mat-icon aria-hidden="true" class="scale-90!">{{ currentSortIcon() }}</mat-icon>
 </button>
 
 <mat-menu #sortMenu="matMenu" class="sort-selector">
@@ -33,6 +33,7 @@
           currentSort().active === option.key && currentSort().direction === value.direction;
         <mat-icon
           matMenuItemIcon
+          aria-hidden="true"
           [class.text-on-surface-variant]="selected"
           [class.opacity-100]="selected"
           [class.text-on-surface]="!selected"

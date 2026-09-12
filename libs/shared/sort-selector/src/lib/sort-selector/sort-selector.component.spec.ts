@@ -63,4 +63,12 @@ describe('SortSelectorComponent', () => {
 
     sub.unsubscribe();
   });
+
+  it('should have aria-hidden="true" on decorative mat-icons', () => {
+    const icons: NodeListOf<HTMLElement> = fixture.nativeElement.querySelectorAll('mat-icon');
+    expect(icons.length).toBeGreaterThan(0);
+    icons.forEach(icon => {
+      expect(icon.getAttribute('aria-hidden')).toBe('true');
+    });
+  });
 });
