@@ -57,6 +57,17 @@ export const ecoStoreProductCategoriesStore = signalStore(
     return {
       currentLang,
       stats: entities,
+      /** Pre-indexed Map of category stats by slug (normalizedName) for O(1) lookups. */
+      categoriesBySlugMap: computed(() => {
+        const map = new Map<string, ProductCategoryStats>();
+        entities().forEach(item => {
+          if (item.normalizedName) {
+            map.set(item.normalizedName, item);
+          }
+        });
+
+        return map;
+      }),
       groupedCategories: computed(() => {
         const lang = currentLang();
         const groups = new Map<
@@ -163,7 +174,11 @@ export const ecoStoreProductCategoriesStore = signalStore(
       ),
 
       findCategoryBySlug(slug: string | null): ProductCategoryStats | undefined {
-        return store.entities().find(item => item.normalizedName === slug);
+        if (!slug) {
+          return undefined;
+        }
+
+        return store.categoriesBySlugMap().get(slug);
       },
 
       getLocalizedCategoryName(category: ProductCategory | ProductCategoryStats): string {
