@@ -62,15 +62,18 @@ describe('InputPasswordWithVisibilityTypeComponent', () => {
 
   it('should sync aria-label, tooltip and aria-pressed with visibility state', () => {
     const button = fixture.nativeElement.querySelector('button');
+    const icon = fixture.nativeElement.querySelector('button mat-icon');
 
     expect(button.getAttribute('aria-label')).toBe('common.form.showPassword');
     expect(button.getAttribute('aria-pressed')).toBe('false');
+    expect(icon.getAttribute('aria-hidden')).toBe('true');
 
     component.hidePassword(new Event('click'));
     fixture.detectChanges();
 
     expect(button.getAttribute('aria-label')).toBe('common.form.hidePassword');
     expect(button.getAttribute('aria-pressed')).toBe('true');
+    expect(icon.getAttribute('aria-hidden')).toBe('true');
   });
 
   it('should keep the visibility toggle in the keyboard tab order (A11Y-006, WCAG 2.1.1)', () => {
