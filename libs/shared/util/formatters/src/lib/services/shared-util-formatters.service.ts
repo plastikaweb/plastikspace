@@ -128,9 +128,7 @@ export class SharedUtilFormattersService {
     const currency = extraOpts?.currency ?? '€';
     const currencyCode = extraOpts?.currencyCode ?? 'EUR';
 
-    return (
-      formatCurrency(value, locale, currency, currencyCode, numberDigitsInfo) || ''
-    );
+    return formatCurrency(value, locale, currency, currencyCode, numberDigitsInfo) || '';
   }
 
   /**
