@@ -74,6 +74,25 @@ describe('ShippingMethodSelectorTypeComponent', () => {
     expect(component.formControl.value).toBe('pickup');
   });
 
+  it('should update form control when Space key is pressed on a card', () => {
+    const cards: HTMLElement[] = Array.from(fixture.nativeElement.querySelectorAll('mat-card'));
+
+    const event = new KeyboardEvent('keydown', { key: ' ', code: 'Space' });
+
+    cards[0].dispatchEvent(event);
+    fixture.detectChanges();
+
+    expect(component.formControl.value).toBe('delivery');
+  });
+
+  it('should set aria-hidden="true" on decorative mat-icons', () => {
+    const icons: HTMLElement[] = Array.from(fixture.nativeElement.querySelectorAll('mat-icon'));
+
+    icons.forEach(icon => {
+      expect(icon.getAttribute('aria-hidden')).toBe('true');
+    });
+  });
+
   it('should display free label when cost is 0', () => {
     fixture.detectChanges();
     const badges = fixture.nativeElement.querySelectorAll('mat-card-subtitle span');

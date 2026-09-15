@@ -28,7 +28,8 @@
       [style.--current-theme-900]="'var(--' + theme + '-900)'"
       [attr.aria-label]="`cart.shipping.method.${shippingMethodOption.type}.title` | translate"
       (click)="onSelect(shippingMethodOption.type)"
-      (keydown.enter)="onSelect(shippingMethodOption.type)">
+      (keydown.enter)="onSelect(shippingMethodOption.type)"
+      (keydown.space)="onSelect(shippingMethodOption.type); $event.preventDefault()">
       <mat-card-header class="flex flex-col-reverse items-center gap-4 text-center">
         <mat-card-title class="mb-2! text-xl! font-black! tracking-tight! uppercase">{{
           `cart.shipping.method.${shippingMethodOption.type}.title` | translate
@@ -52,7 +53,7 @@
           [class.text-[light-dark(var(--current-theme-900),var(--current-theme-100))]]="!isSelected"
           [class.bg-[light-dark(var(--current-theme-600),var(--current-theme-500))]]="isSelected"
           [class.text-white]="isSelected">
-          <mat-icon class="scale-150!">{{ shippingMethodOption.icon }}</mat-icon>
+          <mat-icon class="scale-150!" aria-hidden="true">{{ shippingMethodOption.icon }}</mat-icon>
         </div>
       </mat-card-header>
       <mat-radio-button
@@ -64,7 +65,7 @@
         <div
           class="shipping-method-check animate-fade-in absolute flex items-center justify-center bg-[light-dark(var(--current-theme-600),var(--current-theme-400))] p-4 text-white shadow-lg transition-all duration-300"
           style="top: -3px; right: -3px; border-radius: 0 var(--app-main-border-radius) 0 1.5rem">
-          <mat-icon class="scale-125!">check</mat-icon>
+          <mat-icon class="scale-125!" aria-hidden="true">check</mat-icon>
         </div>
       }
     </mat-card>
