@@ -4,15 +4,16 @@
   [matMenuTriggerFor]="menu"
   [matTooltip]="'shared.translation.selectLanguage' | translate"
   [attr.aria-label]="'shared.translation.selectLanguage' | translate">
-  <mat-icon>language</mat-icon>
+  <mat-icon aria-hidden="true">language</mat-icon>
 </button>
 
 <mat-menu #menu="matMenu">
   @for (lang of languages(); track lang) {
-    <button mat-menu-item (click)="onSelect(lang)">
-      @let selected = lang === current();
+    @let selected = lang === current();
+    <button mat-menu-item [attr.aria-current]="selected ? 'true' : undefined" (click)="onSelect(lang)">
       <mat-icon
         matMenuItemIcon
+        aria-hidden="true"
         [class.text-on-surface-variant]="selected"
         [class.opacity-100]="selected"
         [class.text-on-surface]="!selected"
