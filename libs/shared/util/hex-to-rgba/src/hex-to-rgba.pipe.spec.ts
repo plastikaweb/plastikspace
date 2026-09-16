@@ -15,6 +15,14 @@ describe('HexToRgbaPipe', () => {
     it('should convert color hex to rgba', () => {
       expect(pipe.transform('#00FF00', 0.5)).toBe('rgba(0, 255, 0, 0.5)');
     });
+
+    it('should return cached result on subsequent conversions with same inputs', () => {
+      const first = pipe.transform('#123456', 0.8);
+      const second = pipe.transform('#123456', 0.8);
+
+      expect(first).toBe('rgba(18, 52, 86, 0.8)');
+      expect(second).toBe(first);
+    });
   });
 
   describe('invalid inputs', () => {
