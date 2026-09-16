@@ -28,11 +28,31 @@ describe('LanguageSwitcherComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render the language icon', () => {
+  it('should render the language icon with aria-hidden="true"', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     const icon = compiled.querySelector('mat-icon');
 
     expect(icon?.textContent).toContain('language');
+    expect(icon?.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('should set aria-hidden on menu icons and aria-current on the selected language menu item when opened', () => {
+    const trigger = fixture.nativeElement.querySelector('button[matIconButton]') as HTMLButtonElement;
+
+    trigger.click();
+    fixture.detectChanges();
+
+    const menuItems = Array.from(document.querySelectorAll<HTMLButtonElement>('button[mat-menu-item]'));
+
+    expect(menuItems.length).toBe(2);
+    expect(menuItems[0].getAttribute('aria-current')).toBe('true');
+    expect(menuItems[1].getAttribute('aria-current')).toBeNull();
+
+    const checkIcons = Array.from(document.querySelectorAll('mat-icon[matMenuItemIcon]'));
+
+    checkIcons.forEach(icon => {
+      expect(icon.getAttribute('aria-hidden')).toBe('true');
+    });
   });
 
   it('should emit languageChange when a language is selected', () => {
