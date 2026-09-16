@@ -48,7 +48,8 @@ export class HexToRgbaPipe implements PipeTransform {
     const greenComponent = (num >> 8) & 255;
     const blueComponent = num & 255;
 
-    const result = `rgba(${redComponent}, ${greenComponent}, ${blueComponent}, ${alpha})` as RgbaColor;
+    const result =
+      `rgba(${redComponent}, ${greenComponent}, ${blueComponent}, ${alpha})` as RgbaColor;
 
     HEX_COLOR_CACHE.set(cacheKey, result);
 
