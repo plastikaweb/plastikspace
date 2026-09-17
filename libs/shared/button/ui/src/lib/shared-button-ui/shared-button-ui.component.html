@@ -31,6 +31,7 @@
     }
     @if (element.type === 'icon') {
       <svg-icon
+        aria-hidden="true"
         [src]="(element.content | returnAsObservable | ngrxPush)?.iconPath || ''"
         [svgClass]="(element.content | returnAsObservable | ngrxPush)?.svgClass || ''"></svg-icon>
     }
