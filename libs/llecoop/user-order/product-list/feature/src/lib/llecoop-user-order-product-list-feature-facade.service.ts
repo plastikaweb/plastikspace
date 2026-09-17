@@ -28,6 +28,7 @@ export class LlecoopUserOrderProductListFeatureFacadeService {
    */
   readonly productsWithQuantity = computed<LlecoopProductWithQuantity[]>(() => {
     const productsList = this.#orderProductStore.entities();
+
     if (!productsList.length) {
       return [];
     }

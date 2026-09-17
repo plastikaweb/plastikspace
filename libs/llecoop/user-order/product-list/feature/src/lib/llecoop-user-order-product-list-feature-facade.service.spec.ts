@@ -73,9 +73,7 @@ describe('LlecoopUserOrderProductListFeatureFacadeService', () => {
       const product2 = { id: 'p2', name: 'Banana', priceWithIva: 1.5 } as LlecoopProduct;
 
       mockEntitiesSignal.set([product1, product2]);
-      mockCartSignal.set([
-        { id: 'p1', name: 'Apple', quantity: 3 } as LlecoopUserOrderCartItem,
-      ]);
+      mockCartSignal.set([{ id: 'p1', name: 'Apple', quantity: 3 } as LlecoopUserOrderCartItem]);
 
       const result = service.productsWithQuantity();
 
@@ -87,6 +85,7 @@ describe('LlecoopUserOrderProductListFeatureFacadeService', () => {
 
     it('should reactively update when cart items change', () => {
       const product1 = { id: 'p1', name: 'Apple', priceWithIva: 2.5 } as LlecoopProduct;
+
       mockEntitiesSignal.set([product1]);
       mockCartSignal.set([]);
 
@@ -94,9 +93,7 @@ describe('LlecoopUserOrderProductListFeatureFacadeService', () => {
         { id: 'p1', name: 'Apple', priceWithIva: 2.5, quantity: 0 },
       ]);
 
-      mockCartSignal.set([
-        { id: 'p1', name: 'Apple', quantity: 5 } as LlecoopUserOrderCartItem,
-      ]);
+      mockCartSignal.set([{ id: 'p1', name: 'Apple', quantity: 5 } as LlecoopUserOrderCartItem]);
 
       expect(service.productsWithQuantity()).toEqual([
         { id: 'p1', name: 'Apple', priceWithIva: 2.5, quantity: 5 },
