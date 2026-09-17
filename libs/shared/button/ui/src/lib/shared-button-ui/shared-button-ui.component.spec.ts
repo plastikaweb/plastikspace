@@ -47,4 +47,11 @@ describe('SharedButtonUiComponent', () => {
 
     expect(results).toHaveNoViolations();
   });
+
+  it('should set aria-hidden="true" on svg-icon elements', () => {
+    const svgIcon: HTMLElement | null = fixture.nativeElement.querySelector('svg-icon');
+    if (svgIcon) {
+      expect(svgIcon.getAttribute('aria-hidden')).toBe('true');
+    }
+  });
 });
