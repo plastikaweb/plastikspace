@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { LlecoopProductWithQuantity } from '@plastik/llecoop/entities';
 import {
@@ -21,6 +21,31 @@ export class LlecoopUserOrderProductListFeatureFacadeService {
 
   readonly products = this.#orderProductStore.entities;
   readonly cart = this.#cartStore.cart;
+
+  /**
+   * Memoized computed signal combining product entities and cart quantities.
+   * Eliminates the impure pipe re-evaluation on every change detection pass.
+   */
+  readonly productsWithQuantity = computed<LlecoopProductWithQuantity[]>(() => {
+    const productsList = this.#orderProductStore.entities();
+    if (!productsList.length) {
+      return [];
+    }
+
+    const cartItems = this.#cartStore.cart();
+    const cartQuantityMap = new Map<string, number>();
+
+    for (const cartEntry of cartItems) {
+      if (cartEntry.id) {
+        cartQuantityMap.set(cartEntry.id, cartEntry.quantity);
+      }
+    }
+
+    return productsList.map(product => ({
+      ...product,
+      quantity: cartQuantityMap.get(product.id) ?? 0,
+    }));
+  });
   readonly count = this.#orderProductStore.count;
   readonly pagination = this.#orderProductStore.pagination;
   readonly pageSizeOptions = signal([10, 25, 50]);
