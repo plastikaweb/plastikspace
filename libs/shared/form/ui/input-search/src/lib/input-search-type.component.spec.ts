@@ -128,6 +128,34 @@ describe('InputSearchTypeComponent', () => {
     });
   });
 
+  describe('input aria-label accessibility', () => {
+    it('should set aria-label on input when showLabel is false/omitted', () => {
+      const input = fixture.debugElement.query(By.css('input')).nativeElement;
+
+      expect(input.getAttribute('aria-label')).toBe('Search');
+    });
+
+    it('should fallback to placeholder or translation key when label is missing and showLabel is false', () => {
+      const customFixture = TestBed.createComponent(InputSearchTypeComponent);
+      const customComp = customFixture.componentInstance;
+
+      customComp.field = {
+        key: 'query',
+        type: 'input-search',
+        formControl: new FormControl(),
+        props: {
+          placeholder: 'Search products...',
+          showLabel: false,
+        },
+      };
+      customFixture.detectChanges();
+
+      const input = customFixture.debugElement.query(By.css('input')).nativeElement;
+
+      expect(input.getAttribute('aria-label')).toBe('Search products...');
+    });
+  });
+
   describe('A11Y-007: tooltips and clear-button decouple', () => {
     it('should mirror each icon button aria-label with a matching matTooltip', () => {
       // No translations loaded → `| translate` returns the key, so both bindings
