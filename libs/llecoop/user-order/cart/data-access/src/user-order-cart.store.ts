@@ -28,9 +28,14 @@ export const llecoopUserOrderCartStore = signalStore(
   })),
   withComputed(({ cart }) => ({
     getCartTotalPrice: computed(() =>
-      cart().reduce((acc, cartItem) => Number((acc + cartItem.priceWithIva * cartItem.quantity).toFixed(2)), 0)
+      cart().reduce(
+        (acc, cartItem) => Number((acc + cartItem.priceWithIva * cartItem.quantity).toFixed(2)),
+        0
+      )
     ),
-    getOrderedCartItems: computed(() => [...cart()].sort((itemA, itemB) => itemA.name.localeCompare(itemB.name))),
+    getOrderedCartItems: computed(() =>
+      [...cart()].sort((itemA, itemB) => itemA.name.localeCompare(itemB.name))
+    ),
   })),
   withMethods(store => {
     return {
@@ -40,7 +45,10 @@ export const llecoopUserOrderCartStore = signalStore(
             const currentCart = store.cart().filter(cartItem => cartItem.id !== product.id);
 
             updateState(store, `[user-order-cart] add item`, {
-              cart: quantity === 0 ? currentCart : [...currentCart, { ...product, quantity: Number(quantity) }],
+              cart:
+                quantity === 0
+                  ? currentCart
+                  : [...currentCart, { ...product, quantity: Number(quantity) }],
             });
           })
         )
