@@ -5,6 +5,9 @@
     #searchInput
     matInput
     type="text"
+    [attr.aria-label]="
+      props.showLabel ? null : (props.label || props.placeholder || ('common.form.search' | translate))
+    "
     [autocomplete]="props['autocomplete'] || 'off'"
     [formControl]="formControl"
     [formlyAttributes]="field"
