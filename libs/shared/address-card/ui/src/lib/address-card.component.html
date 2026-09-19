@@ -10,7 +10,8 @@
   [class.pointer-events-none]="disabled()"
   [attr.aria-label]="fullAriaLabel()"
   (click)="interactive() && selectionChange.emit()"
-  (keydown.enter)="interactive() && selectionChange.emit()">
+  (keydown.enter)="interactive() && selectionChange.emit()"
+  (keydown.space)="$event.preventDefault(); interactive() && selectionChange.emit()">
   <mat-card-content class="flex! flex-row items-center justify-start gap-4">
     <ng-content select="[indicator]"></ng-content>
 
@@ -18,7 +19,7 @@
       <div class="address-title mb-3 flex flex-wrap items-center justify-start gap-2">
         @if (address().default) {
           <span class="default-badge">
-            <mat-icon class="scale-70!">star</mat-icon>
+            <mat-icon class="scale-70!" aria-hidden="true">star</mat-icon>
           </span>
         }
         <h3 class="text-2xl font-black tracking-tight capitalize">
@@ -27,7 +28,7 @@
       </div>
       <div class="text-on-surface-variant grid grid-cols-1 gap-4 text-sm md:grid-cols-2">
         <div class="grid grid-cols-[auto_1fr] items-center gap-2">
-          <mat-icon class="text-on-surface-variant scale-90">location_on</mat-icon>
+          <mat-icon class="text-on-surface-variant scale-90" aria-hidden="true">location_on</mat-icon>
           <div>
             <p>{{ address().address }}</p>
             <p>{{ address().zip }} {{ address().city }}</p>
@@ -35,7 +36,7 @@
         </div>
         @if (address().phone) {
           <div class="flex items-center gap-2">
-            <mat-icon class="text-on-surface-variant scale-90">phone</mat-icon>
+            <mat-icon class="text-on-surface-variant scale-90" aria-hidden="true">phone</mat-icon>
             <span class="text-on-surface-variant mt-1">{{ address().phone }}</span>
           </div>
         }
@@ -45,7 +46,7 @@
     @if (selected()) {
       <div
         class="address-check bg-sys-primary text-sys-on-primary animate-fade-in absolute flex items-center justify-center p-4 shadow-lg">
-        <mat-icon class="scale-125!">check</mat-icon>
+        <mat-icon class="scale-125!" aria-hidden="true">check</mat-icon>
       </div>
     }
 

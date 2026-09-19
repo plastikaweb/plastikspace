@@ -64,4 +64,27 @@ describe('AddressCardComponent', () => {
 
     expect(cardElement.getAttribute('aria-label')).toBe('Home, Main Street 123, 08001 Barcelona');
   });
+
+  it('should emit selectionChange on keydown.space and prevent default', () => {
+    const emitSpy = vi.spyOn(component.selectionChange, 'emit');
+    const cardElement = fixture.nativeElement.querySelector('.address-card');
+    const event = new KeyboardEvent('keydown', { key: ' ', code: 'Space', cancelable: true });
+    const preventDefaultSpy = vi.spyOn(event, 'preventDefault');
+
+    cardElement.dispatchEvent(event);
+    expect(preventDefaultSpy).toHaveBeenCalled();
+    expect(emitSpy).toHaveBeenCalled();
+  });
+
+
+  it('should set aria-hidden="true" on inner decorative icons', () => {
+    fixture.componentRef.setInput('selected', true);
+    fixture.detectChanges();
+    const icons = fixture.nativeElement.querySelectorAll('mat-icon');
+
+    expect(icons.length).toBeGreaterThan(0);
+    icons.forEach((icon: HTMLElement) => {
+      expect(icon.getAttribute('aria-hidden')).toBe('true');
+    });
+  });
 });
