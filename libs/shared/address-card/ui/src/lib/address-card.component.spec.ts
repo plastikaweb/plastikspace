@@ -76,19 +76,6 @@ describe('AddressCardComponent', () => {
     expect(emitSpy).toHaveBeenCalled();
   });
 
-  it('should bind aria-selected correctly when interactive', () => {
-    const cardElement = fixture.nativeElement.querySelector('.address-card');
-
-    expect(cardElement.getAttribute('aria-selected')).toBe('false');
-
-    fixture.componentRef.setInput('selected', true);
-    fixture.detectChanges();
-    expect(cardElement.getAttribute('aria-selected')).toBe('true');
-
-    fixture.componentRef.setInput('interactive', false);
-    fixture.detectChanges();
-    expect(cardElement.getAttribute('aria-selected')).toBeNull();
-  });
 
   it('should set aria-hidden="true" on inner decorative icons', () => {
     fixture.componentRef.setInput('selected', true);

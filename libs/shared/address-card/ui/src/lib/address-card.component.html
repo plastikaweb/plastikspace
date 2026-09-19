@@ -9,7 +9,6 @@
   [class.opacity-50]="disabled()"
   [class.pointer-events-none]="disabled()"
   [attr.aria-label]="fullAriaLabel()"
-  [attr.aria-selected]="interactive() ? selected() : null"
   (click)="interactive() && selectionChange.emit()"
   (keydown.enter)="interactive() && selectionChange.emit()"
   (keydown.space)="$event.preventDefault(); interactive() && selectionChange.emit()">
