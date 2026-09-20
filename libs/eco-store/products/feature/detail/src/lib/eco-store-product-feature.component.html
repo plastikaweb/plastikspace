@@ -26,11 +26,12 @@
     </div>
     <div class="flex flex-wrap gap-2" role="list">
       @for (tag of productTags; track tag.label) {
-        <plastik-shared-chip
-          role="listitem"
-          [customClass]="'shadow-sm ' + tag.class"
-          [icon]="tag.icon"
-          [label]="tag.label | translate" />
+        <div role="listitem">
+          <plastik-shared-chip
+            [customClass]="'shadow-sm ' + tag.class"
+            [icon]="tag.icon"
+            [label]="tag.label | translate" />
+        </div>
       }
     </div>
   } @else {
@@ -80,11 +81,13 @@
               [class.border-primary-400!]="activeThumbnailIndex() === i"
               [class.opacity-100]="activeThumbnailIndex() === i"
               [class.opacity-70]="activeThumbnailIndex() !== i"
+              [attr.aria-label]="(product()?.name || '') + ' thumbnail ' + (i + 1)"
+              [attr.aria-current]="activeThumbnailIndex() === i ? 'true' : undefined"
               (click)="activeThumbnailIndex.set(i)">
               <plastik-img-container
                 class="overflow-hidden transition-all duration-100 hover:scale-105 hover:contrast-120"
                 [src]="product() | pocketBaseImageUrl: img"
-                [title]="`${product()?.name || ''} thumbnail ${i}`"
+                [title]="`${product()?.name || ''} thumbnail ${i + 1}`"
                 [dimensions]="thumbnailDimensions()"
                 [lcpImage]="false" />
             </button>
@@ -137,7 +140,7 @@
           <div class="mt-2 mb-8 flex flex-col gap-3">
             @if (product()?.origin) {
               <div class="flex items-center gap-3">
-                <mat-icon class="metadata-icon">public</mat-icon>
+                <mat-icon class="metadata-icon" aria-hidden="true">public</mat-icon>
                 <span class="text-base"
                   ><span class="font-normal">{{ 'products.origin' | translate }}:</span>
                   <span class="ml-1 font-bold">{{ product()?.origin }}</span></span
@@ -146,7 +149,7 @@
             }
             @if (product()?.provider) {
               <div class="flex items-center gap-3">
-                <mat-icon class="metadata-icon">storefront</mat-icon>
+                <mat-icon class="metadata-icon" aria-hidden="true">storefront</mat-icon>
                 <span class="text-base"
                   ><span class="font-normal">{{ 'products.provider' | translate }}:</span>
                   <a href="#" class="ml-1 font-bold underline decoration-1 underline-offset-2">{{
@@ -218,7 +221,8 @@
         @defer (on viewport; prefetch on idle) {
           <div class="border-outline-variant bg-surface-container rounded-2xl border p-8">
             <h3 class="text-sys-on-tertiary-container mb-4 flex items-center gap-2 font-bold">
-              <mat-icon>info</mat-icon> {{ 'products.technicalInfo' | translate }}
+              <mat-icon aria-hidden="true">info</mat-icon>
+              {{ 'products.technicalInfo' | translate }}
             </h3>
 
             <ul class="flex flex-col flex-wrap gap-4 lg:flex-row!">
@@ -260,7 +264,7 @@
           mat-stroked-button
           color="primary"
           class="hover:bg-primary-50 rounded-xl! px-6! py-6! transition-colors">
-          <mat-icon class="mr-2">edit</mat-icon>
+          <mat-icon class="mr-2" aria-hidden="true">edit</mat-icon>
           {{ 'products.opinions.write' | translate }}
         </button>
       </div>
@@ -284,7 +288,7 @@
                 </div>
               </div>
             </div>
-            <div class="text-sys-tertiary mb-4 flex">
+            <div class="text-sys-tertiary mb-4 flex" aria-hidden="true">
               <mat-icon class="scale-75!">star</mat-icon>
               <mat-icon class="scale-75!">star</mat-icon>
               <mat-icon class="scale-75!">star</mat-icon>
