@@ -25,10 +25,15 @@ export const headerConfig: CoreCmsLayoutHeaderConfig = {
                 content: { iconPath: 'assets/svg/github.svg', svgClass: 'w-[40px] fill-primary' },
               },
             ],
+            /**
+             * @description Security: Pass 'noopener,noreferrer' to prevent reverse-tabnabbing vulnerabilities where external sites opened in a new tab could access window.opener.
+             * @returns {void} Nothing.
+             */
             doAction: () =>
               window.open(
                 'https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images/README.md',
-                '_blank'
+                '_blank',
+                'noopener,noreferrer'
               ),
           },
         },

@@ -9,6 +9,7 @@ import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
 
 import { AppComponent } from './app.component';
+import { headerConfig } from './cms-layout-config';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -26,7 +27,7 @@ describe('AppComponent', () => {
         provideHttpClient(),
         provideRouter([]),
         provideMockStore({ initialState }),
-        { provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useValue: null },
+        { provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useValue: headerConfig },
         { provide: VIEW_CONFIG, useValue: signal([]) },
       ],
     }).compileComponents();
@@ -37,5 +38,21 @@ describe('AppComponent', () => {
 
   it('should create the app', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should configure GitHub button action with window.open using noopener,noreferrer for reverse-tabnabbing security', () => {
+    const buttonConfig = headerConfig.widgetsConfig?.widgets?.[0]?.inputs?.['buttonConfig'] as {
+      doAction?: () => void;
+    };
+
+    const windowOpenSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+
+    buttonConfig.doAction?.();
+
+    expect(windowOpenSpy).toHaveBeenCalledWith(
+      'https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images/README.md',
+      '_blank',
+      'noopener,noreferrer'
+    );
   });
 });
