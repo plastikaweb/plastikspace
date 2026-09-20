@@ -51,4 +51,12 @@ describe('EcoStoreProductFeatureComponent', () => {
 
     expect(results).toHaveNoViolations();
   }, 10000);
+
+  it('should ensure all decorative icons have aria-hidden="true"', () => {
+    const icons: NodeListOf<HTMLElement> = fixture.nativeElement.querySelectorAll('mat-icon');
+
+    icons.forEach(icon => {
+      expect(icon.getAttribute('aria-hidden')).toBe('true');
+    });
+  });
 });
