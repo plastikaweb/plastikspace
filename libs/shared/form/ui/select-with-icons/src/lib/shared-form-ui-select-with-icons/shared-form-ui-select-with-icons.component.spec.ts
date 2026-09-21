@@ -55,11 +55,13 @@ describe('SharedFormUiSelectWithIconsComponent', () => {
 
     expect(trigger).toBeTruthy();
     expect(trigger.classList).toContain('select-type-warning');
-    expect(trigger.querySelector('mat-icon').textContent).toContain('pending');
+    const triggerIcon = trigger.querySelector('mat-icon');
+    expect(triggerIcon.textContent).toContain('pending');
+    expect(triggerIcon.getAttribute('aria-hidden')).toBe('true');
     expect(trigger.querySelector('span').textContent).toContain('Pending');
   });
 
-  it('should render all options with icons', async () => {
+  it('should render all options with icons hidden from screen readers', async () => {
     // Open the select to render options
     const select = fixture.nativeElement.querySelector('mat-select');
 
@@ -72,11 +74,15 @@ describe('SharedFormUiSelectWithIconsComponent', () => {
     expect(options.length).toBe(2);
 
     expect(options[0].classList).toContain('select-type-warning');
-    expect(options[0].querySelector('mat-icon').textContent).toContain('pending');
+    const option0Icon = options[0].querySelector('mat-icon');
+    expect(option0Icon.textContent).toContain('pending');
+    expect(option0Icon.getAttribute('aria-hidden')).toBe('true');
     expect(options[0].querySelector('span').textContent).toContain('Pending');
 
     expect(options[1].classList).toContain('select-type-success');
-    expect(options[1].querySelector('mat-icon').textContent).toContain('check_circle');
+    const option1Icon = options[1].querySelector('mat-icon');
+    expect(option1Icon.textContent).toContain('check_circle');
+    expect(option1Icon.getAttribute('aria-hidden')).toBe('true');
     expect(options[1].querySelector('span').textContent).toContain('Delivered');
   });
 });
