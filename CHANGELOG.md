@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-08-30] - NASA Images: Fix reverse-tabnabbing in `headerConfig` widget action
+
+### Fixed
+
+- **`apps/nasa-images` (`cms-layout-config.ts`)**: Added `'noopener,noreferrer'` as 3rd parameter to `window.open` in `headerConfig.widgetsConfig` action to prevent reverse-tabnabbing security vulnerability.
+
 ## [2026-08-30] - Eco Admin: application scaffold and `scope:eco` product-family boundary (AP-0 0.1 + 0.2)
 
 ### Added
