@@ -27,10 +27,14 @@ export const llecoopUserOrderCartStore = signalStore(
     _authService: inject(FirebaseAuthService),
   })),
   withComputed(({ cart }) => ({
-    getCartTotalPrice: computed(() =>
-      cart().reduce((acc, item) => Number((acc + item.priceWithIva * item.quantity).toFixed(2)), 0)
-    ),
-    getOrderedCartItems: computed(() => cart().sort((a, b) => a.name.localeCompare(b.name))),
+    getCartTotalPrice: computed(() => {
+      // Sum item prices in a pure numeric loop and round to 2 decimals once at the end
+      const total = cart().reduce((acc, item) => acc + item.priceWithIva * item.quantity, 0);
+
+      return Number(total.toFixed(2));
+    }),
+    // Shallow copy cart before sorting to prevent mutating Signal state array in place
+    getOrderedCartItems: computed(() => [...cart()].sort((a, b) => a.name.localeCompare(b.name))),
   })),
   withMethods(store => {
     return {

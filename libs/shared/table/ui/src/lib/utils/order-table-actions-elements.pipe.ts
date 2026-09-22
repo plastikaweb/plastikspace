@@ -15,6 +15,7 @@ export class OrderTableActionsElementsPipe<T> implements PipeTransform {
       throw new Error('An Array List is required to use OrderArrayElementsPipe');
     }
 
-    return list.sort((a, b) => (a.value.order || 0) - (b.value.order || 0));
+    // Shallow copy before sorting to avoid in-place array mutation during pipe transformation
+    return [...list].sort((a, b) => (a.value.order || 0) - (b.value.order || 0));
   }
 }
