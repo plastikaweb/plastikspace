@@ -58,4 +58,17 @@ describe('OrderTableActionsElementsPipe', () => {
     expect(result[0].value.order).toBe(1);
     expect(result[1].value.order).toBe(1);
   });
+
+  it('should not mutate original input array in place', () => {
+    const actions = [
+      { key: 'ACTION2', value: { order: 2 } },
+      { key: 'ACTION1', value: { order: 1 } },
+    ] as any;
+    const originalFirstKey = actions[0].key;
+
+    const result = pipe.transform(actions);
+
+    expect(result).not.toBe(actions);
+    expect(actions[0].key).toBe(originalFirstKey);
+  });
 });
