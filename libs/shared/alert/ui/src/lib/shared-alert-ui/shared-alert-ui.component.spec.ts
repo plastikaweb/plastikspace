@@ -75,14 +75,16 @@ describe('SharedAlertUiComponent', () => {
     expect(closeBtn).not.toBeNull();
   });
 
-  it('should mirror the close button aria-label in its matTooltip', () => {
+  it('should mirror the close button aria-label in its matTooltip and hide inner mat-icon from screen readers', () => {
     createComponent('INFO', true);
     const closeBtn = fixture.debugElement.query(By.css('button[matIconButton]'));
     const tooltip = closeBtn.injector.get(MatTooltip);
     const ariaLabel = closeBtn.nativeElement.getAttribute('aria-label');
+    const closeIcon = closeBtn.query(By.css('mat-icon'));
 
     expect(ariaLabel).toBe('common.close');
     expect(tooltip.message).toBe(ariaLabel);
+    expect(closeIcon.nativeElement.getAttribute('aria-hidden')).toBe('true');
   });
 
   it('should emit closed event when close button is clicked', () => {
