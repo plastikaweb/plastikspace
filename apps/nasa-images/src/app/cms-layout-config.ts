@@ -12,7 +12,8 @@ export const headerConfig: CoreCmsLayoutHeaderConfig = {
     widgets: [
       {
         id: 1,
-        component: () => import('@plastik/shared/button/ui').then(c => c.SharedButtonUiComponent),
+        component: () =>
+          import('@plastik/shared/button/ui').then(component => component.SharedButtonUiComponent),
         inputs: {
           buttonConfig: {
             type: 'link',
@@ -28,7 +29,8 @@ export const headerConfig: CoreCmsLayoutHeaderConfig = {
             doAction: () =>
               window.open(
                 'https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images/README.md',
-                '_blank'
+                '_blank',
+                'noopener,noreferrer'
               ),
           },
         },
