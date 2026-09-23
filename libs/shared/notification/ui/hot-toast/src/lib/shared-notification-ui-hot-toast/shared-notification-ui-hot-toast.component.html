@@ -4,7 +4,7 @@
     role="alert"
     aria-live="polite">
     @if (mergedNotification()?.icon) {
-      <mat-icon class="icon-wrapper">{{ mergedNotification()?.icon }}</mat-icon>
+      <mat-icon aria-hidden="true" class="icon-wrapper">{{ mergedNotification()?.icon }}</mat-icon>
     }
 
     <div class="flex flex-row items-center justify-start gap-2 px-4 py-2">
