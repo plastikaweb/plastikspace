@@ -83,7 +83,7 @@ describe('SharedNotificationUiHotToastComponent', () => {
     const notification = { type: 'SUCCESS', message: 'added', id: 'cart:1' } as Notification;
     const dismissed: Notification[] = [];
 
-    component.sendDismiss.subscribe(n => dismissed.push(n));
+    component.sendDismiss.subscribe(dismissedNotification => dismissed.push(dismissedNotification));
 
     fixture.componentRef.setInput('notification', notification);
     fixture.detectChanges();
@@ -92,6 +92,27 @@ describe('SharedNotificationUiHotToastComponent', () => {
 
     expect(dismissed).toHaveLength(1);
     expect(dismissed[0].id).toBe('cart:1');
+  });
+
+  it('renders decorative icon with aria-hidden="true" in template', () => {
+    fixture.componentRef.setInput('notification', {
+      type: 'SUCCESS',
+      message: 'Success',
+      id: 'k',
+      icon: 'check_circle',
+    });
+    fixture.detectChanges();
+
+    const template = component.toastTemplate();
+    const view = template.createEmbeddedView(null);
+
+    view.detectChanges();
+
+    const rootElement = view.rootNodes[0] as HTMLElement;
+    const iconEl = rootElement.querySelector('mat-icon');
+
+    expect(iconEl).toBeTruthy();
+    expect(iconEl?.getAttribute('aria-hidden')).toBe('true');
   });
 
   it('should have no accessibility violations', async () => {
