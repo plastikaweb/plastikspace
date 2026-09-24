@@ -15,10 +15,13 @@ import {
 } from '../formatting';
 import { SharedUtilFormattersService } from './shared-util-formatters.service';
 
-@Injectable()
+/** Map cache for dot-separated property paths to avoid repeated String.prototype.split allocations. */
+const PATH_CACHE = new Map<string, string[]>();
+
 /**
  * @description A service to format a value from an object applying a formatting configuration.
  */
+@Injectable()
 export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseEntity> {
   readonly #formatter = inject(SharedUtilFormattersService);
 
@@ -88,15 +91,39 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
 
   /**
    * Retrieves a value from an object based on a dot-separated property path.
+   * Fast-paths single-level properties (no dot) to avoid string splitting and array reduction,
+   * and caches pre-split property path segments for multi-level nested paths.
    * @param {string} property - The dot-separated path to the property.
    * @param {T} item - The object to extract the value from.
    * @returns {FormattingOutput} The value at the specified path, or an empty string if not found.
    */
   #getValueFromRow(property: string, item: T extends BaseEntity ? T : never): FormattingOutput {
-    return property.split('.').reduce((accObject: unknown, currentProp: string) => {
-      const object = (accObject as T)[currentProp as keyof T];
+    if (!property) {
+      return '';
+    }
 
-      return isNil(object) ? '' : (object as FormattingOutput);
-    }, item);
+    if (property.indexOf('.') === -1) {
+      const value = (item as Record<string, unknown>)[property];
+
+      return isNil(value) ? '' : (value as FormattingOutput);
+    }
+
+    let keys = PATH_CACHE.get(property);
+
+    if (!keys) {
+      keys = property.split('.');
+      PATH_CACHE.set(property, keys);
+    }
+
+    let current: unknown = item;
+
+    for (let i = 0; i < keys.length; i++) {
+      if (isNil(current)) {
+        return '';
+      }
+      current = (current as Record<string, unknown>)[keys[i]];
+    }
+
+    return isNil(current) ? '' : (current as FormattingOutput);
   }
 }
