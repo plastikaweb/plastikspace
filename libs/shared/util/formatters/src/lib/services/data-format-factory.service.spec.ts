@@ -210,4 +210,69 @@ describe('DataFormatFactoryService', () => {
       expect(result).toBe(`This is the TITLE`);
     });
   });
+
+  describe('property path extraction optimization', () => {
+    it('should handle empty property path gracefully', () => {
+      const result = service.getFormattedValue(objectMocked, {
+        key: 'a',
+        title: 'Title',
+        pathToKey: '',
+        formatting: { type: 'TEXT' },
+      });
+
+      expect(result).toEqual({ changingThisBreaksApplicationSecurity: '' });
+    });
+
+    it('should extract flat top-level property path without string splitting', () => {
+      const result = service.getFormattedValue(objectMocked, {
+        key: 'a',
+        title: 'Title',
+        pathToKey: 'name',
+        formatting: { type: 'TEXT' },
+      });
+
+      expect(result).toEqual({ changingThisBreaksApplicationSecurity: 'TITLE' });
+    });
+
+    it('should handle missing flat property', () => {
+      const result = service.getFormattedValue(objectMocked, {
+        key: 'a',
+        title: 'Title',
+        pathToKey: 'nonExistent',
+        formatting: { type: 'TEXT' },
+      });
+
+      expect(result).toEqual({ changingThisBreaksApplicationSecurity: '' });
+    });
+
+    it('should extract multi-level property path correctly and use path cache', () => {
+      const result1 = service.getFormattedValue(objectMocked, {
+        key: 'a',
+        title: 'Title',
+        pathToKey: 'text.child.value',
+        formatting: { type: 'TEXT' },
+      });
+
+      const result2 = service.getFormattedValue(objectMocked, {
+        key: 'a',
+        title: 'Title',
+        pathToKey: 'text.child.value',
+        formatting: { type: 'TEXT' },
+      });
+
+      expect(result1).toEqual({ changingThisBreaksApplicationSecurity: 'value' });
+      expect(result2).toEqual({ changingThisBreaksApplicationSecurity: 'value' });
+    });
+
+    it('should handle missing or nullish intermediate nested property safely', () => {
+      const result = service.getFormattedValue(objectMocked, {
+        key: 'a',
+        title: 'Title',
+        pathToKey: 'text.missing.value',
+        formatting: { type: 'TEXT' },
+      });
+
+      expect(result).toEqual({ changingThisBreaksApplicationSecurity: '' });
+    });
+  });
 });
