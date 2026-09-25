@@ -17,7 +17,7 @@
     } @else if (data.defaultLogo) {
       <span
         class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--mat-sys-primary-container)] text-[var(--mat-sys-on-primary-container)] shadow-md">
-        <mat-icon class="scale-125" [svgIcon]="data.defaultLogo"></mat-icon>
+        <mat-icon aria-hidden="true" class="scale-125" [svgIcon]="data.defaultLogo"></mat-icon>
       </span>
     }
     <div class="min-w-0 flex-1">
@@ -37,7 +37,7 @@
       <div class="flex flex-col items-center gap-4 py-2 text-center">
         <div
           class="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--mat-sys-primary-container)] text-[var(--mat-sys-on-primary-container)]">
-          <mat-icon svgIcon="safari" class="!h-6 !w-6"></mat-icon>
+          <mat-icon aria-hidden="true" svgIcon="safari" class="!h-6 !w-6"></mat-icon>
         </div>
         <p class="text-sm font-medium text-[var(--mat-sys-on-surface)]">
           {{ 'common.pwa.iosSafariRequired' | translate }}
@@ -68,7 +68,9 @@
               } @else {
                 {{ 'common.pwa.iosInstructionsStep1' | translate }}
               }
-              <mat-icon class="text-[var(--mat-sys-primary)]">ios_share</mat-icon>
+              <mat-icon aria-hidden="true" class="text-[var(--mat-sys-primary)]"
+                >ios_share</mat-icon
+              >
             </p>
           </li>
           <li class="relative flex items-center justify-start gap-3 pb-5">
