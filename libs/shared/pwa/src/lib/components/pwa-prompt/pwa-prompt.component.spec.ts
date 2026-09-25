@@ -260,5 +260,16 @@ describe('PwaPromptComponent', () => {
       expect(container).toBeTruthy();
       expect(container.getAttribute('aria-label')).toBe('common.pwa.title');
     });
+
+    it('sets aria-hidden="true" on decorative mat-icon elements', () => {
+      mockPwaService.isIos.mockReturnValue(true);
+      createComponent();
+      const icons = fixture.nativeElement.querySelectorAll('mat-icon');
+
+      expect(icons.length).toBeGreaterThan(0);
+      icons.forEach((icon: HTMLElement) => {
+        expect(icon.getAttribute('aria-hidden')).toBe('true');
+      });
+    });
   });
 });
