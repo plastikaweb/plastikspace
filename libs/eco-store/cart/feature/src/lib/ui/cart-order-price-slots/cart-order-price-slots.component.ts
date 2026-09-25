@@ -22,11 +22,8 @@ export class CartOrderPriceSlotsComponent {
       .sort((a, b) => a.min - b.min)
   );
 
-  sortedTiersDesc = computed(() =>
-    this.tiers()
-      .slice()
-      .sort((a, b) => b.min - a.min)
-  );
+  // Reuses sortedTiersAsc() and reverses the array in linear O(N) time instead of performing a redundant O(N log N) sort pass
+  sortedTiersDesc = computed(() => [...this.sortedTiersAsc()].reverse());
 
   currentTier = computed(() => {
     const total = this.cartTotal();

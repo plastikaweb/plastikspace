@@ -27,15 +27,16 @@ export class HighlightPipe implements PipeTransform {
       return escapeHtml(value);
     }
 
-    // Use original case from the value for the highlighted part
-    const highlighted = value.substring(startIdx, startIdx + normalizedSearch.length);
-    const result =
-      escapeHtml(value.substring(0, startIdx)) +
-      `<mark class="bg-warning-200 dark:bg-warning-800 text-on-surface px-0.5 rounded-sm">${escapeHtml(
-        highlighted
-      )}</mark>` +
-      escapeHtml(value.substring(startIdx + normalizedSearch.length));
+    const searchLen = normalizedSearch.length;
+    const endIdx = startIdx + searchLen;
 
-    return this.#sanitizer.bypassSecurityTrustHtml(result);
+    // Fast HTML escaping and template string construction
+    const before = escapeHtml(value.substring(0, startIdx));
+    const highlighted = escapeHtml(value.substring(startIdx, endIdx));
+    const after = escapeHtml(value.substring(endIdx));
+
+    return this.#sanitizer.bypassSecurityTrustHtml(
+      `${before}<mark class="bg-warning-200 dark:bg-warning-800 text-on-surface px-0.5 rounded-sm">${highlighted}</mark>${after}`
+    );
   }
 }
