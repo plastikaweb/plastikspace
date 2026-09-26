@@ -43,7 +43,8 @@ describe('AppComponent', () => {
   it('should open external link securely with noopener,noreferrer', () => {
     const windowOpenSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
     const widget = headerConfig.widgetsConfig?.widgets?.[0];
-    const buttonConfig = (widget?.inputs as { buttonConfig?: { doAction?: () => void } })?.buttonConfig;
+    const buttonConfig = (widget?.inputs as { buttonConfig?: { doAction?: () => void } })
+      ?.buttonConfig;
 
     buttonConfig?.doAction?.();
 
