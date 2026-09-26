@@ -15,10 +15,13 @@ import {
 } from '../formatting';
 import { SharedUtilFormattersService } from './shared-util-formatters.service';
 
-@Injectable()
+/** Module-level cache for dot-separated property path arrays to avoid repeated `String.prototype.split()` allocations. */
+const PATH_CACHE = new Map<string, string[]>();
+
 /**
  * @description A service to format a value from an object applying a formatting configuration.
  */
+@Injectable()
 export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseEntity> {
   readonly #formatter = inject(SharedUtilFormattersService);
 
@@ -93,10 +96,26 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
    * @returns {FormattingOutput} The value at the specified path, or an empty string if not found.
    */
   #getValueFromRow(property: string, item: T extends BaseEntity ? T : never): FormattingOutput {
-    return property.split('.').reduce((accObject: unknown, currentProp: string) => {
-      const object = (accObject as T)[currentProp as keyof T];
+    // Fast-path: single-level properties do not require path splitting or cache lookups
+    if (property.indexOf('.') === -1) {
+      const directValue = (item as Record<string, unknown>)[property];
+      return isNil(directValue) ? '' : (directValue as FormattingOutput);
+    }
 
-      return isNil(object) ? '' : (object as FormattingOutput);
-    }, item);
+    let path = PATH_CACHE.get(property);
+    if (!path) {
+      path = property.split('.');
+      PATH_CACHE.set(property, path);
+    }
+
+    let current: unknown = item;
+    for (let i = 0; i < path.length; i++) {
+      if (isNil(current)) {
+        return '';
+      }
+      current = (current as Record<string, unknown>)[path[i]];
+    }
+
+    return isNil(current) ? '' : (current as FormattingOutput);
   }
 }
