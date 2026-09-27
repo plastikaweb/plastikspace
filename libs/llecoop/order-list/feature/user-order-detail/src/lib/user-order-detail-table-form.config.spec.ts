@@ -47,7 +47,8 @@ describe('LlecoopUserOrderDetailFormTableConfig', () => {
   it('should escape malicious HTML in unit base text for priceWithIva formatting', () => {
     const tableDef = TestBed.runInInjectionContext(() => service.getTableDefinition());
     const priceColumn = tableDef.columnProperties()?.find(col => col.key === 'priceWithIva');
-    const customFormatting = priceColumn?.formatting as TableColumnFormattingCustom<LlecoopOrderProduct>;
+    const customFormatting =
+      priceColumn?.formatting as TableColumnFormattingCustom<LlecoopOrderProduct>;
 
     const productWithXss = {
       priceWithIva: 10,
@@ -58,8 +59,9 @@ describe('LlecoopUserOrderDetailFormTableConfig', () => {
     } as unknown as LlecoopOrderProduct;
 
     const formatted = customFormatting.execute(10, productWithXss);
-    const resultString = (formatted as { changingThisBreaksApplicationSecurity?: string })
-      ?.changingThisBreaksApplicationSecurity || String(formatted);
+    const resultString =
+      (formatted as { changingThisBreaksApplicationSecurity?: string })
+        ?.changingThisBreaksApplicationSecurity || String(formatted);
 
     expect(resultString).not.toContain('<img src=x onerror=alert("xss")>');
     expect(resultString).toContain('&lt;img src&#x3D;x onerror&#x3D;alert(&quot;xss&quot;)&gt;');

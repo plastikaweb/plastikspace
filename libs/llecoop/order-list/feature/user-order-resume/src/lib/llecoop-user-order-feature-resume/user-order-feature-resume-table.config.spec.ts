@@ -34,7 +34,8 @@ describe('LlecoopUserOrderResumeTableConfig', () => {
   it('should escape malicious HTML in unit base text for name formatting', () => {
     const tableDef = TestBed.runInInjectionContext(() => service.getTableDefinition());
     const nameColumn = tableDef.columnProperties()?.find(col => col.key === 'name');
-    const customFormatting = nameColumn?.formatting as TableColumnFormattingCustom<LlecoopOrderProduct>;
+    const customFormatting =
+      nameColumn?.formatting as TableColumnFormattingCustom<LlecoopOrderProduct>;
 
     const productWithXss = {
       name: 'Test Product',
@@ -46,8 +47,9 @@ describe('LlecoopUserOrderResumeTableConfig', () => {
     } as unknown as LlecoopOrderProduct;
 
     const formatted = customFormatting.execute('Test Product', productWithXss);
-    const resultString = (formatted as { changingThisBreaksApplicationSecurity?: string })
-      ?.changingThisBreaksApplicationSecurity || String(formatted);
+    const resultString =
+      (formatted as { changingThisBreaksApplicationSecurity?: string })
+        ?.changingThisBreaksApplicationSecurity || String(formatted);
 
     expect(resultString).not.toContain('<img src=x onerror=alert("xss")>');
     expect(resultString).toContain('&lt;img src&#x3D;x onerror&#x3D;alert(&quot;xss&quot;)&gt;');
