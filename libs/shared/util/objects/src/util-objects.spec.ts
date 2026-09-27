@@ -212,6 +212,13 @@ describe('Object Util', () => {
       // so the comparison matches `Object.keys()` (own-enumerable) semantics.
       expect(areObjectEntriesEqual(withInherited, { a: 1 })).toBe(true);
     });
+
+    it('should return false if key exists only as inherited property on second object', () => {
+      const proto = { a: 1 };
+      const currWithInheritedOnly = Object.create(proto);
+
+      expect(areObjectEntriesEqual({ a: 1 }, currWithInheritedOnly)).toBe(false);
+    });
   });
 
   describe('transformStringToBooleanProperties method', () => {
