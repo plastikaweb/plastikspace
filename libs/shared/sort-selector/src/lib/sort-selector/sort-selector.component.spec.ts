@@ -63,4 +63,28 @@ describe('SortSelectorComponent', () => {
 
     sub.unsubscribe();
   });
+
+  it('should set aria-hidden="true" on all decorative mat-icons', () => {
+    const icons: NodeListOf<HTMLElement> = fixture.nativeElement.querySelectorAll('mat-icon');
+
+    expect(icons.length).toBeGreaterThan(0);
+    icons.forEach(icon => {
+      expect(icon.getAttribute('aria-hidden')).toBe('true');
+    });
+  });
+
+  it('should set aria-current="true" on selected sort menu item button when menu is opened', () => {
+    const triggerBtn: HTMLButtonElement =
+      fixture.nativeElement.querySelector('button.md\\:flex\\!');
+
+    triggerBtn.click();
+    fixture.detectChanges();
+
+    const menuItems: NodeListOf<HTMLButtonElement> =
+      document.querySelectorAll('button[mat-menu-item]');
+
+    expect(menuItems.length).toBe(4);
+    expect(menuItems[0].getAttribute('aria-current')).toBe('true');
+    expect(menuItems[1].getAttribute('aria-current')).toBeNull();
+  });
 });
