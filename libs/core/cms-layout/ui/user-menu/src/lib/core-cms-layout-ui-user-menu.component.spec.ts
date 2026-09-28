@@ -26,4 +26,9 @@ describe('CoreCmsLayoutUiUserMenuComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should set aria-hidden="true" on decorative mat-icon elements', () => {
+    const icon = fixture.nativeElement.querySelector('mat-icon');
+    expect(icon?.getAttribute('aria-hidden')).toBe('true');
+  });
 });
