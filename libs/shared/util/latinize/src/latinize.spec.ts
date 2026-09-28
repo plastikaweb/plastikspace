@@ -49,4 +49,13 @@ describe('latinize', () => {
 
     expect(latinize(unmapped)).toBe(unmapped);
   });
+
+  it('caches non-ASCII string transliteration results on subsequent calls', () => {
+    const nonAsciiString = 'Associació de Prodüctors';
+    const firstResult = latinize(nonAsciiString);
+    const secondResult = latinize(nonAsciiString);
+
+    expect(firstResult).toBe('Associacio de Productors');
+    expect(secondResult).toBe(firstResult);
+  });
 });

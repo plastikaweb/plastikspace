@@ -908,6 +908,10 @@ const NON_ASCII = /[^\x00-\x7F]/;
 /** Global variant of {@link NON_ASCII} for `String.prototype.replace()`. */
 const NON_ASCII_GLOBAL = new RegExp(NON_ASCII, 'g');
 
+/** Bounded cache for transliterated non-ASCII strings to avoid repeated regex replace passes. */
+const LATINIZE_CACHE = new Map<string, string>();
+const MAX_CACHE_SIZE = 1000;
+
 /**
  * Converts a string to its Latinized form.
  * @param {string} str - The input string.
@@ -920,5 +924,18 @@ export function latinize(str: string): string {
     return str;
   }
 
-  return str.replace(NON_ASCII_GLOBAL, x => characters[x] || x);
+  const cached = LATINIZE_CACHE.get(str);
+
+  if (cached !== undefined) {
+    return cached;
+  }
+
+  const latinized = str.replace(NON_ASCII_GLOBAL, x => characters[x] || x);
+
+  if (LATINIZE_CACHE.size >= MAX_CACHE_SIZE) {
+    LATINIZE_CACHE.clear();
+  }
+  LATINIZE_CACHE.set(str, latinized);
+
+  return latinized;
 }
