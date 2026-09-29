@@ -4,10 +4,12 @@
   [class]="'favorite-button bg-primary-100/50! size- backdrop-blur-3xl' + size()"
   [class.is-favorite]="isFavorite()"
   [class.heart-beat]="isAnimating()"
-  [attr.aria-label]="ariaLabel()"
+  [attr.aria-label]="ariaLabel() || null"
+  [attr.aria-pressed]="isFavorite()"
   [matTooltip]="ariaLabel()"
+  [matTooltipDisabled]="!ariaLabel()"
   (click)="onToggle($event)">
-  <mat-icon>
+  <mat-icon aria-hidden="true">
     {{ isFavorite() ? 'favorite' : 'favorite_border' }}
   </mat-icon>
 </button>
