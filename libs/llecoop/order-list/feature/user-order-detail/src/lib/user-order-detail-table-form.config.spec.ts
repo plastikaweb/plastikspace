@@ -2,7 +2,10 @@ import { EnvironmentInjector, provideZonelessChangeDetection } from '@angular/co
 import { TestBed } from '@angular/core/testing';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LlecoopOrderProduct } from '@plastik/llecoop/entities';
-import { llecoopOrderListStore, llecoopUserOrderStore } from '@plastik/llecoop/order-list/data-access';
+import {
+  llecoopOrderListStore,
+  llecoopUserOrderStore,
+} from '@plastik/llecoop/order-list/data-access';
 import { LlecoopProductBaseUnitTextPipe } from '@plastik/llecoop/product/product-base-unit-text';
 import { LlecoopProductUnitStepPipe } from '@plastik/llecoop/product/product-unit-step';
 import { LlecoopProductUnitSuffixPipe } from '@plastik/llecoop/product/product-unit-suffix';
