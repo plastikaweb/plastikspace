@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideTranslateService } from '@ngx-translate/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { provideTranslateService } from '@ngx-translate/core';
 import { LanguageSwitcherComponent } from './language-switcher.component';
 
 describe('LanguageSwitcherComponent', () => {
@@ -28,11 +28,32 @@ describe('LanguageSwitcherComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render the language icon', () => {
+  it('should render the language icon with aria-hidden="true"', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     const icon = compiled.querySelector('mat-icon');
 
     expect(icon?.textContent).toContain('language');
+    expect(icon?.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('should set aria-current="true" on active language item and aria-hidden="true" on item icon when menu is opened', async () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    const button = compiled.querySelector<HTMLButtonElement>('button[matIconButton]');
+
+    button?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const menuItems = document.querySelectorAll<HTMLButtonElement>('button[mat-menu-item]');
+
+    expect(menuItems.length).toBe(2);
+
+    expect(menuItems[0].getAttribute('aria-current')).toBe('true');
+    expect(menuItems[1].getAttribute('aria-current')).toBeNull();
+
+    const menuIcon = menuItems[0].querySelector('mat-icon');
+
+    expect(menuIcon?.getAttribute('aria-hidden')).toBe('true');
   });
 
   it('should emit languageChange when a language is selected', () => {
