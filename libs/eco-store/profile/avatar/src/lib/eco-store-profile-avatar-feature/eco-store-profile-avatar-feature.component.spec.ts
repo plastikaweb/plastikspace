@@ -4,7 +4,11 @@ import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { of } from 'rxjs';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { axe } from 'vitest-axe';
+import * as matchers from 'vitest-axe/matchers';
 import { EcoStoreProfileAvatarFeatureComponent } from './eco-store-profile-avatar-feature.component';
+
+expect.extend(matchers);
 
 describe('EcoStoreProfileAvatarFeatureComponent', () => {
   let component: EcoStoreProfileAvatarFeatureComponent;
@@ -36,6 +40,21 @@ describe('EcoStoreProfileAvatarFeatureComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should have aria-hidden="true" on all mat-icon elements', () => {
+    const icons = fixture.nativeElement.querySelectorAll('mat-icon');
+
+    expect(icons.length).toBeGreaterThan(0);
+    icons.forEach((icon: HTMLElement) => {
+      expect(icon.getAttribute('aria-hidden')).toBe('true');
+    });
+  });
+
+  it('should have no accessibility violations', async () => {
+    const results = await axe(fixture.nativeElement);
+
+    expect(results).toHaveNoViolations();
   });
 
   it('should start editing', () => {
