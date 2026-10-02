@@ -1,6 +1,7 @@
 import { DIALOG_DATA } from '@angular/cdk/dialog';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DomSanitizer } from '@angular/platform-browser';
 
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
@@ -86,5 +87,33 @@ describe('SharedConfirmFeatureComponent', () => {
     expect(rendered).toContain('<strong>');
     expect(rendered).toContain('&lt;b&gt;');
     expect(rendered).not.toContain('<b>x</b>');
+  });
+
+  it('should escape non-string params to prevent XSS via array/object parameters', async () => {
+    await setup(
+      {
+        ...defaultData,
+        params: { details: ['<img src=x onerror=alert(1)>'] },
+      },
+      {
+        'test.message': 'Details: {{details}}',
+      }
+    );
+
+    const rendered = messageOf();
+
+    expect(rendered).not.toContain('<img');
+    expect(rendered).toContain('&lt;img');
+  });
+
+  it('should handle pre-sanitized SafeHtml message objects without throwing TypeError in translate.instant', async () => {
+    await setup({
+      ...defaultData,
+      message: { changingThisBreaksApplicationSecurity: '<p>Custom HTML</p>' },
+    });
+
+    const rendered = messageOf();
+
+    expect(rendered).toBeTruthy();
   });
 });

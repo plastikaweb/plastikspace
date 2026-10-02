@@ -38,11 +38,13 @@ export class SharedConfirmFeatureComponent {
       ? Object.fromEntries(
           Object.entries(params).map(([key, value]) => [
             key,
-            typeof value === 'string' ? escapeHtml(value) : value,
+            escapeHtml(String(value ?? '')),
           ])
         )
       : params;
-    const translated = this.#translate.instant(this.data.message, escapedParams);
+    const message = this.data.message;
+    const translated =
+      typeof message === 'string' ? this.#translate.instant(message, escapedParams) : message;
 
     return this.#sanitizer.bypassSecurityTrustHtml(translated);
   });
