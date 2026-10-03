@@ -73,6 +73,12 @@ describe('InputPasswordWithVisibilityTypeComponent', () => {
     expect(button.getAttribute('aria-pressed')).toBe('true');
   });
 
+  it('should set aria-hidden="true" on decorative mat-icon element', () => {
+    const icon = fixture.nativeElement.querySelector('button mat-icon');
+
+    expect(icon.getAttribute('aria-hidden')).toBe('true');
+  });
+
   it('should keep the visibility toggle in the keyboard tab order (A11Y-006, WCAG 2.1.1)', () => {
     const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
 
