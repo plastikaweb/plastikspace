@@ -62,9 +62,11 @@ describe('InputPasswordWithVisibilityTypeComponent', () => {
 
   it('should sync aria-label, tooltip and aria-pressed with visibility state', () => {
     const button = fixture.nativeElement.querySelector('button');
+    const icon = button.querySelector('mat-icon');
 
     expect(button.getAttribute('aria-label')).toBe('common.form.showPassword');
     expect(button.getAttribute('aria-pressed')).toBe('false');
+    expect(icon.getAttribute('aria-hidden')).toBe('true');
 
     component.hidePassword(new Event('click'));
     fixture.detectChanges();
