@@ -25,11 +25,6 @@ export const headerConfig: CoreCmsLayoutHeaderConfig = {
                 content: { iconPath: 'assets/svg/github.svg', svgClass: 'w-[40px] fill-primary' },
               },
             ],
-            doAction: () =>
-              window.open(
-                'https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images/README.md',
-                '_blank'
-              ),
           },
         },
       },

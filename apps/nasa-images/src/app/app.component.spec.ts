@@ -9,6 +9,7 @@ import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
 
 import { AppComponent } from './app.component';
+import { headerConfig } from './cms-layout-config';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -37,5 +38,13 @@ describe('AppComponent', () => {
 
   it('should create the app', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should configure header button widget without doAction', () => {
+    const widget = headerConfig.widgetsConfig?.widgets[0];
+    const buttonConfig = widget?.inputs?.['buttonConfig'] as Record<string, unknown>;
+
+    expect(buttonConfig['type']).toBe('link');
+    expect(buttonConfig['doAction']).toBeUndefined();
   });
 });
