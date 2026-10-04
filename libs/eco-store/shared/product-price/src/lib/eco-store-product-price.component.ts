@@ -1,10 +1,18 @@
 import { CurrencyPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { EcoStoreProduct } from '@plastik/eco-store/entities';
 import { EcoStoreUnitChipComponent } from './eco-store-unit-chip.component';
 
 export type ProductPriceSize = 'sm' | 'md' | 'lg' | 'detail';
+
+/**
+ * Module-level formatter instance to avoid re-creating `Intl.NumberFormat` on every change detection pass per card.
+ */
+const CURRENCY_FORMATTER = new Intl.NumberFormat('ca-ES', {
+  style: 'currency',
+  currency: 'EUR',
+});
 
 @Component({
   selector: 'eco-store-product-price',
@@ -19,7 +27,7 @@ export type ProductPriceSize = 'sm' | 'md' | 'lg' | 'detail';
       <div aria-hidden="true" [class]="contentClass()">
         <div [class]="priceContainerClass()">
           <span [class]="priceClass()">
-            @let parts = getPriceParts();
+            @let parts = priceParts();
             <span class="price-integer">{{ parts.integer }}</span>
             <span class="price-separator">,</span>
             <span class="price-decimal mt-[0.2em] inline-block align-top text-[0.6em]">{{
@@ -51,12 +59,8 @@ export class EcoStoreProductPriceComponent {
   size = input<ProductPriceSize>('md');
   unitChipVisible = input<boolean>(true);
 
-  protected getPriceParts() {
-    const formatted = new Intl.NumberFormat('ca-ES', {
-      style: 'currency',
-      currency: 'EUR',
-    }).format(this.price());
-
+  protected priceParts = computed(() => {
+    const formatted = CURRENCY_FORMATTER.format(this.price());
     const symbol = '€';
     const numericPart = formatted.replace(symbol, '').trim();
     const [integer, decimal] = numericPart.split(',');
@@ -66,34 +70,34 @@ export class EcoStoreProductPriceComponent {
       integer,
       decimal: decimal || '00',
     };
-  }
+  });
 
-  protected containerClass() {
+  protected containerClass = computed(() => {
     const base = 'flex';
 
     return this.size() === 'detail' ? `${base} w-full` : `${base} space-y-1`;
-  }
+  });
 
-  protected contentClass() {
+  protected contentClass = computed(() => {
     return this.size() === 'detail'
       ? 'items-start flex-row gap-8 text-xl'
       : 'items-baseline flex-col';
-  }
+  });
 
-  protected unityTypeClass() {
+  protected unityTypeClass = computed(() => {
     // Polish: Use primary variant for secondary metadata
     return this.size() === 'detail'
       ? 'text-lg font-medium text-sys-primary'
       : 'text-sm font-normal text-sys-primary';
-  }
+  });
 
-  protected priceContainerClass() {
+  protected priceContainerClass = computed(() => {
     const base = 'flex items-baseline';
 
     return this.size() === 'detail' ? `${base} gap-4 mb-4` : `${base} gap-sub`;
-  }
+  });
 
-  protected priceClass() {
+  protected priceClass = computed(() => {
     // Polish: Use system typography and color tokens
     switch (this.size()) {
       case 'detail':
@@ -107,9 +111,13 @@ export class EcoStoreProductPriceComponent {
       default:
         return 'text-headline-medium font-extrabold text-sys-primary';
     }
-  }
+  });
 
-  protected chipClass() {
+  protected chipClass = computed(() => {
     return this.size() === 'detail' ? 'scale-125 origin-left mt-2' : '';
+  });
+
+  protected getPriceParts() {
+    return this.priceParts();
   }
 }
