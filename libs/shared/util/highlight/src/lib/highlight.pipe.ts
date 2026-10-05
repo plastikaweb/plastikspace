@@ -3,6 +3,14 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { latinize } from '@plastik/shared/latinize';
 import { escapeHtml } from '@plastik/shared/objects';
 
+/** Maximum number of entries stored in the LRU highlight cache. */
+export const MAX_HIGHLIGHT_CACHE_SIZE = 500;
+
+/**
+ * Module-level bounded LRU cache mapping `value\0search` pairs to pre-computed SafeHtml/string results.
+ */
+export const HIGHLIGHT_CACHE = new Map<string, SafeHtml>();
+
 @Pipe({
   name: 'highlight',
 })
@@ -18,13 +26,24 @@ export class HighlightPipe implements PipeTransform {
       return escapeHtml(value);
     }
 
+    const cacheKey = `${value}\0${search}`;
+    const cached = HIGHLIGHT_CACHE.get(cacheKey);
+    if (cached !== undefined) {
+      // Refresh key for LRU eviction policy
+      HIGHLIGHT_CACHE.delete(cacheKey);
+      HIGHLIGHT_CACHE.set(cacheKey, cached);
+      return cached;
+    }
+
     const normalizedValue = latinize(value).toLowerCase();
     const normalizedSearch = latinize(search).toLowerCase();
 
     const startIdx = normalizedValue.indexOf(normalizedSearch);
 
     if (startIdx === -1) {
-      return escapeHtml(value);
+      const escapedValue = escapeHtml(value);
+      this.#setCache(cacheKey, escapedValue);
+      return escapedValue;
     }
 
     // Use original case from the value for the highlighted part
@@ -36,6 +55,18 @@ export class HighlightPipe implements PipeTransform {
       )}</mark>` +
       escapeHtml(value.substring(startIdx + normalizedSearch.length));
 
-    return this.#sanitizer.bypassSecurityTrustHtml(result);
+    const safeResult = this.#sanitizer.bypassSecurityTrustHtml(result);
+    this.#setCache(cacheKey, safeResult);
+    return safeResult;
+  }
+
+  #setCache(key: string, value: SafeHtml): void {
+    if (HIGHLIGHT_CACHE.size >= MAX_HIGHLIGHT_CACHE_SIZE) {
+      const oldestKey = HIGHLIGHT_CACHE.keys().next().value;
+      if (oldestKey !== undefined) {
+        HIGHLIGHT_CACHE.delete(oldestKey);
+      }
+    }
+    HIGHLIGHT_CACHE.set(key, value);
   }
 }
