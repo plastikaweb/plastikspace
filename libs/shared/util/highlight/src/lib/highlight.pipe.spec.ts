@@ -1,12 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { DomSanitizer } from '@angular/platform-browser';
-import { HighlightPipe } from './highlight.pipe';
+import { HIGHLIGHT_CACHE, HighlightPipe, MAX_HIGHLIGHT_CACHE_SIZE } from './highlight.pipe';
 import { Injector, runInInjectionContext } from '@angular/core';
 
 describe('HighlightPipe', () => {
   let pipe: HighlightPipe;
 
   beforeEach(() => {
+    HIGHLIGHT_CACHE.clear();
+
     TestBed.configureTestingModule({
       providers: [
         {
@@ -64,5 +66,42 @@ describe('HighlightPipe', () => {
     expect(result).toContain('&lt;script&gt;alert(&quot;xss&quot;)&lt;&#x2F;script&gt;');
     expect(result).toContain('<mark');
     expect(result).toContain('Hello');
+  });
+
+  it('should cache transform results and return cached value on subsequent calls', () => {
+    const value = 'Sample Text';
+    const search = 'Sample';
+
+    const result1 = pipe.transform(value, search);
+    expect(HIGHLIGHT_CACHE.size).toBe(1);
+
+    const result2 = pipe.transform(value, search);
+    expect(result2).toBe(result1);
+    expect(HIGHLIGHT_CACHE.size).toBe(1);
+  });
+
+  it('should cache non-matching results as well', () => {
+    const value = 'Sample Text';
+    const search = 'Missing';
+
+    const result1 = pipe.transform(value, search);
+    expect(HIGHLIGHT_CACHE.size).toBe(1);
+
+    const result2 = pipe.transform(value, search);
+    expect(result2).toBe(result1);
+    expect(HIGHLIGHT_CACHE.size).toBe(1);
+  });
+
+  it('should evict oldest entry when cache reaches maximum size', () => {
+    for (let i = 0; i < MAX_HIGHLIGHT_CACHE_SIZE; i++) {
+      pipe.transform(`Value ${i}`, 'Value');
+    }
+    expect(HIGHLIGHT_CACHE.size).toBe(MAX_HIGHLIGHT_CACHE_SIZE);
+    expect(HIGHLIGHT_CACHE.has('Value 0\0Value')).toBe(true);
+
+    pipe.transform('New Entry', 'New');
+    expect(HIGHLIGHT_CACHE.size).toBe(MAX_HIGHLIGHT_CACHE_SIZE);
+    expect(HIGHLIGHT_CACHE.has('Value 0\0Value')).toBe(false);
+    expect(HIGHLIGHT_CACHE.has('New Entry\0New')).toBe(true);
   });
 });
