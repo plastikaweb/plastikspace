@@ -42,7 +42,10 @@ describe('LlecoopUserOrderResumeTableConfig', () => {
       },
     } as unknown as LlecoopOrderProduct;
 
-    const formatted = nameCol?.formatting?.execute?.('Product X', unsafeProduct) as unknown as string;
+    const formatted = nameCol?.formatting?.execute?.(
+      'Product X',
+      unsafeProduct
+    ) as unknown as string;
     const resultString = String(formatted);
 
     expect(resultString).not.toContain('<img');

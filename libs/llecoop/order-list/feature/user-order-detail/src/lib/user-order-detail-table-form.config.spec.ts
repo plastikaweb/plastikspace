@@ -2,7 +2,10 @@ import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { LlecoopOrderProduct } from '@plastik/llecoop/entities';
-import { llecoopOrderListStore, llecoopUserOrderStore } from '@plastik/llecoop/order-list/data-access';
+import {
+  llecoopOrderListStore,
+  llecoopUserOrderStore,
+} from '@plastik/llecoop/order-list/data-access';
 import { LlecoopProductBaseUnitTextPipe } from '@plastik/llecoop/product/product-base-unit-text';
 import { LlecoopProductUnitStepPipe } from '@plastik/llecoop/product/product-unit-step';
 import { LlecoopProductUnitSuffixPipe } from '@plastik/llecoop/product/product-unit-suffix';
