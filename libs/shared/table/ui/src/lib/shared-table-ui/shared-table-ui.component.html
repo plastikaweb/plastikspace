@@ -219,7 +219,7 @@
                   [matTooltip]="action.value?.description(element) || ''"
                   [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
                   (click)="$event.stopPropagation()">
-                  <mat-icon>edit</mat-icon>
+                  <mat-icon aria-hidden="true">edit</mat-icon>
                 </button>
               } @else if (action.value?.visible(element) && action.value?.type === 'input') {
                 <button
@@ -231,7 +231,7 @@
                   (click)="
                     $event.stopPropagation(); getChangedData.emit(action.value?.execute(element))
                   ">
-                  <mat-icon>delete</mat-icon>
+                  <mat-icon aria-hidden="true">delete</mat-icon>
                 </button>
               } @else if (action.key === 'DELETE' && action.value?.visible(element)) {
                 <button
@@ -241,7 +241,7 @@
                   [matTooltip]="action.value?.description(element) || ''"
                   [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
                   (click)="$event.stopPropagation(); onDelete($event, element)">
-                  <mat-icon>delete</mat-icon>
+                  <mat-icon aria-hidden="true">delete</mat-icon>
                 </button>
               } @else if (action.value?.visible(element)) {
                 <button
@@ -252,7 +252,7 @@
                   [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
                   [routerLink]="action.value?.link ? action.value?.link(element) : null"
                   (click)="$event.stopPropagation(); action.value?.execute?.(element)">
-                  <mat-icon>{{ action.value?.icon(element) }}</mat-icon>
+                  <mat-icon aria-hidden="true">{{ action.value?.icon(element) }}</mat-icon>
                 </button>
               } @else if (!action.value?.visible(element)) {
                 <!-- TODO: #447 find a better way to handle the height of the cell when it has no buttons --->
@@ -281,9 +281,9 @@
               class="-left-sub"
               (click)="$event.stopPropagation(); updateExpandedElement(element)">
               @if (expandedElement()?.id === element.id) {
-                <mat-icon>keyboard_arrow_up</mat-icon>
+                <mat-icon aria-hidden="true">keyboard_arrow_up</mat-icon>
               } @else {
-                <mat-icon>keyboard_arrow_down</mat-icon>
+                <mat-icon aria-hidden="true">keyboard_arrow_down</mat-icon>
               }
             </button>
           </mat-cell>
