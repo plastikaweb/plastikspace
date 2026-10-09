@@ -63,7 +63,8 @@ export const ecoStoreOrdersStore = signalStore(
   withMethods(store => {
     return {
       setSelected(id: IdType<EcoStoreOrder>): boolean {
-        const order = store.entities().find(p => p.id === id);
+        // Optimization: Use O(1) entityMap dictionary lookup instead of O(N) array search via store.entities().find()
+        const order = store.entityMap()[id];
 
         if (order) {
           updateState(store, '[orders] setSelected', { selectedItemId: order.id });

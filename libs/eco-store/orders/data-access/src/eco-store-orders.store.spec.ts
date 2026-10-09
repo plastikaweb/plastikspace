@@ -139,6 +139,32 @@ describe('ecoStoreOrdersStore', () => {
     expect(store.sortOptions()).toHaveProperty('status');
   });
 
+  describe('setSelected()', () => {
+    let store: ReturnType<typeof setup>;
+    let router: Router;
+
+    beforeEach(() => {
+      store = setup();
+      router = TestBed.inject(Router);
+      vi.spyOn(router, 'navigate').mockResolvedValue(true);
+    });
+
+    it('should select an order and return true if order exists in entityMap', async () => {
+      await store.createOrder();
+      const result = store.setSelected('order-1');
+
+      expect(result).toBe(true);
+      expect(store.selectedItemId()).toBe('order-1');
+    });
+
+    it('should return false if order does not exist in entityMap', () => {
+      const result = store.setSelected('non-existent-order');
+
+      expect(result).toBe(false);
+      expect(store.selectedItemId()).toBeNull();
+    });
+  });
+
   describe('createOrder()', () => {
     let store: ReturnType<typeof setup>;
     let router: Router;
