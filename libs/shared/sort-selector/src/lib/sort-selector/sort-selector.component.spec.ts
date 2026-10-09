@@ -42,7 +42,7 @@ describe('SortSelectorComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render trigger text with current sort', () => {
+  it('should render trigger text with current sort and set aria-hidden on icons', () => {
     // We target the desktop button specifically using its Tailwind class.
     // Note: in JSDOM the classes are present as strings.
     const button: HTMLButtonElement = fixture.nativeElement.querySelector('button.md\\:flex\\!');
@@ -52,6 +52,11 @@ describe('SortSelectorComponent', () => {
 
     expect(text).toContain('products.sort.label');
     expect(text).toContain('products.sort.nameAsc');
+
+    const icons = fixture.nativeElement.querySelectorAll('mat-icon');
+    icons.forEach((icon: HTMLElement) => {
+      expect(icon.getAttribute('aria-hidden')).toBe('true');
+    });
   });
 
   it('should emit sortChange on manual change', () => {
@@ -62,5 +67,14 @@ describe('SortSelectorComponent', () => {
     expect(emitted[0]).toEqual({ active: 'name', direction: 'desc' });
 
     sub.unsubscribe();
+  });
+
+  it('should set aria-current="true" on selected sort menu item', () => {
+    const button: HTMLButtonElement = fixture.nativeElement.querySelector('button.md\\:flex\\!');
+    button.click();
+    fixture.detectChanges();
+
+    const selectedMenuItem = document.querySelector('button[mat-menu-item][aria-current="true"]');
+    expect(selectedMenuItem).toBeTruthy();
   });
 });
