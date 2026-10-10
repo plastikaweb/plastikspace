@@ -58,4 +58,28 @@ describe('OrderTableActionsElementsPipe', () => {
     expect(result[0].value.order).toBe(1);
     expect(result[1].value.order).toBe(1);
   });
+
+  it('should fast-path empty and single element arrays', () => {
+    expect(pipe.transform([])).toEqual([]);
+
+    const singleAction = [{ key: 'A', value: { order: 1 } }] as any;
+    const result = pipe.transform(singleAction);
+
+    expect(result).toEqual(singleAction);
+    expect(result).not.toBe(singleAction);
+  });
+
+  it('should not mutate the original input array', () => {
+    const actions = [
+      { key: 'ACTION2', value: { order: 2 } },
+      { key: 'ACTION1', value: { order: 1 } },
+    ] as any;
+
+    const originalFirstKey = actions[0].key;
+    const result = pipe.transform(actions);
+
+    expect(actions[0].key).toBe(originalFirstKey);
+    expect(result[0].key).toBe('ACTION1');
+    expect(result).not.toBe(actions);
+  });
 });
