@@ -84,4 +84,16 @@ describe('EcoStoreProductQuantityComponent', () => {
 
     expect(decrementTooltip.message).toBe('products.quantity.remove');
   });
+
+  it('should set aria-hidden="true" on decorative mat-icon elements in detail mode', () => {
+    fixture.componentRef.setInput('mode', 'detail');
+    fixture.detectChanges();
+
+    const icons = fixture.debugElement.queryAll(By.css('mat-icon'));
+
+    expect(icons.length).toBeGreaterThan(0);
+    icons.forEach(icon => {
+      expect(icon.nativeElement.getAttribute('aria-hidden')).toBe('true');
+    });
+  });
 });
