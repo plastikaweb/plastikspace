@@ -97,7 +97,7 @@
         class="add-button detail-button flex grow items-center justify-center gap-1 tracking-wide uppercase"
         [disabled]="!isQuantityModified()"
         (click)="onAddToCart()">
-        <mat-icon class="scale-125">shopping_cart</mat-icon>
+        <mat-icon class="scale-125" aria-hidden="true">shopping_cart</mat-icon>
         <span class="hidden sm:block">{{ 'products.quantity.addLong' | translate }}</span>
         <span class="block sm:hidden">{{ 'products.quantity.add' | translate }}</span>
       </button>
