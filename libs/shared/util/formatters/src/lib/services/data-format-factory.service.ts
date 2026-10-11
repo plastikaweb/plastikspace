@@ -15,10 +15,13 @@ import {
 } from '../formatting';
 import { SharedUtilFormattersService } from './shared-util-formatters.service';
 
-@Injectable()
+/** Cache for split property path segments to avoid redundant string splitting on nested paths. */
+const PATH_CACHE = new Map<string, string[]>();
+
 /**
  * @description A service to format a value from an object applying a formatting configuration.
  */
+@Injectable()
 export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseEntity> {
   readonly #formatter = inject(SharedUtilFormattersService);
 
@@ -88,15 +91,36 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
 
   /**
    * Retrieves a value from an object based on a dot-separated property path.
+   * Fast-paths simple non-nested keys and caches split path segments for nested keys
+   * to eliminate O(N) array allocations and function closure creation during row formatting.
    * @param {string} property - The dot-separated path to the property.
    * @param {T} item - The object to extract the value from.
    * @returns {FormattingOutput} The value at the specified path, or an empty string if not found.
    */
   #getValueFromRow(property: string, item: T extends BaseEntity ? T : never): FormattingOutput {
-    return property.split('.').reduce((accObject: unknown, currentProp: string) => {
-      const object = (accObject as T)[currentProp as keyof T];
+    if (!property.includes('.')) {
+      const extractedValue = (item as unknown as Record<string, unknown>)[property];
 
-      return isNil(object) ? '' : (object as FormattingOutput);
-    }, item);
+      return isNil(extractedValue) ? '' : (extractedValue as FormattingOutput);
+    }
+
+    let pathSegments = PATH_CACHE.get(property);
+
+    if (!pathSegments) {
+      pathSegments = property.split('.');
+      PATH_CACHE.set(property, pathSegments);
+    }
+
+    let current: unknown = item;
+
+    for (let i = 0; i < pathSegments.length; i++) {
+      if (isNil(current)) {
+        return '';
+      }
+
+      current = (current as Record<string, unknown>)[pathSegments[i]];
+    }
+
+    return isNil(current) ? '' : (current as FormattingOutput);
   }
 }
