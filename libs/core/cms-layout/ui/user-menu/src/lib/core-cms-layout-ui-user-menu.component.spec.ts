@@ -26,4 +26,9 @@ describe('CoreCmsLayoutUiUserMenuComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should have aria-hidden="true" on user menu avatar mat-icon', () => {
+    const iconElement: HTMLElement | null = fixture.nativeElement.querySelector('mat-icon');
+    expect(iconElement?.getAttribute('aria-hidden')).toBe('true');
+  });
 });
