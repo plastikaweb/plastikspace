@@ -57,7 +57,10 @@ describe('LlecoopUserOrderDetailFormTableConfig', () => {
       },
     };
 
-    const result = priceColumn?.formatting?.execute?.(10, productWithXssUnit as LlecoopOrderProduct);
+    const result = priceColumn?.formatting?.execute?.(
+      10,
+      productWithXssUnit as LlecoopOrderProduct
+    );
     const htmlString = (result as { changingThisBreaksApplicationSecurity: string })
       ?.changingThisBreaksApplicationSecurity;
 
