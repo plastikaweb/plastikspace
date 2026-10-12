@@ -9,6 +9,7 @@ import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
 
 import { AppComponent } from './app.component';
+import { headerConfig } from './cms-layout-config';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -26,7 +27,7 @@ describe('AppComponent', () => {
         provideHttpClient(),
         provideRouter([]),
         provideMockStore({ initialState }),
-        { provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useValue: null },
+        { provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useValue: headerConfig },
         { provide: VIEW_CONFIG, useValue: signal([]) },
       ],
     }).compileComponents();
@@ -37,5 +38,16 @@ describe('AppComponent', () => {
 
   it('should create the app', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('headerConfig widget should not define doAction callback', () => {
+    const githubButtonWidget = headerConfig.widgetsConfig?.widgets?.find(widget => widget.id === 1);
+    const buttonConfig = githubButtonWidget?.inputs?.['buttonConfig'] as {
+      doAction?: () => void;
+      type?: string;
+    };
+
+    expect(buttonConfig?.type).toBe('link');
+    expect(buttonConfig?.doAction).toBeUndefined();
   });
 });
