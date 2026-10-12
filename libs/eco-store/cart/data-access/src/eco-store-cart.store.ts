@@ -107,9 +107,9 @@ export const ecoStoreCartStore = signalStore(
   withComputed(({ entities, entityMap, method, address, day, time, _tenantStore }) => {
     return {
       storageKey: computed(() => `${_tenantStore.tenant()?.normalizedName ?? 'eco'}-cart-v1`),
-      itemsCount: () => entities().length,
-      isEmpty: () => entities().length === 0,
-      isShippingOk: () => {
+      itemsCount: computed(() => entities().length),
+      isEmpty: computed(() => entities().length === 0),
+      isShippingOk: computed(() => {
         const currentMethod = method();
         const currentAddress = address();
 
@@ -123,10 +123,11 @@ export const ecoStoreCartStore = signalStore(
         if (slotDays.length > 0 && (!day() || !time())) return false;
 
         return true;
-      },
-      itemsDictionary: () => entityMap(),
-      items: () => entities(),
-      itemsGroupedByCategory: (): { category: string; items: EcoStoreCartItem[] }[] => {
+      }),
+      itemsDictionary: computed(() => entityMap()),
+      items: computed(() => entities()),
+      /** Memoized grouped items by category to avoid running `Object.groupBy` on every unmemoized read. */
+      itemsGroupedByCategory: computed((): { category: string; items: EcoStoreCartItem[] }[] => {
         const grouped = Object.groupBy(
           entities(),
           (item: EcoStoreCartItem) => item.product.categoryName
@@ -136,7 +137,7 @@ export const ecoStoreCartStore = signalStore(
           category,
           items: items as EcoStoreCartItem[],
         }));
-      },
+      }),
     };
   }),
 
