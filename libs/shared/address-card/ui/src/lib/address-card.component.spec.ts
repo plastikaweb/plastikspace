@@ -64,4 +64,15 @@ describe('AddressCardComponent', () => {
 
     expect(cardElement.getAttribute('aria-label')).toBe('Home, Main Street 123, 08001 Barcelona');
   });
+
+  it('should set aria-hidden="true" on all decorative mat-icon elements', () => {
+    fixture.componentRef.setInput('selected', true);
+    fixture.detectChanges();
+    const icons = fixture.nativeElement.querySelectorAll('mat-icon');
+
+    expect(icons.length).toBeGreaterThan(0);
+    icons.forEach((icon: HTMLElement) => {
+      expect(icon.getAttribute('aria-hidden')).toBe('true');
+    });
+  });
 });
