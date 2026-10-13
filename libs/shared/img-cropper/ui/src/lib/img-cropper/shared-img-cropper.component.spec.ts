@@ -77,6 +77,29 @@ describe('SharedImgCropperComponent', () => {
     expect(component['isDragging']()).toBe(false);
   });
 
+  it('should mark decorative icons with aria-hidden="true"', () => {
+    const icons: NodeListOf<HTMLElement> = fixture.nativeElement.querySelectorAll('mat-icon');
+
+    expect(icons.length).toBeGreaterThan(0);
+    icons.forEach(icon => {
+      expect(icon.getAttribute('aria-hidden')).toBe('true');
+    });
+  });
+
+  it('should set aria-label on icon-only buttons when in crop mode or showing error', () => {
+    component['imageBase64'].set('data:image/png;base64,123');
+    component['errorMessage'].set({ key: 'common.image.error.loaded' });
+    fixture.detectChanges();
+
+    const zoomOutBtn: HTMLElement | null = fixture.nativeElement.querySelector('button[aria-label="common.zoomOut"]');
+    const zoomInBtn: HTMLElement | null = fixture.nativeElement.querySelector('button[aria-label="common.zoomIn"]');
+    const closeErrorBtn: HTMLElement | null = fixture.nativeElement.querySelector('button[aria-label="common.close"]');
+
+    expect(zoomOutBtn).toBeTruthy();
+    expect(zoomInBtn).toBeTruthy();
+    expect(closeErrorBtn).toBeTruthy();
+  });
+
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
 
