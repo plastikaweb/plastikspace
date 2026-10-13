@@ -17,7 +17,7 @@
         (drop)="onDrop($event)">
         <span
           class="bg-primary group-hover:shadow-primary/30 flex size-20 items-center justify-center rounded-3xl text-white shadow-lg transition-all duration-500 ease-out group-hover:-translate-y-2 group-hover:scale-110">
-          <mat-icon class="scale-[1.5]">upload</mat-icon>
+          <mat-icon aria-hidden="true" class="scale-[1.5]">upload</mat-icon>
         </span>
         <div class="space-y-2">
           <span class="text-on-surface block text-xl font-bold tracking-tight">
@@ -90,8 +90,9 @@
             matIconButton
             type="button"
             class="hover:bg-primary-50/10! shadow-sm transition-transform hover:scale-105!"
+            [attr.aria-label]="'common.zoomOut' | translate"
             (click)="onZoomChange(zoom() - 0.1)">
-            <mat-icon>remove</mat-icon>
+            <mat-icon aria-hidden="true">remove</mat-icon>
           </button>
           <mat-slider class="flex-1" min="1" max="4" step="0.1">
             <input matSliderThumb [value]="zoom()" (valueChange)="onZoomChange($event)" />
@@ -100,8 +101,9 @@
             matIconButton
             type="button"
             class="hover:bg-primary-50/10! shadow-sm transition-transform hover:scale-105!"
+            [attr.aria-label]="'common.zoomIn' | translate"
             (click)="onZoomChange(zoom() + 0.1)">
-            <mat-icon>add</mat-icon>
+            <mat-icon aria-hidden="true">add</mat-icon>
           </button>
         </div>
       </div>
@@ -118,7 +120,7 @@
           type="button"
           class="!h-12 !rounded-full !px-8 !font-bold !tracking-wide"
           (click)="onBackToUpload()">
-          <mat-icon>arrow_back</mat-icon>
+          <mat-icon aria-hidden="true">arrow_back</mat-icon>
           {{ 'common.cancel' | translate }}
         </button>
         <button
@@ -127,7 +129,7 @@
           class="!h-12 !rounded-full !px-12 !text-base !font-bold !tracking-wide"
           [disabled]="!hasCrop()"
           (click)="onConfirm()">
-          <mat-icon>check</mat-icon>
+          <mat-icon aria-hidden="true">check</mat-icon>
           {{ 'common.save' | translate }}
         </button>
       </div>
@@ -140,11 +142,15 @@
     role="alert"
     class="bg-error/10 text-error flex items-center justify-between gap-4 rounded-3xl p-5 text-sm font-bold shadow-sm">
     <div class="flex items-center gap-4">
-      <mat-icon class="scale-110">error_outline</mat-icon>
+      <mat-icon aria-hidden="true" class="scale-110">error_outline</mat-icon>
       <p>{{ error.key | translate: error.params }}</p>
     </div>
-    <button matIconButton type="button" (click)="onClearError()">
-      <mat-icon>close</mat-icon>
+    <button
+      matIconButton
+      type="button"
+      [attr.aria-label]="'common.close' | translate"
+      (click)="onClearError()">
+      <mat-icon aria-hidden="true">close</mat-icon>
     </button>
   </div>
 </ng-template>
