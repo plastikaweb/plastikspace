@@ -87,4 +87,36 @@ describe('SharedConfirmFeatureComponent', () => {
     expect(rendered).toContain('&lt;b&gt;');
     expect(rendered).not.toContain('<b>x</b>');
   });
+
+  it('should escape non-string params such as arrays or numbers to prevent XSS', async () => {
+    await setup(
+      {
+        ...defaultData,
+        params: { name: ['<img src=x onerror=alert(1)>'] as unknown as string },
+      },
+      {
+        'test.message': 'Hello {{name}}',
+      }
+    );
+
+    const rendered = messageOf();
+
+    expect(rendered).not.toContain('<img');
+    expect(rendered).toContain('&lt;img');
+  });
+
+  it('should handle non-string / SafeHtml messages without throwing errors in translate.instant', async () => {
+    const safeHtmlMessage = {
+      changingThisBreaksApplicationSecurity: '<span>Safe Content</span>',
+    };
+
+    await setup({
+      ...defaultData,
+      message: safeHtmlMessage,
+    });
+
+    const rendered = messageOf();
+
+    expect(rendered).toBeDefined();
+  });
 });
