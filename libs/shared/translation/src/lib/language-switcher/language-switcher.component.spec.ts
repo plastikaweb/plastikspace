@@ -28,11 +28,24 @@ describe('LanguageSwitcherComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render the language icon', () => {
+  it('should render the language icon with aria-hidden="true"', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     const icon = compiled.querySelector('mat-icon');
 
     expect(icon?.textContent).toContain('language');
+    expect(icon?.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('should open menu and set aria-current="true" on selected language', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    const button = compiled.querySelector('button[aria-haspopup="menu"]') as HTMLButtonElement;
+    button.click();
+    fixture.detectChanges();
+
+    const menuItems = document.querySelectorAll<HTMLButtonElement>('button[mat-menu-item]');
+    expect(menuItems.length).toBe(2);
+    expect(menuItems[0].getAttribute('aria-current')).toBe('true');
+    expect(menuItems[1].getAttribute('aria-current')).toBeNull();
   });
 
   it('should emit languageChange when a language is selected', () => {
