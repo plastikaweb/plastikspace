@@ -19,14 +19,15 @@ export class WithCartQuantityPipe implements PipeTransform {
     }
 
     const cartItems = this.#cartStore.cart();
+    // Build a lookup map of cart quantities indexed by product ID.
+    // This reduces the complexity from O(N * M) to O(N + M) on every unpure pipe execution.
+    const cartQuantityMap = new Map<string, number>(
+      cartItems.map(cartItem => [cartItem.id, cartItem.quantity])
+    );
 
-    return products.map(product => {
-      const cartItem = cartItems.find(item => item['id'] === product['id']);
-
-      return {
-        ...product,
-        quantity: cartItem?.quantity ?? 0,
-      };
-    });
+    return products.map(product => ({
+      ...product,
+      quantity: cartQuantityMap.get(product.id) ?? 0,
+    }));
   }
 }
