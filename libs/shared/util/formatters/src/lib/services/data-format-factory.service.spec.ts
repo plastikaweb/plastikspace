@@ -210,4 +210,31 @@ describe('DataFormatFactoryService', () => {
       expect(result).toBe(`This is the TITLE`);
     });
   });
+
+  describe('property resolution', () => {
+    it('should handle non-nested property keys using fast-path lookup', () => {
+      const result = service.getFormattedValue(objectMocked, {
+        key: 'a',
+        title: 'Title',
+        pathToKey: 'id',
+        formatting: { type: 'TEXT' },
+      });
+
+      expect(result).toEqual({ changingThisBreaksApplicationSecurity: 'kkk0000ads' });
+    });
+
+    it('should return empty string when a nested property path encounters null or undefined', () => {
+      const result = service.getFormattedValue(
+        { ...objectMocked, text: null } as unknown as typeof objectMocked,
+        {
+          key: 'a',
+          title: 'Title',
+          pathToKey: 'text.child.value',
+          formatting: { type: 'TEXT' },
+        }
+      );
+
+      expect(result).toEqual({ changingThisBreaksApplicationSecurity: '' });
+    });
+  });
 });
