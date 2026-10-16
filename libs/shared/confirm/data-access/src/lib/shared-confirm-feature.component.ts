@@ -42,10 +42,7 @@ export class SharedConfirmFeatureComponent {
     const params = this.data.params;
     const escapedParams = params
       ? Object.fromEntries(
-          Object.entries(params).map(([key, value]) => [
-            key,
-            escapeHtml(String(value ?? '')),
-          ])
+          Object.entries(params).map(([key, value]) => [key, escapeHtml(String(value ?? ''))])
         )
       : params;
     const translated = this.#translate.instant(rawMessage, escapedParams);
