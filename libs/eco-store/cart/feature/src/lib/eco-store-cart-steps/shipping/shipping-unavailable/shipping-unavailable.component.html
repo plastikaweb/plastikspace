@@ -1,6 +1,6 @@
 <div class="flex w-full max-w-[650px] flex-col items-center justify-center gap-4 text-center">
   <div class="bg-primary-100 flex items-center justify-center rounded-xl p-12">
-    <mat-icon class="text-primary-600 scale-300">gps_fixed</mat-icon>
+    <mat-icon class="text-primary-600 scale-300" aria-hidden="true">gps_fixed</mat-icon>
   </div>
 
   <h2 class="m-0 text-2xl font-semibold">
@@ -18,7 +18,7 @@
   <mat-card appearance="outlined" class="my-8">
     <mat-card-header class="text-sys-primary">
       <mat-card-title class="flex! items-center! justify-between! gap-2">
-        <mat-icon>lightbulb</mat-icon>
+        <mat-icon aria-hidden="true">lightbulb</mat-icon>
         <span class="text-primary-600 font-semibold">{{
           'cart.steps.shipping.unavailable.info.title' | translate
         }}</span>
@@ -28,15 +28,15 @@
     <mat-card-content>
       <ul class="text-on-surface my-8 flex list-none flex-col gap-4 p-0">
         <li class="flex items-start gap-3">
-          <mat-icon>priority</mat-icon>
+          <mat-icon aria-hidden="true">priority</mat-icon>
           <span>{{ 'cart.steps.shipping.unavailable.info.item1' | translate }}</span>
         </li>
         <li class="flex items-start gap-3">
-          <mat-icon>priority</mat-icon>
+          <mat-icon aria-hidden="true">priority</mat-icon>
           <span>{{ 'cart.steps.shipping.unavailable.info.item2' | translate }}</span>
         </li>
         <li class="flex items-start gap-3">
-          <mat-icon>priority</mat-icon>
+          <mat-icon aria-hidden="true">priority</mat-icon>
           <span>{{ 'cart.steps.shipping.unavailable.info.item3' | translate }}</span>
         </li>
       </ul>
