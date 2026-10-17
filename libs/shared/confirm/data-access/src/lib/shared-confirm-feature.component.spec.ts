@@ -87,4 +87,31 @@ describe('SharedConfirmFeatureComponent', () => {
     expect(rendered).toContain('&lt;b&gt;');
     expect(rendered).not.toContain('<b>x</b>');
   });
+
+  it('should escape non-string parameters (e.g. array/object/number)', async () => {
+    await setup({
+      ...defaultData,
+      params: { name: ['<script>alert(1)</script>'] },
+    });
+
+    const rendered = messageOf();
+
+    expect(rendered).not.toContain('<script>');
+    expect(rendered).toContain('&lt;script&gt;');
+  });
+
+  it('should handle non-string messages (e.g. SafeHtml) without throwing', async () => {
+    const fakeSafeHtml = {
+      changingThisBreaksApplicationSecurity: '<span>Pre-sanitized message</span>',
+    };
+
+    await setup({
+      ...defaultData,
+      message: fakeSafeHtml,
+    });
+
+    const rendered = (component as unknown as { message: () => unknown }).message();
+
+    expect(rendered).toBe(fakeSafeHtml);
+  });
 });
