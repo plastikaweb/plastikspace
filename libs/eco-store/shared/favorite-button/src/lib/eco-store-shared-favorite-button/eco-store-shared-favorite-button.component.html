@@ -7,7 +7,7 @@
   [attr.aria-label]="ariaLabel()"
   [matTooltip]="ariaLabel()"
   (click)="onToggle($event)">
-  <mat-icon>
+  <mat-icon aria-hidden="true">
     {{ isFavorite() ? 'favorite' : 'favorite_border' }}
   </mat-icon>
 </button>
