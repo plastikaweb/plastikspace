@@ -64,4 +64,27 @@ describe('SharedTableUiComponent', () => {
 
     expect(results).toHaveNoViolations();
   });
+
+  describe('sortingDataAccessor', () => {
+    it('should format direct non-nested property values correctly', () => {
+      const accessor = (component as unknown as { dataSource: { sortingDataAccessor: (data: unknown, id: string) => unknown } }).dataSource.sortingDataAccessor;
+      const testItem = { id: 1, name: 'Alpha', count: 42, active: true, created: new Date(1000) };
+
+      expect(accessor(testItem, 'name')).toBe('alpha');
+      expect(accessor(testItem, 'count')).toBe(42);
+      expect(accessor(testItem, 'active')).toBe(1);
+      expect(accessor(testItem, 'created')).toBe(1000);
+      expect(accessor(testItem, 'missing')).toBe('');
+    });
+
+    it('should format nested property values correctly using cached path lookup', () => {
+      const accessor = (component as unknown as { dataSource: { sortingDataAccessor: (data: unknown, id: string) => unknown } }).dataSource.sortingDataAccessor;
+      const testItem = { id: 1, category: { name: 'Electronics' }, nested: { deeper: { score: 99 } } };
+
+      expect(accessor(testItem, 'category.name')).toBe('electronics');
+      expect(accessor(testItem, 'nested.deeper.score')).toBe(99);
+      expect(accessor(testItem, 'category.nonexistent')).toBe('');
+      expect(accessor(testItem, 'missing.path.value')).toBe('');
+    });
+  });
 });
