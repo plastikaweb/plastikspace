@@ -18,4 +18,11 @@ describe('EcoStoreSharedFavoriteButton', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should set aria-hidden="true" on mat-icon', () => {
+    const iconElement: HTMLElement | null = fixture.nativeElement.querySelector('mat-icon');
+
+    expect(iconElement).toBeTruthy();
+    expect(iconElement?.getAttribute('aria-hidden')).toBe('true');
+  });
 });
