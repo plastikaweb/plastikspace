@@ -6,7 +6,8 @@
         <button
           type="button"
           class="group ring-primary/0 focus-visible:ring-primary/40 relative block size-32 shrink-0 cursor-pointer overflow-hidden rounded-full border-0 bg-transparent p-0 shadow-xl ring-offset-4 transition-all duration-500 ease-out outline-none hover:scale-105 hover:shadow-2xl focus-visible:ring-4"
-          aria-label="Canviar foto de perfil"
+          [attr.aria-label]="'profile.avatar.changePhoto' | translate"
+          [matTooltip]="'profile.avatar.changePhoto' | translate"
           (click)="onStartEdit()">
           @if (user.avatar) {
             <plastik-img-container
@@ -44,13 +45,24 @@
           </p>
 
           <div class="mt-4 flex flex-wrap items-center justify-center gap-4 sm:justify-start">
-            <button matButton="filled" type="button" (click)="onStartEdit()">
-              <mat-icon>add_a_photo</mat-icon>
+            <button
+              matButton="filled"
+              type="button"
+              [matTooltip]="'common.image.upload.title' | translate"
+              [attr.aria-label]="'common.image.upload.title' | translate"
+              (click)="onStartEdit()">
+              <mat-icon aria-hidden="true">add_a_photo</mat-icon>
               {{ 'common.image.upload.title' | translate }}
             </button>
             @if (hasAvatar()) {
-              <button matButton type="button" class="avatar-button-delete" (click)="onDelete()">
-                <mat-icon>delete_outline</mat-icon>
+              <button
+                matButton
+                type="button"
+                class="avatar-button-delete"
+                [matTooltip]="'common.image.delete.title' | translate"
+                [attr.aria-label]="'common.image.delete.title' | translate"
+                (click)="onDelete()">
+                <mat-icon aria-hidden="true">delete_outline</mat-icon>
                 {{ 'common.image.delete.title' | translate }}
               </button>
             }

@@ -683,7 +683,8 @@
     "avatar": {
       "title": "Avatar",
       "description": "Personalitza el teu perfil amb una imatge d''avatar.",
-      "recommended": "Format quadrat, mínim 200x200px, màxim 2.5 MB, formats JPG, WEBP o PNG."
+      "recommended": "Format quadrat, mínim 200x200px, màxim 2.5 MB, formats JPG, WEBP o PNG.",
+      "changePhoto": "Canviar foto de perfil"
     },
     "addresses": {
       "title": "Les meves adreces",

@@ -683,7 +683,8 @@
     "avatar": {
       "title": "Avatar",
       "description": "Personaliza tu perfil con una imagen de avatar.",
-      "recommended": "Formato cuadrado, mínimo 200x200px, máximo 2.5 MB, formatos JPG, WEBP o PNG."
+      "recommended": "Formato cuadrado, mínimo 200x200px, máximo 2.5 MB, formatos JPG, WEBP o PNG.",
+      "changePhoto": "Cambiar foto de perfil"
     },
     "addresses": {
       "title": "Mis direcciones",

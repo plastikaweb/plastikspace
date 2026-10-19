@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
@@ -17,6 +18,7 @@ import { filter, take, tap } from 'rxjs';
     PocketBaseImageUrlPipe,
     MatButtonModule,
     MatIconModule,
+    MatTooltipModule,
     TranslateModule,
   ],
   templateUrl: './eco-store-profile-avatar-feature.component.html',
