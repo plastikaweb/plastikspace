@@ -43,7 +43,7 @@ describe('HumanizeUnitPipe', () => {
     expect(pipe.transform(0.001, 'weight')).toBe('1\u00A0g');
   });
 
-  it('should use default formatting for"unit" type', () => {
+  it('should use default formatting for "unit" type', () => {
     expect(pipe.transform(100, 'unit')).toBe('100');
     expect(pipe.transform(100.5, 'unit')).toBe('100.50');
   });
@@ -51,11 +51,13 @@ describe('HumanizeUnitPipe', () => {
   it('should use locale formatting', () => {
     (translateServiceMock.getCurrentLang as Mock).mockReturnValue('de-DE');
     // In German, decimal separator is comma
-    // Assuming environment supports Intl.NumberFormat with 'de-DE' correctly
-    // 1.5 -> 1,5
-    // But Intl behavior depends on node/browser environment.
-    // If it fails, we might need to mock Intl or accept environment limitation.
-    // Let's try basic.
     expect(pipe.transform(1.5, 'unit').replace(/\s/g, ' ')).toMatch(/1,5|1.5/);
+  });
+
+  it('should consistently format repeated values across cached instances', () => {
+    expect(pipe.transform(2, 'weight')).toBe('2\u00A0kg');
+    expect(pipe.transform(2, 'weight')).toBe('2\u00A0kg');
+    expect(pipe.transform(2.5, 'weight')).toBe('2.50\u00A0kg');
+    expect(pipe.transform(2.5, 'weight')).toBe('2.50\u00A0kg');
   });
 });
