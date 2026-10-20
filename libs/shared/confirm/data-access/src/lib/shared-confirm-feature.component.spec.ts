@@ -1,6 +1,7 @@
 import { DIALOG_DATA } from '@angular/cdk/dialog';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
@@ -86,5 +87,31 @@ describe('SharedConfirmFeatureComponent', () => {
     expect(rendered).toContain('<strong>');
     expect(rendered).toContain('&lt;b&gt;');
     expect(rendered).not.toContain('<b>x</b>');
+  });
+
+  it('should escape non-string params to prevent XSS via array/object payloads', async () => {
+    await setup({
+      ...defaultData,
+      params: { name: ['<img src=x onerror=alert(1)>'] as unknown as string },
+    });
+
+    const rendered = messageOf();
+
+    expect(rendered).not.toContain('<img');
+    expect(rendered).toContain('&lt;img');
+  });
+
+  it('should bypass translate.instant for non-string SafeHtml messages to avoid TypeError', async () => {
+    const mockSafeHtml = {
+      changingThisBreaksApplicationSecurity: '<b>Safe Message</b>',
+    } as SafeHtml;
+
+    await setup({
+      ...defaultData,
+      message: mockSafeHtml as unknown as string,
+    });
+
+    expect(() => messageOf()).not.toThrow();
+    expect(messageOf()).toBeDefined();
   });
 });
