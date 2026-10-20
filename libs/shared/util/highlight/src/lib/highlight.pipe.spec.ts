@@ -1,7 +1,7 @@
+import { Injector, runInInjectionContext } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HighlightPipe } from './highlight.pipe';
-import { Injector, runInInjectionContext } from '@angular/core';
 
 describe('HighlightPipe', () => {
   let pipe: HighlightPipe;
@@ -12,7 +12,7 @@ describe('HighlightPipe', () => {
         {
           provide: DomSanitizer,
           useValue: {
-            bypassSecurityTrustHtml: (val: string) => val,
+            bypassSecurityTrustHtml: (value: string) => value,
           },
         },
       ],
@@ -64,5 +64,23 @@ describe('HighlightPipe', () => {
     expect(result).toContain('&lt;script&gt;alert(&quot;xss&quot;)&lt;&#x2F;script&gt;');
     expect(result).toContain('<mark');
     expect(result).toContain('Hello');
+  });
+
+  it('should cache transform results for repeated evaluations', () => {
+    const firstResult = pipe.transform('Caching test phrase', 'test');
+    const secondResult = pipe.transform('Caching test phrase', 'test');
+
+    expect(firstResult).toBe(secondResult);
+  });
+
+  it('should handle cache eviction without errors when capacity is exceeded', () => {
+    for (let i = 0; i < 550; i++) {
+      pipe.transform(`Unique item text ${i}`, 'item');
+    }
+
+    const newResult = pipe.transform('Unique item text 600', 'item') as string;
+
+    expect(newResult).toContain('<mark');
+    expect(newResult).toContain('item');
   });
 });
