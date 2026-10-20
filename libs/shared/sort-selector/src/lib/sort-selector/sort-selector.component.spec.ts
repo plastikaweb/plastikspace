@@ -63,4 +63,22 @@ describe('SortSelectorComponent', () => {
 
     sub.unsubscribe();
   });
+
+  it('should have type="button" and aria-hidden="true" on icons for accessibility', () => {
+    const buttons: HTMLButtonElement[] = Array.from(
+      fixture.nativeElement.querySelectorAll('button')
+    );
+
+    expect(buttons.length).toBeGreaterThan(0);
+    for (const button of buttons) {
+      expect(button.getAttribute('type')).toBe('button');
+    }
+
+    const icons: HTMLElement[] = Array.from(fixture.nativeElement.querySelectorAll('mat-icon'));
+
+    expect(icons.length).toBeGreaterThan(0);
+    for (const icon of icons) {
+      expect(icon.getAttribute('aria-hidden')).toBe('true');
+    }
+  });
 });
