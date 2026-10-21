@@ -21,7 +21,8 @@ describe('EcoStoreSharedFavoriteButton', () => {
   });
 
   it('should fallback to default aria-label "Add to favorites" when isFavorite is false and no custom ariaLabel is provided', () => {
-    const buttonElement = fixture.debugElement.query(By.css('button')).nativeElement as HTMLButtonElement;
+    const buttonElement = fixture.debugElement.query(By.css('button'))
+      .nativeElement as HTMLButtonElement;
 
     expect(buttonElement.getAttribute('aria-label')).toBe('Add to favorites');
   });
@@ -30,7 +31,8 @@ describe('EcoStoreSharedFavoriteButton', () => {
     fixture.componentRef.setInput('isFavorite', true);
     fixture.detectChanges();
 
-    const buttonElement = fixture.debugElement.query(By.css('button')).nativeElement as HTMLButtonElement;
+    const buttonElement = fixture.debugElement.query(By.css('button'))
+      .nativeElement as HTMLButtonElement;
 
     expect(buttonElement.getAttribute('aria-label')).toBe('Remove from favorites');
   });
@@ -39,13 +41,15 @@ describe('EcoStoreSharedFavoriteButton', () => {
     fixture.componentRef.setInput('ariaLabel', 'Toggle favorite product');
     fixture.detectChanges();
 
-    const buttonElement = fixture.debugElement.query(By.css('button')).nativeElement as HTMLButtonElement;
+    const buttonElement = fixture.debugElement.query(By.css('button'))
+      .nativeElement as HTMLButtonElement;
 
     expect(buttonElement.getAttribute('aria-label')).toBe('Toggle favorite product');
   });
 
   it('should reflect aria-pressed attribute correctly', () => {
-    const buttonElement = fixture.debugElement.query(By.css('button')).nativeElement as HTMLButtonElement;
+    const buttonElement = fixture.debugElement.query(By.css('button'))
+      .nativeElement as HTMLButtonElement;
 
     expect(buttonElement.getAttribute('aria-pressed')).toBe('false');
 
@@ -66,7 +70,8 @@ describe('EcoStoreSharedFavoriteButton', () => {
 
     component.toggleFavorite.subscribe(spy);
 
-    const buttonElement = fixture.debugElement.query(By.css('button')).nativeElement as HTMLButtonElement;
+    const buttonElement = fixture.debugElement.query(By.css('button'))
+      .nativeElement as HTMLButtonElement;
 
     buttonElement.click();
 
