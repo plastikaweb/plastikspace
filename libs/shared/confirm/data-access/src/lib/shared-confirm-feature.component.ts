@@ -25,24 +25,36 @@ import { escapeHtml } from '@plastik/shared/objects';
     class: 'block',
   },
 })
+/**
+ * Confirmation dialog component rendering message and action controls.
+ */
 export class SharedConfirmFeatureComponent {
   readonly #translate = inject(TranslateService);
   readonly #sanitizer = inject(DomSanitizer);
   protected readonly data = inject(DIALOG_DATA);
 
+  /**
+   * Icon displayed in the confirmation dialog.
+   */
   protected readonly icon = computed(() => this.data.icon || 'help_outline');
 
+  /**
+   * Computes the sanitized message to render in the confirmation dialog.
+   */
   protected readonly message = computed(() => {
+    const rawMessage = this.data.message;
+
+    if (typeof rawMessage !== 'string') {
+      return rawMessage;
+    }
+
     const params = this.data.params;
     const escapedParams = params
       ? Object.fromEntries(
-          Object.entries(params).map(([key, value]) => [
-            key,
-            typeof value === 'string' ? escapeHtml(value) : value,
-          ])
+          Object.entries(params).map(([key, value]) => [key, escapeHtml(String(value ?? ''))])
         )
       : params;
-    const translated = this.#translate.instant(this.data.message, escapedParams);
+    const translated = this.#translate.instant(rawMessage, escapedParams);
 
     return this.#sanitizer.bypassSecurityTrustHtml(translated);
   });
