@@ -9,7 +9,7 @@
       type="button"
       class="add-address-button self-start"
       routerLink="nova">
-      <mat-icon>add_home</mat-icon>
+      <mat-icon aria-hidden="true">add_home</mat-icon>
       {{ 'profile.addresses.add.label' | translate }}
     </button>
   }
@@ -18,7 +18,7 @@
     <mat-card class="new-address-card">
       <mat-card-header class="relative w-full">
         <mat-card-title class="new-address-title">
-          <mat-icon>add_home</mat-icon>
+          <mat-icon aria-hidden="true">add_home</mat-icon>
           <span>{{ 'profile.addresses.add.label' | translate }}</span>
         </mat-card-title>
         <button
@@ -28,7 +28,7 @@
           routerLink="../"
           [matTooltip]="'common.close' | translate"
           [attr.aria-label]="'common.close' | translate">
-          <mat-icon>close</mat-icon>
+          <mat-icon aria-hidden="true">close</mat-icon>
         </button>
       </mat-card-header>
       <mat-card-content>
@@ -44,7 +44,7 @@
     <mat-card class="new-address-card">
       <mat-card-header class="relative w-full">
         <mat-card-title class="new-address-title">
-          <mat-icon>edit</mat-icon>
+          <mat-icon aria-hidden="true">edit</mat-icon>
           <span>{{ 'profile.addresses.edit.label' | translate }}: "{{ model.name }}"</span>
         </mat-card-title>
         <button
@@ -54,7 +54,7 @@
           routerLink="../"
           [matTooltip]="'common.close' | translate"
           [attr.aria-label]="'common.close' | translate">
-          <mat-icon>close</mat-icon>
+          <mat-icon aria-hidden="true">close</mat-icon>
         </button>
       </mat-card-header>
       <mat-card-content>
@@ -103,7 +103,7 @@
                   [matTooltip]="'profile.addresses.setDefault.label' | translate"
                   [attr.aria-label]="'profile.addresses.setDefault.label' | translate"
                   (click)="onSetDefault(address.id); $event.stopPropagation()">
-                  <mat-icon>star_outline</mat-icon>
+                  <mat-icon aria-hidden="true">star_outline</mat-icon>
                 </button>
               }
               <button
@@ -114,7 +114,7 @@
                 [matTooltip]="'profile.addresses.edit.label' | translate"
                 [attr.aria-label]="'profile.addresses.edit.label' | translate"
                 [routerLink]="['/perfil', 'adreces', address.id]">
-                <mat-icon>edit</mat-icon>
+                <mat-icon aria-hidden="true">edit</mat-icon>
               </button>
               <button
                 matIconButton
@@ -124,7 +124,7 @@
                 [matTooltip]="'profile.addresses.delete.label' | translate"
                 [attr.aria-label]="'profile.addresses.delete.label' | translate"
                 (click)="onDelete(address.id, address.name); $event.stopPropagation()">
-                <mat-icon>delete_outline</mat-icon>
+                <mat-icon aria-hidden="true">delete_outline</mat-icon>
               </button>
             </div>
           </plastik-address-card>

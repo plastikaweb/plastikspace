@@ -77,4 +77,13 @@ describe('EcoStoreProfileAddressesFeatureComponent', () => {
     component.onSetDefault('2');
     expect(mockProfileStore.setDefaultAddress).toHaveBeenCalledWith('2');
   });
+
+  it('should have aria-hidden="true" on decorative mat-icon elements', () => {
+    const icons: HTMLElement[] = Array.from(fixture.nativeElement.querySelectorAll('mat-icon'));
+
+    expect(icons.length).toBeGreaterThan(0);
+    for (const icon of icons) {
+      expect(icon.getAttribute('aria-hidden')).toBe('true');
+    }
+  });
 });
