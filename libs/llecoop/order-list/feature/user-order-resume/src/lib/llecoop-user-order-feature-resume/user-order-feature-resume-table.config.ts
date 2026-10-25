@@ -19,6 +19,7 @@ import {
 export class LlecoopUserOrderResumeTableConfig implements TableStructureConfig<LlecoopOrderProduct> {
   readonly #sanitizer = inject(DomSanitizer);
   readonly #store = inject(llecoopUserOrderStore);
+  readonly #defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
   readonly #productBaseUnitTextPipe = inject(LlecoopProductBaseUnitTextPipe);
   readonly #productUnitSuffixPipe = inject(LlecoopProductUnitSuffixPipe);
 
@@ -33,7 +34,7 @@ export class LlecoopUserOrderResumeTableConfig implements TableStructureConfig<L
       execute: (_, product) => {
         const name = `<p class="font-bold uppercase">${escapeHtml(product?.name ?? '')}</p>`;
         const unit = product?.unit
-          ? `<p class="font-bold text-sm">${Number(product?.price).toFixed(2)} € x ${this.#productBaseUnitTextPipe.transform(product.unit)}</p>`
+          ? `<p class="font-bold text-sm">${Number(product?.price).toFixed(2)} € x ${escapeHtml(this.#productBaseUnitTextPipe.transform(product.unit))}</p>`
           : '';
         const info = product?.info
           ? `<p class="font-bold">${escapeHtml(product?.info ?? '')}</p>`
@@ -137,10 +138,8 @@ export class LlecoopUserOrderResumeTableConfig implements TableStructureConfig<L
   ]);
 
   getTableDefinition() {
-    const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
-
     return {
-      ...defaultTableConfig,
+      ...this.#defaultTableConfig,
       columnProperties: this.#columnProperties,
       caption: 'Llistat de productes',
       noPagination: true,
