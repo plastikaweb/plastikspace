@@ -98,7 +98,10 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
    * @param {T} rowEntity - The object to extract the value from.
    * @returns {FormattingOutput} The value at the specified path, or an empty string if not found.
    */
-  #getValueFromRow(property: string, rowEntity: T extends BaseEntity ? T : never): FormattingOutput {
+  #getValueFromRow(
+    property: string,
+    rowEntity: T extends BaseEntity ? T : never
+  ): FormattingOutput {
     if (!rowEntity) {
       return '';
     }
