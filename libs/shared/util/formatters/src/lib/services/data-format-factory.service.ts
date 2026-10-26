@@ -15,30 +15,35 @@ import {
 } from '../formatting';
 import { SharedUtilFormattersService } from './shared-util-formatters.service';
 
-@Injectable()
+/** Maximum entries in PATH_CACHE before clearing to avoid unbounded memory growth. */
+const MAX_CACHE_SIZE = 500;
+/** Bounded cache storing parsed dot-separated property paths. */
+const PATH_CACHE = new Map<string, string[]>();
+
 /**
  * @description A service to format a value from an object applying a formatting configuration.
  */
+@Injectable()
 export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseEntity> {
   readonly #formatter = inject(SharedUtilFormattersService);
 
   /**
-   * @description Factory to get the correct formatted value from item property with a custom formatting option.
-   * @param { unknown } item  The object to extract value from.
-   * @param { PropertyFormatting } param The control configuration to format the object property value.
-   * @param { string | ((item: T) => unknown) } param.key The property of the object which value is going to be formatted or a function to compute it.
-   * @param { PropertyFormattingConf } param.formatting The formatting configuration for a concrete property object.
-   * @param {number } index Index to custom formatters (f.e. a table indexing)
-   * @param {unknown } extraConfig Extra configuration object to format values specially when using custom formatters.
-   * @returns { PropertyFormatting } The valid types to be returned after formatting a value.
+   * Factory to get the correct formatted value from item property with a custom formatting option.
+   * @param {T} rowEntity The object to extract value from.
+   * @param {PropertyFormatting} param The control configuration to format the object property value.
+   * @param {string} param.pathToKey The dot-separated property path or key.
+   * @param {PropertyFormattingConf} param.formatting The formatting configuration for a concrete property object.
+   * @param {number} [index] Index to custom formatters (e.g. table indexing).
+   * @param {unknown} [extraConfig] Extra configuration object to format values specially when using custom formatters.
+   * @returns {SafeHtml | string | FormattingComponentOutput} The formatted value or component configuration.
    */
   getFormattedValue(
-    item: T extends BaseEntity ? T : never,
+    rowEntity: T extends BaseEntity ? T : never,
     { pathToKey, formatting }: PropertyFormatting<T, FormattingTypes>,
     index?: number,
     extraConfig?: unknown
   ): SafeHtml | string | FormattingComponentOutput {
-    const value = this.#getValueFromRow(pathToKey, item);
+    const value = this.#getValueFromRow(pathToKey, rowEntity);
     const { type, extras } = formatting;
 
     switch (type) {
@@ -55,7 +60,7 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
       case 'NUMBER':
         return this.#formatter.numberFormatter(Number(value), extras);
       case 'QUANTITY':
-        return this.#formatter.quantityFormatter(Number(value), item, extras);
+        return this.#formatter.quantityFormatter(Number(value), rowEntity, extras);
       case 'BOOLEAN_WITH_CONTROL':
         return !!value;
       case 'BOOLEAN_WITH_ICON':
@@ -68,7 +73,7 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
         return this.#formatter.customFormatter(
           String(value),
           formatting as PropertyFormattingConf<T extends BaseEntity ? T : never>,
-          item,
+          rowEntity,
           index,
           extraConfig
         );
@@ -76,7 +81,7 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
         return this.#formatter.componentFormatter(
           String(value),
           formatting as PropertyComponentFormattingConf<T extends BaseEntity ? T : never, unknown>,
-          item,
+          rowEntity,
           index
         );
       case 'TEXT':
@@ -88,15 +93,44 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
 
   /**
    * Retrieves a value from an object based on a dot-separated property path.
+   * Fast-paths non-nested keys and uses a cached key array with a loop for nested keys to eliminate allocations.
    * @param {string} property - The dot-separated path to the property.
-   * @param {T} item - The object to extract the value from.
+   * @param {T} rowEntity - The object to extract the value from.
    * @returns {FormattingOutput} The value at the specified path, or an empty string if not found.
    */
-  #getValueFromRow(property: string, item: T extends BaseEntity ? T : never): FormattingOutput {
-    return property.split('.').reduce((accObject: unknown, currentProp: string) => {
-      const object = (accObject as T)[currentProp as keyof T];
+  #getValueFromRow(
+    property: string,
+    rowEntity: T extends BaseEntity ? T : never
+  ): FormattingOutput {
+    if (!rowEntity) {
+      return '';
+    }
 
-      return isNil(object) ? '' : (object as FormattingOutput);
-    }, item);
+    if (!property.includes('.')) {
+      const value = rowEntity[property as keyof T];
+
+      return isNil(value) ? '' : (value as FormattingOutput);
+    }
+
+    let pathParts = PATH_CACHE.get(property);
+
+    if (!pathParts) {
+      if (PATH_CACHE.size >= MAX_CACHE_SIZE) {
+        PATH_CACHE.clear();
+      }
+      pathParts = property.split('.');
+      PATH_CACHE.set(property, pathParts);
+    }
+
+    let current: unknown = rowEntity;
+
+    for (let i = 0; i < pathParts.length; i++) {
+      if (isNil(current) || typeof current !== 'object') {
+        return '';
+      }
+      current = (current as Record<string, unknown>)[pathParts[i]];
+    }
+
+    return isNil(current) ? '' : (current as FormattingOutput);
   }
 }
