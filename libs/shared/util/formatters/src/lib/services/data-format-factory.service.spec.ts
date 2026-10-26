@@ -210,4 +210,54 @@ describe('DataFormatFactoryService', () => {
       expect(result).toBe(`This is the TITLE`);
     });
   });
+
+  describe('#getValueFromRow fast-path and caching', () => {
+    it('should handle non-nested keys using direct property lookup fast-path', () => {
+      const result = service.getFormattedValue(objectMocked, {
+        key: 'id',
+        title: 'ID',
+        pathToKey: 'id',
+        formatting: { type: 'TEXT' },
+      });
+
+      expect(result).toEqual({ changingThisBreaksApplicationSecurity: 'kkk0000ads' });
+    });
+
+    it('should return empty string when rowEntity is null or undefined', () => {
+      const result = service.getFormattedValue(null as any, {
+        key: 'id',
+        title: 'ID',
+        pathToKey: 'id',
+        formatting: { type: 'TEXT' },
+      });
+
+      expect(result).toEqual({ changingThisBreaksApplicationSecurity: '' });
+    });
+
+    it('should return empty string when nested property path is missing or invalid', () => {
+      const result = service.getFormattedValue(objectMocked, {
+        key: 'invalid',
+        title: 'Invalid Path',
+        pathToKey: 'nonExistent.child.value',
+        formatting: { type: 'TEXT' },
+      });
+
+      expect(result).toEqual({ changingThisBreaksApplicationSecurity: '' });
+    });
+
+    it('should retrieve nested values repeatedly using cached property path', () => {
+      const pathConfig = {
+        key: 'a',
+        title: 'Title',
+        pathToKey: 'text.child.value',
+        formatting: { type: 'TEXT' as const },
+      };
+
+      const resultFirst = service.getFormattedValue(objectMocked, pathConfig);
+      const resultSecond = service.getFormattedValue(objectMocked, pathConfig);
+
+      expect(resultFirst).toEqual({ changingThisBreaksApplicationSecurity: 'value' });
+      expect(resultSecond).toEqual({ changingThisBreaksApplicationSecurity: 'value' });
+    });
+  });
 });
