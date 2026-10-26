@@ -38,6 +38,14 @@ describe('EcoStoreProfileAvatarFeatureComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should render mat-icons with aria-hidden="true"', () => {
+    const icons = fixture.nativeElement.querySelectorAll('mat-icon');
+    expect(icons.length).toBeGreaterThan(0);
+    icons.forEach((icon: HTMLElement) => {
+      expect(icon.getAttribute('aria-hidden')).toBe('true');
+    });
+  });
+
   it('should start editing', () => {
     component.onStartEdit();
     expect(component['isEditing']()).toBe(true);
