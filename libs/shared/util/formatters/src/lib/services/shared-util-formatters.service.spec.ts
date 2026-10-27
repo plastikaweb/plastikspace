@@ -19,7 +19,7 @@ describe('SharedUtilFormattersService', () => {
         {
           provide: DomSanitizer,
           useValue: {
-            bypassSecurityTrustHtml: (val: string) => val,
+            bypassSecurityTrustHtml: (htmlValue: string) => htmlValue,
           },
         },
       ],
@@ -29,6 +29,45 @@ describe('SharedUtilFormattersService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  describe('formatters', () => {
+    it('dateFormatter should format dates correctly with default and custom options', () => {
+      const testDate = new Date('2025-01-15T12:00:00Z');
+
+      expect(service.dateFormatter(testDate)).toBeTruthy();
+      expect(
+        service.dateFormatter(testDate, () => ({ dateDigitsInfo: 'yyyy-MM-dd' }))
+      ).toContain('2025');
+    });
+
+    it('dateTimeFormatter should format date time correctly', () => {
+      const testDate = new Date('2025-01-15T12:00:00Z');
+
+      expect(service.dateTimeFormatter(testDate)).toBeTruthy();
+    });
+
+    it('percentageFormatter should format percentage values', () => {
+      expect(service.percentageFormatter(50)).toContain('50');
+      expect(service.percentageFormatter(50, () => ({ numberDigitsInfo: '1.0-0' }))).toContain('50');
+    });
+
+    it('currencyFormatter should format currency values', () => {
+      expect(service.currencyFormatter(100)).toContain('100');
+      expect(service.currencyFormatter(100, () => ({ currency: '$' }))).toContain('$');
+    });
+
+    it('numberFormatter should format numbers', () => {
+      expect(service.numberFormatter(1234.56)).toContain('1,234.56');
+    });
+
+    it('quantityFormatter should format quantity with prefix and suffix', () => {
+      const entity = { id: '1' };
+
+      expect(service.quantityFormatter(10, entity, () => ({ prefix: '~', suffix: ' kg' }))).toBe(
+        '~10.00 kg'
+      );
+    });
   });
 
   describe('XSS prevention', () => {
