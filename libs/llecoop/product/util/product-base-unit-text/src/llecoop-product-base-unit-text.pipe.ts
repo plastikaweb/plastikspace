@@ -23,7 +23,7 @@ export class LlecoopProductBaseUnitTextPipe implements PipeTransform {
  * @returns {string} - The text description of the unit.
  */
 function getLlecoopProductBasedUnitText(unit: LlecoopProductUnit): string {
-  const base = escapeHtml(String(unit.base ?? ''));
+  const base = 'base' in unit ? escapeHtml(String(unit.base ?? '')) : '';
 
   switch (unit.type) {
     case 'unit':
