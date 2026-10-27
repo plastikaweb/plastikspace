@@ -63,4 +63,15 @@ describe('LlecoopProductBaseUnitTextPipe', () => {
 
     expect(pipe.transform(unit)).toBe('0.5 kg per unitat. Pes aproximat');
   });
+
+  it('escapes HTML in unit base property to prevent XSS', () => {
+    const maliciousUnit = {
+      type: 'unitWithFixedVolume',
+      base: '<img src=x onerror=alert(1)>' as unknown as number,
+    };
+
+    expect(pipe.transform(maliciousUnit)).toBe(
+      '&lt;img src&#x3D;x onerror&#x3D;alert(1)&gt; l unitat'
+    );
+  });
 });

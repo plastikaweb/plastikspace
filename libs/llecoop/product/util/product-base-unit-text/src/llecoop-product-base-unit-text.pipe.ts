@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { LlecoopProductUnit } from '@plastik/llecoop/entities';
+import { escapeHtml } from '@plastik/shared/objects';
 
 @Pipe({
   name: 'llecoopProductBaseUnitText',
@@ -22,17 +23,19 @@ export class LlecoopProductBaseUnitTextPipe implements PipeTransform {
  * @returns {string} - The text description of the unit.
  */
 function getLlecoopProductBasedUnitText(unit: LlecoopProductUnit): string {
+  const base = escapeHtml(String(unit.base ?? ''));
+
   switch (unit.type) {
     case 'unit':
       return 'unitat';
     case 'weight':
       return 'per kg';
     case 'unitWithFixedVolume':
-      return `${unit.base} l unitat`;
+      return `${base} l unitat`;
     case 'unitWithFixedWeight':
-      return `${unit.base} kg unitat`;
+      return `${base} kg unitat`;
     case 'unitWithVariableWeight':
-      return `${unit.base} kg per unitat. Pes aproximat`;
+      return `${base} kg per unitat. Pes aproximat`;
     default:
       return 'per unitat';
   }
