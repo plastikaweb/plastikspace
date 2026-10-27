@@ -66,8 +66,14 @@ describe('SkipLinkComponent', () => {
     await Promise.resolve();
 
     expect(mainContentEl.focus).toHaveBeenCalled();
-    expect(mainContentEl.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' });
-    expect(mockLiveAnnouncer.announce).toHaveBeenCalledWith('Has navegat al contingut principal', 'assertive');
+    expect(mainContentEl.scrollIntoView).toHaveBeenCalledWith({
+      behavior: 'smooth',
+      block: 'start',
+    });
+    expect(mockLiveAnnouncer.announce).toHaveBeenCalledWith(
+      'Has navegat al contingut principal',
+      'assertive'
+    );
   });
 
   it('should handle skipToMainContent gracefully when mainContent element does not exist', async () => {
