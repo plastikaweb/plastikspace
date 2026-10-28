@@ -1,11 +1,22 @@
 import { CurrencyPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { EcoStoreProduct } from '@plastik/eco-store/entities';
 import { EcoStoreUnitChipComponent } from './eco-store-unit-chip.component';
 
 export type ProductPriceSize = 'sm' | 'md' | 'lg' | 'detail';
 
+/**
+ * Module-scoped currency formatter instance to avoid re-instantiating Intl.NumberFormat on every render cycle.
+ */
+const PRICE_FORMATTER = new Intl.NumberFormat('ca-ES', {
+  style: 'currency',
+  currency: 'EUR',
+});
+
+/**
+ * Component to display product price with currency formatting and optional unit chip.
+ */
 @Component({
   selector: 'eco-store-product-price',
   imports: [TranslateModule, CurrencyPipe, EcoStoreUnitChipComponent],
@@ -19,7 +30,7 @@ export type ProductPriceSize = 'sm' | 'md' | 'lg' | 'detail';
       <div aria-hidden="true" [class]="contentClass()">
         <div [class]="priceContainerClass()">
           <span [class]="priceClass()">
-            @let parts = getPriceParts();
+            @let parts = priceParts();
             <span class="price-integer">{{ parts.integer }}</span>
             <span class="price-separator">,</span>
             <span class="price-decimal mt-[0.2em] inline-block align-top text-[0.6em]">{{
@@ -45,17 +56,19 @@ export type ProductPriceSize = 'sm' | 'md' | 'lg' | 'detail';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EcoStoreProductPriceComponent {
-  price = input.required<EcoStoreProduct['priceWithIva']>();
-  unitType = input.required<EcoStoreProduct['unitType']>();
-  unitBase = input.required<EcoStoreProduct['unitBase']>();
-  size = input<ProductPriceSize>('md');
-  unitChipVisible = input<boolean>(true);
+  readonly price = input.required<EcoStoreProduct['priceWithIva']>();
+  readonly unitType = input.required<EcoStoreProduct['unitType']>();
+  readonly unitBase = input.required<EcoStoreProduct['unitBase']>();
+  readonly size = input<ProductPriceSize>('md');
+  readonly unitChipVisible = input<boolean>(true);
 
-  protected getPriceParts() {
-    const formatted = new Intl.NumberFormat('ca-ES', {
-      style: 'currency',
-      currency: 'EUR',
-    }).format(this.price());
+  /**
+   * Computed price parts (symbol, integer, decimal) formatted according to ca-ES locale.
+   */
+  readonly priceParts = computed(() => {
+    const rawPrice = this.price();
+    const priceVal = typeof rawPrice === 'number' && !Number.isNaN(rawPrice) ? rawPrice : 0;
+    const formatted = PRICE_FORMATTER.format(priceVal);
 
     const symbol = '€';
     const numericPart = formatted.replace(symbol, '').trim();
@@ -63,38 +76,51 @@ export class EcoStoreProductPriceComponent {
 
     return {
       symbol,
-      integer,
+      integer: integer || '0',
       decimal: decimal || '00',
     };
-  }
+  });
 
-  protected containerClass() {
+  /**
+   * Computed container CSS classes.
+   */
+  readonly containerClass = computed(() => {
     const base = 'flex';
 
     return this.size() === 'detail' ? `${base} w-full` : `${base} space-y-1`;
-  }
+  });
 
-  protected contentClass() {
+  /**
+   * Computed content wrapper CSS classes.
+   */
+  readonly contentClass = computed(() => {
     return this.size() === 'detail'
       ? 'items-start flex-row gap-8 text-xl'
       : 'items-baseline flex-col';
-  }
+  });
 
-  protected unityTypeClass() {
-    // Polish: Use primary variant for secondary metadata
+  /**
+   * Computed unity type label CSS classes.
+   */
+  readonly unityTypeClass = computed(() => {
     return this.size() === 'detail'
       ? 'text-lg font-medium text-sys-primary'
       : 'text-sm font-normal text-sys-primary';
-  }
+  });
 
-  protected priceContainerClass() {
+  /**
+   * Computed price container CSS classes.
+   */
+  readonly priceContainerClass = computed(() => {
     const base = 'flex items-baseline';
 
     return this.size() === 'detail' ? `${base} gap-4 mb-4` : `${base} gap-sub`;
-  }
+  });
 
-  protected priceClass() {
-    // Polish: Use system typography and color tokens
+  /**
+   * Computed price text size and typography CSS classes.
+   */
+  readonly priceClass = computed(() => {
     switch (this.size()) {
       case 'detail':
         return 'text-display-medium font-bold text-sys-primary';
@@ -107,9 +133,12 @@ export class EcoStoreProductPriceComponent {
       default:
         return 'text-headline-medium font-extrabold text-sys-primary';
     }
-  }
+  });
 
-  protected chipClass() {
+  /**
+   * Computed chip element CSS classes.
+   */
+  readonly chipClass = computed(() => {
     return this.size() === 'detail' ? 'scale-125 origin-left mt-2' : '';
-  }
+  });
 }
