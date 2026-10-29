@@ -13,7 +13,9 @@
           <span class="text-base leading-none font-bold">{{ user?.name }}</span>
           <div class="text-sys-tertiary mt-1 flex items-center gap-1">
             @if (roleIcon()) {
-              <mat-icon class="h-4 w-4 text-[16px] leading-none" aria-hidden="true">{{ roleIcon() }}</mat-icon>
+              <mat-icon class="h-4 w-4 text-[16px] leading-none" aria-hidden="true">{{
+                roleIcon()
+              }}</mat-icon>
             }
             <span class="text-xs">
               @if (isTrial() && !isTrialExpired()) {
