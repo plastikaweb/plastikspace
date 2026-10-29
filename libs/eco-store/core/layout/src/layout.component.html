@@ -30,10 +30,11 @@
               @if (isTranslationReady()) {
                 <button
                   matIconButton
+                  type="button"
                   [attr.aria-label]="'common.a11y.closeSidenav' | translate"
                   [matTooltip]="'common.a11y.closeSidenav' | translate"
                   (click)="isSidenavOpen.set(false)">
-                  <mat-icon>close</mat-icon>
+                  <mat-icon aria-hidden="true">close</mat-icon>
                 </button>
               }
             } @placeholder {

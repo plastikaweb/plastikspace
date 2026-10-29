@@ -8,6 +8,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { EcoUserAvatarComponent } from '../user-avatar/user-avatar.component';
 
+/**
+ * User account navigation menu component for eco-store header.
+ * Displays user profile details, role badge, quick links to profile and orders, and logout action.
+ */
 @Component({
   selector: 'eco-user-menu',
   imports: [

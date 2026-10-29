@@ -5,6 +5,7 @@
       @if (isMobile() && hasSidenav()) {
         <button
           matIconButton
+          type="button"
           class="flex justify-center align-middle"
           data-test="toggle-sidenav-button"
           [attr.aria-label]="
@@ -15,9 +16,9 @@
           "
           (click)="toggleSidenav.emit()">
           @if (!sideNavOpen()) {
-            <mat-icon>menu</mat-icon>
+            <mat-icon aria-hidden="true">menu</mat-icon>
           } @else {
-            <mat-icon>close</mat-icon>
+            <mat-icon aria-hidden="true">close</mat-icon>
           }
         </button>
       }
@@ -34,7 +35,7 @@
           [attr.aria-label]="
             'store.trial.badge.nearlyExpired' | translate: { days: trialDaysLeft() }
           ">
-          <mat-icon class="scale-80">timer</mat-icon>
+          <mat-icon class="scale-80" aria-hidden="true">timer</mat-icon>
           <span>{{
             'store.trial.badge.nearlyExpired' | translate: { days: trialDaysLeft() }
           }}</span>
@@ -43,7 +44,7 @@
         <div
           class="bg-tertiary-container text-on-tertiary-container hidden items-center gap-1 rounded-full px-3 py-1.5 text-sm font-medium lg:flex"
           [attr.aria-label]="'store.trial.badge.expired' | translate">
-          <mat-icon class="scale-80">timer</mat-icon>
+          <mat-icon class="scale-80" aria-hidden="true">timer</mat-icon>
           <span>{{ 'store.trial.badge.expired' | translate }}</span>
         </div>
       }

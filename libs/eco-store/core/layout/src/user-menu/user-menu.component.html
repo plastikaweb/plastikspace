@@ -13,7 +13,7 @@
           <span class="text-base leading-none font-bold">{{ user?.name }}</span>
           <div class="text-sys-tertiary mt-1 flex items-center gap-1">
             @if (roleIcon()) {
-              <mat-icon class="h-4 w-4 text-[16px] leading-none">{{ roleIcon() }}</mat-icon>
+              <mat-icon class="h-4 w-4 text-[16px] leading-none" aria-hidden="true">{{ roleIcon() }}</mat-icon>
             }
             <span class="text-xs">
               @if (isTrial() && !isTrialExpired()) {
@@ -32,16 +32,16 @@
     </div>
     <mat-divider />
     <a mat-menu-item routerLink="/perfil">
-      <mat-icon>person</mat-icon>
+      <mat-icon aria-hidden="true">person</mat-icon>
       <span>{{ 'store.menu.profilePage' | translate }}</span>
     </a>
     <a mat-menu-item routerLink="/comandes">
-      <mat-icon>receipt_long</mat-icon>
+      <mat-icon aria-hidden="true">receipt_long</mat-icon>
       <span>{{ 'store.menu.orders' | translate }}</span>
     </a>
     <mat-divider />
-    <button mat-menu-item (click)="logout()">
-      <mat-icon>logout</mat-icon>
+    <button mat-menu-item type="button" (click)="logout()">
+      <mat-icon aria-hidden="true">logout</mat-icon>
       <span>{{ 'store.menu.logout' | translate }}</span>
     </button>
   }
