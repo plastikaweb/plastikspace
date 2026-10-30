@@ -27,17 +27,39 @@ export const llecoopUserOrderCartStore = signalStore(
     _authService: inject(FirebaseAuthService),
   })),
   withComputed(({ cart }) => ({
-    getCartTotalPrice: computed(() =>
-      cart().reduce((acc, item) => Number((acc + item.priceWithIva * item.quantity).toFixed(2)), 0)
-    ),
-    getOrderedCartItems: computed(() => cart().sort((a, b) => a.name.localeCompare(b.name))),
+    /**
+     * @description Calculates total cart price in a single numeric loop and rounds once to 2 decimals, avoiding string allocations (`toFixed`) per item.
+     * @returns {number} The calculated total cart price.
+     */
+    getCartTotalPrice: computed(() => {
+      const items = cart();
+      let total = 0;
+
+      for (let i = 0; i < items.length; i++) {
+        total += items[i].priceWithIva * items[i].quantity;
+      }
+
+      return Math.round((total + Number.EPSILON) * 100) / 100;
+    }),
+
+    /**
+     * @description Returns items sorted by name. Fast-paths <= 1 items and creates a shallow copy before sorting to avoid in-place state mutation.
+     * @returns {LlecoopProductWithQuantity[]} The sorted list of cart items.
+     */
+    getOrderedCartItems: computed(() => {
+      const items = cart();
+
+      return items.length <= 1
+        ? items
+        : [...items].sort((itemA, itemB) => itemA.name.localeCompare(itemB.name));
+    }),
   })),
   withMethods(store => {
     return {
       addItem: rxMethod<LlecoopProductWithQuantity>(
         pipe(
           map(({ quantity, ...product }) => {
-            const cart = store.cart().filter(item => item.id !== product.id);
+            const cart = store.cart().filter(cartItem => cartItem.id !== product.id);
 
             updateState(store, `[user-order-cart] add item`, {
               cart: quantity === 0 ? cart : [...cart, { ...product, quantity: Number(quantity) }],
