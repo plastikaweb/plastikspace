@@ -87,4 +87,37 @@ describe('SharedConfirmFeatureComponent', () => {
     expect(rendered).toContain('&lt;b&gt;');
     expect(rendered).not.toContain('<b>x</b>');
   });
+
+  it('should escape non-string params to prevent XSS when interpolated', async () => {
+    await setup(
+      {
+        ...defaultData,
+        params: { count: 123, payload: ['<script>alert(1)</script>'] },
+      },
+      {
+        'test.message': 'Count {{count}}, payload {{payload}}',
+      }
+    );
+
+    const rendered = messageOf();
+
+    expect(rendered).not.toContain('<script>');
+    expect(rendered).toContain('&lt;script&gt;');
+    expect(rendered).toContain('123');
+  });
+
+  it('should return non-string message objects (SafeHtml) directly without calling translate.instant', async () => {
+    const mockSafeHtml = {
+      changingThisBreaksApplicationSecurity: '<div>Direct SafeHtml</div>',
+    };
+
+    await setup({
+      ...defaultData,
+      message: mockSafeHtml,
+    });
+
+    const rendered = (component as unknown as { message: () => unknown }).message();
+
+    expect(rendered).toBe(mockSafeHtml);
+  });
 });
