@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-10-31] - Eco Store: close `users` role/tenant privilege escalation (PRV-05b-A)
+
+### Security
+
+- **`apps/eco-store/pocketbase/pb_schema.json` → `users.createRule`**: `""` → `null` (superuser only). The empty rule allowed an anonymous `POST /api/collections/users/records` with an arbitrary `role` and `tenant`, i.e. anyone could mint a `GLOBAL_ADMIN`. Closing it outright is safe today: no registration route exists and `PocketBaseAuthService.register()` has no callers. PRV-05b later replaces `null` with its gated allow-list / `OPEN` rule.
+- **`users.updateRule`**: `@request.body.role:isset = false && @request.body.tenant:isset = false` on the self branch **and** the `TENANT_ADMIN` branch. The self branch had no body constraints, so any member could PATCH its own `role`/`tenant`; the `TENANT_ADMIN` branch matches the admin's own record too, and a tenant admin self-promoted in testing. Stricter than the PRV-05b spec, which guarded only the self branch; AQ-20 (delivery volunteers are tenant admins) makes the second guard necessary. Verified locally: four escalation attempts rejected, four legitimate profile updates still `200`.
+- This is the eco-admin hard gate **G-01** (eco-admin REQUIREMENTS §5.2): eco-admin must not reach a shared environment before it lands.
+
+### Removed
+
+- **`apps/eco-store/public/styles/eco-store-theme.css`**: a byte-identical copy of `src/styles/eco-store-theme.css` that nothing references (no `<link>` in `index.html`, no code import; the styles target bundles only `src/styles/styles.scss`, and `includePaths` does not cover `public/`). The `public/` assets glob shipped it in every build, ~20 KB never requested, and the round-33 secondary reseed had to be applied to both copies by hand. AREF-09 (shared token base) is the structural fix.
+
+### Docs
+
+- **`apps/eco-store/TASKS.md` / `BACKLOG.md` (v0.49)**: PRV-05b-A filed as its own row (ClickUp `123kjkdp1w7`, subtask of PRV-05b); PRV-05b's ClickUp ID corrected from the unresolvable `86c8cjgha` to `86c9uq9vb`; **BUG-010** filed (ClickUp `123kjkdp1wa`) — `orders.tax` carries `max: 100` but holds a euro amount, so any order with more than 100 € VAT is rejected at checkout. The finding dates from 2026-08-15 but only ever lived in an unmerged worktree.
+
 ## [2026-08-30] - Eco Admin: application scaffold and `scope:eco` product-family boundary (AP-0 0.1 + 0.2)
 
 ### Added
