@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-01] - Eco Admin: stop Prettier padding the planning-doc tables
+
+### Changed
+
+- **`.prettierrc` → new `overrides` entry for `apps/eco-admin/TASKS.md` and `apps/eco-admin/REQUIREMENTS.md`**: `proseWrap: "never"`. In Prettier 3.8 a markdown table is always padded to its widest cell unless `proseWrap` is `"never"`, which prints tables wider than `printWidth` without padding. One 52.7 KB notes cell was padding all 41 design rows of TASKS.md to ~56 KB each.
+- **`apps/eco-admin/TASKS.md`** 2.9 MB → 193 KB and **`apps/eco-admin/REQUIREMENTS.md`** 447 KB → 145 KB, reformatted only: every table cell and every non-table line is byte-identical after trimming, and the rendered output does not change. No document version bump.
+- The files were large enough to stall VS Code's extension host (trailing-spaces, markdown-all-in-one, color-highlight), which froze the Source Control view; any edit to the widest cell also rewrote every row of the table in git.
+- Out of scope on purpose: `DESIGN-REVIEWS.md` (only 19% padding, and `"never"` would join ~1,440 hand-wrapped prose lines) and the eco-store `TASKS.md`/`BACKLOG.md` (`BACKLOG.md` first needs the stray blank line after row 7.35 removed, or `"never"` would merge the 15 rows below it into one line).
+
 ## [2026-11-01] - Eco Store: migrate PocketBase staging hooks deploy from FTP to SFTP (OPS-03)
 
 ### Fixed

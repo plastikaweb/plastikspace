@@ -16,6 +16,12 @@
       "options": {
         "parser": "angular"
       }
+    },
+    {
+      "files": ["apps/eco-admin/TASKS.md", "apps/eco-admin/REQUIREMENTS.md"],
+      "options": {
+        "proseWrap": "never"
+      }
     }
   ]
 }
