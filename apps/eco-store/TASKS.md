@@ -9,7 +9,7 @@
 > - **`apps/eco-store/POCKETBASE.md`** — backend workflow & scripts
 > - **`apps/eco-store/CLAUDE.md`** — app-specific guidance for AI agents
 
-**Document version:** 0.52 · **Last updated:** 2026-11-01
+**Document version:** 0.53 · **Last updated:** 2026-11-01
 
 ---
 
@@ -46,7 +46,8 @@
 | Task | Module | Priority | Status | One-line summary |
 | --- | --- | --- | --- | --- |
 | **PRV-05b-A** | PRV | **Urgent** | ✅ | `users` privilege escalation closed — `createRule` superuser-only, `role`/`tenant` blocked in self/tenant-admin updates; eco-admin gate G-01 (CU `123kjkdp1w7`) |
-| **PRV-05b-B** | PRV | **Urgent** | 🔄 | Tenant-admin `users` manage/update/delete scoped to `role = "PARTNER"` — closes same-tenant peer/senior account takeover left open by PRV-05b-A; in review (CU `123kjkdp22r`) |
+| **PRV-05b-B** | PRV | **Urgent** | ✅ | Tenant-admin `users` manage/update/delete scoped to `role = "PARTNER"` — closes same-tenant peer/senior account takeover left open by PRV-05b-A (CU `123kjkdp22r`) |
+| **OPS-03** | OPS | **Urgent** | ✅ | PocketBase staging hooks deploy moved from FTP to SFTP (port 2222, key auth) — PockHost retired FTP; key gets its trailing newline from a YAML block scalar (CU `123kjkdp4ht`) |
 | **BUG-010** | BOT | **Urgent** | 📋 | `orders.tax max: 100` rejects any order with >100 € VAT — schema says rate, code writes an amount (CU `123kjkdp1wa`) |
 | **BUG-001** | BOT-05 | MUST | ✅ | Cart merge on login verified — 5/5 manual tests pass (2026-07-04) |
 | **BUG-003** | BOT | MUST | ✅ | PWA manifest doesn't use tenant name as default app name |
@@ -541,6 +542,7 @@ All `COULD`, pending discovery.
 | --- | --- | --- | --- |
 | **OPS-01** _(new)_ | Setup production deploy pipeline | MUST | `86c8cjgm0` |
 | **OPS-02** ✅ | Grant `pull-requests: write` to `claude-code-review.yml` workflow | **Urgent** | `86c9y6xyb` |
+| **OPS-03** ✅ | Migrate PocketBase staging hooks deploy (`pocketbase-schema.yml`) from FTP to SFTP | **Urgent** | `123kjkdp4ht` |
 | **META-03** _(new)_ | Fix repo coverage badge update | Low | `86c8tqjma` |
 | **META-04** _(new)_ | Add a SKILL to format readme files | Low | `86c8cjgh6` |
 | **META-05** ✅ | Phase 1: read-only `/sync-eco-store-tasks` diff command (ClickUp ↔ TASKS.md automation foundation) | Low | `86c9uwmzf` |
@@ -606,6 +608,7 @@ ClickUp `86c9uwmzf`. Internal tooling — first slice of a multi-phase workflow 
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 0.53 | 2026-11-01 | **OPS-03** (`123kjkdp4ht`, Urgent) — PockHost retired FTP, so the `pb_hooks` deploy step in `.github/workflows/pocketbase-schema.yml` moved from `SamKirkland/FTP-Deploy-Action` to `wlixcc/SFTP-Deploy-Action@v1.2.6` (port 2222, key auth, `sftp_only`) in #1531. Follow-up #1532 passes the key as a YAML block scalar: `gh secret set` strips the trailing newline from stdin, and without it OpenSSH rejects the key ("error in libcrypto"). It also warns against `delete_remote_files: true`, which would wipe PockHost's own `_ph_*.js` files. Verified by runs 41294253242 (develop) and 41296406123 (branch). `POCKETBASE_STAGING_SFTP_PASSWORD` removed. **PRV-05b-B** flipped to ✅ in Current focus (merged in #1530; ClickUp complete). |
 | 0.52 | 2026-11-01 | **Table repair (rendering only, no task changes)** — row 0.39 (2026-07-21) carried an unescaped double pipe inside a code span, which split this version-history table into 5 columns, so GitHub rendered the whole history as one paragraph. Escaped, and the mangled text restored. Same fix in BACKLOG.md, which also had a blank line after row 7.35 (since v0.32) detaching rows 7.36–7.53 from the Phase-7 table. Versions in lockstep. |
 | 0.51 | 2026-11-01 | **Jules draft-PR triage (round 11)** — 185 new drafts (#1344–#1528) + 14 open earlier refs = 199 reviewed, each cluster verified on `develop`. **20 kept** as harvest refs, **179 closed** (incl. superseded refs #1206/#1312/#1314/#1316/#1333). Five new tasks: **BUG-013** (`123kjkdp4uy`) `areObjectEntriesEqual` key check, **BUG-014** (`123kjkdp4wy`) llecoop has no translation files (blocks i18n-key moves in shared libs), **A11Y-019** (`123kjkdp4wv`), **A11Y-020** (`123kjkdp4ww`), **A11Y-021** (`123kjkdp4wx`). Refs promoted: BUG-008 #1312→#1348, A11Y-013 #1206→#1435, A11Y-016 #1314→#1357, A11Y-018 #1316→#1373, TECH-16 #1333→#1508; first refs TECH-17 #1398, TECH-15 +#1448. Scope grown on A11Y-012/016/017/018. Durable rebuttals: MatIcon default `aria-hidden` (~25 no-op drafts), dead nasa-images `doAction` (25 tabnabbing drafts), `withComputed` already memoized, `[aria-label]` works in Ng21. |
 | 0.50 | 2026-10-31 | **PRV-05b-B** (`123kjkdp22r`, Urgent, subtask of PRV-05b) — tenant-admin branch of `users.manageRule`/`updateRule`/`deleteRule` gains `&& role = "PARTNER"`; closes the same-tenant peer/senior account takeover left open by PRV-05b-A (`manage` resets a password with no `oldPassword`). Side effect: TA loses direct self-`manage` (self-service intact via the `id` branch). Verified: 28/28 regression + 4-agent adversarial + 35-attack residual probe. Forward caveat AQ-18 (future eco-admin «Equip»): re-widen the TA branch with a last-admin guard. |

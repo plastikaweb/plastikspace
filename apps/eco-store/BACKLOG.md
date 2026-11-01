@@ -4,7 +4,7 @@
 >
 > Companion to `TASKS.md` and PRD v1.8.
 
-**Document version:** 0.52 · **Last updated:** 2026-11-01
+**Document version:** 0.53 · **Last updated:** 2026-11-01
 
 ---
 
@@ -388,6 +388,7 @@
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 0.53 | 2026-11-01 | **OPS-03** (`123kjkdp4ht`) shipped outside the phase plan as an urgent CI fix — PockHost retired FTP, so the staging `pb_hooks` deploy moved to SFTP (#1531, #1532). CI-only, no phase row. |
 | 0.52 | 2026-11-01 | **Table repair (rendering only, no task changes)** — a blank line after row 7.35 (since v0.32) detached rows 7.36–7.53 from the Phase-7 table, so GitHub showed those 18 tasks as one paragraph; removed. Row 0.39 (2026-07-21) carried an unescaped double pipe inside a code span that split this version-history table into 5 columns, so the whole history rendered as a paragraph; escaped, and the mangled text restored. Same row-0.39 fix in TASKS.md. Versions in lockstep. |
 | 0.51 | 2026-11-01 | **Jules draft-PR triage (round 11)** — 185 new drafts (#1344–#1528) + 14 open earlier refs = 199 reviewed, every cluster verified against `develop`. 20 kept, 179 closed. Three new Phase-7 rows 7.51–7.53 (**A11Y-019..021**, ~1.0d) + **BUG-013/014** in TASKS.md Bugs table. Refs promoted: A11Y-013 #1206→#1435, A11Y-016 #1314→#1357, A11Y-018 #1316→#1373, TECH-16 #1333→#1508 (BUG-008 #1312→#1348 in TASKS); first refs TECH-17 #1398, TECH-15 +#1448. Round-11 dupes appended to 7.37–7.50. **BUG-014** (llecoop has no translation files) blocks the i18n-key parts of A11Y-012/013/015/018. Effort: Phase 7 → 10.5d, total ~80.5d. Versions in lockstep. |
 | 0.50 | 2026-10-31 | **PRV-05b-B** (`123kjkdp22r`) shipped outside the phase plan as an urgent security follow-up to PRV-05b-A — tenant-admin `users` manage/update/delete scoped to `role = "PARTNER"`, closing same-tenant peer/senior account takeover. Schema-only (API rules), no phase row. |
