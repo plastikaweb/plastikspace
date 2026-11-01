@@ -46,14 +46,16 @@ jobs:
           POCKETBASE_STAGING_ADMIN_EMAIL: ${{ secrets.POCKETBASE_STAGING_ADMIN_EMAIL }}
           POCKETBASE_STAGING_ADMIN_PASSWORD: ${{ secrets.POCKETBASE_STAGING_ADMIN_PASSWORD }}
 
-      - name: Deploy Hooks to PocketBase via FTPS
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Deploy Hooks to PocketBase via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
         with:
           server: ${{ secrets.POCKETBASE_STAGING_SFTP_HOST }}
           username: ${{ secrets.POCKETBASE_STAGING_SFTP_USERNAME }}
-          password: ${{ secrets.POCKETBASE_STAGING_SFTP_PASSWORD }}
-          local-dir: ./apps/eco-store/pocketbase/pb_hooks/
-          server-dir: /eco-botiga/pb_hooks/
+          ssh_private_key: ${{ secrets.POCKETBASE_STAGING_SFTP_KEY }}
+          port: 2222
+          local_path: ./apps/eco-store/pocketbase/pb_hooks/*
+          remote_path: /eco-botiga/pb_hooks
+          sftp_only: true
 
   export-schema:
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'export'
