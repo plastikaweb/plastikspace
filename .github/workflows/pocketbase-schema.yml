@@ -51,11 +51,16 @@ jobs:
         with:
           server: ${{ secrets.POCKETBASE_STAGING_SFTP_HOST }}
           username: ${{ secrets.POCKETBASE_STAGING_SFTP_USERNAME }}
-          ssh_private_key: ${{ secrets.POCKETBASE_STAGING_SFTP_KEY }}
+          # Block scalar appends the trailing newline OpenSSH needs after the END marker:
+          # `gh secret set` strips it from stdin and the action writes the key with printf "%s".
+          ssh_private_key: |
+            ${{ secrets.POCKETBASE_STAGING_SFTP_KEY }}
           port: 2222
           local_path: ./apps/eco-store/pocketbase/pb_hooks/*
           remote_path: /eco-botiga/pb_hooks
           sftp_only: true
+          # Never set delete_remote_files: true — it rm -rf's remote_path, which also holds
+          # PockHost's own _ph_*.js files that are not in this repo.
 
   export-schema:
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'export'
