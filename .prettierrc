@@ -18,7 +18,12 @@
       }
     },
     {
-      "files": ["apps/eco-admin/TASKS.md", "apps/eco-admin/REQUIREMENTS.md"],
+      "files": [
+        "apps/eco-admin/TASKS.md",
+        "apps/eco-admin/REQUIREMENTS.md",
+        "apps/eco-store/TASKS.md",
+        "apps/eco-store/BACKLOG.md"
+      ],
       "options": {
         "proseWrap": "never"
       }

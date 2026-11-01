@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-01] - Eco Store: repair and compact the TASKS/BACKLOG tables
+
+### Fixed
+
+- **Version-history table in `apps/eco-store/TASKS.md` and `apps/eco-store/BACKLOG.md`**: row 0.39 (2026-07-21) carried an unescaped double pipe inside a code span, which split the table into 5 columns against a 3-column header, so GitHub rendered the whole version history as one paragraph. The pipes are now escaped and the text Prettier had mangled is restored ([#86c99dev0](https://app.clickup.com/t/86c99dev0)).
+- **Phase-7 table in `apps/eco-store/BACKLOG.md`**: a blank line after row 7.35 (since v0.32) detached rows 7.36–7.53, which rendered as a paragraph instead of 18 table rows. Removed. Both documents bumped to v0.52 in lockstep; no task content changes ([#86c99dev0](https://app.clickup.com/t/86c99dev0)).
+
+### Changed
+
+- **`.prettierrc`**: the `proseWrap: "never"` override from the eco-admin entry below now also covers `apps/eco-store/TASKS.md` and `apps/eco-store/BACKLOG.md`, which shrinks TASKS 240 KB → 106 KB and BACKLOG 174 KB → 73 KB. Every table cell is identical; the only other change is that each file's two-line intro blockquote joins into one line, which renders the same ([#86c99dev0](https://app.clickup.com/t/86c99dev0)).
+
 ## [2026-11-01] - Eco Admin: stop Prettier padding the planning-doc tables
 
 ### Changed
