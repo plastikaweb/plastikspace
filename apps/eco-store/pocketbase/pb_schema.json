@@ -808,10 +808,10 @@
     "listRule": "(id = @request.auth.id) || (@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant) || (@request.auth.role = \"GLOBAL_ADMIN\")",
     "viewRule": "(id = @request.auth.id) || (@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant) || (@request.auth.role = \"GLOBAL_ADMIN\")",
     "createRule": null,
-    "updateRule": "(id = @request.auth.id && @request.body.role:isset = false && @request.body.tenant:isset = false) || (@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant && @request.body.role:isset = false && @request.body.tenant:isset = false) || (@request.auth.role = \"GLOBAL_ADMIN\")",
-    "deleteRule": "(id = @request.auth.id) || (@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant) || (@request.auth.role = \"GLOBAL_ADMIN\")",
+    "updateRule": "(id = @request.auth.id && @request.body.role:isset = false && @request.body.tenant:isset = false) || (@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant && role = \"PARTNER\" && @request.body.role:isset = false && @request.body.tenant:isset = false) || (@request.auth.role = \"GLOBAL_ADMIN\")",
+    "deleteRule": "(id = @request.auth.id) || (@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant && role = \"PARTNER\") || (@request.auth.role = \"GLOBAL_ADMIN\")",
     "authRule": "",
-    "manageRule": "(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant) || (@request.auth.role = \"GLOBAL_ADMIN\")",
+    "manageRule": "(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant && role = \"PARTNER\") || (@request.auth.role = \"GLOBAL_ADMIN\")",
     "authAlert": {
       "enabled": true,
       "emailTemplate": {
