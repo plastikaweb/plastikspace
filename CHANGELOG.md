@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-01] - Shared: escape non-string params and support SafeHtml in confirm dialog (SEC-07)
+
+### Fixed
+
+- **`libs/shared/confirm/data-access` (`SharedConfirmFeatureComponent`)**: escaped all translation parameter values using `escapeHtml(String(value ?? ''))` to prevent XSS payloads bypassing the primitive string type guard, and bypassed `translate.instant()` when non-string messages (such as `SafeHtml`) are passed to prevent runtime `TypeError: key.split is not a function` exceptions ([#86cajqprk](https://app.clickup.com/t/86cajqprk)).
+
 ## [2026-11-01] - Eco Store: repair and compact the TASKS/BACKLOG tables
 
 ### Fixed
