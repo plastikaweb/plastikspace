@@ -57,6 +57,7 @@ jobs:
         if: always()
         run: |
           yarn i18n:validate
+          yarn tasks:test
           yarn markdownlint
           npx nx affected --target=lint --exclude=llecoop-firebase --parallel=3
 

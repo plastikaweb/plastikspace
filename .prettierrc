@@ -22,7 +22,9 @@
         "apps/eco-admin/TASKS.md",
         "apps/eco-admin/REQUIREMENTS.md",
         "apps/eco-store/TASKS.md",
-        "apps/eco-store/BACKLOG.md"
+        "apps/eco-store/BACKLOG.md",
+        "libs/eco/TASKS.md",
+        "./TASKS.md"
       ],
       "options": {
         "proseWrap": "never"

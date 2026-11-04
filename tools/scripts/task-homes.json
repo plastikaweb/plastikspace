@@ -1,0 +1,73 @@
+{
+  "$comment": "Task homes: each pairs one ClickUp list with one TASKS doc (companions may only hold referrals). Read by tools/scripts/sync-eco-store-tasks.cjs. A new doc here also needs .prettierrc, .markdownlint-cli2.yaml and the TASK_DOCS regex in .husky/pre-commit; tools/scripts/test-sync-tasks.sh checks all three.",
+  "homes": [
+    {
+      "key": "eco-store",
+      "name": "Eco Store",
+      "listId": "901521018763",
+      "tasks": "apps/eco-store/TASKS.md",
+      "companions": ["apps/eco-store/BACKLOG.md"]
+    },
+    {
+      "key": "eco-admin",
+      "name": "Eco Admin",
+      "listId": "901521507572",
+      "tasks": "apps/eco-admin/TASKS.md",
+      "companions": []
+    },
+    {
+      "key": "eco-shared",
+      "name": "Eco Shared",
+      "listId": "1200240000011187",
+      "tasks": "libs/eco/TASKS.md",
+      "companions": []
+    },
+    {
+      "key": "plastikspace",
+      "name": "Plastikspace",
+      "listId": "1200240000011497",
+      "tasks": "TASKS.md",
+      "companions": []
+    }
+  ],
+  "idFamilies": [
+    "INI",
+    "BOT",
+    "SRC",
+    "PRV",
+    "TRL",
+    "PST",
+    "VAL",
+    "NOT",
+    "MKT",
+    "MKT-research",
+    "EST",
+    "UI",
+    "LGL",
+    "HLP",
+    "RCT",
+    "META",
+    "OPS",
+    "BUG",
+    "TECH",
+    "SEO",
+    "A11Y",
+    "SEC",
+    "I18N",
+    "ADSH",
+    "APRD",
+    "ACAT",
+    "AORD",
+    "ACYC",
+    "AMBR",
+    "AREQ",
+    "ACFG",
+    "ATNT",
+    "AGLB",
+    "AREF",
+    "B",
+    "AQ",
+    "ADES"
+  ],
+  "excludedFamilies": ["G", "Q", "AP", "D"]
+}
