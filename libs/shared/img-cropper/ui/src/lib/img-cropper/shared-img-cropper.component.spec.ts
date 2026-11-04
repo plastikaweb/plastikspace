@@ -77,6 +77,29 @@ describe('SharedImgCropperComponent', () => {
     expect(component['isDragging']()).toBe(false);
   });
 
+  it('should render correct aria-label attribute bindings on icon-only buttons', () => {
+    // 1. Error clear button
+    component['errorMessage'].set({ key: 'common.image.error.loaded' });
+    fixture.detectChanges();
+
+    const clearBtn: HTMLButtonElement | null =
+      fixture.nativeElement.querySelector('button[maticonbutton]');
+
+    expect(clearBtn?.getAttribute('aria-label')).toBe('common.close');
+
+    // 2. Crop mode zoom buttons
+    component['imageBase64'].set('data:image/png;base64,123');
+    fixture.detectChanges();
+
+    const buttons = Array.from(
+      fixture.nativeElement.querySelectorAll('button[maticonbutton]')
+    ) as HTMLButtonElement[];
+    const ariaLabels = buttons.map(btn => btn.getAttribute('aria-label'));
+
+    expect(ariaLabels).toContain('common.image.crop.zoomOut');
+    expect(ariaLabels).toContain('common.image.crop.zoomIn');
+  });
+
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
 
