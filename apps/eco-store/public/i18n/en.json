@@ -274,6 +274,7 @@
       "placeholder": "Great product, ingredients quality is noticeable. Packaging is impeccable and the taste really shows it is ecological.",
       "count": "{count, plural, =0 {(no reviews)} one {(1 review)} other {(# reviews)}}"
     },
+    "selectThumbnail": "View image {index} for {name}",
     "goToDetail": "View detail",
     "favorite": "Add {value} to favorites",
     "favoriteAdd": "Add to favorites",

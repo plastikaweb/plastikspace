@@ -26,11 +26,12 @@
     </div>
     <div class="flex flex-wrap gap-2" role="list">
       @for (tag of productTags; track tag.label) {
-        <plastik-shared-chip
-          role="listitem"
-          [customClass]="'shadow-sm ' + tag.class"
-          [icon]="tag.icon"
-          [label]="tag.label | translate" />
+        <div role="listitem">
+          <plastik-shared-chip
+            [customClass]="'shadow-sm ' + tag.class"
+            [icon]="tag.icon"
+            [label]="tag.label | translate" />
+        </div>
       }
     </div>
   } @else {
@@ -80,6 +81,11 @@
               [class.border-primary-400!]="activeThumbnailIndex() === i"
               [class.opacity-100]="activeThumbnailIndex() === i"
               [class.opacity-70]="activeThumbnailIndex() !== i"
+              [attr.aria-pressed]="activeThumbnailIndex() === i"
+              [attr.aria-label]="
+                'products.selectThumbnail'
+                  | translate: { index: i + 1, name: product()?.name || '' }
+              "
               (click)="activeThumbnailIndex.set(i)">
               <plastik-img-container
                 class="overflow-hidden transition-all duration-100 hover:scale-105 hover:contrast-120"

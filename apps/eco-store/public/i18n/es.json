@@ -274,6 +274,7 @@
       "placeholder": "Muy buen producto, se nota la calidad de los ingredientes. El envasado es impecable y el sabor realmente se nota que es ecológico.",
       "count": "{count, plural, =0 {(sin valoraciones)} one {(1 valoración)} other {(# valoraciones)}}"
     },
+    "selectThumbnail": "Ver imagen {index} de {name}",
     "goToDetail": "Ver detalle",
     "favorite": "Agregar {value} a favoritos",
     "favoriteAdd": "Añadir a favoritos",
