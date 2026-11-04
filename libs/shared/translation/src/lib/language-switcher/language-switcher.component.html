@@ -9,8 +9,11 @@
 
 <mat-menu #menu="matMenu">
   @for (lang of languages(); track lang) {
-    <button mat-menu-item (click)="onSelect(lang)">
-      @let selected = lang === current();
+    @let selected = lang === current();
+    <button
+      mat-menu-item
+      [attr.aria-current]="selected ? 'true' : undefined"
+      (click)="onSelect(lang)">
       <mat-icon
         matMenuItemIcon
         [class.text-on-surface-variant]="selected"

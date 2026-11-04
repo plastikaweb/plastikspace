@@ -1,5 +1,6 @@
 import { ComponentRef, provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideTranslateService } from '@ngx-translate/core';
 import { SortConfig, SortMenuOptions } from '@plastik/core/entities';
 import { SortSelectorComponent } from './sort-selector.component';
@@ -12,7 +13,7 @@ describe('SortSelectorComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SortSelectorComponent],
-      providers: [provideZonelessChangeDetection(), provideTranslateService()],
+      providers: [provideZonelessChangeDetection(), provideNoopAnimations(), provideTranslateService()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SortSelectorComponent);
@@ -62,5 +63,16 @@ describe('SortSelectorComponent', () => {
     expect(emitted[0]).toEqual({ active: 'name', direction: 'desc' });
 
     sub.unsubscribe();
+  });
+
+  it('should set aria-current="true" on current sort option when menu is opened', () => {
+    const trigger: HTMLButtonElement = fixture.nativeElement.querySelector('button.md\\:flex\\!');
+    trigger.click();
+    fixture.detectChanges();
+
+    const menuItems = document.querySelectorAll<HTMLButtonElement>('button[mat-menu-item]');
+    expect(menuItems.length).toBe(4);
+    expect(menuItems[0].getAttribute('aria-current')).toBe('true');
+    expect(menuItems[1].getAttribute('aria-current')).toBeNull();
   });
 });
