@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-04] - Workspace: generalize the TASKS.md ↔ ClickUp sync across task homes (META-07)
+
+### Added
+
+- **`tools/scripts/task-homes.json`**: one config for the four task homes (Eco Store, Eco Admin, Eco Shared, Plastikspace). Each home pairs its doc and companion docs with a ClickUp list, and the file also lists the 37 ID families plus the families to skip (`G`, `Q`, `AP`, `D`). A home whose `listId` is `null` is checked against its doc only; all four homes have a list today. The script and `/sync-eco-store-tasks` read only this file (META-07, [#123kjkdpqjp](https://app.clickup.com/t/123kjkdpqjp)).
+- **`tools/scripts/test-sync-tasks.sh`** → `yarn tasks:test`, now run in CI's "Lint Affected" step: 31 tests on throwaway repos with `--offline` and `--clickup-fixture`, so they need no token and no network. One test fails when a configured doc is missing from `.prettierrc`, `.markdownlint-cli2.yaml` or the pre-commit task-doc regex (META-07, [#123kjkdpqjp](https://app.clickup.com/t/123kjkdpqjp)).
+
+### Changed
+
+- **`tools/scripts/sync-eco-store-tasks.cjs`**: generalized from eco-store only to every home in `task-homes.json` (`--home <key>`, `--all`). The old parser missed several ID shapes and reported drift that did not exist. It now reads:
+  - both ClickUp ID formats, `86…` (9 characters) and the newer `123…` (11), so a short git SHA in backticks is not read as a ticket;
+  - the `B` family, suffixed IDs (`PRV-05b-A`) and ID lists (`B-02/03`);
+  - while ignoring noise like `UTF-8` or `WK33-2026`.
+
+  It adds checks across homes: a row whose ticket is in another home's list, one task in two homes, one task stated open in one place and closed in another, and referral lines (``→ **ID** · `cu` · Home (doc)``) with no row behind one of their IDs. A ClickUp ID that appears only in prose, outside any row (the ticket of question Q-15, say), still claims its ticket: it is listed as a notice, not as drift. New flags: `--ref` (read the docs at a git ref, tolerating docs not created yet), `--offline`, `--clickup-fixture`, `--json`, `--root` and `--config`. `❌` now counts as closed; the old script had no mapping for it. The script stays read-only and keeps its name, so `/sync-eco-store-tasks` still works (META-07, [#123kjkdpqjp](https://app.clickup.com/t/123kjkdpqjp)).
+
+- **`.prettierrc`** and **`.markdownlint-cli2.yaml`**: register `libs/eco/TASKS.md` and the repo-root `TASKS.md`, the docs of the Eco Shared and Plastikspace homes. The Prettier entry is `./TASKS.md`, because a pattern without a slash matches the basename at any depth: a bare `TASKS.md` would also have applied `proseWrap: "never"` to every nested `TASKS.md` (META-07, [#123kjkdpqjp](https://app.clickup.com/t/123kjkdpqjp)).
+- **`.husky/pre-commit` → task-doc guard**: now covers every task doc, not only eco-store's: `apps/eco-store/{TASKS,BACKLOG}.md`, `apps/eco-admin/TASKS.md`, `libs/eco/TASKS.md` and the root `TASKS.md`. **Behaviour change**: a commit that mixes `apps/eco-admin/TASKS.md` with non-Markdown files is now rejected; `ALLOW_BACKLOG_MIX=1` still bypasses it. The split instructions now restore the docs with `git checkout 'stash@{0}' -- <docs>` and `git stash drop`, not `git stash pop`. A pathspec stash records the whole working tree, so popping it after the code commit would reapply changes that are already committed (META-07, [#123kjkdpqjp](https://app.clickup.com/t/123kjkdpqjp)).
+- **`.claude/commands/sync-eco-store-tasks.md`**: rewritten around the homes config. It covers the new flags, the report sections and finding types, the referral format, how to add a home, and the rule that no tickets are created from only-in-TASKS rows before the baseline run. The hardcoded list ID is gone (META-07, [#123kjkdpqjp](https://app.clickup.com/t/123kjkdpqjp)).
+
 ## [2026-11-01] - Eco Store: repair and compact the TASKS/BACKLOG tables
 
 ### Fixed
