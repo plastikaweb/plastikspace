@@ -8,11 +8,11 @@
     [routerLinkActiveOptions]="{
       exact: true,
     }">
-    <mat-icon>home</mat-icon>
+    <mat-icon aria-hidden="true">home</mat-icon>
   </eco-mobile-nav-item>
 
   <eco-mobile-nav-item routerLink="/botiga" [label]="'store.menu.store' | translate">
-    <mat-icon>storefront</mat-icon>
+    <mat-icon aria-hidden="true">storefront</mat-icon>
   </eco-mobile-nav-item>
 
   <eco-mobile-nav-item
@@ -20,23 +20,19 @@
     [class.disabled]="cartStore.isEmpty()"
     [label]="'store.menu.cart' | translate"
     [disabled]="cartStore.isEmpty()">
-    <mat-icon
-      aria-hidden="false"
-      [class.bump]="bumpAnimation()"
-      [attr.aria-label]="'store.menu.cart' | translate"
-      [matBadge]="cartStore.itemsCount()"
-      >shopping_cart</mat-icon
-    >
+    <span [class.bump]="bumpAnimation()" [matBadge]="cartStore.itemsCount()">
+      <mat-icon aria-hidden="true">shopping_cart</mat-icon>
+    </span>
   </eco-mobile-nav-item>
 
   <eco-mobile-nav-item routerLink="/favorits" [label]="'store.menu.favorites' | translate">
-    <mat-icon>favorite</mat-icon>
+    <mat-icon aria-hidden="true">favorite</mat-icon>
   </eco-mobile-nav-item>
 
   <!-- User Account -->
   @if (!userProfileStore.isAuthenticated()) {
     <eco-mobile-nav-item routerLink="/accedir" [label]="'store.menu.login' | translate">
-      <mat-icon>account_circle</mat-icon>
+      <mat-icon aria-hidden="true">account_circle</mat-icon>
     </eco-mobile-nav-item>
   } @else {
     <eco-mobile-nav-item
