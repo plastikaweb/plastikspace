@@ -117,6 +117,48 @@ describe('EcoStoreBreadcrumbsComponent', () => {
     expect(tooltipMessage).toBe(label);
   });
 
+  it('should bind localized aria-label to the nav element', async () => {
+    const nav = fixture.debugElement.query(By.css('nav'));
+
+    expect(nav.nativeElement.getAttribute('aria-label')).toBe('common.a11y.breadcrumbsNavigation');
+  });
+
+  it('should set aria-hidden="true" on all mat-icons', async () => {
+    const items: BreadcrumbItem[] = [
+      { label: 'Home', routerLink: ['/'], icon: 'home' },
+      { label: 'Detail' },
+    ];
+
+    fixture.componentRef.setInput('items', items);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const icons = fixture.debugElement.queryAll(By.css('mat-icon'));
+
+    expect(icons.length).toBeGreaterThan(0);
+    for (const icon of icons) {
+      expect(icon.nativeElement.getAttribute('aria-hidden')).toBe('true');
+    }
+  });
+
+  it('should set aria-current="page" on the last breadcrumb item', async () => {
+    const items: BreadcrumbItem[] = [
+      { label: 'Home', routerLink: ['/'] },
+      { label: 'Products', routerLink: ['/botiga'] },
+      { label: 'Detail' },
+    ];
+
+    fixture.componentRef.setInput('items', items);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const linksAndSpans = fixture.debugElement.queryAll(By.css('li > a, li > span'));
+
+    expect(linksAndSpans[0].nativeElement.getAttribute('aria-current')).toBeNull();
+    expect(linksAndSpans[1].nativeElement.getAttribute('aria-current')).toBeNull();
+    expect(linksAndSpans[2].nativeElement.getAttribute('aria-current')).toBe('page');
+  });
+
   it('should have no accessibility violations', async () => {
     const items: BreadcrumbItem[] = [{ label: 'Home', routerLink: ['/'] }, { label: 'Detail' }];
 
