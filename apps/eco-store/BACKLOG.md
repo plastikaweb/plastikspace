@@ -4,7 +4,7 @@
 >
 > Companion to `TASKS.md` and PRD v1.8.
 
-**Document version:** 0.53 · **Last updated:** 2026-11-01
+**Document version:** 0.54 · **Last updated:** 2026-11-07
 
 ---
 
@@ -54,9 +54,9 @@
 | 1.2 | Schema: `users.notificationPrefs` JSON field | MUST | 0.25d | — | For PRV-09 |
 | 1.3 | **PRV-02b** Email change with async verification ✅ | MUST | 2d | — | Done 2026-07-04. Non-blocking flow. CU `86c9uq8mt` (id corrected from `86c92g6ek`) |
 | 1.4 | **PRV-02c** In-session password change ✅ | MUST | 1d | — | Done 2026-07-05. 3 fields, different from PRV-03. CU `86c9uq8n9` (id corrected from `86c92g60y`) |
-| 1.5 | **PRV-04d** Fiscal profile capture ✅ | MUST | 2d | — | Done 2026-07-20 — `user_fiscal_profiles` + server-side NIF checksum hook + opt-in "Dades fiscals" section behind tenant flag. `orders.billing` + checkout toggle deferred to invoicing. CU `86c99dev0` |
-| 1.6 | **PRV-09** Notification preferences panel | SHOULD | 2d | 1.2 | 6 toggles → `notificationPrefs` JSON. CU `86c92g7fb` |
-| 1.7 | **PRV-08** Self-service account deletion (RGPD) | MUST | 2.5d | — | Confirmation dialog + new `on_user_delete.pb.js` hook for hard delete + order anonymization + cascade. CU `86c92g6hd` |
+| 1.5 | **PRV-04d** Fiscal profile capture ✅ | MUST | 2d | — | Done 2026-07-20 — `user_fiscal_profiles` + server-side NIF checksum hook + opt-in "Dades fiscals" section behind tenant flag. `orders.billing` + checkout toggle deferred to invoicing. CU `86c9uq8nt` |
+| 1.6 | **PRV-09** Notification preferences panel | SHOULD | 2d | 1.2 | 6 toggles → `notificationPrefs` JSON. CU `86c9uq8p6` |
+| 1.7 | **PRV-08** Self-service account deletion (RGPD) | MUST | 2.5d | — | Confirmation dialog + new `on_user_delete.pb.js` hook for hard delete + order anonymization + cascade. CU `86c9uq8ph` |
 | 1.8 | **TRL-03** Trial → member conversion CTA | MUST | 1.5d | — | `TrialBannerComponent` + dialog + PATCH + `authRefresh()` |
 | 1.9 | **TRL-04** Frontend checkout block + upsell | MUST | 0.5d | TRL-05 ✅ | UX mirror of backend rule |
 | 1.10 | **TRL-06** Data preservation verification | MUST | 0.5d | TRL-03 | Manual test |
@@ -73,8 +73,8 @@
 
 | # | Task | Priority | Est | Depends on | Notes |
 | --- | --- | --- | --- | --- | --- |
-| 2.1 | **BOT-02b** Text search input | MUST | 1.5d | — | CU `86c8cjggk` |
-| 2.2 | **BOT-02c** Tag filter chips | MUST | 1d | — | CU `86c8cjgkj` |
+| 2.1 | **BOT-02b** Text search input | MUST | 1.5d | — | CU `86c9uq8t6` |
+| 2.2 | **BOT-02c** Tag filter chips | MUST | 1d | — | CU `86c9uq91a` |
 | 2.3 | **BOT-08** Stock badge + overlay (Avisa'm stubbed) | MUST | 1d | — | "Avisa'm" placeholder until Phase 5 |
 | 2.4 | **BUG-004** Rationalize cart toasts | SHOULD | 0.5d | ✅ | Done 2026-06-24 — debounce removed; cart shares `cart:<id>` groupKey via TECH-10. CU `86c9uq92h` |
 
@@ -162,7 +162,7 @@
 | 6.2 | **NOT-04** Cycle opened email hook | SHOULD | 0.5d | — | On `order_cycles.status → OPEN` |
 | 6.3 | **NOT-05** Cycle closing reminder (scheduled) | SHOULD | 1d | — | Extend `cycle_cron.pb.js` |
 | 6.4 | **TRL-08** Trial expiry reminder hook | SHOULD | 1d | — | New scheduled hook |
-| 6.5 | **PST-04** Order status transition on window change | SHOULD | 0.5d | — | CU `86c9e9964` |
+| 6.5 | **PST-04** Order status transition on window change | SHOULD | 0.5d | — | CU `86c9uq9nw` |
 
 **Exit criteria:** All transactional emails wired. Order cycle state machine complete.
 
@@ -176,13 +176,13 @@
 
 | # | Task | Priority | Est | Depends on | Notes |
 | --- | --- | --- | --- | --- | --- |
-| 7.1 | **UI-04** Footer view | MUST | 1d | — | CU `86c8cjgg9` |
-| 7.2 | **LGL-01** Legal pages | MUST | 2d | — | Static content + footer links + i18n. CU `86c8cjgm2` |
+| 7.1 | **UI-04** Footer view | MUST | 1d | — | CU `86c9uq9pg` |
+| 7.2 | **LGL-01** Legal pages | MUST | 2d | — | Static content + footer links + i18n. CU `86c9uq9q1` |
 | 7.3 | **Q-10** Resolve cookie consent strategy | — | 0.25d | — | CMP vs in-house |
-| 7.4 | **LGL-02** Cookie consent banner | MUST | 1.5d | 7.3 | CU `86c8cjgm3` |
+| 7.4 | **LGL-02** Cookie consent banner | MUST | 1.5d | 7.3 | CU `86c9uq9qt` |
 | 7.5 | **A11Y-001** + **A11Y-002** Fixes | MUST | 1d | Phase 0.7 | Execute findings |
-| 7.6 | **SEO-01** Dynamic SEO titles | SHOULD | 1d | — | CU `86c9autmu` — high priority |
-| 7.7 | **OPS-01** Production deploy pipeline | MUST | 1.5d | — | CU `86c8cjgm0` — needed before v1 launch |
+| 7.6 | **SEO-01** Dynamic SEO titles | SHOULD | 1d | — | CU `86c9uq9r5` — high priority |
+| 7.7 | **OPS-01** Production deploy pipeline | MUST | 1.5d | — | CU `86c9uq9rd` — needed before v1 launch |
 | 7.8 | **TECH-01** `string \| LocalizedField` util | SHOULD | 0.5d | — | CU `86c9uq9rf` |
 | 7.9 | **TECH-02** Modernize `libs/shared/*` libs ✅ | SHOULD | 1d | — | Done 2026-05-29 — develop already modernized (May-1); residual cleanup (`#` methods + dead `matFormField` query) landed. Jules PRs #1073/#1078/#1087 closed (all targeted stale `main`). CU `86c9y6upw` |
 | 7.10 | **TECH-03** Optimize `libs/shared/util/objects` ✅ | SHOULD | 0.25d | — | Done 2026-05-31 — `isEmpty`/`formatURLQueryParams`/`collectionToArray` O(N) perf. Jules PR #1095 (superset of #1091, closed as subset). CU `86ca226tz` |
@@ -193,7 +193,7 @@
 | 7.15 | **A11Y-003** Password visibility toggle a11y ✅ | SHOULD | 0.25d | 2026-06-06 | Done 2026-06-06 — aria-label/aria-pressed fixed (untranslated keys + inverted state), matTooltip added, `common.form.*` keys in ca/es/en. Re-cut of PR #1102 (dupe #1101 closed). CU `86ca59u4d` |
 | 7.16 | **A11Y-004** eco-store action-button tooltips ✅ | SHOULD | 0.25d | 2026-06-07 | Done 2026-06-07 — matTooltip on quantity increment/decrement-or-remove + cart delete buttons, mirroring each aria-label; reworded `products.quantity.*` (ca/es/en) to consistent "verb + quantity + product" form; specs assert tooltip↔aria-label sync. Supersedes PRs #1113 + #1109. CU `86ca59u4x` |
 | 7.17 | **A11Y-005** Header sidenav + tenant-link a11y ✅ | SHOULD | 0.25d | 2026-06-07 | Done 2026-06-07 — matTooltip on header sidenav toggle + in-sidenav mobile close button (mirroring aria-label); aria-label + tooltip on tenant logo link (had no accessible name) via `common.navigation.backToStore`; spec asserts tooltip↔aria-label sync. Supersedes PR #1106. CU `86ca59u73` |
-| 7.18 | **BOT-16** Cart sidenav menu | SHOULD | 1d | — | CU `86c8cjgj2` |
+| 7.18 | **BOT-16** Cart sidenav menu | SHOULD | 1d | — | CU `86c9uq9rk` |
 | 7.19 | **UI-03** Per-tenant color theme | COULD | 1d | — | If time |
 | 7.20 | **SEC-03** XSS in `SharedConfirmFeatureComponent` ✅ | **Urgent** | 0.25d | 2026-06-14 | Done 2026-06-14 — escape user-controlled `translate` params via `escapeHtml` (from `@plastik/shared/objects`, SEC-01) before `translate.instant()`/`bypassSecurityTrustHtml`; translation template stays trusted so intentional markup renders. Specs assert `<img onerror>` param escaped + `<strong>` template markup survives. HIGH. Supersedes PR #1130. CU `86ca5gpx8` |
 | 7.21 | **A11Y-006** Password toggle keyboard-focusable ✅ | SHOULD | 0.25d | 2026-06-21 | Done 2026-06-21 — removed `tabindex="-1"` from the show/hide `matIconButton` (WCAG 2.1.1); native button now Tab-reachable + Enter/Space-activatable, Material focus indicator applies. Spec asserts `tabIndex === 0`. Supersedes PR #1128. CU `86ca5gpxj` |
@@ -244,7 +244,7 @@
 | --- | --- | --- | --- | --- | --- |
 | 8.1 | **PST-01a** Cancel order — cycle mode | SHOULD | 1.5d | — |  |
 | 8.2 | **PST-01b** Cancel order — 24/7 mode | SHOULD | 0.5d | 8.1 |  |
-| 8.3 | **PST-02** Modify items in active order | SHOULD | 3d | 8.1 | Re-uses cart UI in edit mode. CU `86c9ea1wg` + `86c9dpjmz` |
+| 8.3 | **PST-02** Modify items in active order | SHOULD | 3d | 8.1 | Re-uses cart UI in edit mode. CU `86c9uq9u6` + `86c9dpjmz` |
 
 **Exit criteria:** Members self-service cancel/modify without contacting cooperative.
 
@@ -291,7 +291,7 @@
 
 | # | Task | Priority | Est | Depends on | Notes |
 | --- | --- | --- | --- | --- | --- |
-| 11.1 | **EST-06** Per-order statistics calculation | SHOULD | 2d | — | CU `86c9e8zxj` — likely a hook + read API |
+| 11.1 | **EST-06** Per-order statistics calculation | SHOULD | 2d | — | CU `86c9uq9wy` — likely a hook + read API |
 
 **Exit criteria:** Each order has computed stats accessible for future EST-05 dashboards.
 
@@ -337,13 +337,13 @@
 | Personal consumption stats  | EST-05          | COULD — needs analytics design              |
 | Reactions to reviews        | VAL-03          | Blocked on Q-01                             |
 | SMS notification channel    | NOT-06          | Blocked on Q-07                             |
-| AI chatbot                  | HLP-01          | Blocked on Q-04 (CU `86c8cjgkk`)            |
+| AI chatbot                  | HLP-01          | Blocked on Q-04 (CU `86c9uq9za`)            |
 | Direct messaging            | HLP-02          | Blocked on Q-05                             |
 | Recipe module               | RCT-01..04      | COULD — discovery first                     |
 | Return / exchange requests  | PST-03          | COULD                                       |
-| Cooperatives research       | MKT-research-01 | Not dev work (CU `86c8hb9ef`)               |
-| Coverage badge fix          | META-03         | Low priority (CU `86c8tqjma`)               |
-| README format SKILL         | META-04         | Internal tooling (CU `86c8cjgh6`)           |
+| Cooperatives research       | MKT-research-01 | Not dev work (CU `86c9uqa10`)               |
+| Coverage badge fix          | META-03         | Low priority (CU `86c9uqa1j`)               |
+| README format SKILL         | META-04         | Internal tooling (CU `86c9uqa1n`)           |
 | Clarify "add tags store"    | Q-15            | CU `86c8cjgj6` — needs clarification        |
 
 ---
@@ -388,6 +388,7 @@
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 0.54 | 2026-11-07 | **META-08** (`123kjkdpqjr`) — doc-only maintenance in lockstep with TASKS.md 0.54. 18 stale ClickUp IDs re-pointed to the live re-created tickets: rows 1.5–1.7 (PRV-04d, PRV-09, PRV-08), 2.1–2.2 (BOT-02b/c), 6.5 (PST-04), 7.1, 7.2, 7.4, 7.6, 7.7, 7.18 (UI-04, LGL-01, LGL-02, SEO-01, OPS-01, BOT-16), 8.3 (PST-02; `86c9dpjmz` kept), 11.1 (EST-06) and four Out-of-scope rows (HLP-01, MKT-research-01, META-03, META-04). History rows keep the old IDs. No estimate or phase changes; the new SEC-09/10, BUG-011/012/015/016 and PRV-05b-C rows and the PRV-08/PRV-09/UI-04/VAL-01 status fixes live in TASKS.md. |
 | 0.53 | 2026-11-01 | **OPS-03** (`123kjkdp4ht`) shipped outside the phase plan as an urgent CI fix — PockHost retired FTP, so the staging `pb_hooks` deploy moved to SFTP (#1531, #1532). CI-only, no phase row. |
 | 0.52 | 2026-11-01 | **Table repair (rendering only, no task changes)** — a blank line after row 7.35 (since v0.32) detached rows 7.36–7.53 from the Phase-7 table, so GitHub showed those 18 tasks as one paragraph; removed. Row 0.39 (2026-07-21) carried an unescaped double pipe inside a code span that split this version-history table into 5 columns, so the whole history rendered as a paragraph; escaped, and the mangled text restored. Same row-0.39 fix in TASKS.md. Versions in lockstep. |
 | 0.51 | 2026-11-01 | **Jules draft-PR triage (round 11)** — 185 new drafts (#1344–#1528) + 14 open earlier refs = 199 reviewed, every cluster verified against `develop`. 20 kept, 179 closed. Three new Phase-7 rows 7.51–7.53 (**A11Y-019..021**, ~1.0d) + **BUG-013/014** in TASKS.md Bugs table. Refs promoted: A11Y-013 #1206→#1435, A11Y-016 #1314→#1357, A11Y-018 #1316→#1373, TECH-16 #1333→#1508 (BUG-008 #1312→#1348 in TASKS); first refs TECH-17 #1398, TECH-15 +#1448. Round-11 dupes appended to 7.37–7.50. **BUG-014** (llecoop has no translation files) blocks the i18n-key parts of A11Y-012/013/015/018. Effort: Phase 7 → 10.5d, total ~80.5d. Versions in lockstep. |
