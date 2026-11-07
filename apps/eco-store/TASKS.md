@@ -9,7 +9,7 @@
 > - **`apps/eco-store/POCKETBASE.md`** — backend workflow & scripts
 > - **`apps/eco-store/CLAUDE.md`** — app-specific guidance for AI agents
 
-**Document version:** 0.53 · **Last updated:** 2026-11-01
+**Document version:** 0.54 · **Last updated:** 2026-11-07
 
 ---
 
@@ -17,7 +17,7 @@
 
 - **One task per PRD ID** (`INI-01`, `BOT-05`, etc.). When a PRD ID is atomized (e.g. `PRV-02a/b/c`, `PRV-04a/b/c/d`), each sub-ID is its own task.
 - Status is **derived from the codebase + ClickUp**, not the PRD's own status column (which lags).
-- New non-PRD task families: `BUG-NNN` (bugs), `META-NN` (housekeeping), `OPS-NN` (release ops), `TECH-NN` (tech debt), `SEO-NN`, `MKT-research-NN`.
+- New non-PRD task families: `BUG-NNN` (bugs), `META-NN` (housekeeping), `OPS-NN` (release ops), `TECH-NN` (tech debt), `SEC-NN` (security), `SEO-NN`, `MKT-research-NN`.
 
 ### Status legend
 
@@ -37,7 +37,7 @@
 
 ### Module prefixes
 
-`INI` Home · `BOT` Catalog · `SRC` Search · `PRV` Auth/Profile · `TRL` Trial members · `PST` Post-order · `VAL` Reviews · `NOT` Notifications · `MKT` Marketing · `EST` Order history · `UI`/`LGL` UI & Legal · `HLP` AI/Messaging · `RCT` Recipes · `META`/`OPS`/`BUG`/`TECH`/`SEO` Cross-cutting
+`INI` Home · `BOT` Catalog · `SRC` Search · `PRV` Auth/Profile · `TRL` Trial members · `PST` Post-order · `VAL` Reviews · `NOT` Notifications · `MKT` Marketing · `EST` Order history · `UI`/`LGL` UI & Legal · `HLP` AI/Messaging · `RCT` Recipes · `META`/`OPS`/`BUG`/`TECH`/`SEC`/`SEO` Cross-cutting
 
 ---
 
@@ -54,14 +54,14 @@
 | **BUG-006** | NOT | MUST | ✅ | All hot-toasts invisible — v6 popover container never shown (CU `86cajqnp1`) |
 | **PRV-02b** | PRV | MUST | ✅ | Email change with async verification (CU `86c9uq8mt`) |
 | **PRV-02c** | PRV | MUST | ✅ | In-session password change (CU `86c9uq8n9`) |
-| **PRV-04d** | PRV | MUST | ✅ | Fiscal profile capture shipped — `user_fiscal_profiles` + server-side NIF checksum + opt-in "Dades fiscals" section; `orders.billing` + checkout toggle deferred to invoicing (CU `86c99dev0`) |
-| **PRV-08** | PRV | MUST | 🔄 | Self-service account deletion (RGPD right to erasure) (CU `86c92g6hd`) |
-| **PRV-09** | PRV | SHOULD | 🔄 | Notification preferences panel (CU `86c92g7fb`) |
+| **PRV-04d** | PRV | MUST | ✅ | Fiscal profile capture shipped — `user_fiscal_profiles` + server-side NIF checksum + opt-in "Dades fiscals" section; `orders.billing` + checkout toggle deferred to invoicing (CU `86c9uq8nt`) |
+| **PRV-08** | PRV | MUST | 📋 | Self-service account deletion (RGPD right to erasure) (CU `86c9uq8ph`) |
+| **PRV-09** | PRV | SHOULD | 📋 | Notification preferences panel (CU `86c9uq8p6`) |
 | **TRL-03** | TRL | MUST | 📋 | Trial → member conversion CTA |
 | **BOT-02b** | BOT | MUST | 📋 | Text search input above product grid |
 | **BOT-02c** | BOT | MUST | 📋 | Tag filter chips above product grid |
 | **BOT-08** | BOT | MUST | 📋 | Stock badge + out-of-stock overlay with "Avisa'm" |
-| **VAL-01** | VAL | SHOULD | 🔄 | Publish review form on product detail |
+| **VAL-01** | VAL | SHOULD | 🧪 | Publish review form on product detail — needs Q-13 |
 
 See **`BACKLOG.md`** for the phased plan.
 
@@ -162,8 +162,12 @@ Workflow: edit in Admin UI → `yarn eco-store:pb:export` → `yarn eco-store:pb
 | **BUG-008** | user-order cart store sorts state array in place | SHOULD | 📋 | `123kjkdgyjj` | `user-order-cart.store.ts:33` — `getOrderedCartItems: computed(() => cart().sort(…))` mutates the signal-store array in place (sort returns the same ref), and the reorder leaks into `persistCartData`'s localStorage write + `addItem`'s filter. Fix `[...cart()].sort(…)` + spec. Do NOT bundle the draft's `getCartTotalPrice` rounding change (display-only, can shift the shown cent). Harvest ref **promoted #1312 → #1348** (round 11: mutation fix + specs only, no rounding change; runner-up #1388). Round-11 dupes closed: #1312/#1388/#1401/#1404/#1411/#1456/#1526 (several re-bundle the rejected rounding change) |
 | **BUG-009** | `imageKitLoader` appends transforms with `&` on query-less src | COULD | 📋 | `123kjkdgyjk` | `image-kit-loader.util.ts:34` unconditionally emits `&${transform}` → `image.jpg&tr=…`, an invalid URL, whenever `src` has no query string. Latent: both NgOptimizedImage call sites appear to trip the loaderParams/width guards first — verifying reachability is step 1 (if `shared-img-container` truly never reaches URL building, the loader is inert there, a separate question). Found while rejecting #1315; implement fresh |
 | **BUG-010** | `orders.tax` capped at 100 — blocks large orders | **Urgent** | 📋 | `123kjkdp1wa` | `orders.tax` is declared `{min: 0, max: 100}` but stores a currency **amount**, not a rate → checkout is rejected once cart VAT exceeds 100 € (~476 € subtotal at 21%). `carts.tax` is unbounded. Schema-only fix: drop `max`, keep `min: 0`. See spec below |
+| **BUG-011** | `tenant_addresses.zip` pattern has literal slashes — valid zips rejected | MUST | 📋 | `123kjkdp22w` | `pb_schema.json:2466` stores `/^(0[1-9]\|[1-4]\d\|5[0-2])\d{3}$/`; PocketBase patterns are bare regex, so the slashes are matched literally and every real zip fails. The other two copies of this province-aware pattern (`user_addresses` l. 2030, `user_fiscal_profiles` l. 3211) are stored without slashes and work. Fix: drop the slashes. **Blocks** ACFG-08 (eco-admin TASKS 4.5) and the SEC-10 `tenant_addresses` pin test. B-10, BUG-011 and SEC-10 all touch `tenant_addresses`: read together |
+| **BUG-012** | `x-bypass-hooks` guard is inert in `normalize_user_name` / `on_create_order` — fix with a superuser gate | SHOULD | 📋 | `123kjkdp22x` | Both hooks read `e.httpContext` (`normalize_user_name.pb.js:5`, `:29`; `on_create_order.pb.js:8`), which does not exist, so the header is silently ignored. Fix: read `e.requestEvent.request` and honour the header only when `e.requestEvent.hasSuperuserAuth()`, as `validate_fiscal_profile.pb.js` does. A path-only fix opens order-total tampering: see the PRV-04d known follow-up below |
 | **BUG-013** | `areObjectEntriesEqual` treats different keys as equal when the values are `undefined` | COULD | 📋 | `123kjkdp4uy` | `libs/shared/util/objects/src/util-objects.ts:179` compares `prev[key] !== curr[key]` and the key counts, but never checks that `key` is an own key of `curr` → `areObjectEntriesEqual({ a: undefined }, { b: undefined })` is `true`. Consumers: `with-pocketbase-params.store.ts:138-140`, `pocketbase.features.ts:96`, `store-firebase-crud-feature.ts:486` (worst case: a reload skipped on a filter swap between two `undefined` keys — both mean "no filter", hence COULD). Fix: `hasOwnProperty` check on `curr` inside the loop + spec. Harvest ref Jules #1427 |
 | **BUG-014** | llecoop ships no translation files — shared `\| translate` renders raw keys | SHOULD | 📋 | `123kjkdp4wy` | `apps/llecoop/src/app/app.config.ts:87-93` wires `TranslateHttpLoader` (`/i18n/`, lang/fallback `ca`), but llecoop has no `i18n/` folder and the `project.json` assets glob copies only `src/assets` → every `\| translate` inside llecoop returns the key. Visible on the cms-layout theme toggle (likely — not checked in a browser). **Blocks** the hardcoded-string → i18n-key moves in shared libs (A11Y-012/013/015/018): today those strings show in Catalan, after the move they would show as raw keys. Options: (a) ship a llecoop `ca.json` for the shared `common.*` keys + an assets entry under `/i18n/`; (b) drop ngx-translate from llecoop and pass labels via inputs. Step 1: confirm on staging. No Jules draft covers it |
+| **BUG-015** | `phoneValidator` rejects `+34` / spaced numbers and non-Spanish mobiles | SHOULD | 📋 | `123kjkdpxvy` | The shared `phoneValidator` (`libs/shared/form/util`) is `/^[6-9]\d{8}$/`; the schema has no pattern. Blocks `user_addresses.phone` (schema 9–14) and the basic-profile `users.phone` (schema unbounded, form required). Form `maxLength: 15` ≠ schema max 14 → strip spaces before persisting or move the schema max. Shared with llecoop (`validation: ['phone']`): cross-app pass. See the 2026-07-21 audit note below |
+| **BUG-016** | Password inputs cap at 25 chars and silently truncate pastes | SHOULD | 📋 | `123kjkdpxvz` | `input-password-with-visibility-type.component.html` binds `[maxLength]="props.maxLength \|\| 25"`. Register, login, reset and `newPassword` set `maxLength: 25` explicitly, so the cap is consistent (no general lockout), but the browser truncates longer pastes without warning. Passwords over 25 chars set outside the store forms (PB admin, llecoop) cannot be typed at login; `oldPassword` and confirm-email-change get the fallback. Schema `users.password`: min 8, no max. Raising the cap needs a transition plan. Shared with llecoop |
 
 ### BUG-001 — Cart merge on login (BOT-05) [✅ Verified 2026-07-04]
 
@@ -252,13 +256,13 @@ BOT-01, BOT-02a, BOT-02d, BOT-03, BOT-04, BOT-05, BOT-06a/b/c, BOT-09, BOT-10, B
 
 | ID | Description | Priority | ClickUp | Notes |
 | --- | --- | --- | --- | --- |
-| **BOT-02b** | Text search input | MUST | `86c8cjggk` | Query `products.normalizedName` |
-| **BOT-02c** | Tag filter chips | MUST | `86c8cjgkj` | Multi-select tenant tags |
+| **BOT-02b** | Text search input | MUST | `86c9uq8t6` | Query `products.normalizedName` |
+| **BOT-02c** | Tag filter chips | MUST | `86c9uq91a` | Multi-select tenant tags |
 | **BOT-07** | Wishlist heart icon (auth-gated) | SHOULD | — | Needs schema (Q-14) |
 | **BOT-08** | Stock badge + out-of-stock overlay + "Avisa'm" | MUST | — | "Avisa'm" CTA stub until 5.5 |
 | **BOT-13a** | "Avisa'm" anonymous email-only | SHOULD | — | Needs `stock_alerts` |
 | **BOT-13b** | "Avisa'm" auto for wishlist | SHOULD | — | Depends on BOT-07 |
-| **BOT-16** _(new)_ | Sidenav menu for cart | SHOULD | `86c8cjgj2` | Side panel access to cart contents |
+| **BOT-16** _(new)_ | Sidenav menu for cart | SHOULD | `86c9uq9rk` | Side panel access to cart contents |
 
 ---
 
@@ -279,23 +283,20 @@ All pending. ClickUp parent: `86c8cjgke`.
 | ID | Description | Where |
 | --- | --- | --- |
 | **PRV-01** | Login/logout (JWT, 7-day) | `libs/eco-store/auth/login` |
-| **PRV-02a** | Personal data (name, phone, **avatar**) | `libs/eco-store/profile/{basic,avatar}` · CU `86c92g5x5` + `86c92g5xk` |
+| **PRV-02a** | Personal data (name, phone, **avatar**) | `libs/eco-store/profile/{basic,avatar}` · CU `86c9uq87q` + `86c92g5xk` |
 | **PRV-03** | Forgot-password flow | `libs/eco-store/auth/{forgot-password,*-sent,reset-password}` |
-| **PRV-04a** | Address list | `libs/eco-store/profile/addresses` · CU `86c92g5yn` |
-| **PRV-04b** | Address CRUD | CU `86c92g5yz` |
-| **PRV-04c** | Default address | CU `86c92g5z8` |
+| **PRV-04a** | Address list | `libs/eco-store/profile/addresses` · CU `86c9uq87z` |
+| **PRV-04b** | Address CRUD | CU `86c9uq882` |
+| **PRV-04c** | Default address | CU `86c9uq88e` |
 | **PRV-02b** | Email change with async verification | `libs/eco-store/profile/access-security` + `auth/feature/confirm-email-change` · CU `86c9uq8mt` |
 | **PRV-02c** | In-session password change | `libs/eco-store/profile/access-security` + `shared/auth/pocketbase/data-access` · CU `86c9uq8n9` |
-| **PRV-04d** | Fiscal profile capture (NIF/NIE/CIF, server-checksummed; opt-in behind tenant flag) | `libs/eco-store/profile/fiscal-data` + `apps/eco-store/pocketbase/pb_hooks/validate_fiscal_profile.pb.js` · CU `86c99dev0` |
+| **PRV-04d** | Fiscal profile capture (NIF/NIE/CIF, server-checksummed; opt-in behind tenant flag) | `libs/eco-store/profile/fiscal-data` + `apps/eco-store/pocketbase/pb_hooks/validate_fiscal_profile.pb.js` · CU `86c9uq8nt` |
+| **PRV-05b-A** | Close `users` role/tenant privilege escalation (eco-admin gate G-01) | `users` rules in `pb_schema.json` · CU `123kjkdp1w7` |
+| **PRV-05b-B** | Scope tenant-admin `users` manage/update/delete to `PARTNER` | `users` rules in `pb_schema.json` · CU `123kjkdp22r` |
 
 ### In progress 🔄
 
-| ID | Description | Priority | ClickUp | Notes |
-| --- | --- | --- | --- | --- |
-| **PRV-08** | Self-service account deletion (RGPD) | MUST | `86c92g6hd` | Hard delete personal fields + anonymize past orders (drop name/email, keep zip for stats) + cascade `user_addresses` + auto logout |
-| **PRV-09** | Notification preferences panel | SHOULD | `86c92g7fb` | 6 toggles → `users.notificationPrefs` JSON |
-| **PRV-05b-A** | Close `users` role/tenant privilege escalation | **Urgent** | `123kjkdp1w7` | Subtask of PRV-05b. `createRule` `""` → `null`; `updateRule` self/tenant-admin branches gain `@request.body.role:isset = false && @request.body.tenant:isset = false`. Gate G-01 for eco-admin (REQUIREMENTS §5.2) |
-| **PRV-05b-B** | Scope tenant-admin `users` manage/update/delete to `PARTNER` | **Urgent** | `123kjkdp22r` | Subtask of PRV-05b, follows PRV-05b-A. Tenant-admin branch of `manageRule`/`updateRule`/`deleteRule` gains `&& role = "PARTNER"`; closes same-tenant peer/senior takeover (`manage` = password reset without `oldPassword`). Side effect: TA loses direct self-`manage` (self-service intact via the `id` branch). AQ-18 (future eco-admin «Equip») must re-widen with a last-admin guard. |
+_None._
 
 ### Pending 📋
 
@@ -303,6 +304,9 @@ All pending. ClickUp parent: `86c8cjgke`.
 | --- | --- | --- | --- | --- |
 | **PRV-05a** | Pre-authorization (admin) | MUST | — | Out of scope (eco-admin) |
 | **PRV-05b** | Registration with pre-auth email | MUST | `86c9uq9vb` | Gated by tenant admin allow-list |
+| **PRV-05b-C** | Stop members self-writing `membershipStatus` / `trialEndsAt` | MUST | `123kjkdp22t` | Subtask of PRV-05b. The self branch of `users.updateRule` lets a member set `membershipStatus = ACTIVE` and extend `trialEndsAt`. Allow only TRIAL → ACTIVE with `trialEndsAt` cleared (TRL-03 `convertTrialToActive()`, `pocketbase-auth.service.ts:87`); otherwise pin both with `:changed = false`. Reverses the eco-admin AMBR-03 assumption. Refs TRL-03, TRL-07, TRL-09 |
+| **PRV-08** | Self-service account deletion (RGPD) | MUST | `86c9uq8ph` | Hard delete personal fields + anonymize past orders (drop name/email, keep zip for stats) + cascade `user_addresses` + auto logout |
+| **PRV-09** | Notification preferences panel | SHOULD | `86c9uq8p6` | 6 toggles → `users.notificationPrefs` JSON |
 | **PRV-06** | Membership request form (anonymous) | SHOULD | — | Public form |
 | **PRV-07** | Contact form (anonymous) | SHOULD | — | Public form |
 
@@ -353,12 +357,12 @@ Why it was rejected:
 
 **Shipped 2026-07-20 (this branch, capture scope):** `user_fiscal_profiles` collection (0..1 via unique FK) + `tenants.fiscalDataEnabled`; server-side NIF/NIE/CIF checksum hook `validate_fiscal_profile.pb.js` (client-side `nifValidator`, DNI/NIE/CIF with checksum, 18 tests, is UX only — the hook is the actual control, rejecting invalid checksums with a 400 on create/update); the opt-in "Dades fiscals" profile section behind the `canMatch` tenant guard, with sidenav entry + ca/es/en i18n. Also from the earlier redesign on this branch: the address book reverted to its plain shape, and the checkout picker fixed (no type filter; resolves on initial load without clobbering an existing selection). `single_default_address.pb.js` stays on the single-`default` constraint.
 
-**Form-vs-schema constraint audit (2026-07-21).** All nine PocketBase-backed eco-store form configs were compared field-by-field against `pb_schema.json`. Two findings were fixed on this branch (see the `[2026-07-21]` CHANGELOG entry): `city` min 5 → 2 on both collections and both forms plus the address book's client/schema mismatch (2/25 vs 5/50 → 2/50 everywhere), and `user_addresses.address` maxLength 50 → 100 against an unbounded schema (Formly binds `maxLength` natively, so longer addresses were truncated silently while typing). **Two confirmed findings remain unfixed and need their own BUG tickets (ClickUp unavailable this session):**
+**Form-vs-schema constraint audit (2026-07-21).** All nine PocketBase-backed eco-store form configs were compared field-by-field against `pb_schema.json`. Two findings were fixed on this branch (see the `[2026-07-21]` CHANGELOG entry): `city` min 5 → 2 on both collections and both forms plus the address book's client/schema mismatch (2/25 vs 5/50 → 2/50 everywhere), and `user_addresses.address` maxLength 50 → 100 against an unbounded schema (Formly binds `maxLength` natively, so longer addresses were truncated silently while typing). **Two confirmed findings remain unfixed → BUG-015 (`123kjkdpxvy`) and BUG-016 (`123kjkdpxvz`):**
 
-- `user_addresses.phone` — the shared `phoneValidator` is `/^[6-9]\d{8}$/`, so `+34600123456` and the invoice-style `600 123 456` are rejected client-side even though the schema has no pattern and accepts both (min 9, max 14). Non-Spanish mobiles are unusable, so such a member can never create a delivery address. Note the fix is not regex-only: `props.maxLength: 15` signals intent to allow `+34 600 123 456`, which the schema's max of 14 would reject — so either the value is normalized (spaces stripped) before persisting, or the schema max moves in step. `phoneValidator` is shared with llecoop, so the change needs a cross-app pass.
-- `users.password` (profile "Accés i seguretat", and the reset-password form) — `input-password-with-visibility-type.component.html` binds `[maxLength]="props.maxLength || 25"`, so a longer password manager value is **silently truncated by the browser** before the control ever sees it; no validator fires and the change submits at 25 characters, locking the member out at next login. The same hardcoded fallback caps `oldPassword`, which declares no maxLength, so a member whose current password exceeds 25 characters can never change it. The schema has no upper bound. Shared component — affects llecoop too.
+- **BUG-015.** `user_addresses.phone` — the shared `phoneValidator` is `/^[6-9]\d{8}$/`, so `+34600123456` and the invoice-style `600 123 456` are rejected client-side even though the schema has no pattern and accepts both (min 9, max 14). Non-Spanish mobiles are unusable, so such a member can never create a delivery address. The same validator blocks the basic-profile `users.phone`, which the form requires and the schema leaves unbounded. Note the fix is not regex-only: `props.maxLength: 15` signals intent to allow `+34 600 123 456`, which the schema's max of 14 would reject — so either the value is normalized (spaces stripped) before persisting, or the schema max moves in step. `phoneValidator` is shared with llecoop, so the change needs a cross-app pass.
+- **BUG-016.** `users.password` (profile "Accés i seguretat", and the reset-password form) — `input-password-with-visibility-type.component.html` binds `[maxLength]="props.maxLength || 25"`, so a longer password-manager value is **silently truncated by the browser** before the control ever sees it; no validator fires. _Corrected 2026-11-07:_ register, login, reset and `newPassword` all set `maxLength: 25`, so the truncation is consistent and does not lock members out in general (this note first said the change locks the member out at next login). The real risks: a password over 25 characters set outside the store forms (PocketBase admin, llecoop) cannot be typed at login; `oldPassword` and confirm-email-change declare no maxLength and get the 25 fallback; and raising the cap needs a transition plan, because a member who pasted a longer password today stored only its first 25 characters. The schema has no upper bound. Shared component — affects llecoop too.
 
-**Known follow-up (needs a BUG ticket — ClickUp unavailable this session):** the `x-bypass-hooks` header escape hatch is inert in `normalize_user_name.pb.js` and `on_create_order.pb.js` — both read `e.httpContext.request()`, which does not exist on `RecordRequestEvent` in PocketBase 0.36.7 (confirmed empirically: `Object.keys(e)` has no `httpContext` key). The actual request lives at `e.requestEvent.request`, the path `validate_fiscal_profile.pb.js` uses (see its inline comment for the reproduction). **Correcting the path alone is not the fix, and would open an order-total tampering vector:** `on_create_order.pb.js` recomputes `subtotal`/`tax`/`shipping`/`total` from database prices (lines 70-182) as checkout's anti-price-tampering control, and its bypass check is gated on the header alone with no auth check — so a path-only correction would let any authenticated member send `x-bypass-hooks: true`, skip total recomputation and set their own order total. Today only the broken `e.httpContext` read keeps that control on. The fix must gate the bypass on superuser authentication (`e.requestEvent.hasSuperuserAuth()`, verified on 0.36.7 and already adopted by `validate_fiscal_profile.pb.js`); the seed/staging scripts that send the header (`seed-local.js`, `seed.ts`, `push-to-staging.ts`) authenticate as superuser first, so the gate preserves them. The two sibling hooks were left untouched as out of scope for PRV-04d.
+**Known follow-up → BUG-012 (`123kjkdp22x`):** the `x-bypass-hooks` header escape hatch is inert in `normalize_user_name.pb.js` and `on_create_order.pb.js` — both read `e.httpContext.request()`, which does not exist on `RecordRequestEvent` in PocketBase 0.36.7 (confirmed empirically: `Object.keys(e)` has no `httpContext` key). The actual request lives at `e.requestEvent.request`, the path `validate_fiscal_profile.pb.js` uses (see its inline comment for the reproduction). **Correcting the path alone is not the fix, and would open an order-total tampering vector:** `on_create_order.pb.js` recomputes `subtotal`/`tax`/`shipping`/`total` from database prices (lines 70-182) as checkout's anti-price-tampering control, and its bypass check is gated on the header alone with no auth check — so a path-only correction would let any authenticated member send `x-bypass-hooks: true`, skip total recomputation and set their own order total. Today only the broken `e.httpContext` read keeps that control on. The fix must gate the bypass on superuser authentication (`e.requestEvent.hasSuperuserAuth()`, verified on 0.36.7 and already adopted by `validate_fiscal_profile.pb.js`); the seed/staging scripts that send the header (`seed-local.js`, `seed.ts`, `push-to-staging.ts`) authenticate as superuser first, so the gate preserves them. The two sibling hooks were left untouched as out of scope for PRV-04d.
 
 ---
 
@@ -372,7 +376,7 @@ TRL-01 (schema-ready), TRL-02 (header badge), TRL-05 (API rules backend), TRL-06
 
 | ID | Description | Priority | Notes |
 | --- | --- | --- | --- |
-| **TRL-03** | Conversion CTA in `/perfil` | MUST | Spec in earlier TASKS version; ClickUp `86c90qt5e` |
+| **TRL-03** | Conversion CTA in `/perfil` | MUST | Spec in earlier TASKS version; ClickUp `86c9uq8q0` |
 | **TRL-04** | Frontend checkout block + upsell dialog | MUST | UX mirror of TRL-05 |
 | **TRL-07** | Admin-approved conversion (eco-admin) | MUST | Future |
 | **TRL-08** | Trial expiry reminder email | SHOULD | New scheduled hook |
@@ -388,9 +392,9 @@ Schema ready. ClickUp has both cycle and 24/7 mode tasks.
 | --- | --- | --- | --- | --- |
 | **PST-01a** | Cancel — cycle mode | SHOULD | 📋 | — |
 | **PST-01b** | Cancel — 24/7 mode | SHOULD | 📋 | — |
-| **PST-02** | Modify items in active order | SHOULD | 📋 | `86c9ea1wg` (modify order subtask of EST-03) + `86c9dpjmz` (modify for orderWindow) |
+| **PST-02** | Modify items in active order | SHOULD | 📋 | `86c9uq9u6` (modify order subtask of EST-03) + `86c9dpjmz` (modify for orderWindow) |
 | **PST-03** | Return / exchange request | COULD | ⏸️ | — |
-| **PST-04** _(new)_ | Order status transition on `order_cycles` window change | SHOULD | 📋 | `86c9e9964` — backend hook |
+| **PST-04** _(new)_ | Order status transition on `order_cycles` window change | SHOULD | 📋 | `86c9uq9nw` — backend hook |
 
 ---
 
@@ -398,7 +402,7 @@ Schema ready. ClickUp has both cycle and 24/7 mode tasks.
 
 | ID         | Description              | Priority | Status          |
 | ---------- | ------------------------ | -------- | --------------- |
-| **VAL-01** | Publish rating + comment | SHOULD   | 🔄 — needs Q-13 |
+| **VAL-01** | Publish rating + comment | SHOULD   | 🧪 — needs Q-13 |
 | **VAL-02** | Read reviews             | SHOULD   | ✅              |
 | **VAL-03** | Reactions to reviews     | COULD    | ⏸️ (Q-01)       |
 
@@ -433,10 +437,10 @@ Schema ready. ClickUp has both cycle and 24/7 mode tasks.
 | --- | --- | --- | --- | --- |
 | **EST-01** | Paginated history | MUST | ✅ | `libs/eco-store/orders/feature/list` |
 | **EST-02** | Filter & sort (status + product name) | MUST | ✅ |  |
-| **EST-03** | Order detail page | MUST | ✅ | `libs/eco-store/orders/feature/detail` · CU `86c8cjgma` |
-| **EST-04** | PDF export | SHOULD | 📋 | Q-08 · CU subtask `86c8tqhq4` |
+| **EST-03** | Order detail page | MUST | ✅ | `libs/eco-store/orders/feature/detail` · CU `86c9uq8gh` |
+| **EST-04** | PDF export | SHOULD | 📋 | Q-08 · CU subtask `86c9uq9ye` |
 | **EST-05** | Personal consumption stats | COULD | ⏸️ |  |
-| **EST-06** _(new)_ | Per-order statistics calculation | SHOULD | 📋 | `86c9e8zxj` — likely a hook |
+| **EST-06** _(new)_ | Per-order statistics calculation | SHOULD | 📋 | `86c9uq9wy` — likely a hook |
 
 ---
 
@@ -447,10 +451,10 @@ Schema ready. ClickUp has both cycle and 24/7 mode tasks.
 | **UI-01** | Dark/light/system mode | SHOULD | ✅ | — |
 | **UI-02** | Language selector | MUST | ✅ | — |
 | **UI-03** | Per-tenant color theme | COULD | 📋 | — |
-| **UI-04** _(new)_ | Footer view | MUST | 🔄 | `86c8cjgg9` |
-| **LGL-01** | Legal pages | MUST | 📋 | `86c8cjgm2` |
-| **LGL-02** | Cookie consent banner | MUST | 📋 (Q-10) | `86c8cjgm3` |
-| **SEO-01** _(new)_ | Dynamic SEO titles per page | SHOULD | 📋 | `86c9autmu` — high priority |
+| **UI-04** _(new)_ | Footer view — the `eco-footer` shell exists (tenant name/logo, credit, ©); legal links (LGL-01), contact and tenant social links are missing | MUST | 📋 | `86c9uq9pg` |
+| **LGL-01** | Legal pages | MUST | 📋 | `86c9uq9q1` |
+| **LGL-02** | Cookie consent banner | MUST | 📋 (Q-10) | `86c9uq9qt` |
+| **SEO-01** _(new)_ | Dynamic SEO titles per page | SHOULD | 📋 | `86c9uq9r5` — high priority |
 
 ---
 
@@ -458,7 +462,7 @@ Schema ready. ClickUp has both cycle and 24/7 mode tasks.
 
 | ID         | Description      | Priority | Status | ClickUp     |
 | ---------- | ---------------- | -------- | ------ | ----------- |
-| **HLP-01** | AI chatbot       | COULD    | ⏸️     | `86c8cjgkk` |
+| **HLP-01** | AI chatbot       | COULD    | ⏸️     | `86c9uq9za` |
 | **HLP-02** | Direct messaging | COULD    | ⏸️     | —           |
 
 ---
@@ -535,23 +539,25 @@ All `COULD`, pending discovery.
 | **SEC-06** ✅ | XSS: escape dynamic values in **llecoop** list-facade `.confirm()` dialog **messages** — 6 facades (category/order-list ×3/product/user + `user-feature-table.config`) interpolate record data (names, user **emails**) into the message string; `SharedConfirmFeatureComponent` passes it through `translate.instant()` + `bypassSecurityTrustHtml`, and SEC-03 only escaped the _params_, never the message. A registered user controls their own email → executes in the admin's session — HIGH. **Done 2026-07-04** — `escapeHtml` (SEC-01) at all 7 call sites, `String()` where `name` is `string \| LocalizedFields`; escaped at call sites (the message param intentionally accepts trusted HTML). 7 specs: `<img onerror>` escaped + delete/setAdmin gated on confirm. Adversarial sweep: no other unescaped `.confirm()` message; residuals routed to SEC-07 (SafeHtml `translate.instant` TypeError) + SEC-08 (re-rated MEDIUM). Harvest ref Jules #1207 (dupes #1204/#1209 closed; #1207 closed 2026-07-05 post-merge) | MUST | `86cajqprd` |
 | **SEC-07** _(new)_ | XSS: `SharedConfirmFeatureComponent` non-string translate params (SEC-03 residual) — the `typeof value === 'string'` guard lets object/array params through unescaped; ngx-translate stringifies them into the `bypassSecurityTrustHtml` output. Fix: `escapeHtml(String(value ?? ''))` for all params, drop the guard; spec with an array-wrapped payload — MEDIUM. **Scope extended by SEC-06 review (2026-07-04):** the same component calls `translate.instant(this.data.message)` with no type check — a `SafeHtml` message throws `TypeError: key.split is not a function` (verified vs ngx-translate 17 + empirically), breaking the 3 admin dialogs that pass `bypassSecurityTrustHtml` messages ('Iniciar nova comanda', activate/pause, cancel); introduced in `cebf0ec1`, not SEC-03. Fix: skip `instant()` for non-string messages. Harvest ref **promoted #1218 → #1262** by round-9 triage: #1218 (`+1/-4`) implements only the params half and would have shipped the task incomplete; #1262 covers both halves with a 40-line spec. Dupes closed: #1218/#1227/#1232/#1239/#1243/#1251/#1253/#1271 (round 7: #1212). #1251/#1253 also mixed in SEC-08's config files — implement those there. **Round 11:** #1262 stays (reword its inaccurate "ICU" comment on harvest); 11 closed — dupes #1359/#1455/#1478/#1486/#1489/#1500/#1504/#1527, plus #1441/#1476/#1498, which re-wrap a `SafeHtml` message in `bypassSecurityTrustHtml` and render the "SafeValue must use [property]=binding" text. Don't trust dupe specs built on fake `SafeHtml` objects | SHOULD | `86cajqprk` |
 | **SEC-08** _(new)_ | Escape `LlecoopProductBaseUnitTextPipe` output before `bypassSecurityTrustHtml` in `user-order-detail-table-form.config:84` + `user-order-feature-resume-table.config:36→48` (SEC-05 residual — its spec listed `${unit}` as a sink but the shipped fix left the pipe output raw; pipe interpolates `unit.base` unvalidated, `number` typing is compile-time only). ~~LOW~~ **Re-rated MEDIUM by SEC-06 review (2026-07-04)**: verified end-to-end — the resume sink renders order-cart records **any authenticated user can write** via direct Firestore call (rules validate no field types) and admins can read any order → stored XSS in admin context. Fix at both call sites, NOT inside the pipe (also used as a plain-text binding in `ui-user-order-product-card` — would double-encode). Harvest ref **promoted #1220 → #1259** by round-9 triage: identical config changes at both sinks but adds the two spec files (+58/+55) the acceptance criteria require (ignore its stray `sentinel.md`). Dupes closed: #1220/#1235/#1236/#1248/#1254/#1257/#1264/#1269 (round 7: #1224); #1235/#1248/#1269 patch only one of the two sinks. **Round 11:** #1259 stays; 23 closed — 20 identical copies, #1510/#1511 (out-of-scope `DEFAULT_TABLE_CONFIG` hoist), #1519 (escapes inside the pipe → double-encodes `ui-user-order-product-card.component.html:31`). No other unescaped llecoop sink found | SHOULD | `86cajqprw` |
+| **SEC-09** _(new)_ | `orders` rules (2026-10-31 audit): a member can create a `PAID` order or one for another tenant, and can edit their own `PENDING` orders. Fix: append `&& tenant = @request.auth.tenant && @request.body.status = "PENDING" && @request.body.paymentStatus = "UNPAID"` to `orders.createRule` and drop the self branch of `orders.updateRule`. Covers eco-admin B-01 (REQUIREMENTS §5.3); touches B-33. Branch `fix/eco-store-orders-rules` | MUST | `123kjkdp22u` |
+| **SEC-10** _(new)_ | Pin ownership and platform fields on update rules (2026-10-31 audit): without them a member can move a record to another user or tenant. Add `@request.body.<field>:changed = false` on the non-`GLOBAL_ADMIN` branches for `user_addresses.user`, `user_fiscal_profiles.user`, `carts.user`, `carts.tenant`, `products.tenant`, `product_categories.tenant`, `tags.client`, `tenant_addresses.tenant`, `orders.tenant`, `orders.user` and `tenants.active` (ATNT-03). The `tenant_addresses` pin test waits on BUG-011. Refs B-07, ATNT-03, ACFG-01/02. Branch `fix/eco-store-ownership-pins` | SHOULD | `123kjkdp22v` |
 
 ### Ops / Release
 
 | ID | Description | Priority | ClickUp |
 | --- | --- | --- | --- |
-| **OPS-01** _(new)_ | Setup production deploy pipeline | MUST | `86c8cjgm0` |
+| **OPS-01** _(new)_ | Setup production deploy pipeline | MUST | `86c9uq9rd` |
 | **OPS-02** ✅ | Grant `pull-requests: write` to `claude-code-review.yml` workflow | **Urgent** | `86c9y6xyb` |
 | **OPS-03** ✅ | Migrate PocketBase staging hooks deploy (`pocketbase-schema.yml`) from FTP to SFTP | **Urgent** | `123kjkdp4ht` |
-| **META-03** _(new)_ | Fix repo coverage badge update | Low | `86c8tqjma` |
-| **META-04** _(new)_ | Add a SKILL to format readme files | Low | `86c8cjgh6` |
+| **META-03** _(new)_ | Fix repo coverage badge update | Low | `86c9uqa1j` |
+| **META-04** _(new)_ | Add a SKILL to format readme files | Low | `86c9uqa1n` |
 | **META-05** ✅ | Phase 1: read-only `/sync-eco-store-tasks` diff command (ClickUp ↔ TASKS.md automation foundation) | Low | `86c9uwmzf` |
 
 ### Research / Marketing (not dev)
 
 | ID | Description | Notes |
 | --- | --- | --- |
-| **MKT-research-01** | Estudi de cooperatives de consum (competitors) | CU `86c8hb9ef` — discovery, no sprint allocation |
+| **MKT-research-01** | Estudi de cooperatives de consum (competitors) | CU `86c9uqa10` — discovery, no sprint allocation |
 
 ### Multi-tenancy
 
@@ -590,11 +596,11 @@ All `COULD`, pending discovery.
 
 ### META-03 — Coverage badge fix
 
-ClickUp `86c8tqjma`. Workflow at `.github/workflows/ci.yml` writes to a Gist; badge endpoint not updating. Investigate.
+ClickUp `86c9uqa1j`. Workflow at `.github/workflows/ci.yml` writes to a Gist; badge endpoint not updating. Investigate.
 
 ### META-04 — Format readme SKILL
 
-ClickUp `86c8cjgh6`. Internal tooling — add a Claude Code skill at `.claude/skills/format-readme/` for consistent README formatting across libs.
+ClickUp `86c9uqa1n`. Internal tooling — add a Claude Code skill at `.claude/skills/format-readme/` for consistent README formatting across libs.
 
 ### META-05 — ClickUp ↔ TASKS.md automation (Phase 1 of 4) ✅ Done (2026-05-17)
 
@@ -608,6 +614,7 @@ ClickUp `86c9uwmzf`. Internal tooling — first slice of a multi-phase workflow 
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 0.54 | 2026-11-07 | **META-08** (`123kjkdpqjr`) — doc-only maintenance after the META-07 baseline. 25 stale ClickUp IDs re-pointed to the re-created `86c9uq…` tickets (history rows untouched). PRV-05b-A/B duplicate open rows removed and condensed into PRV Done. Rows added for the five 2026-10-31 audit tickets — **PRV-05b-C**, **SEC-09**, **SEC-10**, **BUG-011**, **BUG-012** — and for **BUG-015** (phone validator) and **BUG-016** (password 25-char cap), which give the two unfixed 2026-07-21 audit findings their tickets. Status drift fixed: PRV-08 and PRV-09 🔄 → 📋 (moved to Pending, no branch or commits; ClickUp has PRV-08 in to do, PRV-09 in backlog), UI-04 🔄 → 📋 (footer shell only; ClickUp backlog), VAL-01 🔄 → 🧪 (needs Q-13). The `x-bypass-hooks` note now points to BUG-012, and the password note's lockout claim is corrected. |
 | 0.53 | 2026-11-01 | **OPS-03** (`123kjkdp4ht`, Urgent) — PockHost retired FTP, so the `pb_hooks` deploy step in `.github/workflows/pocketbase-schema.yml` moved from `SamKirkland/FTP-Deploy-Action` to `wlixcc/SFTP-Deploy-Action@v1.2.6` (port 2222, key auth, `sftp_only`) in #1531. Follow-up #1532 passes the key as a YAML block scalar: `gh secret set` strips the trailing newline from stdin, and without it OpenSSH rejects the key ("error in libcrypto"). It also warns against `delete_remote_files: true`, which would wipe PockHost's own `_ph_*.js` files. Verified by runs 41294253242 (develop) and 41296406123 (branch). `POCKETBASE_STAGING_SFTP_PASSWORD` removed. **PRV-05b-B** flipped to ✅ in Current focus (merged in #1530; ClickUp complete). |
 | 0.52 | 2026-11-01 | **Table repair (rendering only, no task changes)** — row 0.39 (2026-07-21) carried an unescaped double pipe inside a code span, which split this version-history table into 5 columns, so GitHub rendered the whole history as one paragraph. Escaped, and the mangled text restored. Same fix in BACKLOG.md, which also had a blank line after row 7.35 (since v0.32) detaching rows 7.36–7.53 from the Phase-7 table. Versions in lockstep. |
 | 0.51 | 2026-11-01 | **Jules draft-PR triage (round 11)** — 185 new drafts (#1344–#1528) + 14 open earlier refs = 199 reviewed, each cluster verified on `develop`. **20 kept** as harvest refs, **179 closed** (incl. superseded refs #1206/#1312/#1314/#1316/#1333). Five new tasks: **BUG-013** (`123kjkdp4uy`) `areObjectEntriesEqual` key check, **BUG-014** (`123kjkdp4wy`) llecoop has no translation files (blocks i18n-key moves in shared libs), **A11Y-019** (`123kjkdp4wv`), **A11Y-020** (`123kjkdp4ww`), **A11Y-021** (`123kjkdp4wx`). Refs promoted: BUG-008 #1312→#1348, A11Y-013 #1206→#1435, A11Y-016 #1314→#1357, A11Y-018 #1316→#1373, TECH-16 #1333→#1508; first refs TECH-17 #1398, TECH-15 +#1448. Scope grown on A11Y-012/016/017/018. Durable rebuttals: MatIcon default `aria-hidden` (~25 no-op drafts), dead nasa-images `doAction` (25 tabnabbing drafts), `withComputed` already memoized, `[aria-label]` works in Ng21. |
