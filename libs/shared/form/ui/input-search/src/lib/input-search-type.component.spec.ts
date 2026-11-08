@@ -159,6 +159,23 @@ describe('InputSearchTypeComponent', () => {
     });
   });
 
+  describe('A11Y-014: clear button never disabled when control is invalid', () => {
+    it('should keep the clear button enabled when formStatus is INVALID and buttonEnabledIfValue is false', () => {
+      component.field.props!.resetSearch = true;
+      component.field.props!.buttonEnabledIfValue = false;
+      component.formControl.setValue('a');
+      component.formControl.setErrors({ minlength: true });
+      component['syncControl']();
+      fixture.detectChanges();
+
+      const clearButton = fixture.nativeElement.querySelector('.reset-search-button');
+
+      expect(component['formStatus']()).toBe('INVALID');
+      expect(clearButton).toBeTruthy();
+      expect(clearButton.disabled).toBe(false);
+    });
+  });
+
   describe('A11Y-010: keyboard support and focus management', () => {
     it('should trigger a full search on Enter', () => {
       const onSearchSpy = vi.fn();
