@@ -32,4 +32,26 @@ describe('EcoStoreProductPriceComponent', () => {
     fixture.detectChanges();
     expect(component['containerClass']()).toBe('flex space-y-1');
   });
+
+  it('should correctly format and extract priceParts via computed signal', () => {
+    fixture.componentRef.setInput('price', 15.99);
+    fixture.detectChanges();
+
+    const parts = component['priceParts']();
+
+    expect(parts.symbol).toBe('€');
+    expect(parts.integer).toBe('15');
+    expect(parts.decimal).toBe('99');
+  });
+
+  it('should provide fallback decimal when price has no decimals', () => {
+    fixture.componentRef.setInput('price', 10);
+    fixture.detectChanges();
+
+    const parts = component['priceParts']();
+
+    expect(parts.symbol).toBe('€');
+    expect(parts.integer).toBe('10');
+    expect(parts.decimal).toBe('00');
+  });
 });
