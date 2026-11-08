@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-04] - Shared: A11Y-014 — clear button in `input-search` remains enabled on invalid input
+
+### Fixed
+
+- **`libs/shared/form/ui/input-search` (`InputSearchTypeComponent`)**: The clear button in `input-search` was disabled whenever `formStatus()` was `INVALID` and `buttonEnabledIfValue` was not truthy (`[disabled]="formStatus() === 'INVALID' && !props.buttonEnabledIfValue"`). Because the button is already conditional on `props.resetSearch && formControl.value` (i.e. it only renders when there is a value to clear), being disabled on an invalid control blocked users from clearing invalid input using the button (for example in `eco-store-orders-filter-form.config.ts`, where `minLength: 2` makes typing 1 character invalidate the control). Removed the `[disabled]` binding on the clear button while keeping the search button's `isDisabled()` gate intact. Added a unit test asserting the clear button remains enabled when `formStatus` is `INVALID` (15 tests) (A11Y-014, [#86cazpfv6](https://app.clickup.com/t/86cazpfv6)).
+
 ## [2026-11-04] - Workspace: generalize the TASKS.md ↔ ClickUp sync across task homes (META-07)
 
 ### Added
