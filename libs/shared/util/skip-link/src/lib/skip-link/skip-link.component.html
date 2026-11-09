@@ -1,9 +1,6 @@
-<a
-  tabindex="0"
-  role="button"
-  class="bg-surface sr-only absolute top-[5px] left-[5px] z-5000 cursor-pointer rounded-lg text-black opacity-80 focus:not-sr-only focus:absolute"
-  (click)="skipToMainContent($event)"
-  (keydown.enter)="skipToMainContent($event)"
-  (keydown.space)="skipToMainContent($event)"
-  >Anar al contingut principal</a
->
+<button
+  type="button"
+  class="focus:bg-surface focus-visible:ring-primary sr-only cursor-pointer focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-5000 focus:rounded-md focus:p-4 focus:text-black focus:shadow-lg focus-visible:ring-2 focus-visible:outline-none"
+  (click)="skipToMainContent($event)">
+  Anar al contingut principal
+</button>
