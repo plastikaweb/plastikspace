@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-04] - Eco Store: optimize product price component formatter and style churn (TECH-16)
+
+### Changed
+
+- **`EcoStoreProductPriceComponent`**: hoisted `PRICE_FORMATTER` (`Intl.NumberFormat('ca-ES', ...)`) to module scope and refactored template-evaluated methods (`getPriceParts`, `containerClass`, `contentClass`, `unityTypeClass`, `priceContainerClass`, `priceClass`, `chipClass`) into memoized `readonly computed()` signals to eliminate formatter re-instantiation and string allocation churn across change detection passes (TECH-16, [#123kjkdgyjm](https://app.clickup.com/t/123kjkdgyjm)).
+
 ## [2026-11-04] - Workspace: generalize the TASKS.md ↔ ClickUp sync across task homes (META-07)
 
 ### Added
