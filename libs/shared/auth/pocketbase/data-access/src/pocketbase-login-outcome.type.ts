@@ -53,4 +53,10 @@ export interface PocketBaseLoginOptions {
    * Roles allowed to open a session in the calling app. When omitted every role is accepted.
    */
   allowedRoles?: readonly PocketBaseUserRoles[];
+  /**
+   * Whether `login` shows the `auth.error.login` toast when it resolves `failed`. Defaults to true.
+   * A screen that renders its own inline error passes false. Only `login` reads it: checking the
+   * emailed code never shows a toast.
+   */
+  notifyOnFailure?: boolean;
 }

@@ -1,7 +1,8 @@
 import { signal } from '@angular/core';
+import { PocketBaseUser } from '@plastik/core/entities';
 
 export const mockPocketBaseUserProfileStore = {
-  user: signal(null),
+  user: signal<PocketBaseUser | null>(null),
   isAuthenticated: signal(false),
   isLoading: signal(false),
   addresses: signal([]),

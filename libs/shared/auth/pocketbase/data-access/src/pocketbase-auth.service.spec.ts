@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
 import { mockPocketBase } from '@plastik/core/api-pocketbase/testing';
 import { POCKETBASE_ENVIRONMENT } from '@plastik/core/environments';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { PocketBaseAuthService } from './pocketbase-auth.service';
 
 describe('PocketBaseAuthService', () => {
@@ -93,5 +93,81 @@ describe('PocketBaseAuthService', () => {
     expect(service.authModel).toEqual({ id: '123', email: 'test@test.com' });
     mockPocketBase.authStore.record = null as unknown as Record<string, unknown>;
     expect(service.authModel).toBeNull();
+  });
+});
+
+describe('PocketBaseAuthService — loggedIn', () => {
+  /**
+   * Build the service around an auth store that can change and say so, as the SDK one does.
+   * @param {boolean} isValid Whether the session is valid when the service is created.
+   * @returns {object} The service, the mutable session state and the registered change listeners.
+   */
+  function setup(isValid: boolean) {
+    const session = { isValid };
+    const listeners: (() => void)[] = [];
+    const unsubscribe = vi.fn();
+
+    TestBed.configureTestingModule({
+      providers: [
+        PocketBaseAuthService,
+        {
+          provide: POCKETBASE_INSTANCE,
+          useValue: {
+            authStore: {
+              get isValid() {
+                return session.isValid;
+              },
+              onChange: (listener: () => void) => {
+                listeners.push(listener);
+
+                return unsubscribe;
+              },
+            },
+          },
+        },
+      ],
+    });
+
+    return { service: TestBed.inject(PocketBaseAuthService), session, listeners, unsubscribe };
+  }
+
+  it('starts from the session the SDK holds', () => {
+    expect(setup(true).service.loggedIn()).toBe(true);
+  });
+
+  it('follows the auth store when it reports a change', () => {
+    const { service, session, listeners } = setup(false);
+
+    expect(service.loggedIn()).toBe(false);
+
+    session.isValid = true;
+    listeners.forEach(listener => listener());
+
+    expect(service.loggedIn()).toBe(true);
+
+    session.isValid = false;
+    listeners.forEach(listener => listener());
+
+    expect(service.loggedIn()).toBe(false);
+  });
+
+  it('refreshLoggedIn reads the session again when nothing reported a change', () => {
+    const { service, session } = setup(true);
+
+    expect(service.loggedIn()).toBe(true);
+
+    session.isValid = false;
+
+    expect(service.loggedIn()).toBe(true);
+    expect(service.refreshLoggedIn()).toBe(false);
+    expect(service.loggedIn()).toBe(false);
+  });
+
+  it('stops listening when it is destroyed', () => {
+    const { unsubscribe } = setup(false);
+
+    TestBed.resetTestingModule();
+
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
   });
 });

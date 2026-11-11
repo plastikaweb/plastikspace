@@ -7,6 +7,78 @@ import { PocketBaseUserFiscalProfileService } from '@plastik/shared/pocketbase-u
 import { of, throwError } from 'rxjs';
 import { pocketBaseUserProfileStore } from './pocketbase-user-profile.store';
 
+/**
+ * Stands in for `authStore.onChange` where a test never changes the session.
+ * @returns {() => void} The unsubscribe callback the SDK would hand back.
+ */
+const onChange = (): (() => void) => () => undefined;
+
+describe('pocketBaseUserProfileStore — checkAuth', () => {
+  /**
+   * Configure the testing module around an auth store the test can change afterwards.
+   * @param {object} authStore The mocked PocketBase authStore state.
+   * @param {boolean} authStore.isValid Whether the mocked session is valid.
+   * @param {unknown} authStore.record The mocked authenticated user record.
+   * @returns {object} The injected user profile store instance.
+   */
+  function setup(authStore: { isValid: boolean; record: unknown }) {
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: POCKETBASE_INSTANCE,
+          useValue: {
+            collection: () => ({}),
+            authStore: {
+              onChange,
+              get isValid() {
+                return authStore.isValid;
+              },
+              get record() {
+                return authStore.record;
+              },
+            },
+          },
+        },
+        { provide: StoreNotificationService, useValue: { create: vi.fn() } },
+        { provide: PocketBaseUserAddressService, useValue: {} },
+        { provide: PocketBaseUserFiscalProfileService, useValue: {} },
+      ],
+    });
+
+    return TestBed.inject(pocketBaseUserProfileStore);
+  }
+
+  it('sees a session that appeared after the store first looked', () => {
+    const authStore: { isValid: boolean; record: unknown } = { isValid: false, record: null };
+    const store = setup(authStore);
+
+    expect(store.isAuthenticated()).toBe(false);
+
+    authStore.isValid = true;
+    authStore.record = { id: 'u1', role: 'TENANT_ADMIN' };
+    store.checkAuth();
+
+    expect(store.isAuthenticated()).toBe(true);
+    expect(store.user()?.id).toBe('u1');
+  });
+
+  it('sees that a session is gone, with no change event (an expired token)', () => {
+    const authStore: { isValid: boolean; record: unknown } = {
+      isValid: true,
+      record: { id: 'u1', role: 'TENANT_ADMIN' },
+    };
+    const store = setup(authStore);
+
+    expect(store.isAuthenticated()).toBe(true);
+
+    authStore.isValid = false;
+    store.checkAuth();
+
+    expect(store.isAuthenticated()).toBe(false);
+    expect(store.user()).toBeNull();
+  });
+});
+
 describe('pocketBaseUserProfileStore \u2014 email change', () => {
   const requestEmailChange = vi.fn();
   const confirmEmailChange = vi.fn();
@@ -26,7 +98,7 @@ describe('pocketBaseUserProfileStore \u2014 email change', () => {
       providers: [
         {
           provide: POCKETBASE_INSTANCE,
-          useValue: { collection: () => usersCollection, authStore },
+          useValue: { collection: () => usersCollection, authStore: { onChange, ...authStore } },
         },
         { provide: StoreNotificationService, useValue: { create: createNotification } },
         { provide: PocketBaseUserAddressService, useValue: {} },
@@ -141,7 +213,7 @@ describe('pocketBaseUserProfileStore — password change', () => {
       providers: [
         {
           provide: POCKETBASE_INSTANCE,
-          useValue: { collection: () => usersCollection, authStore },
+          useValue: { collection: () => usersCollection, authStore: { onChange, ...authStore } },
         },
         { provide: StoreNotificationService, useValue: { create: createNotification } },
         { provide: PocketBaseUserAddressService, useValue: {} },
@@ -243,7 +315,7 @@ describe('pocketBaseUserProfileStore — fiscal profile', () => {
       providers: [
         {
           provide: POCKETBASE_INSTANCE,
-          useValue: { collection: () => ({}), authStore },
+          useValue: { collection: () => ({}), authStore: { onChange, ...authStore } },
         },
         { provide: StoreNotificationService, useValue: { create: createNotification } },
         { provide: PocketBaseUserAddressService, useValue: {} },
@@ -336,7 +408,10 @@ describe('pocketBaseUserProfileStore — login and roles', () => {
       providers: [
         {
           provide: POCKETBASE_INSTANCE,
-          useValue: { collection: () => usersCollection, authStore: { ...authStore, clear } },
+          useValue: {
+            collection: () => usersCollection,
+            authStore: { onChange, ...authStore, clear },
+          },
         },
         { provide: StoreNotificationService, useValue: { create: createNotification } },
         { provide: PocketBaseUserAddressService, useValue: {} },
@@ -427,6 +502,16 @@ describe('pocketBaseUserProfileStore — login and roles', () => {
     expect(store.isLoading()).toBe(false);
     expect(createNotification).toHaveBeenCalledWith('auth.error.login', 'ERROR');
   });
+
+  it('login resolves "failed" without a toast when the caller opts out of it', async () => {
+    authWithPassword.mockRejectedValueOnce({ status: 400 });
+    const store = setup();
+
+    expect(await store.login(credentials, { notifyOnFailure: false })).toBe('failed');
+    expect(store.isAuthenticated()).toBe(false);
+    expect(store.isLoading()).toBe(false);
+    expect(createNotification).not.toHaveBeenCalled();
+  });
 });
 
 describe('pocketBaseUserProfileStore — second factor', () => {
@@ -448,7 +533,10 @@ describe('pocketBaseUserProfileStore — second factor', () => {
       providers: [
         {
           provide: POCKETBASE_INSTANCE,
-          useValue: { collection: () => usersCollection, authStore: { isValid: false, clear } },
+          useValue: {
+            collection: () => usersCollection,
+            authStore: { onChange, isValid: false, clear },
+          },
         },
         { provide: StoreNotificationService, useValue: { create: createNotification } },
         { provide: PocketBaseUserAddressService, useValue: {} },

@@ -2,12 +2,85 @@
 <html lang="ca">
   <head>
     <meta charset="utf-8" />
-    <title>eco-admin</title>
+    <title>Eco Admin</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      rel="preload"
+      href="/fonts/manrope/manrope.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous" />
+    <style>
+      @font-face {
+        font-family: 'Manrope';
+        src: url('/fonts/manrope/manrope.woff2') format('woff2');
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+      }
+
+      :root {
+        color-scheme: light dark;
+      }
+
+      html.dark {
+        color-scheme: dark;
+      }
+
+      html.light {
+        color-scheme: light;
+      }
+    </style>
+
+    <!-- Applies the stored theme before the first paint, so a dark-theme user never sees a light flash. -->
+    <script>
+      (function () {
+        let theme = null;
+        try {
+          theme = localStorage.getItem('eco-theme');
+        } catch (e) {
+          theme = null;
+        }
+        let color = '#f2f5ea';
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+          color = '#11140e';
+        } else if (theme === 'light') {
+          document.documentElement.classList.add('light');
+        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          color = '#11140e';
+        }
+        const meta = document.createElement('meta');
+        meta.name = 'theme-color';
+        meta.content = color;
+        document.head.appendChild(meta);
+      })();
+    </script>
+
+    <!-- The icon_names list is alphabetical and holds only the icons the app renders. -->
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block&icon_names=arrow_forward,check,check_circle,construction,dark_mode,eco,error,info,key,light_mode,mail,progress_activity,visibility,visibility_off,warning"
+      as="style"
+      type="text/css"
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      " />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block&icon_names=arrow_forward,check,check_circle,construction,dark_mode,eco,error,info,key,light_mode,mail,progress_activity,visibility,visibility_off,warning" />
+    </noscript>
   </head>
-  <body>
+  <body class="mat-typography">
     <eco-admin-root></eco-admin-root>
   </body>
 </html>

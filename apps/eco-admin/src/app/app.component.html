@@ -1,1 +1,13 @@
-<router-outlet></router-outlet>
+@let notifications = notificationStore.configuration;
+
+@defer (when notifications().length > 0) {
+  @for (notification of notifications(); track notification.id) {
+    <plastik-shared-notification-ui-hot-toast
+      [notification]="notification"
+      (sendDismiss)="notificationStore.dismiss($event.id)" />
+  }
+}
+
+<plastik-skip-link />
+
+<router-outlet />

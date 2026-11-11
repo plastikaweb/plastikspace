@@ -1,0 +1,56 @@
+/* Stand-in page until the application shell lands. It is not in the frozen corpus: the measures
+   repeat the login screen so the two pages of this stage read as one application. */
+
+:host {
+  display: flex;
+  min-height: 100dvh;
+  background: var(--eco-admin-page-background);
+  color: var(--mat-sys-on-surface);
+}
+
+.provisional {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.provisional__icon {
+  width: 40px;
+  height: 40px;
+  font-size: 40px;
+  line-height: 40px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.provisional__title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.provisional__body {
+  margin: 0;
+  color: var(--eco-admin-on-surface-muted);
+}
+
+.provisional__logout {
+  height: var(--admin-row-h);
+  margin-top: 0.75rem;
+  padding: 0 1.5rem;
+  border: 1px solid var(--mat-sys-outline);
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--mat-sys-primary);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--mat-sys-surface-container-high);
+  }
+}

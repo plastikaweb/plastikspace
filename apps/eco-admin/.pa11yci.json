@@ -11,5 +11,5 @@
     "ignore": ["notice", "warning"],
     "chromeLaunchConfig": { "args": ["--no-sandbox"] }
   },
-  "urls": ["http://localhost:8080/"]
+  "urls": ["http://localhost:8080/", "http://localhost:8080/accedir"]
 }

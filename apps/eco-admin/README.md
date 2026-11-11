@@ -1,0 +1,156 @@
+# Eco-Admin
+
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+![PocketBase](https://img.shields.io/badge/pocketbase-%23b8dbe4.svg?style=for-the-badge&logo=Pocketbase&logoColor=black)
+
+- [Eco-Admin](#eco-admin)
+  - [Description](#description)
+  - [Quick Start](#quick-start)
+  - [Development Commands](#development-commands)
+  - [Backends](#backends)
+  - [Routes](#routes)
+  - [Who Can Sign In](#who-can-sign-in)
+  - [Language and Theme](#language-and-theme)
+  - [Architecture \& Libraries](#architecture--libraries)
+  - [Testing](#testing)
+    - [Unit tests](#unit-tests)
+    - [Accessibility](#accessibility)
+    - [End to end](#end-to-end)
+  - [Documentation](#documentation)
+
+## Description
+
+**Eco-Admin** is the administration panel of the eco platform: the place where the team of a cooperative runs its store, and where the platform team runs the cooperatives.
+
+It is a client-rendered single-page application (no SSR, no service worker) built with **Angular 21** (zoneless, signals, standalone) on the **PocketBase** instance it shares with [eco-store](../eco-store/README.md).
+It is served from its own origin, and it takes the cooperative from the signed-in account, never from the domain.
+
+The application is being built row by row (`TASKS.md`, phase AP-0). Today it has a login screen and one provisional page behind it; the application shell and its views come next.
+
+## Quick Start
+
+1. **Start the backend**: `yarn eco-store:pocketbase:run` (the local PocketBase on `http://127.0.0.1:8090`).
+2. **Run the app**: `yarn eco-admin:serve`, then open `http://localhost:4204`.
+
+## Development Commands
+
+| Task                   | Command                    |
+| :--------------------- | :------------------------- |
+| **Serve (local data)** | `yarn eco-admin:serve`     |
+| **Build**              | `yarn eco-admin:build`     |
+| **Test**               | `yarn eco-admin:test`      |
+| **Lint**               | `yarn eco-admin:lint`      |
+| **E2E Tests**          | `yarn eco-admin:e2e`       |
+| **E2E (interactive)**  | `yarn eco-admin:e2e:local` |
+| **Accessibility**      | `yarn eco-admin:a11y`      |
+
+## Backends
+
+The configuration decides which PocketBase the application talks to. Check it before signing in with anything.
+
+| Configuration | Used by                                         | PocketBase                                               |
+| :------------ | :---------------------------------------------- | :------------------------------------------------------- |
+| `development` | `yarn eco-admin:serve` (the default of `serve`) | `http://127.0.0.1:8090/` (local)                         |
+| `production`  | `yarn eco-admin:build` (the default of `build`) | the hosted instance in `src/environments/environment.ts` |
+
+`yarn eco-admin:a11y` and the `serve-static` target serve the **production** build: never type test credentials into them.
+
+## Routes
+
+| Path       | Guards                                               | What it shows                              |
+| :--------- | :--------------------------------------------------- | :----------------------------------------- |
+| `/accedir` | `ecoAdminAnonymousGuard`                             | The login screen (lazy-loaded).            |
+| `/`        | `ecoAdminSessionGuard`, `ecoAdminTenantContextGuard` | A provisional page with a way to sign out. |
+| `**`       | —                                                    | Redirects to `/`.                          |
+
+This table is temporary. The application shell replaces `/` with its own route table (`/tauler`, `/cooperatives` and the rest).
+Until then the homes the login navigates to fall through the wildcard to the provisional page, and a deep link loses its `returnUrl` on the way.
+
+## Who Can Sign In
+
+| Role           | Result                                                                                    |
+| :------------- | :---------------------------------------------------------------------------------------- |
+| `TENANT_ADMIN` | Signs in; home `/tauler`.                                                                 |
+| `GLOBAL_ADMIN` | Signs in; home `/cooperatives`.                                                           |
+| `PARTNER`      | Refused. The session is closed and the screen says the account belongs to a store member. |
+
+The guards close a stored session whose role is not admitted before they redirect, so a session pasted in by hand cannot bounce between `/accedir` and `/`.
+The API rules of PocketBase are the real barrier; the guards only keep the interface honest.
+
+## Language and Theme
+
+- **Languages**: Catalan (`ca`, the default) and Spanish (`es`). The files live in `public/i18n/` and are loaded over HTTP; messages use the ICU compiler, so an apostrophe is written twice (`l''adreça`).
+  `src/app/i18n-parity.spec.ts` fails when the two files do not hold the same keys.
+- **Language choice**: `localStorage['eco-lang']`, then the browser language, then `ca`. `<html lang>` follows it.
+- **Theme**: `localStorage['eco-theme']` (`light` or `dark`), then the system preference. A script in `index.html` applies it before the first paint.
+- **Page title**: `{view title} · Eco Admin`, translated again when the language changes (`EcoAdminTitleStrategy`).
+
+## Architecture & Libraries
+
+| Library                                                                        | Alias                                  | What it holds                                                       |
+| :----------------------------------------------------------------------------- | :------------------------------------- | :------------------------------------------------------------------ |
+| [**Auth · data access**](../../libs/eco-admin/auth/data-access/README.md)      | `@plastik/eco-admin/auth/data-access`  | Admitted roles, home per role, the two guards, `resolveReturnUrl`.  |
+| [**Auth · login**](../../libs/eco-admin/auth/feature/login/README.md)          | `@plastik/eco-admin/auth/login`        | The login screen and its facade.                                    |
+| [**Tenant context**](../../libs/eco-admin/core/tenant-context/README.md)       | `@plastik/eco-admin/tenant-context`    | The cooperative of the signed-in administrator, and its wait guard. |
+| [**Eco styles**](../../libs/eco/styles/README.md)                              | Sass include path `eco_tokens`         | The colour tokens shared with eco-store.                            |
+| [**PocketBase auth**](../../libs/shared/auth/pocketbase/data-access/README.md) | `@plastik/auth/pocketbase/data-access` | The session store both eco applications use.                        |
+
+The application's own styles live in `src/styles/`: `styles.scss` wires Tailwind, the shared tokens and Material; `_base.scss` holds the admin-only variables (`--admin-*`) and the 15 px root.
+
+## Testing
+
+### Unit tests
+
+```bash
+yarn eco-admin:test
+```
+
+Nx hides most of Vitest's output. To read a failure, run Vitest from the project directory:
+
+```bash
+cd apps/eco-admin && npx vitest run
+```
+
+### Accessibility
+
+```bash
+yarn eco-admin:a11y
+```
+
+Builds the application (production configuration), serves `dist/apps/eco-admin/browser` on port 8080 and runs Pa11y (WCAG 2 AA, 320 px wide) over the URLs in `.pa11yci.json`.
+Both URLs render the login screen today: `/` redirects to `/accedir` when there is no session. The CI workflow is `.github/workflows/eco-admin-pa11y.yml`.
+
+### End to end
+
+```bash
+yarn eco-admin:e2e          # headless
+yarn eco-admin:e2e:local    # interactive
+```
+
+Cypress starts `eco-admin:serve` (development configuration, local PocketBase) on port 4204.
+
+`cy.loginAs(role)` opens a session without going through the login screen. Call it before `cy.visit()`:
+
+```ts
+cy.loginAs('TENANT_ADMIN');
+cy.visit('/');
+```
+
+It reads the credentials of a test user from the environment and never writes them to the command log:
+
+| Role           | Variables                                                                         |
+| :------------- | :-------------------------------------------------------------------------------- |
+| `TENANT_ADMIN` | `CYPRESS_ECO_ADMIN_TENANT_ADMIN_EMAIL`, `CYPRESS_ECO_ADMIN_TENANT_ADMIN_PASSWORD` |
+| `GLOBAL_ADMIN` | `CYPRESS_ECO_ADMIN_GLOBAL_ADMIN_EMAIL`, `CYPRESS_ECO_ADMIN_GLOBAL_ADMIN_PASSWORD` |
+| `PARTNER`      | `CYPRESS_ECO_ADMIN_PARTNER_EMAIL`, `CYPRESS_ECO_ADMIN_PARTNER_PASSWORD`           |
+
+The command signs in against `http://127.0.0.1:8090` and nothing else. The address is a constant on purpose: no variable can point a test login at a hosted instance.
+A `cypress.env.json` file is ignored by git; keep test credentials there or in the shell, never in a committed file.
+
+## Documentation
+
+- [REQUIREMENTS.md](./REQUIREMENTS.md): what the panel must do, and the decisions behind it.
+- [TASKS.md](./TASKS.md): the build order and the state of each row.
+- [DESIGN-BRIEF.md](./DESIGN-BRIEF.md): the design contract.
+- [DESIGN-REVIEWS.md](./DESIGN-REVIEWS.md): the record of the design rounds.
