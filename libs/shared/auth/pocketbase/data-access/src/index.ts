@@ -5,6 +5,8 @@ export { pocketBaseIsNotLoggedGuard } from './pocketbase-is-not-logged.guard';
 export { pocketBaseRoleGuard } from './pocketbase-role.guard';
 export type { PocketBaseRoleGuardOptions } from './pocketbase-role.guard';
 export type {
+  PocketBaseLoginChallenge,
+  PocketBaseLoginCodeOutcome,
   PocketBaseLoginOptions,
   PocketBaseLoginOutcome,
 } from './pocketbase-login-outcome.type';

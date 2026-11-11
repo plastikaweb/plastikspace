@@ -30,6 +30,24 @@ describe('PocketBaseAuthService', () => {
     expect(result.record).toEqual({ id: '123', email: 'test@test.com' });
   });
 
+  it('should request a one-time code and return its id', async () => {
+    const otpId = await service.requestOtp('test@test.com');
+
+    expect(mockPocketBase.collection('users').requestOTP).toHaveBeenCalledWith('test@test.com');
+    expect(otpId).toBe('test-otp-id');
+  });
+
+  it('should authenticate with the one-time code and the pending login id', async () => {
+    const result = await service.loginWithOtp('test-otp-id', '12345678', 'test-mfa-id');
+
+    expect(mockPocketBase.collection('users').authWithOTP).toHaveBeenCalledWith(
+      'test-otp-id',
+      '12345678',
+      { mfaId: 'test-mfa-id' }
+    );
+    expect(result.record).toEqual({ id: '123', email: 'test@test.com' });
+  });
+
   it('should call clear on logout', () => {
     service.logout();
     expect(mockPocketBase.authStore.clear).toHaveBeenCalled();
