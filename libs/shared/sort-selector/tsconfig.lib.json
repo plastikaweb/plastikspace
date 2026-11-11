@@ -23,13 +23,5 @@
     "src/**/*.spec.jsx",
     "src/test-setup.ts"
   ],
-  "include": ["src/**/*.ts"],
-  "references": [
-    {
-      "path": "../../core/entities"
-    },
-    {
-      "path": "../util/objects"
-    }
-  ]
+  "include": ["src/**/*.ts"]
 }

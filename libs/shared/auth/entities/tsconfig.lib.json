@@ -5,8 +5,7 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "types": [],
-    "composite": true
+    "types": []
   },
   "include": ["src/**/*.ts"],
   "exclude": [
@@ -24,10 +23,5 @@
     "src/**/*.spec.jsx",
     "src/test-setup.ts",
     "src/test-setup.ts"
-  ],
-  "references": [
-    {
-      "path": "../../../core/entities/tsconfig.lib.json"
-    }
   ]
 }

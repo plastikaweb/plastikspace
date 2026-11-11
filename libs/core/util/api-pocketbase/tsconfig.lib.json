@@ -3,8 +3,7 @@
   "compilerOptions": {
     "outDir": "../../../../dist/out-tsc",
     "declaration": true,
-    "types": ["node"],
-    "composite": true
+    "types": ["node"]
   },
   "include": ["src/**/*.ts"],
   "exclude": [
@@ -25,19 +24,5 @@
     "src/**/*.spec.jsx",
     "src/test-setup.ts",
     "src/test-setup.ts"
-  ],
-  "references": [
-    {
-      "path": "../api-base/tsconfig.lib.json"
-    },
-    {
-      "path": "../../entities/tsconfig.lib.json"
-    },
-    {
-      "path": "../environments/tsconfig.lib.json"
-    },
-    {
-      "path": "../../../../libs/shared/util/objects/tsconfig.lib.json"
-    }
   ]
 }

@@ -5,20 +5,8 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "composite": true,
     "types": []
   },
-  "references": [
-    {
-      "path": "../../core/entities"
-    },
-    {
-      "path": "../../shared/util/entities"
-    },
-    {
-      "path": "../../shared/util/latinize"
-    }
-  ],
   "include": ["src/**/*.ts"],
   "exclude": [
     "src/**/*.spec.ts",

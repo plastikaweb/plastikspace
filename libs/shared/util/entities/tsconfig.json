@@ -7,8 +7,7 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "declaration": true,
-    "composite": true
+    "declaration": true
   },
   "files": [],
   "include": [],
