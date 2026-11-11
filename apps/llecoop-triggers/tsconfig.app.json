@@ -23,13 +23,5 @@
     "src/**/*.spec.jsx",
     "src/test-setup.ts"
   ],
-  "include": ["src/**/*.ts"],
-  "references": [
-    {
-      "path": "../../libs/shared/util/latinize"
-    },
-    {
-      "path": "../../libs/llecoop/entities"
-    }
-  ]
+  "include": ["src/**/*.ts"]
 }

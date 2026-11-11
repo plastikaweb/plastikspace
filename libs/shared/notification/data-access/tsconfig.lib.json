@@ -4,8 +4,7 @@
     "outDir": "../../../../dist/out-tsc",
     "declaration": true,
     "declarationMap": true,
-    "inlineSources": true,
-    "composite": true
+    "inlineSources": true
   },
   "exclude": [
     "src/test-setup.ts",
@@ -24,10 +23,5 @@
     "src/**/*.spec.jsx",
     "src/test-setup.ts"
   ],
-  "include": ["src/**/*.ts"],
-  "references": [
-    {
-      "path": "../entities"
-    }
-  ]
+  "include": ["src/**/*.ts"]
 }

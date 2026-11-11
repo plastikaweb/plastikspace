@@ -5,7 +5,6 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "composite": true,
     "types": []
   },
   "include": ["src/**/*.ts"],
@@ -27,19 +26,5 @@
     "src/**/*.test.jsx",
     "src/**/*.spec.jsx",
     "src/test-setup.ts"
-  ],
-  "references": [
-    {
-      "path": "../../../../libs/shared/countdown/util/tsconfig.lib.json"
-    },
-    {
-      "path": "../../../../libs/shared/util/objects/tsconfig.lib.json"
-    },
-    {
-      "path": "../entities/tsconfig.lib.json"
-    },
-    {
-      "path": "../../../../libs/core/entities/tsconfig.lib.json"
-    }
   ]
 }

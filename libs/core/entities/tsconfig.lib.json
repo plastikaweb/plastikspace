@@ -4,10 +4,8 @@
     "outDir": "../../../dist/out-tsc",
     "declaration": true,
     "declarationMap": true,
-    "inlineSources": true,
-    "composite": true
+    "inlineSources": true
   },
-  "references": [],
   "exclude": [
     "vite.config.ts",
     "vite.config.mts",

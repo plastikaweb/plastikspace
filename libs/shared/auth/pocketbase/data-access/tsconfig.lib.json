@@ -1,28 +1,10 @@
 {
   "extends": "./tsconfig.json",
-  "references": [
-    {
-      "path": "../../../pocketbase-user-addresses/data-access"
-    },
-    {
-      "path": "../../entities"
-    },
-    {
-      "path": "../../../../core/util/api-pocketbase"
-    },
-    {
-      "path": "../../../../core/entities"
-    },
-    {
-      "path": "../../../notification/data-access"
-    }
-  ],
   "compilerOptions": {
     "outDir": "../../../../../dist/out-tsc",
     "declaration": true,
     "declarationMap": true,
-    "inlineSources": true,
-    "composite": true
+    "inlineSources": true
   },
   "include": ["src/**/*.ts"],
   "exclude": [

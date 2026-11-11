@@ -28,10 +28,5 @@
     "src/**/*.spec.jsx",
     "src/**/*.d.ts"
   ],
-  "files": ["src/test-setup.ts"],
-  "references": [
-    {
-      "path": "../../../shared/auth/pocketbase/data-access"
-    }
-  ]
+  "files": ["src/test-setup.ts"]
 }
