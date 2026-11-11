@@ -316,3 +316,115 @@ describe('pocketBaseUserProfileStore — fiscal profile', () => {
     expect(store.fiscalProfile()).toEqual(updated);
   });
 });
+
+describe('pocketBaseUserProfileStore — login and roles', () => {
+  const authWithPassword = vi.fn();
+  const clear = vi.fn();
+  const createNotification = vi.fn();
+  const usersCollection = { authWithPassword };
+  const credentials = { email: 'admin@mail.com', password: 'test-password' };
+
+  /**
+   * Configure the testing module with mocked dependencies and return the store instance.
+   * @param {object} [authStore] The mocked PocketBase authStore state.
+   * @param {boolean} authStore.isValid Whether the mocked session is valid.
+   * @param {unknown} [authStore.record] The mocked authenticated user record.
+   * @returns {object} The injected user profile store instance.
+   */
+  function setup(authStore: { isValid: boolean; record?: unknown } = { isValid: false }) {
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: POCKETBASE_INSTANCE,
+          useValue: { collection: () => usersCollection, authStore: { ...authStore, clear } },
+        },
+        { provide: StoreNotificationService, useValue: { create: createNotification } },
+        { provide: PocketBaseUserAddressService, useValue: {} },
+        { provide: PocketBaseUserFiscalProfileService, useValue: {} },
+      ],
+    });
+
+    return TestBed.inject(pocketBaseUserProfileStore);
+  }
+
+  beforeEach(() => {
+    authWithPassword.mockReset();
+    clear.mockClear();
+    createNotification.mockClear();
+  });
+
+  it('restores the session with its role on init and never clears it', () => {
+    const store = setup({ isValid: true, record: { id: 'u1', role: 'TENANT_ADMIN' } });
+
+    expect(store.isAuthenticated()).toBe(true);
+    expect(store.isTenantAdmin()).toBe(true);
+    expect(store.isGlobalAdmin()).toBe(false);
+    expect(clear).not.toHaveBeenCalled();
+  });
+
+  it('exposes isGlobalAdmin for a platform administrator', () => {
+    const store = setup({ isValid: true, record: { id: 'u1', role: 'GLOBAL_ADMIN' } });
+
+    expect(store.isGlobalAdmin()).toBe(true);
+    expect(store.isTenantAdmin()).toBe(false);
+  });
+
+  it('reports no admin role for a partner or without a session', () => {
+    expect(setup({ isValid: true, record: { id: 'u1', role: 'PARTNER' } }).isTenantAdmin()).toBe(
+      false
+    );
+    TestBed.resetTestingModule();
+
+    const store = setup();
+
+    expect(store.isTenantAdmin()).toBe(false);
+    expect(store.isGlobalAdmin()).toBe(false);
+  });
+
+  it('login resolves "authenticated" and stores the user', async () => {
+    authWithPassword.mockResolvedValueOnce({ record: { id: 'u1', role: 'PARTNER' } });
+    const store = setup();
+
+    expect(await store.login(credentials)).toBe('authenticated');
+    expect(authWithPassword).toHaveBeenCalledWith(credentials.email, credentials.password);
+    expect(store.isAuthenticated()).toBe(true);
+    expect(store.user()).toEqual({ id: 'u1', role: 'PARTNER' });
+    expect(store.isLoading()).toBe(false);
+    expect(createNotification).not.toHaveBeenCalled();
+  });
+
+  it('login accepts a role inside allowedRoles', async () => {
+    authWithPassword.mockResolvedValueOnce({ record: { id: 'u1', role: 'TENANT_ADMIN' } });
+    const store = setup();
+
+    expect(await store.login(credentials, { allowedRoles: ['TENANT_ADMIN', 'GLOBAL_ADMIN'] })).toBe(
+      'authenticated'
+    );
+    expect(store.isTenantAdmin()).toBe(true);
+    expect(clear).not.toHaveBeenCalled();
+  });
+
+  it('login resolves "role-rejected", drops the token and never opens the session', async () => {
+    authWithPassword.mockResolvedValueOnce({ record: { id: 'u1', role: 'PARTNER' } });
+    const store = setup();
+
+    expect(await store.login(credentials, { allowedRoles: ['TENANT_ADMIN', 'GLOBAL_ADMIN'] })).toBe(
+      'role-rejected'
+    );
+    expect(clear).toHaveBeenCalledTimes(1);
+    expect(store.isAuthenticated()).toBe(false);
+    expect(store.user()).toBeNull();
+    expect(store.isLoading()).toBe(false);
+    expect(createNotification).not.toHaveBeenCalled();
+  });
+
+  it('login resolves "failed" and shows the login toast on any other error', async () => {
+    authWithPassword.mockRejectedValueOnce({ status: 400 });
+    const store = setup();
+
+    expect(await store.login(credentials)).toBe('failed');
+    expect(store.isAuthenticated()).toBe(false);
+    expect(store.isLoading()).toBe(false);
+    expect(createNotification).toHaveBeenCalledWith('auth.error.login', 'ERROR');
+  });
+});

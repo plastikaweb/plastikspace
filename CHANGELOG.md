@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-11] - Auth: roles, role guard and login outcome in the PocketBase data-access library (AREF-06)
+
+### Added
+
+- **`pocketBaseUserProfileStore`**: two computed signals, `isTenantAdmin` and `isGlobalAdmin`, read from the `role` of the signed-in user (AP-0 0.5 · AREF-06, [#123kjkdp4kq](https://app.clickup.com/t/123kjkdp4kq)).
+- **`pocketBaseRoleGuard(roles, options?)`**: a guard factory that lets through only signed-in users holding one of `roles`. A visitor with no session goes to `options.loginUrl` (default `/accedir`); a signed-in user with another role goes to `options.redirectTo` (default `/`). It never closes the session (AREF-06, [#123kjkdp4kq](https://app.clickup.com/t/123kjkdp4kq)).
+
+### Changed
+
+- **`pocketBaseUserProfileStore.login()`**: takes an optional `{ allowedRoles }` and resolves to a `PocketBaseLoginOutcome` (`'authenticated' | 'mfa-required' | 'role-rejected' | 'failed'`), where it resolved to nothing before. When the role of the authenticated record is outside `allowedRoles`, the store clears the token PocketBase has just saved, never sets `isAuthenticated`, and resolves `'role-rejected'` with no toast: the message belongs to the calling screen. Called without `allowedRoles` it behaves as before, so the eco-store login is untouched (AREF-06, [#123kjkdp4kq](https://app.clickup.com/t/123kjkdp4kq)).
+
 ## [2026-11-11] - Eco: promote the eco-store entities to `libs/eco/entities` (AREF-01)
 
 ### Changed

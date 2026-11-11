@@ -17,6 +17,7 @@ import {
   PocketBaseUser,
   PocketBaseUserAddress,
   PocketBaseUserFiscalProfile,
+  PocketBaseUserRoles,
   UserContact,
   UserContactForm,
   UserFiscalProfileForm,
@@ -27,6 +28,7 @@ import { PocketBaseUserFiscalProfileService } from '@plastik/shared/pocketbase-u
 import { differenceInDays, isAfter } from 'date-fns';
 import { lastValueFrom } from 'rxjs';
 import { PocketBaseAuthService } from './pocketbase-auth.service';
+import { PocketBaseLoginOptions, PocketBaseLoginOutcome } from './pocketbase-login-outcome.type';
 
 export interface UserProfileState {
   user: PocketBaseUser | null;
@@ -48,6 +50,21 @@ const initialState: UserProfileState = {
   fiscalProfileLoaded: false,
 };
 
+/**
+ * Whether a role may open a session under the given login options.
+ * @param {PocketBaseUserRoles | undefined} role The role of the record PocketBase just authenticated.
+ * @param {PocketBaseLoginOptions} [options] The login options of the calling app.
+ * @returns {boolean} True when no role list is given or the role is in it.
+ */
+function isRoleAllowed(
+  role: PocketBaseUserRoles | undefined,
+  options?: PocketBaseLoginOptions
+): boolean {
+  const allowedRoles = options?.allowedRoles;
+
+  return !allowedRoles || (!!role && allowedRoles.includes(role));
+}
+
 export const pocketBaseUserProfileStore = signalStore(
   { providedIn: 'root' },
   isDevMode() ? withDevtools('user-profile') : withDevToolsStub('user-profile'),
@@ -68,6 +85,8 @@ export const pocketBaseUserProfileStore = signalStore(
     userFirstName: () => store.user()?.name?.split(' ')[0] || '',
     isTrial: () => store.user()?.membershipStatus === 'TRIAL',
     trialEndsAtDate: () => store.user()?.trialEndsAt,
+    isTenantAdmin: () => store.user()?.role === 'TENANT_ADMIN',
+    isGlobalAdmin: () => store.user()?.role === 'GLOBAL_ADMIN',
   })),
   withComputed(store => ({
     isTrialExpired: () => {
@@ -112,23 +131,42 @@ export const pocketBaseUserProfileStore = signalStore(
           phone: address.phone,
           default: address.default,
         }))
-        .sort((a, b) => (b.default ? 1 : 0) - (a.default ? 1 : 0)) as UserContact[],
+        .sort(
+          (address1, address2) => (address2.default ? 1 : 0) - (address1.default ? 1 : 0)
+        ) as UserContact[],
   })),
   withMethods(store => ({
-    async login(credentials: LoginData): Promise<void> {
+    async login(
+      credentials: LoginData,
+      options?: PocketBaseLoginOptions
+    ): Promise<PocketBaseLoginOutcome> {
       updateState(store, `[profile] login in process`, { isLoading: true });
 
       try {
         const authData = await store._authService.login(credentials.email, credentials.password);
+        const user = authData.record as PocketBaseUser;
+
+        if (!isRoleAllowed(user?.role, options)) {
+          // The credentials are valid, so PocketBase has already stored a token:
+          // drop it before the state ever reports an open session.
+          store._authService.logout();
+          updateState(store, `[profile] login rejected by role`, { isLoading: false });
+
+          return 'role-rejected';
+        }
 
         updateState(store, `[profile] login success`, {
-          user: authData.record as PocketBaseUser,
+          user,
           isAuthenticated: true,
           isLoading: false,
         });
+
+        return 'authenticated';
       } catch (error) {
         updateState(store, `[profile] login failed ${error}`, { isLoading: false });
         store._notificationService.create('auth.error.login', 'ERROR');
+
+        return 'failed';
       }
     },
 

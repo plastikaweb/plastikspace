@@ -10,6 +10,8 @@ export const mockPocketBaseUserProfileStore = {
   userFirstName: signal(''),
   isTrial: signal(false),
   trialEndsAtDate: signal(null),
+  isTenantAdmin: signal(false),
+  isGlobalAdmin: signal(false),
   isTrialExpired: signal(false),
   trialDaysLeft: signal(0),
   roleIcon: signal(''),
