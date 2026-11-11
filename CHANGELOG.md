@@ -24,6 +24,21 @@ The re-export has no removal date. No task covers rewriting the 43 imports to `@
 
 There is no order-cycle type in the promoted set: REQUIREMENTS §7.2 lists "cycle types" under AREF-01, but eco-store never had one. It is created with the first feature that needs it.
 
+## [2026-11-07] - Eco Store: META-08 task-row maintenance (stale ClickUp IDs, audit rows, status drift)
+
+### Added
+
+- **`apps/eco-store/TASKS.md` → rows for the 2026-10-31 audit tickets**: PRV-05b-C (`123kjkdp22t`) in PRV Pending, SEC-09 (`123kjkdp22u`) and SEC-10 (`123kjkdp22v`) in the Security table, BUG-011 (`123kjkdp22w`) and BUG-012 (`123kjkdp22x`) in the Bugs table. The tickets existed in ClickUp but in no doc; the META-07 baseline listed them as only in ClickUp (META-08, [#123kjkdpqjr](https://app.clickup.com/t/123kjkdpqjr)).
+- **`apps/eco-store/TASKS.md` → BUG-015 and BUG-016**: tickets and rows for the two confirmed findings of the 2026-07-21 audit note, which had none. BUG-015 (`123kjkdpxvy`): `phoneValidator` rejects `+34`, spaced and non-Spanish numbers on `user_addresses.phone` and `users.phone`. BUG-016 (`123kjkdpxvz`): password inputs cap at 25 characters and silently truncate pastes. Both are shared with llecoop. Tickets and rows only; no code change (META-08, [#123kjkdpqjr](https://app.clickup.com/t/123kjkdpqjr)).
+
+### Changed
+
+- **`apps/eco-store/TASKS.md` and `apps/eco-store/BACKLOG.md`**: 25 stale ClickUp IDs in TASKS and 18 in BACKLOG re-pointed to the live re-created tickets (`86c9uq…`); history rows keep the old IDs. The duplicate open rows of PRV-05b-A and PRV-05b-B are gone, leaving condensed ✅ rows in PRV Done. The `x-bypass-hooks` note now points to BUG-012, and the audit note's phone and password bullets to BUG-015 and BUG-016. Both docs bumped to v0.54 in lockstep (META-08, [#123kjkdpqjr](https://app.clickup.com/t/123kjkdpqjr)).
+
+### Fixed
+
+- **`apps/eco-store/TASKS.md` → status drift**: PRV-08 and PRV-09 🔄 → 📋 and moved to PRV Pending (neither has a branch or commits; ClickUp has PRV-08 in to do, PRV-09 and UI-04 in backlog); UI-04 🔄 → 📋, its row now says only the `eco-footer` shell exists; VAL-01 🔄 → 🧪, since Q-13 is still open. The password note no longer claims the 25-character cap locks members out at their next login: register, login, reset and `newPassword` all cap at 25, so the truncation is consistent (META-08, [#123kjkdpqjr](https://app.clickup.com/t/123kjkdpqjr)).
+
 ## [2026-11-04] - Workspace: generalize the TASKS.md ↔ ClickUp sync across task homes (META-07)
 
 ### Added
