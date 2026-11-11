@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-11] - Eco: promote the eco-store entities to `libs/eco/entities` (AREF-01)
+
+### Changed
+
+- **`libs/eco/entities`**: now holds the eco domain entities (tenant, product, product category, cart, order), so `eco-admin` can import them through `@plastik/eco/entities`. The five files (`cart.ts`, `order.ts`, `product.ts`, `productCategory.ts`, `tenant.ts`) moved from `libs/eco-store/core/entities/src` with `git mv` and are byte-identical: no type was renamed and no export was added or dropped. The `EcoEntitiesPlaceholder` type from the scaffold is gone (AP-0 0.3 · AREF-01, [#123kjkdp4kn](https://app.clickup.com/t/123kjkdp4kn)).
+- **`libs/eco-store/core/entities`**: reduced to a compatibility re-export, `export * from '@plastik/eco/entities'`. The `@plastik/eco-store/entities` alias and the `eco-store-entities` project stay, so the 43 eco-store files that import the alias are untouched. New code imports from `@plastik/eco/entities`. This is the first `scope:eco-store` → `scope:eco` import in the workspace (AREF-01, [#123kjkdp4kn](https://app.clickup.com/t/123kjkdp4kn)).
+- **`libs/eco-admin/core/tenant-context`**: its placeholder type is now an alias of `EcoStoreTenant`, not of the removed `EcoEntitiesPlaceholder`. It is still a placeholder until AREF-03, and it keeps the `eco-admin-tenant-context` → `eco-entities` edge in the project graph (AREF-01, [#123kjkdp4kn](https://app.clickup.com/t/123kjkdp4kn)).
+- **`libs/eco/entities/README.md`** and **`libs/eco-store/core/entities/README.md`**: the first replaces the generator text with the real contents and importers; the second now describes the re-export. Its old text listed an `EnvironmentConfiguration` export and a re-export of the PocketBase base types, and the library had neither.
+
+### Build
+
+- **`libs/eco/entities/tsconfig.lib.json`**: `composite: true` plus the three project `references` the entities need (`libs/core/entities`, `libs/shared/util/entities`, `libs/shared/util/latinize`), moved here from the eco-store library. **`libs/eco-store/core/entities/tsconfig.lib.json`** now references only `libs/eco/entities/tsconfig.lib.json`. Without the reference the editor reports TS6307 on the re-export, because that project is `composite` and four eco-store libraries reference it.
+
+### Notes
+
+The re-export has no removal date. No task covers rewriting the 43 imports to `@plastik/eco/entities` and deleting `eco-store-entities`.
+
+There is no order-cycle type in the promoted set: REQUIREMENTS §7.2 lists "cycle types" under AREF-01, but eco-store never had one. It is created with the first feature that needs it.
+
 ## [2026-11-07] - Eco Store: META-08 task-row maintenance (stale ClickUp IDs, audit rows, status drift)
 
 ### Added
