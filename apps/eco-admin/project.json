@@ -5,6 +5,7 @@
   "prefix": "eco-admin",
   "sourceRoot": "apps/eco-admin/src",
   "tags": ["scope:eco-admin", "type:app"],
+  "implicitDependencies": ["eco-styles"],
   "targets": {
     "build": {
       "executor": "@angular/build:application",
@@ -40,7 +41,8 @@
           "includePaths": [
             "node_modules",
             "libs/core/styles/util/material/src",
-            "libs/core/styles/util/tailwind4/src"
+            "libs/core/styles/util/tailwind4/src",
+            "libs/eco/styles/src"
           ]
         },
         "scripts": []

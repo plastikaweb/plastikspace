@@ -37,6 +37,10 @@ Please refer to its [documentation](../libs/core/styles/util/tailwind4/README.md
 
 - Each application must provide its own CSS variable definitions in a theme file (e.g., `apps/my-app/src/styles/my-app-theme.css`).
 
+- Applications of one product family share a single theme file kept in a styles-only library, so no app reads another app's folder.
+  `eco-store` and `eco-admin` both load [`eco_tokens`](../libs/eco/styles/src/_eco_tokens.css) from [`libs/eco/styles`](../libs/eco/styles/README.md).
+  Its README explains the `includePaths` entry and the `implicitDependencies` line each consuming app needs.
+
 A simple app theme example looks like this:
 
 ```css

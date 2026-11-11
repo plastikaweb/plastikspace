@@ -1,0 +1,8 @@
+{
+  "name": "eco-styles",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/eco/styles/src",
+  "targets": {},
+  "tags": ["scope:eco", "type:util"]
+}
