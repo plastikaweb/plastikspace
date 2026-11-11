@@ -29,13 +29,7 @@
   "include": ["src/**/*.ts"],
   "references": [
     {
-      "path": "../../../core/entities"
-    },
-    {
-      "path": "../../../shared/util/entities"
-    },
-    {
-      "path": "../../../shared/util/latinize"
+      "path": "../../../eco/entities/tsconfig.lib.json"
     }
   ]
 }
