@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-11] - Eco Admin: tenant-context store for the signed-in administrator (AREF-03)
+
+### Added
+
+- **`ecoAdminTenantContextStore`** in `@plastik/eco-admin/tenant-context`: a root Signal Store holding the tenant of the signed-in tenant administrator. State `tenant`, `status` and `hasCycles`; derived `tenantId`, `hasTenant`, `tenantName`, `isContinuous` and `hasCyclesSection`. It follows the session by itself: it loads on sign-in or on a restored session and empties on logout (AP-0 0.6 · AREF-03, [#123kjkdp4kr](https://app.clickup.com/t/123kjkdp4kr)).
+- **`hasCyclesSection`**: `false` only for a continuous tenant that holds no cycle, the «Operating modes» rule of the design brief. A tenant with an order window never asks `order_cycles`; a continuous one asks for a single id. While the answer is unknown the section stays (AREF-03, [#123kjkdp4kr](https://app.clickup.com/t/123kjkdp4kr)).
+- **`ecoAdminTenantContextGuard`**: holds a navigation until the store is settled and always returns `true`. It waits, it never blocks (AREF-03, [#123kjkdp4kr](https://app.clickup.com/t/123kjkdp4kr)).
+- **`@plastik/eco-admin/tenant-context/testing`**: path alias for `mockEcoAdminTenantContextStore`, kept out of the library build (AREF-03, [#123kjkdp4kr](https://app.clickup.com/t/123kjkdp4kr)).
+
+### Changed
+
+- **`@plastik/eco-admin/tenant-context`** no longer exports the scaffold's placeholder type alias; it exports the store, the guard and the types `EcoAdminTenantContextState` and `EcoAdminTenantContextStatus` (AREF-03, [#123kjkdp4kr](https://app.clickup.com/t/123kjkdp4kr)).
+
+### Notes
+
+A global administrator has no tenant context. `users.tenant` is a required field, so their record carries a tenant too; the store decides by role and ignores it. The «selector for the global administrator» half of the original AREF-03 wording was dropped by AQ-04 and is not built.
+
+A load that fails leaves `status` at `error` without a notification, and the next `load()` retries. A reload keeps the record it had, also when it fails. An answer is written only while its request is still the running one, so nothing from a previous user or a superseded reload reaches the store. Both requests opt out of the SDK's auto-cancellation (`requestKey: null`), which keys on method and path alone and would let a future Cicles list abort the cycle lookup.
+
+Nothing consumes the store yet, and it has not run against a live PocketBase: eco-admin provides `POCKETBASE_INSTANCE` from AP-0 0.7 on.
+
 ## [2026-11-11] - Eco: shared token base in `libs/eco/styles` and the AQ-22 secondary colour (AREF-09)
 
 ### Added
