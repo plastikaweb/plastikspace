@@ -1,8 +1,10 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-
-import { ChangeDetectionStrategy, Component, inject, DOCUMENT } from '@angular/core';
+import { DOCUMENT, ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
+/**
+ * SkipLinkComponent provides an accessible skip link for keyboard users to bypass navigation.
+ */
 @Component({
   selector: 'plastik-skip-link',
   templateUrl: './skip-link.component.html',
@@ -15,8 +17,8 @@ export class SkipLinkComponent {
   readonly #router = inject(Router);
 
   /**
-   * Skips to the main content of the page.
-   * @param {Event} event - The event object.
+   * Skips focus directly to the main content area of the page.
+   * @param {Event} event - The DOM click event.
    */
   protected skipToMainContent(event: Event): void {
     event.preventDefault();
