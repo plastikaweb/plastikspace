@@ -17,6 +17,7 @@ import {
   PocketBaseUser,
   PocketBaseUserAddress,
   PocketBaseUserFiscalProfile,
+  PocketBaseUserRoles,
   UserContact,
   UserContactForm,
   UserFiscalProfileForm,
@@ -27,6 +28,12 @@ import { PocketBaseUserFiscalProfileService } from '@plastik/shared/pocketbase-u
 import { differenceInDays, isAfter } from 'date-fns';
 import { lastValueFrom } from 'rxjs';
 import { PocketBaseAuthService } from './pocketbase-auth.service';
+import {
+  PocketBaseLoginChallenge,
+  PocketBaseLoginCodeOutcome,
+  PocketBaseLoginOptions,
+  PocketBaseLoginOutcome,
+} from './pocketbase-login-outcome.type';
 
 export interface UserProfileState {
   user: PocketBaseUser | null;
@@ -36,6 +43,7 @@ export interface UserProfileState {
   addressesLoaded: boolean;
   fiscalProfile: PocketBaseUserFiscalProfile | null;
   fiscalProfileLoaded: boolean;
+  loginChallenge: PocketBaseLoginChallenge | null;
 }
 
 const initialState: UserProfileState = {
@@ -46,7 +54,65 @@ const initialState: UserProfileState = {
   addressesLoaded: false,
   fiscalProfile: null,
   fiscalProfileLoaded: false,
+  loginChallenge: null,
 };
+
+/**
+ * Reads the id of the pending login from a rejected password login.
+ * PocketBase answers with a 401 whose body carries `mfaId` when the collection demands a second factor.
+ * @param {unknown} error The error `authWithPassword` rejected with.
+ * @returns {string | null} The `mfaId`, or null when the error is anything else.
+ */
+function readMfaId(error: unknown): string | null {
+  const { status, response } = (error ?? {}) as {
+    status?: number;
+    response?: { mfaId?: unknown };
+  };
+  const mfaId = response?.mfaId;
+
+  return status === 401 && typeof mfaId === 'string' && mfaId !== '' ? mfaId : null;
+}
+
+/**
+ * Maps the error PocketBase rejects a one-time code with to an outcome.
+ *
+ * A wrong code and an expired pending login are both a 400 with an empty body; only the message tells them
+ * apart ("Invalid or expired OTP." against "Invalid or expired MFA session.", PocketBase 0.36). If that text
+ * ever changes, an expired pending login degrades to `invalid-code`.
+ * @param {unknown} error The error `authWithOTP` rejected with.
+ * @returns {PocketBaseLoginCodeOutcome} The outcome to hand to the caller.
+ */
+function readCodeRejection(error: unknown): PocketBaseLoginCodeOutcome {
+  const { status, response } = (error ?? {}) as {
+    status?: number;
+    response?: { message?: unknown };
+  };
+
+  if (status === 429) {
+    return 'too-many-attempts';
+  }
+
+  if (status !== 400) {
+    return 'failed';
+  }
+
+  return /\bmfa\b/i.test(String(response?.message ?? '')) ? 'challenge-expired' : 'invalid-code';
+}
+
+/**
+ * Whether a role may open a session under the given login options.
+ * @param {PocketBaseUserRoles | undefined} role The role of the record PocketBase just authenticated.
+ * @param {PocketBaseLoginOptions} [options] The login options of the calling app.
+ * @returns {boolean} True when no role list is given or the role is in it.
+ */
+function isRoleAllowed(
+  role: PocketBaseUserRoles | undefined,
+  options?: PocketBaseLoginOptions
+): boolean {
+  const allowedRoles = options?.allowedRoles;
+
+  return !allowedRoles || (!!role && allowedRoles.includes(role));
+}
 
 export const pocketBaseUserProfileStore = signalStore(
   { providedIn: 'root' },
@@ -68,6 +134,8 @@ export const pocketBaseUserProfileStore = signalStore(
     userFirstName: () => store.user()?.name?.split(' ')[0] || '',
     isTrial: () => store.user()?.membershipStatus === 'TRIAL',
     trialEndsAtDate: () => store.user()?.trialEndsAt,
+    isTenantAdmin: () => store.user()?.role === 'TENANT_ADMIN',
+    isGlobalAdmin: () => store.user()?.role === 'GLOBAL_ADMIN',
   })),
   withComputed(store => ({
     isTrialExpired: () => {
@@ -112,24 +180,150 @@ export const pocketBaseUserProfileStore = signalStore(
           phone: address.phone,
           default: address.default,
         }))
-        .sort((a, b) => (b.default ? 1 : 0) - (a.default ? 1 : 0)) as UserContact[],
+        .sort(
+          (address1, address2) => (address2.default ? 1 : 0) - (address1.default ? 1 : 0)
+        ) as UserContact[],
   })),
   withMethods(store => ({
-    async login(credentials: LoginData): Promise<void> {
-      updateState(store, `[profile] login in process`, { isLoading: true });
+    async login(
+      credentials: LoginData,
+      options?: PocketBaseLoginOptions
+    ): Promise<PocketBaseLoginOutcome> {
+      updateState(store, `[profile] login in process`, { isLoading: true, loginChallenge: null });
 
       try {
         const authData = await store._authService.login(credentials.email, credentials.password);
+        const user = authData.record as PocketBaseUser;
+
+        if (!isRoleAllowed(user?.role, options)) {
+          // The credentials are valid, so PocketBase has already stored a token:
+          // drop it before the state ever reports an open session.
+          store._authService.logout();
+          updateState(store, `[profile] login rejected by role`, { isLoading: false });
+
+          return 'role-rejected';
+        }
 
         updateState(store, `[profile] login success`, {
-          user: authData.record as PocketBaseUser,
+          user,
           isAuthenticated: true,
           isLoading: false,
         });
+
+        return 'authenticated';
       } catch (error) {
+        const mfaId = readMfaId(error);
+
+        if (mfaId) {
+          // The password was right and a second factor is due. The code is not requested here:
+          // only a caller with a screen to type it in should trigger the email.
+          updateState(store, `[profile] login needs a second factor`, {
+            isLoading: false,
+            loginChallenge: { email: credentials.email, mfaId, otpId: null },
+          });
+
+          return 'mfa-required';
+        }
+
         updateState(store, `[profile] login failed ${error}`, { isLoading: false });
         store._notificationService.create('auth.error.login', 'ERROR');
+
+        return 'failed';
       }
+    },
+
+    /**
+     * Emails a one-time code for the pending login. Serves both the first send and a resend.
+     * @returns {Promise<boolean>} True when the code was requested; false with no pending login or on error.
+     */
+    async requestLoginCode(): Promise<boolean> {
+      const challenge = store.loginChallenge();
+
+      if (!challenge) {
+        return false;
+      }
+
+      updateState(store, `[profile] login code request in process`, { isLoading: true });
+
+      try {
+        const otpId = await store._authService.requestOtp(challenge.email);
+
+        updateState(store, `[profile] login code requested`, {
+          isLoading: false,
+          loginChallenge: { ...challenge, otpId },
+        });
+
+        return true;
+      } catch (error) {
+        updateState(store, `[profile] login code request failed ${error}`, { isLoading: false });
+
+        return false;
+      }
+    },
+
+    /**
+     * Completes the pending login with the emailed code.
+     * @param {string} code The code the user typed.
+     * @param {PocketBaseLoginOptions} [options] The same options given to `login`.
+     * @returns {Promise<PocketBaseLoginCodeOutcome>} How the check ended; only `challenge-expired`,
+     * `authenticated` and `role-rejected` end the pending login.
+     */
+    async verifyLoginCode(
+      code: string,
+      options?: PocketBaseLoginOptions
+    ): Promise<PocketBaseLoginCodeOutcome> {
+      const challenge = store.loginChallenge();
+
+      if (!challenge?.otpId) {
+        return 'failed';
+      }
+
+      updateState(store, `[profile] login code check in process`, { isLoading: true });
+
+      try {
+        const authData = await store._authService.loginWithOtp(
+          challenge.otpId,
+          code,
+          challenge.mfaId
+        );
+        const user = authData.record as PocketBaseUser;
+
+        if (!isRoleAllowed(user?.role, options)) {
+          store._authService.logout();
+          updateState(store, `[profile] login rejected by role`, {
+            isLoading: false,
+            loginChallenge: null,
+          });
+
+          return 'role-rejected';
+        }
+
+        updateState(store, `[profile] login success`, {
+          user,
+          isAuthenticated: true,
+          isLoading: false,
+          loginChallenge: null,
+        });
+
+        return 'authenticated';
+      } catch (error) {
+        const outcome = readCodeRejection(error);
+
+        updateState(store, `[profile] login code rejected (${outcome}) ${error}`, {
+          isLoading: false,
+          // PocketBase has burnt the code together with the expired pending login: nothing left to retry.
+          loginChallenge: outcome === 'challenge-expired' ? null : challenge,
+        });
+
+        return outcome;
+      }
+    },
+
+    /**
+     * Drops the pending login, for the way back from the code screen to the password form.
+     */
+    cancelLoginChallenge(): void {
+      updateState(store, `[profile] login challenge cancelled`, { loginChallenge: null });
     },
 
     async requestPassword(data: RequestPasswordData): Promise<void> {

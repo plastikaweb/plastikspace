@@ -14,6 +14,33 @@ export class PocketBaseAuthService implements AuthFacade {
     return await this.#pb.collection('users').authWithPassword(email, password);
   }
 
+  /**
+   * Asks PocketBase to email a one-time code to the given address.
+   * PocketBase answers with an id even when no user holds that address, so this never reveals whether one exists.
+   * @param {string} email The address of the user signing in.
+   * @returns {Promise<string>} The id of the code request, needed to verify the code.
+   */
+  async requestOtp(email: string): Promise<string> {
+    const { otpId } = await this.#pb.collection('users').requestOTP(email);
+
+    return otpId;
+  }
+
+  /**
+   * Completes a login with the emailed one-time code as the second factor.
+   * @param {string} otpId The id returned by `requestOtp`.
+   * @param {string} code The code the user received by email.
+   * @param {string} mfaId The id of the pending login, taken from the 401 that `login` rejected with.
+   * @returns {Promise<RecordAuthResponse<AuthModel>>} The auth response; the token is already in the auth store.
+   */
+  async loginWithOtp(
+    otpId: string,
+    code: string,
+    mfaId: string
+  ): Promise<RecordAuthResponse<AuthModel>> {
+    return await this.#pb.collection('users').authWithOTP(otpId, code, { mfaId });
+  }
+
   async register(
     email: string,
     password: string,
@@ -51,21 +78,21 @@ export class PocketBaseAuthService implements AuthFacade {
   async changePassword(
     id: string,
     email: string,
-    data: ChangePasswordData
+    passwords: ChangePasswordData
   ): Promise<RecordAuthResponse<AuthModel>> {
     await this.#pb.collection('users').update(id, {
-      oldPassword: data.oldPassword,
-      password: data.password,
-      passwordConfirm: data.passwordConfirm,
+      oldPassword: passwords.oldPassword,
+      password: passwords.password,
+      passwordConfirm: passwords.passwordConfirm,
     });
 
     // Changing the password rotates the user's tokenKey, invalidating the current
     // JWT — re-authenticate with the new password to keep the session alive.
-    return await this.#pb.collection('users').authWithPassword(email, data.password);
+    return await this.#pb.collection('users').authWithPassword(email, passwords.password);
   }
 
-  async updateProfile(id: string, data: { name: string; phone: string }): Promise<AuthModel> {
-    return await this.#pb.collection('users').update(id, data);
+  async updateProfile(id: string, profile: { name: string; phone: string }): Promise<AuthModel> {
+    return await this.#pb.collection('users').update(id, profile);
   }
 
   async updateLanguage(id: string, language: string): Promise<AuthModel> {

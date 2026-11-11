@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-11] - Auth: roles, role guard and second-factor login in the PocketBase data-access library (AREF-06)
+
+### Added
+
+- **`pocketBaseUserProfileStore`**: two computed signals, `isTenantAdmin` and `isGlobalAdmin`, read from the `role` of the signed-in user (AP-0 0.5 · AREF-06, [#123kjkdp4kq](https://app.clickup.com/t/123kjkdp4kq)).
+- **`pocketBaseRoleGuard(roles, options?)`**: a guard factory that lets through only signed-in users holding one of `roles`. A visitor with no session goes to `options.loginUrl` (default `/accedir`); a signed-in user with another role goes to `options.redirectTo` (default `/`). It never closes the session (AREF-06, [#123kjkdp4kq](https://app.clickup.com/t/123kjkdp4kq)).
+
+- **Second factor by emailed code** (AQ-05). `PocketBaseAuthService` gains `requestOtp(email)` and `loginWithOtp(otpId, code, mfaId)`. The store gains the `loginChallenge` state and three methods: `requestLoginCode()` (first send and resend), `verifyLoginCode(code, options?)` and `cancelLoginChallenge()`. `login()` resolves `'mfa-required'` when PocketBase answers the password with a 401 carrying `mfaId`, and does not request the code itself. Nothing calls the flow yet: the screen is AP-0 0.7 (AREF-06, [#123kjkdp4kq](https://app.clickup.com/t/123kjkdp4kq)).
+- **`verifyLoginCode()` outcomes**: `'authenticated'`, `'role-rejected'`, `'invalid-code'`, `'too-many-attempts'`, `'challenge-expired'` and `'failed'`. The last three come from a run against a local PocketBase 0.36 with `otp` and `mfa` enabled, not from the documentation: a sixth check within three minutes gets a 429 even with the right code, and an expired pending login burns the code and answers the same 400 as a wrong code, with a different message (AREF-06, [#123kjkdp4kq](https://app.clickup.com/t/123kjkdp4kq)).
+- **Test mocks**: `requestOTP` and `authWithOTP` in `mockPocketBase` (`@plastik/core/api-pocketbase/testing`); the new signals and methods in `mockPocketBaseUserProfileStore`.
+
+### Changed
+
+- **`pocketBaseUserProfileStore.login()`**: takes an optional `{ allowedRoles }` and resolves to a `PocketBaseLoginOutcome` (`'authenticated' | 'mfa-required' | 'role-rejected' | 'failed'`), where it resolved to nothing before. When the role of the authenticated record is outside `allowedRoles`, the store clears the token PocketBase has just saved, never sets `isAuthenticated`, and resolves `'role-rejected'` with no toast: the message belongs to the calling screen. Called without `allowedRoles` it behaves as before, so the eco-store login is untouched (AREF-06, [#123kjkdp4kq](https://app.clickup.com/t/123kjkdp4kq)).
+
+### Notes
+
+The `users` collection still has `otp` and `mfa` disabled (B-34), so no login asks for a code today. Once B-34 turns them on with `mfa.rule = role != 'PARTNER'`, an administrator signing in through the eco-store storefront will get `'mfa-required'` there too, and the storefront has no screen for the code.
+
+`'challenge-expired'` is read from the text of the server message, because the status and the body are the same as for a wrong code. If PocketBase rewords it, the outcome degrades to `'invalid-code'`.
+
 ## [2026-11-11] - Eco: promote the eco-store entities to `libs/eco/entities` (AREF-01)
 
 ### Changed

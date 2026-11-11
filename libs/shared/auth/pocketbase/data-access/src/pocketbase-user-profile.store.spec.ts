@@ -316,3 +316,351 @@ describe('pocketBaseUserProfileStore — fiscal profile', () => {
     expect(store.fiscalProfile()).toEqual(updated);
   });
 });
+
+describe('pocketBaseUserProfileStore — login and roles', () => {
+  const authWithPassword = vi.fn();
+  const clear = vi.fn();
+  const createNotification = vi.fn();
+  const usersCollection = { authWithPassword };
+  const credentials = { email: 'admin@mail.com', password: 'test-password' };
+
+  /**
+   * Configure the testing module with mocked dependencies and return the store instance.
+   * @param {object} [authStore] The mocked PocketBase authStore state.
+   * @param {boolean} authStore.isValid Whether the mocked session is valid.
+   * @param {unknown} [authStore.record] The mocked authenticated user record.
+   * @returns {object} The injected user profile store instance.
+   */
+  function setup(authStore: { isValid: boolean; record?: unknown } = { isValid: false }) {
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: POCKETBASE_INSTANCE,
+          useValue: { collection: () => usersCollection, authStore: { ...authStore, clear } },
+        },
+        { provide: StoreNotificationService, useValue: { create: createNotification } },
+        { provide: PocketBaseUserAddressService, useValue: {} },
+        { provide: PocketBaseUserFiscalProfileService, useValue: {} },
+      ],
+    });
+
+    return TestBed.inject(pocketBaseUserProfileStore);
+  }
+
+  beforeEach(() => {
+    authWithPassword.mockReset();
+    clear.mockClear();
+    createNotification.mockClear();
+  });
+
+  it('restores the session with its role on init and never clears it', () => {
+    const store = setup({ isValid: true, record: { id: 'u1', role: 'TENANT_ADMIN' } });
+
+    expect(store.isAuthenticated()).toBe(true);
+    expect(store.isTenantAdmin()).toBe(true);
+    expect(store.isGlobalAdmin()).toBe(false);
+    expect(clear).not.toHaveBeenCalled();
+  });
+
+  it('exposes isGlobalAdmin for a platform administrator', () => {
+    const store = setup({ isValid: true, record: { id: 'u1', role: 'GLOBAL_ADMIN' } });
+
+    expect(store.isGlobalAdmin()).toBe(true);
+    expect(store.isTenantAdmin()).toBe(false);
+  });
+
+  it('reports no admin role for a partner or without a session', () => {
+    expect(setup({ isValid: true, record: { id: 'u1', role: 'PARTNER' } }).isTenantAdmin()).toBe(
+      false
+    );
+    TestBed.resetTestingModule();
+
+    const store = setup();
+
+    expect(store.isTenantAdmin()).toBe(false);
+    expect(store.isGlobalAdmin()).toBe(false);
+  });
+
+  it('login resolves "authenticated" and stores the user', async () => {
+    authWithPassword.mockResolvedValueOnce({ record: { id: 'u1', role: 'PARTNER' } });
+    const store = setup();
+
+    expect(await store.login(credentials)).toBe('authenticated');
+    expect(authWithPassword).toHaveBeenCalledWith(credentials.email, credentials.password);
+    expect(store.isAuthenticated()).toBe(true);
+    expect(store.user()).toEqual({ id: 'u1', role: 'PARTNER' });
+    expect(store.isLoading()).toBe(false);
+    expect(createNotification).not.toHaveBeenCalled();
+  });
+
+  it('login accepts a role inside allowedRoles', async () => {
+    authWithPassword.mockResolvedValueOnce({ record: { id: 'u1', role: 'TENANT_ADMIN' } });
+    const store = setup();
+
+    expect(await store.login(credentials, { allowedRoles: ['TENANT_ADMIN', 'GLOBAL_ADMIN'] })).toBe(
+      'authenticated'
+    );
+    expect(store.isTenantAdmin()).toBe(true);
+    expect(clear).not.toHaveBeenCalled();
+  });
+
+  it('login resolves "role-rejected", drops the token and never opens the session', async () => {
+    authWithPassword.mockResolvedValueOnce({ record: { id: 'u1', role: 'PARTNER' } });
+    const store = setup();
+
+    expect(await store.login(credentials, { allowedRoles: ['TENANT_ADMIN', 'GLOBAL_ADMIN'] })).toBe(
+      'role-rejected'
+    );
+    expect(clear).toHaveBeenCalledTimes(1);
+    expect(store.isAuthenticated()).toBe(false);
+    expect(store.user()).toBeNull();
+    expect(store.isLoading()).toBe(false);
+    expect(createNotification).not.toHaveBeenCalled();
+  });
+
+  it('login resolves "failed" and shows the login toast on any other error', async () => {
+    authWithPassword.mockRejectedValueOnce({ status: 400 });
+    const store = setup();
+
+    expect(await store.login(credentials)).toBe('failed');
+    expect(store.isAuthenticated()).toBe(false);
+    expect(store.isLoading()).toBe(false);
+    expect(createNotification).toHaveBeenCalledWith('auth.error.login', 'ERROR');
+  });
+});
+
+describe('pocketBaseUserProfileStore — second factor', () => {
+  const authWithPassword = vi.fn();
+  const requestOTP = vi.fn();
+  const authWithOTP = vi.fn();
+  const clear = vi.fn();
+  const createNotification = vi.fn();
+  const usersCollection = { authWithPassword, requestOTP, authWithOTP };
+  const credentials = { email: 'admin@mail.com', password: 'test-password' };
+  const adminRoles = { allowedRoles: ['TENANT_ADMIN', 'GLOBAL_ADMIN'] as const };
+
+  /**
+   * Configure the testing module with mocked dependencies and return the store instance.
+   * @returns {object} The injected user profile store instance.
+   */
+  function setup() {
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: POCKETBASE_INSTANCE,
+          useValue: { collection: () => usersCollection, authStore: { isValid: false, clear } },
+        },
+        { provide: StoreNotificationService, useValue: { create: createNotification } },
+        { provide: PocketBaseUserAddressService, useValue: {} },
+        { provide: PocketBaseUserFiscalProfileService, useValue: {} },
+      ],
+    });
+
+    return TestBed.inject(pocketBaseUserProfileStore);
+  }
+
+  /**
+   * Take a fresh store up to the point where the password was accepted and a code is due.
+   * @returns {Promise<object>} The store, holding a pending login with no code requested yet.
+   */
+  async function setupWithChallenge() {
+    authWithPassword.mockRejectedValueOnce({ status: 401, response: { mfaId: 'test-mfa-id' } });
+    const store = setup();
+
+    await store.login(credentials, adminRoles);
+
+    return store;
+  }
+
+  beforeEach(() => {
+    authWithPassword.mockReset();
+    requestOTP.mockReset();
+    authWithOTP.mockReset();
+    clear.mockClear();
+    createNotification.mockClear();
+  });
+
+  it('login resolves "mfa-required" on a 401 carrying mfaId, with no toast and no code request', async () => {
+    authWithPassword.mockRejectedValueOnce({ status: 401, response: { mfaId: 'test-mfa-id' } });
+    const store = setup();
+
+    expect(await store.login(credentials)).toBe('mfa-required');
+    expect(store.loginChallenge()).toEqual({
+      email: credentials.email,
+      mfaId: 'test-mfa-id',
+      otpId: null,
+    });
+    expect(store.isAuthenticated()).toBe(false);
+    expect(store.isLoading()).toBe(false);
+    expect(requestOTP).not.toHaveBeenCalled();
+    expect(createNotification).not.toHaveBeenCalled();
+  });
+
+  it('login treats a 401 without mfaId as a plain failure', async () => {
+    authWithPassword.mockRejectedValueOnce({ status: 401, response: {} });
+    const store = setup();
+
+    expect(await store.login(credentials)).toBe('failed');
+    expect(store.loginChallenge()).toBeNull();
+    expect(createNotification).toHaveBeenCalledWith('auth.error.login', 'ERROR');
+  });
+
+  it('a new login attempt drops the previous pending login', async () => {
+    const store = await setupWithChallenge();
+
+    authWithPassword.mockRejectedValueOnce({ status: 400 });
+
+    expect(await store.login(credentials)).toBe('failed');
+    expect(store.loginChallenge()).toBeNull();
+  });
+
+  it('requestLoginCode does nothing without a pending login', async () => {
+    const store = setup();
+
+    expect(await store.requestLoginCode()).toBe(false);
+    expect(requestOTP).not.toHaveBeenCalled();
+  });
+
+  it('requestLoginCode requests the code and keeps its id, on first send and on resend', async () => {
+    const store = await setupWithChallenge();
+
+    requestOTP.mockResolvedValueOnce({ otpId: 'test-otp-1' });
+
+    expect(await store.requestLoginCode()).toBe(true);
+    expect(requestOTP).toHaveBeenCalledWith(credentials.email);
+    expect(store.loginChallenge()?.otpId).toBe('test-otp-1');
+
+    requestOTP.mockResolvedValueOnce({ otpId: 'test-otp-2' });
+
+    expect(await store.requestLoginCode()).toBe(true);
+    expect(store.loginChallenge()).toEqual({
+      email: credentials.email,
+      mfaId: 'test-mfa-id',
+      otpId: 'test-otp-2',
+    });
+  });
+
+  it('requestLoginCode returns false on error and keeps the pending login', async () => {
+    const store = await setupWithChallenge();
+
+    requestOTP.mockRejectedValueOnce({ status: 429 });
+
+    expect(await store.requestLoginCode()).toBe(false);
+    expect(store.loginChallenge()?.mfaId).toBe('test-mfa-id');
+    expect(store.isLoading()).toBe(false);
+  });
+
+  it('verifyLoginCode resolves "failed" when no code was requested', async () => {
+    const store = await setupWithChallenge();
+
+    expect(await store.verifyLoginCode('12345678')).toBe('failed');
+    expect(authWithOTP).not.toHaveBeenCalled();
+  });
+
+  it('verifyLoginCode opens the session and clears the pending login', async () => {
+    const store = await setupWithChallenge();
+
+    requestOTP.mockResolvedValueOnce({ otpId: 'test-otp-1' });
+    await store.requestLoginCode();
+    authWithOTP.mockResolvedValueOnce({ record: { id: 'u1', role: 'TENANT_ADMIN' } });
+
+    expect(await store.verifyLoginCode('12345678', adminRoles)).toBe('authenticated');
+    expect(authWithOTP).toHaveBeenCalledWith('test-otp-1', '12345678', { mfaId: 'test-mfa-id' });
+    expect(store.isAuthenticated()).toBe(true);
+    expect(store.isTenantAdmin()).toBe(true);
+    expect(store.loginChallenge()).toBeNull();
+    expect(clear).not.toHaveBeenCalled();
+  });
+
+  it('verifyLoginCode resolves "invalid-code" and keeps the pending login for another try', async () => {
+    const store = await setupWithChallenge();
+
+    requestOTP.mockResolvedValueOnce({ otpId: 'test-otp-1' });
+    await store.requestLoginCode();
+    authWithOTP.mockRejectedValueOnce({
+      status: 400,
+      response: { data: {}, message: 'Invalid or expired OTP.', status: 400 },
+    });
+
+    expect(await store.verifyLoginCode('00000000', adminRoles)).toBe('invalid-code');
+    expect(store.isAuthenticated()).toBe(false);
+    expect(store.isLoading()).toBe(false);
+    expect(store.loginChallenge()?.otpId).toBe('test-otp-1');
+    expect(createNotification).not.toHaveBeenCalled();
+  });
+
+  it('verifyLoginCode resolves "too-many-attempts" on a 429 and keeps the pending login', async () => {
+    const store = await setupWithChallenge();
+
+    requestOTP.mockResolvedValueOnce({ otpId: 'test-otp-1' });
+    await store.requestLoginCode();
+    authWithOTP.mockRejectedValueOnce({
+      status: 429,
+      response: {
+        data: {},
+        message: 'Too many attempts, please try again later with a new OTP.',
+        status: 429,
+      },
+    });
+
+    expect(await store.verifyLoginCode('12345678', adminRoles)).toBe('too-many-attempts');
+    expect(store.loginChallenge()?.otpId).toBe('test-otp-1');
+    expect(store.isLoading()).toBe(false);
+  });
+
+  it('verifyLoginCode resolves "challenge-expired" and drops the pending login', async () => {
+    const store = await setupWithChallenge();
+
+    requestOTP.mockResolvedValueOnce({ otpId: 'test-otp-1' });
+    await store.requestLoginCode();
+    authWithOTP.mockRejectedValueOnce({
+      status: 400,
+      response: { data: {}, message: 'Invalid or expired MFA session.', status: 400 },
+    });
+
+    expect(await store.verifyLoginCode('12345678', adminRoles)).toBe('challenge-expired');
+    expect(store.loginChallenge()).toBeNull();
+    expect(store.isAuthenticated()).toBe(false);
+  });
+
+  it('verifyLoginCode resolves "failed" and keeps the pending login when the request gets no answer', async () => {
+    const store = await setupWithChallenge();
+
+    requestOTP.mockResolvedValueOnce({ otpId: 'test-otp-1' });
+    await store.requestLoginCode();
+    authWithOTP.mockRejectedValueOnce({ status: 0 });
+
+    expect(await store.verifyLoginCode('12345678', adminRoles)).toBe('failed');
+    expect(store.loginChallenge()?.otpId).toBe('test-otp-1');
+  });
+
+  it('verifyLoginCode rejects a role outside allowedRoles after a valid code', async () => {
+    const store = await setupWithChallenge();
+
+    requestOTP.mockResolvedValueOnce({ otpId: 'test-otp-1' });
+    await store.requestLoginCode();
+    authWithOTP.mockResolvedValueOnce({ record: { id: 'u1', role: 'PARTNER' } });
+
+    expect(await store.verifyLoginCode('12345678', adminRoles)).toBe('role-rejected');
+    expect(clear).toHaveBeenCalledTimes(1);
+    expect(store.isAuthenticated()).toBe(false);
+    expect(store.user()).toBeNull();
+    expect(store.loginChallenge()).toBeNull();
+  });
+
+  it('cancelLoginChallenge drops the pending login', async () => {
+    const store = await setupWithChallenge();
+
+    store.cancelLoginChallenge();
+
+    expect(store.loginChallenge()).toBeNull();
+  });
+
+  it('logout drops the pending login', async () => {
+    const store = await setupWithChallenge();
+
+    store.logout();
+
+    expect(store.loginChallenge()).toBeNull();
+  });
+});
