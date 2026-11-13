@@ -1,7 +1,7 @@
 import { DIALOG_DATA } from '@angular/cdk/dialog';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { SharedConfirmFeatureComponent } from './shared-confirm-feature.component';
@@ -86,5 +86,50 @@ describe('SharedConfirmFeatureComponent', () => {
     expect(rendered).toContain('<strong>');
     expect(rendered).toContain('&lt;b&gt;');
     expect(rendered).not.toContain('<b>x</b>');
+  });
+
+  it('should escape non-string params to prevent XSS injection via arrays or objects', async () => {
+    await setup({
+      ...defaultData,
+      params: { name: ['<img src=x onerror=alert(1)>'] },
+    });
+
+    const rendered = messageOf();
+
+    expect(rendered).not.toContain('<img');
+    expect(rendered).toContain('&lt;img');
+  });
+
+  it('should handle non-string SafeHtml messages without calling translate.instant and throwing TypeError', async () => {
+    await TestBed.configureTestingModule({
+      imports: [SharedConfirmFeatureComponent, TranslateModule.forRoot()],
+      providers: [
+        provideZonelessChangeDetection(),
+        {
+          provide: DIALOG_DATA,
+          useFactory: () => {
+            const sanitizer = TestBed.inject(DomSanitizer);
+            const safeMessage: SafeHtml = sanitizer.bypassSecurityTrustHtml(
+              '<em>Safe custom HTML</em>'
+            );
+
+            return {
+              ...defaultData,
+              message: safeMessage,
+            };
+          },
+        },
+      ],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(SharedConfirmFeatureComponent);
+    component = fixture.componentInstance;
+    translate = TestBed.inject(TranslateService);
+    translate.use('en');
+    fixture.detectChanges();
+
+    const rendered = messageOf();
+
+    expect(rendered).toContain('<em>Safe custom HTML</em>');
   });
 });
