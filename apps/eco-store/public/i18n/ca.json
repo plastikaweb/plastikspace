@@ -85,7 +85,8 @@
       "categoryIcon": "Icona de la categoria {category}",
       "closeSidenav": "Tancar menú lateral",
       "openSidenav": "Obrir menú lateral",
-      "ecoIcon": "Icona ecològica"
+      "ecoIcon": "Icona ecològica",
+      "breadcrumbsNavigation": "Fil d'Ariadna"
     },
     "paginator": {
       "firstPage": "Primera pàgina",
