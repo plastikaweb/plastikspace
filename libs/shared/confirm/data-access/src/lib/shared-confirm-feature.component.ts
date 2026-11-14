@@ -33,13 +33,24 @@ export class SharedConfirmFeatureComponent {
   protected readonly icon = computed(() => this.data.icon || 'help_outline');
 
   protected readonly message = computed(() => {
+    // SECURITY (XSS): If the message is already SafeHtml (not a string), skip translation (instant)
+    // to prevent runtime TypeError in ngx-translate.
+    if (typeof this.data.message !== 'string') {
+      return this.data.message;
+    }
+
     const params = this.data.params;
+    // SECURITY (XSS): Escape user-controlled parameters to prevent Reflected XSS.
+    // Numbers are preserved unescaped to retain ICU pluralization functionality in ngx-translate.
+    // All other types (including arrays/objects) are stringified and HTML-escaped.
     const escapedParams = params
       ? Object.fromEntries(
-          Object.entries(params).map(([key, value]) => [
-            key,
-            typeof value === 'string' ? escapeHtml(value) : value,
-          ])
+          Object.entries(params).map(([key, value]) => {
+            if (typeof value === 'number') {
+              return [key, value];
+            }
+            return [key, escapeHtml(String(value ?? ''))];
+          })
         )
       : params;
     const translated = this.#translate.instant(this.data.message, escapedParams);

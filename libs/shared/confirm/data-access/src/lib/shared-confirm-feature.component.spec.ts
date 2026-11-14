@@ -87,4 +87,44 @@ describe('SharedConfirmFeatureComponent', () => {
     expect(rendered).toContain('&lt;b&gt;');
     expect(rendered).not.toContain('<b>x</b>');
   });
+
+  it('should return non-string messages directly (e.g. SafeHtml objects) to prevent split/runtime crashes', async () => {
+    const fakeSafeHtml = {
+      changingThisBreaksApplicationSecurity: 'bypass',
+      toString: () => '<span>Safe Message</span>',
+    };
+    await setup({
+      ...defaultData,
+      message: fakeSafeHtml,
+    });
+
+    const rendered = messageOf();
+    expect(rendered).toBe(fakeSafeHtml.toString());
+  });
+
+  it('should escape HTML in non-string params like arrays and objects to prevent XSS bypasses', async () => {
+    await setup({
+      ...defaultData,
+      params: { name: ['<img src=x onerror=alert(2)>', 'safe'] },
+    });
+
+    const rendered = messageOf();
+    expect(rendered).not.toContain('<img');
+    expect(rendered).toContain('&lt;img');
+  });
+
+  it('should preserve numbers unescaped to retain ICU pluralization functionality', async () => {
+    await setup(
+      {
+        ...defaultData,
+        params: { count: 123 },
+      },
+      {
+        'test.message': 'There are {{count}} items',
+      }
+    );
+
+    const rendered = messageOf();
+    expect(rendered).toContain('There are 123 items');
+  });
 });
