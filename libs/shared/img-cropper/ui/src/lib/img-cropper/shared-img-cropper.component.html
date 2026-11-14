@@ -90,6 +90,8 @@
             matIconButton
             type="button"
             class="hover:bg-primary-50/10! shadow-sm transition-transform hover:scale-105!"
+            [attr.aria-label]="'common.image.crop.zoomOut' | translate"
+            [matTooltip]="'common.image.crop.zoomOut' | translate"
             (click)="onZoomChange(zoom() - 0.1)">
             <mat-icon>remove</mat-icon>
           </button>
@@ -100,6 +102,8 @@
             matIconButton
             type="button"
             class="hover:bg-primary-50/10! shadow-sm transition-transform hover:scale-105!"
+            [attr.aria-label]="'common.image.crop.zoomIn' | translate"
+            [matTooltip]="'common.image.crop.zoomIn' | translate"
             (click)="onZoomChange(zoom() + 0.1)">
             <mat-icon>add</mat-icon>
           </button>
@@ -143,7 +147,12 @@
       <mat-icon class="scale-110">error_outline</mat-icon>
       <p>{{ error.key | translate: error.params }}</p>
     </div>
-    <button matIconButton type="button" (click)="onClearError()">
+    <button
+      matIconButton
+      type="button"
+      [attr.aria-label]="'common.close' | translate"
+      [matTooltip]="'common.close' | translate"
+      (click)="onClearError()">
       <mat-icon>close</mat-icon>
     </button>
   </div>
