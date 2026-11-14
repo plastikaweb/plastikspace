@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-11] - Eco: shared token base in `libs/eco/styles` and the AQ-22 secondary colour (AREF-09)
+
+### Added
+
+- **`libs/eco/styles`** (project `eco-styles`, `scope:eco` + `type:util`): a styles-only library with one file, `src/_eco_tokens.css`, the Material 3 token base of the eco platform. No TypeScript, no path alias, no targets; `project.json` is hand-written because no generator produces a styles-only library (AP-0 0.6b · AREF-09, [#123kjkdp4kt](https://app.clickup.com/t/123kjkdp4kt)).
+- **`eco-admin`**: loads `eco_tokens`, so it ships the brand palette for the first time. Its stylesheet had no `--mat-sys-*` colour role before (AREF-09, [#123kjkdp4kt](https://app.clickup.com/t/123kjkdp4kt)).
+
+### Changed
+
+- **`apps/eco-store/src/styles/eco-store-theme.css`** moved to `libs/eco/styles/src/_eco_tokens.css` with `git mv`, byte-identical, and `styles.scss` loads it as `eco_tokens` in the same position. The production stylesheet of the storefront is byte-identical before and after the move (AREF-09, [#123kjkdp4kt](https://app.clickup.com/t/123kjkdp4kt)).
+- **`apps/eco-store/project.json`** and **`apps/eco-admin/project.json`**: `libs/eco/styles/src` joins `stylePreprocessorOptions.includePaths`, and both declare `"implicitDependencies": ["eco-styles"]`. A Sass include path creates no edge in the Nx project graph, so without that line `nx affected` would skip both apps when a token changes.
+- **`secondary` colour (AQ-22)**: the seed moves from `#749E5D` to `#4c825f`, a leaf green at OKLCH hue 155, 15° away from `primary` where it sat 2° away. 26 lines of `_eco_tokens.css` change, all of them `secondary`: the `50`–`950` palette, the eight colour roles and their six high-contrast values. **The storefront changes colour** wherever it uses a `secondary` role, in light, dark and high contrast (AREF-09, [#123kjkdp4kt](https://app.clickup.com/t/123kjkdp4kt)).
+
+### Notes
+
+The AQ-22 change was ruled on 2026-09-08 and the eco-admin documents recorded it as applied at design round 33. It never reached any branch: the patched file existed only as an unreferenced git object. It lands here in its own commit, so it can be reverted without undoing the move.
+
+Nx module boundaries do not cover this library. `includePaths` is build configuration, not a TypeScript import, so an app outside the eco family that added `libs/eco/styles/src` would build without a warning. The rule is held by review.
+
 ## [2026-11-11] - Auth: roles, role guard and second-factor login in the PocketBase data-access library (AREF-06)
 
 ### Added
