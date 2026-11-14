@@ -48,4 +48,15 @@ describe('LanguageSwitcherComponent', () => {
     component.onSelect('ca');
     expect(emitSpy).not.toHaveBeenCalled();
   });
+
+  it('should set aria-current="true" on current language menu item when opened', () => {
+    const trigger: HTMLButtonElement = fixture.nativeElement.querySelector('button[matIconButton]');
+    trigger.click();
+    fixture.detectChanges();
+
+    const menuItems = document.querySelectorAll<HTMLButtonElement>('button[mat-menu-item]');
+    expect(menuItems.length).toBe(2);
+    expect(menuItems[0].getAttribute('aria-current')).toBe('true');
+    expect(menuItems[1].getAttribute('aria-current')).toBeNull();
+  });
 });
