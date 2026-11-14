@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { LlecoopProductWithQuantity } from '@plastik/llecoop/entities';
 import { LlecoopProductUnitStepPipe } from '@plastik/llecoop/product/product-unit-step';
 import { LlecoopProductUnitSuffixPipe } from '@plastik/llecoop/product/product-unit-suffix';
@@ -24,14 +25,13 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
     MatFormFieldModule,
     MatButtonModule,
     MatIconModule,
-    MatDividerModule,
+    MatTooltipModule,
     LlecoopProductUnitSuffixPipe,
     LlecoopProductUnitStepPipe,
   ],
   templateUrl: './user-order-mini-cart.html',
   styleUrls: ['./user-order-mini-cart.scss'],
   host: {
-    role: 'listbox',
     'aria-label': 'carret de la compra',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
