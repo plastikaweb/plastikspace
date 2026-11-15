@@ -7,6 +7,11 @@
 @use 'core_table_material';
 @use 'core_a11y';
 
+@use 'base';
+
+@use '@ngxpert/hot-toast/src/styles/styles.scss';
+@use 'notification-ui-hot-toast';
+
 /* `eco_tokens` is the shared eco M3 token base, `libs/eco/styles/src/_eco_tokens.css`,
    which eco-store consumes too (AREF-09, TASKS AP-0 0.6b). It ends in a
    `@custom-variant`, so it has to stay after `tailwindcss`.

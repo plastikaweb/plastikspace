@@ -1,0 +1,16 @@
+{
+  "name": "eco-admin-auth-data-access",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/eco-admin/auth/data-access/src",
+  "prefix": "eco-admin",
+  "projectType": "library",
+  "tags": ["scope:eco-admin", "type:data-access"],
+  "targets": {
+    "test": {
+      "executor": "@nx/vitest:test"
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

@@ -27,6 +27,8 @@ export const mockPocketBase = {
   }),
   authStore: {
     clear: vi.fn(),
+    // A plain function, so a mock reset cannot strip the unsubscribe callback it returns.
+    onChange: (): (() => void) => () => undefined,
     isValid: true,
     record: { id: '123', email: 'test@test.com' } as Record<string, unknown>,
   },

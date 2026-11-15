@@ -140,6 +140,7 @@ Some apps require a backend to be running. These commands start both:
 
 | Application                                   | Stack                | Description                         |
 | :-------------------------------------------- | :------------------- | :---------------------------------- |
+| [**eco-admin**](apps/eco-admin/README.md)     | PocketBase, Signals  | Administration panel for eco-store. |
 | [**eco-store**](apps/eco-store/README.md)     | PocketBase, Signals  | Modern e-commerce showcase.         |
 | [**llecoop**](apps/llecoop/README.md)         | Firebase, NgRx       | Collaborative shopping application. |
 | [**nasa-images**](apps/nasa-images/README.md) | Public API, Material | NASA imagery explorer.              |

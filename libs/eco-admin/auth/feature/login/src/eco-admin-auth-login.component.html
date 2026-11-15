@@ -1,0 +1,132 @@
+<header class="login__theme">
+  <button
+    type="button"
+    class="login__theme-button"
+    [attr.aria-label]="
+      (isDark() ? 'auth.login.themeToLight' : 'auth.login.themeToDark') | translate
+    "
+    (click)="toggleTheme()">
+    <mat-icon>{{ isDark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+  </button>
+</header>
+
+<main id="mainContent" tabindex="-1" class="login__main">
+  <div class="login__column">
+    <header class="login__header">
+      <span class="login__disc"><mat-icon>eco</mat-icon></span>
+      <h1 class="login__title">{{ appName }}</h1>
+      <p class="login__subtitle">{{ 'auth.login.subtitle' | translate }}</p>
+    </header>
+
+    <div
+      class="login__card"
+      [class.login__card--shake-odd]="facade.shake() === 'odd'"
+      [class.login__card--shake-even]="facade.shake() === 'even'">
+      <div aria-live="assertive">
+        @if (facade.error(); as error) {
+          <div
+            #errorBlock
+            class="login__notice"
+            tabindex="-1"
+            [class.login__notice--error]="error !== 'member'"
+            [class.login__notice--member]="error === 'member'">
+            <mat-icon>error</mat-icon>
+            <p class="login__notice-text">
+              <!-- Literal keys, one case each: the i18n validator cannot follow a key built at run time. -->
+              @switch (error) {
+                @case ('member') {
+                  <strong>{{ 'auth.login.error.member.title' | translate }}</strong>
+                  {{ 'auth.login.error.member.body' | translate }}
+                }
+                @case ('secondStep') {
+                  <strong>{{ 'auth.login.error.secondStep.title' | translate }}</strong>
+                  {{ 'auth.login.error.secondStep.body' | translate }}
+                }
+                @default {
+                  <strong>{{ 'auth.login.error.wrong.title' | translate }}</strong>
+                  {{ 'auth.login.error.wrong.body' | translate }}
+                }
+              }
+            </p>
+          </div>
+        }
+      </div>
+
+      @if (facade.status() === 'success') {
+        <div class="login__notice login__notice--success">
+          <mat-icon>check_circle</mat-icon>
+          <p class="login__notice-text login__notice-text--inline">
+            <strong>{{ 'auth.login.success.title' | translate }}</strong>
+            {{
+              (facade.role() === 'GLOBAL_ADMIN'
+                ? 'auth.login.success.redirectGlobal'
+                : 'auth.login.success.redirectTenant'
+              ) | translate
+            }}
+          </p>
+        </div>
+      }
+
+      <form class="login__form" [formGroup]="form" (ngSubmit)="submit()">
+        <div class="login__field">
+          <label class="login__label" for="eco-admin-login-email">
+            {{ 'auth.login.email' | translate }}
+          </label>
+          <mat-icon class="login__field-icon">mail</mat-icon>
+          <input
+            id="eco-admin-login-email"
+            class="login__input make-it-focusable"
+            type="email"
+            name="email"
+            formControlName="email"
+            autocomplete="username"
+            autocapitalize="none"
+            spellcheck="false"
+            aria-required="true"
+            (input)="facade.clearResult()" />
+        </div>
+
+        <div class="login__field">
+          <label class="login__label" for="eco-admin-login-password">
+            {{ 'auth.login.password' | translate }}
+          </label>
+          <mat-icon class="login__field-icon">key</mat-icon>
+          <input
+            id="eco-admin-login-password"
+            class="login__input login__input--with-toggle make-it-focusable"
+            name="password"
+            formControlName="password"
+            autocomplete="current-password"
+            aria-required="true"
+            [type]="isPasswordVisible() ? 'text' : 'password'"
+            (input)="facade.clearResult()" />
+          <button
+            type="button"
+            class="login__password-toggle"
+            [attr.aria-pressed]="isPasswordVisible()"
+            [attr.aria-label]="
+              (isPasswordVisible() ? 'auth.login.hidePassword' : 'auth.login.showPassword')
+                | translate
+            "
+            (click)="togglePasswordVisibility()">
+            <mat-icon>{{ isPasswordVisible() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </div>
+
+        <button
+          type="submit"
+          class="login__submit"
+          [class.login__submit--busy]="isSubmitting()"
+          [attr.aria-disabled]="isSubmitting()">
+          @if (isSubmitting()) {
+            {{ 'auth.login.submitting' | translate }}
+            <mat-icon class="login__spinner">progress_activity</mat-icon>
+          } @else {
+            {{ 'auth.login.submit' | translate }}
+            <mat-icon>arrow_forward</mat-icon>
+          }
+        </button>
+      </form>
+    </div>
+  </div>
+</main>

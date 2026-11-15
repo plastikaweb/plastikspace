@@ -36,6 +36,9 @@ This library provides the **PocketBase implementation** of the authentication lo
   - `changePassword`: PATCHes `oldPassword`/`password`/`passwordConfirm` and silently re-authenticates
     with the new password — the change rotates the user's `tokenKey`, so without the re-auth the session would die (PRV-02c).
   - `authModel`: (getter) Gets the currently authenticated user.
+  - `loggedIn`: (signal) Whether the SDK holds a valid session. It follows every change of the SDK auth store: login, logout, another tab.
+  - `refreshLoggedIn()`: Reads the session again from the SDK, updates `loggedIn` and returns the answer.
+    A token that expires by the clock raises no change event, so call it wherever the answer must be current.
 
 ## Store
 
@@ -62,6 +65,7 @@ An NgRx Signal Store for reactive authentication state management.
 - `cancelLoginChallenge()`: Drop the pending login.
 - `logout()`: Clear authentication and reset state.
 - `checkAuth()`: Check and restore session from localStorage (auto-called on init).
+  It reads the SDK session afresh on every call, so a guard may call it on each navigation and see a login, a logout or an expired token.
 - `getUserAddresses()`: Fetch all addresses for the current user.
 - `createAddress(data)`: Create a new address with optimistic update.
 - `updateAddress(id, data)`: Update an existing address with optimistic update.
@@ -96,6 +100,12 @@ const outcome = await profileStore.login(credentials, {
 ```
 
 Without `allowedRoles` every role is accepted. The message for `'role-rejected'` belongs to the calling screen; the store shows none.
+
+A screen that renders its own error for `'failed'` turns the toast off with `notifyOnFailure: false` (it defaults to `true`):
+
+```typescript
+const outcome = await profileStore.login(credentials, { notifyOnFailure: false });
+```
 
 ### Second factor (email code)
 

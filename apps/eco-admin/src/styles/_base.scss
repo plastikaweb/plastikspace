@@ -1,0 +1,61 @@
+/* Global base of eco-admin: root font, page colours and the admin-owned custom properties.
+   Only what a built screen reads lives here; each later view adds the properties it needs. */
+
+@layer base {
+  /* Metric-matched fallback, so the swap to Manrope does not move the layout. */
+  @font-face {
+    font-family: 'Manrope Fallback';
+    src:
+      local('Segoe UI'), local('Roboto'), local('Helvetica Neue'), local('Arial'),
+      local('sans-serif');
+    size-adjust: 102.5%;
+    ascent-override: 93.3%;
+    descent-override: 26.6%;
+    line-gap-override: 0%;
+    font-display: swap;
+  }
+
+  html {
+    /* The frozen mocks are drawn on a 15px root: every rem in them resolves against it. */
+    font-size: 15px;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-synthesis: none;
+    font-family: var(--mat-sys-brand-font-family, 'Manrope'), 'Manrope Fallback', var(--font-sans);
+    font-weight: var(--font-weight-regular);
+    font-variant-numeric: tabular-nums;
+
+    --app-main-border-radius: var(--radius-large);
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: var(--eco-admin-page-background);
+    color: var(--mat-sys-on-surface);
+  }
+
+  .mat-icon[role='img'] {
+    color: inherit;
+  }
+}
+
+:root {
+  /* `core_a11y` draws a single focus ring from these two. The mocks ring in primary, 2px. */
+  --focus-ring-color: var(--mat-sys-primary);
+  --focus-ring-width: 2px;
+
+  /* Page background and muted text of the admin mocks. Neither has a Material role in
+     `eco_tokens`, so they are admin-owned. The pre-paint script in index.html repeats the
+     background pair for `theme-color`; change both together. */
+  --eco-admin-page-background: light-dark(#f2f5ea, #11140e);
+  --eco-admin-on-surface-muted: light-dark(#5a614f, #aab29d);
+
+  /* Touch-sized field height of the admin design system. */
+  --admin-row-h: 48px;
+}

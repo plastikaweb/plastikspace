@@ -84,6 +84,9 @@ apps/eco-store/pocketbase/*
 apps/eco-store/.env
 apps/eco-store/pocketbase_back
 
+# Cypress local variables (test credentials for cy.loginAs)
+cypress.env.json
+
 # wrangler files
 **/.wrangler
 **/.dev.vars

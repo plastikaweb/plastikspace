@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-11] - Eco Admin: application base and password login (AP-0 0.7, part 1 of 3)
+
+### Added
+
+- **Login screen** at `/accedir`, in the new library `@plastik/eco-admin/auth/login`: own markup on a typed reactive form, a 44×44 password toggle, a submit that stays focusable while it works (`aria-disabled`), and an error block that takes the focus. A wrong password and a store member's account each get their own message; neither raises a toast (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+- **`@plastik/eco-admin/auth/data-access`**: the admitted roles (`TENANT_ADMIN`, `GLOBAL_ADMIN`), the home of each (`ecoAdminHomeFor`), `ecoAdminSessionGuard`, `ecoAdminAnonymousGuard` and `resolveReturnUrl`, which accepts only a local path as the place to go back to (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+- **Application base of eco-admin**: PocketBase, translations (`ca`, `es`; ICU; `localStorage['eco-lang']`), the theme applied before the first paint (`localStorage['eco-theme']`), Manrope, the admin-only style variables, toasts, the skip link and the page title «{view} · Eco Admin» (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+- **Provisional page** behind the session, with a way to sign out, so the login can be tried by hand before the shell exists (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+- **`cy.loginAs(role)`** in `eco-admin-e2e`: opens a session through the PocketBase API of the local instance, with credentials read from `CYPRESS_ECO_ADMIN_<ROLE>_EMAIL` / `_PASSWORD` and kept out of the command log. `cypress.env.json` is now ignored by git (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+- **`notifyOnFailure`** option in `PocketBaseLoginOptions` (`@plastik/auth/pocketbase/data-access`). `false` keeps the store from raising its toast when a login fails, for a screen that shows the error itself. The default is unchanged, and so is eco-store (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+- **`apps/eco-admin/README.md`**, and the eco-admin row in the applications table of the root README (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+
+### Changed
+
+- **eco-admin routes**: `/accedir`, `/` and a wildcard replace the empty table of the scaffold. Pa11y now checks `/accedir` too, and the Cypress suite checks that a visitor without a session lands on the login screen (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+
+### Fixed
+
+- **`PocketBaseAuthService.loggedIn`** (`@plastik/auth/pocketbase/data-access`) kept its first answer for ever: it was a `computed` over `authStore.isValid`, a plain getter that no signal tracks. It is now a signal that follows the SDK auth store, and `pocketBaseUserProfileStore.checkAuth()` reads the session afresh through the new `refreshLoggedIn()`, so a token that expires by the clock is seen too. eco-store calls `checkAuth()` once, at start, and never met the defect; the eco-admin guards call it on every navigation, and a correct login left the visitor on `/accedir` (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+- **`mockPocketBase`** (`@plastik/core/api-pocketbase/testing`): its `authStore` gains `onChange`, which the auth service now subscribes to (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+
+### Notes
+
+The guards are eco-admin's own. The shared ones send a signed-in visitor to `/` and a visitor of the wrong role to `/` as well, so a stored session of a store member would bounce between the two routes for ever. These close such a session before they redirect.
+
+The route table is temporary. `/tauler` and `/cooperatives` do not exist until the shell lands: the login's navigation falls through the wildcard to the provisional page, and a deep link loses its `returnUrl` on the way.
+
+The frozen login mock is followed except where the schema or the repository disagree with it: no «forgot password» link (no route behind it), no link to the store (the admin does not know the store's domain), and the landmark is `mainContent`, the fragment the shared skip link already uses. A login that asks for a second step gets a plain message; the emailed-code step is the third part of this row.
+
 ## [2026-11-11] - Eco Admin: tenant-context store for the signed-in administrator (AREF-03)
 
 ### Added

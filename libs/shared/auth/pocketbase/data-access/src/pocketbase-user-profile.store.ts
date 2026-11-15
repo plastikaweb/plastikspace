@@ -226,7 +226,10 @@ export const pocketBaseUserProfileStore = signalStore(
         }
 
         updateState(store, `[profile] login failed ${error}`, { isLoading: false });
-        store._notificationService.create('auth.error.login', 'ERROR');
+
+        if (options?.notifyOnFailure !== false) {
+          store._notificationService.create('auth.error.login', 'ERROR');
+        }
 
         return 'failed';
       }
@@ -578,7 +581,8 @@ export const pocketBaseUserProfileStore = signalStore(
     },
 
     checkAuth(): void {
-      if (store._authService.loggedIn()) {
+      // A fresh read, not the `loggedIn` signal: a token expires by the clock, without any event.
+      if (store._authService.refreshLoggedIn()) {
         updateState(store, `[profile] user is logged in`, {
           user: store._authService.authModel as PocketBaseUser,
           isAuthenticated: true,

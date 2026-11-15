@@ -1,4 +1,4 @@
-import { computed, inject, Injectable } from '@angular/core';
+import { DestroyRef, inject, Injectable, signal } from '@angular/core';
 import { AuthFacade, ChangePasswordData } from '@plastik/auth/entities';
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
 import { RecordAuthResponse, type AuthModel } from 'pocketbase';
@@ -8,7 +8,34 @@ import { RecordAuthResponse, type AuthModel } from 'pocketbase';
 })
 export class PocketBaseAuthService implements AuthFacade {
   readonly #pb = inject(POCKETBASE_INSTANCE);
-  loggedIn = computed(() => this.#pb.authStore.isValid);
+  readonly #isLoggedIn = signal(this.#pb.authStore.isValid);
+
+  /**
+   * Whether the SDK holds a valid session. It follows every change of the auth store (login, logout,
+   * another tab). A token that expires by the clock raises no change: call `refreshLoggedIn()` where
+   * the answer must be current.
+   */
+  readonly loggedIn = this.#isLoggedIn.asReadonly();
+
+  constructor() {
+    // `authStore.isValid` is a plain getter, not a signal: a `computed` over it would keep its first
+    // answer for ever. The auth store says when it changes, so listen to it instead.
+    const unsubscribe = this.#pb.authStore.onChange(() => this.refreshLoggedIn());
+
+    inject(DestroyRef).onDestroy(unsubscribe);
+  }
+
+  /**
+   * Reads the session again from the SDK and brings `loggedIn` up to date.
+   * @returns {boolean} Whether the session is valid right now.
+   */
+  refreshLoggedIn(): boolean {
+    const isValid = this.#pb.authStore.isValid;
+
+    this.#isLoggedIn.set(isValid);
+
+    return isValid;
+  }
 
   async login(email: string, password: string): Promise<RecordAuthResponse<AuthModel>> {
     return await this.#pb.collection('users').authWithPassword(email, password);

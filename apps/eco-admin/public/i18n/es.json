@@ -1,0 +1,52 @@
+{
+  "common": {
+    "theme": {
+      "light": "Claro",
+      "dark": "Oscuro",
+      "system": "Sistema",
+      "changedTo": "Tema de la interfaz cambiado a {theme}"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Acceso",
+      "subtitle": "Administración de cooperativas",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "showPassword": "Mostrar la contraseña",
+      "hidePassword": "Ocultar la contraseña",
+      "submit": "Entrar",
+      "submitting": "Entrando…",
+      "themeToDark": "Activar el tema oscuro",
+      "themeToLight": "Activar el tema claro",
+      "success": {
+        "title": "Sesión iniciada.",
+        "redirectTenant": "Redirigiendo al Panel…",
+        "redirectGlobal": "Redirigiendo a Cooperativas…"
+      },
+      "error": {
+        "wrong": {
+          "title": "No hemos podido iniciar la sesión.",
+          "body": "El correo electrónico o la contraseña no son correctos. Revísalos y vuelve a intentarlo."
+        },
+        "member": {
+          "title": "Esta cuenta es de socia.",
+          "body": "Eco Admin es solo para el equipo de administración. Para comprar, entra en la tienda de tu cooperativa."
+        },
+        "secondStep": {
+          "title": "No hemos podido iniciar la sesión.",
+          "body": "Esta cuenta pide un segundo paso de verificación que aún no está disponible."
+        }
+      }
+    }
+  },
+  "shell": {
+    "account": {
+      "logout": "Cerrar sesión"
+    },
+    "placeholder": {
+      "title": "Sección en construcción",
+      "body": "Esta sección aún no está disponible."
+    }
+  }
+}

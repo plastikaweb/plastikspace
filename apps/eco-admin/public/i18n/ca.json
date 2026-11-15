@@ -1,0 +1,52 @@
+{
+  "common": {
+    "theme": {
+      "light": "Clar",
+      "dark": "Fosc",
+      "system": "Sistema",
+      "changedTo": "Tema de la interfície canviat a {theme}"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Accés",
+      "subtitle": "Administració de cooperatives",
+      "email": "Adreça electrònica",
+      "password": "Contrasenya",
+      "showPassword": "Mostra la contrasenya",
+      "hidePassword": "Amaga la contrasenya",
+      "submit": "Entra",
+      "submitting": "Entrant…",
+      "themeToDark": "Activa el tema fosc",
+      "themeToLight": "Activa el tema clar",
+      "success": {
+        "title": "Sessió iniciada.",
+        "redirectTenant": "Redirigint al Tauler…",
+        "redirectGlobal": "Redirigint a Cooperatives…"
+      },
+      "error": {
+        "wrong": {
+          "title": "No hem pogut iniciar la sessió.",
+          "body": "L''adreça electrònica o la contrasenya no són correctes. Revisa-les i torna-ho a provar."
+        },
+        "member": {
+          "title": "Aquest compte és de sòcia.",
+          "body": "Eco Admin és només per a l''equip d''administració. Per comprar, entra a la botiga de la teva cooperativa."
+        },
+        "secondStep": {
+          "title": "No hem pogut iniciar la sessió.",
+          "body": "Aquest compte demana un segon pas de verificació que encara no està disponible."
+        }
+      }
+    }
+  },
+  "shell": {
+    "account": {
+      "logout": "Tanca la sessió"
+    },
+    "placeholder": {
+      "title": "Secció en construcció",
+      "body": "Aquesta secció encara no està disponible."
+    }
+  }
+}
