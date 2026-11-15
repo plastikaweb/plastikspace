@@ -1,5 +1,5 @@
 {
-  "$comment": "Task homes: each pairs one ClickUp list with one TASKS doc (companions may only hold referrals). Read by tools/scripts/sync-eco-store-tasks.cjs. A new doc here also needs .prettierrc, .markdownlint-cli2.yaml and the TASK_DOCS regex in .husky/pre-commit; tools/scripts/test-sync-tasks.sh checks all three.",
+  "$comment": "Task homes: each pairs one ClickUp list with one TASKS doc (companions may only hold referrals). Read by tools/scripts/sync-eco-store-tasks.cjs and tools/scripts/task.cjs (specs: read-only by task.cjs, never synced). A new tasks or companion doc here also needs .prettierrc, .markdownlint-cli2.yaml and the TASK_DOCS regex in .husky/pre-commit; tools/scripts/test-sync-tasks.sh checks all three.",
   "homes": [
     {
       "key": "eco-store",
@@ -13,7 +13,8 @@
       "name": "Eco Admin",
       "listId": "901521507572",
       "tasks": "apps/eco-admin/TASKS.md",
-      "companions": []
+      "companions": [],
+      "specs": ["apps/eco-admin/REQUIREMENTS.md"]
     },
     {
       "key": "eco-shared",

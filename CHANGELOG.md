@@ -62,6 +62,30 @@ The longest password of both logins is 25 characters until eco-store BUG-016 rai
 
 The production build of eco-admin weighs 768.96 kB initial: over its 700 kB warning budget, under the 900 kB error budget.
 
+## [2026-11-15] - Single-task reader for the eco task docs (META-10)
+
+### Added
+
+- **`tools/scripts/task.cjs`** (`yarn task <ID>`): prints one task from the eco task docs instead of the whole file. It takes a task ID in any case, a ClickUp ID, or a row label such as `0.7` with `--home`. It prints the definition (a heading block with its sub-headings, a `- **ID**` bullet with its children, or a key-column table row as a `column : value` card), then every other line that names the ID. With no definition it exits 2 and lists the mentions or similar IDs, and it names the docs it could not find. `--ref` reads from a git ref and `--full` stops clipping long cells (META-10, [#123kjkdqcmy](https://app.clickup.com/t/123kjkdqcmy)).
+- **`specs` in `tools/scripts/task-homes.json`**: `apps/eco-admin/REQUIREMENTS.md` is read by `task.cjs` only; the ClickUp sync never reads it (META-10, [#123kjkdqcmy](https://app.clickup.com/t/123kjkdqcmy)).
+- Eleven fixture tests for the reader in `tools/scripts/test-sync-tasks.sh`, starting with the case that made the tool necessary: an ID that only appears in a notes cell exits 2 and shows the mention, never an empty block (META-10, [#123kjkdqcmy](https://app.clickup.com/t/123kjkdqcmy)).
+
+## [2026-11-15] - Claude Code: smaller context and hard guards (META-09)
+
+### Added
+
+- **`.claude/hooks/guard.sh`**, a `PreToolUse` hook wired in `.claude/settings.json`. It blocks Edit/Write on `apps/eco-store/pocketbase/pb_schema.json` and `yarn.lock`, blocks git `commit`/`push`/`merge` that skip the Husky hooks (`--no-verify`, `commit -n` and combined short flags, `HUSKY=0`, `core.hooksPath`), and asks before killing, starting or copying the local PocketBase on :8090. Quoted text and heredoc bodies are ignored, so a commit message that mentions a flag passes (META-09, [#123kjkdqcgt](https://app.clickup.com/t/123kjkdqcgt)).
+- **`skillOverrides`** in `.claude/settings.json`: the 18 design skills of the impeccable family are listed by name only, so their long descriptions no longer load in every session (META-09, [#123kjkdqcgt](https://app.clickup.com/t/123kjkdqcgt)).
+- **`.claude/CLAUDE.md`**: a section saying the repo's own rules win over a generic skill, with the first known conflict (`angular-forms` recommends Signal Forms; the repo uses Formly with `mat-form-field`), and a section describing the guards (META-09, [#123kjkdqcgt](https://app.clickup.com/t/123kjkdqcgt)).
+
+### Changed
+
+- **Root `CLAUDE.md`** goes from 61.6 KB to 24.0 KB: the `autoskills` block, which repeated the skill list Claude Code already injects and pointed at 12 unlinked skills, is replaced by a short `## Skills` section. The project counts that went stale are gone, three file names are fixed (`.cz-config.cjs`, `decorate-angular-cli.cjs`, `validate-i18n-keys.cjs`), and the line about the nonexistent `jest.preset.js` is dropped (META-09, [#123kjkdqcgt](https://app.clickup.com/t/123kjkdqcgt)).
+
+### Notes
+
+The hook command uses `$CLAUDE_PROJECT_DIR`, which is the main checkout: a session started in a worktree runs the main checkout's `guard.sh`, so the guards are live everywhere only once this is on `develop`. Without `jq` the hook warns and lets every call through.
+
 ## [2026-11-11] - Eco Admin: application base and password login (AP-0 0.7, part 1 of 3)
 
 ### Added
