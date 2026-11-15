@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-15] - Claude Code: smaller context and hard guards (META-09)
+
+### Added
+
+- **`.claude/hooks/guard.sh`**, a `PreToolUse` hook wired in `.claude/settings.json`. It blocks Edit/Write on `apps/eco-store/pocketbase/pb_schema.json` and `yarn.lock`, blocks git `commit`/`push`/`merge` that skip the Husky hooks (`--no-verify`, `commit -n` and combined short flags, `HUSKY=0`, `core.hooksPath`), and asks before killing, starting or copying the local PocketBase on :8090. Quoted text and heredoc bodies are ignored, so a commit message that mentions a flag passes (META-09, [#123kjkdqcgt](https://app.clickup.com/t/123kjkdqcgt)).
+- **`skillOverrides`** in `.claude/settings.json`: the 18 design skills of the impeccable family are listed by name only, so their long descriptions no longer load in every session (META-09, [#123kjkdqcgt](https://app.clickup.com/t/123kjkdqcgt)).
+- **`.claude/CLAUDE.md`**: a section saying the repo's own rules win over a generic skill, with the first known conflict (`angular-forms` recommends Signal Forms; the repo uses Formly with `mat-form-field`), and a section describing the guards (META-09, [#123kjkdqcgt](https://app.clickup.com/t/123kjkdqcgt)).
+
+### Changed
+
+- **Root `CLAUDE.md`** goes from 61.6 KB to 24.0 KB: the `autoskills` block, which repeated the skill list Claude Code already injects and pointed at 12 unlinked skills, is replaced by a short `## Skills` section. The project counts that went stale are gone, three file names are fixed (`.cz-config.cjs`, `decorate-angular-cli.cjs`, `validate-i18n-keys.cjs`), and the line about the nonexistent `jest.preset.js` is dropped (META-09, [#123kjkdqcgt](https://app.clickup.com/t/123kjkdqcgt)).
+
+### Notes
+
+The hook command uses `$CLAUDE_PROJECT_DIR`, which is the main checkout: a session started in a worktree runs the main checkout's `guard.sh`, so the guards are live everywhere only once this is on `develop`. Without `jq` the hook warns and lets every call through.
+
 ## [2026-11-11] - Eco Admin: application base and password login (AP-0 0.7, part 1 of 3)
 
 ### Added

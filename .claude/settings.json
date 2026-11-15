@@ -9,5 +9,47 @@
   },
   "enabledPlugins": {
     "nx@nx-claude-plugins": true
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/guard.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/guard.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "skillOverrides": {
+    "adapt": "name-only",
+    "animate": "name-only",
+    "audit": "name-only",
+    "bolder": "name-only",
+    "clarify": "name-only",
+    "colorize": "name-only",
+    "critique": "name-only",
+    "delight": "name-only",
+    "distill": "name-only",
+    "extract": "name-only",
+    "frontend-design": "name-only",
+    "harden": "name-only",
+    "normalize": "name-only",
+    "onboard": "name-only",
+    "optimize": "name-only",
+    "polish": "name-only",
+    "quieter": "name-only",
+    "teach-impeccable": "name-only"
   }
 }
