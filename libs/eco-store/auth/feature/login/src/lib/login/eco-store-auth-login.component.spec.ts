@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { AUTH_FORM_FACADE } from '@plastik/auth/entities';
+import { AUTH_FORM_FACADE, AUTH_LOGIN_ERRORS, AuthFormMessage } from '@plastik/auth/entities';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { mockPocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access/testing';
 import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments/testing';
@@ -24,8 +24,9 @@ describe('EcoStoreAuthLoginComponent', () => {
       getConfig: () => [],
       getSubmitFormConfig: () => ({}),
     },
-    extraLinks: signal([]),
+    error: signal<AuthFormMessage | null>(null),
     onSubmit: vi.fn(),
+    clearError: vi.fn(),
   };
 
   const navigationServiceMock = {
@@ -57,7 +58,33 @@ describe('EcoStoreAuthLoginComponent', () => {
     fixture.detectChanges();
   });
 
+  afterEach(() => authFacadeMock.error.set(null));
+
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should show no notice before an attempt', () => {
+    expect(fixture.nativeElement.querySelector('plastik-shared-alert')).toBeNull();
+  });
+
+  it('should say on the screen why an attempt failed', async () => {
+    authFacadeMock.error.set(AUTH_LOGIN_ERRORS.wrong);
+    await fixture.whenStable();
+
+    const alert: HTMLElement | null = fixture.nativeElement.querySelector('plastik-shared-alert');
+
+    expect(alert?.getAttribute('role')).toBe('alert');
+    expect(alert?.classList).toContain('plastik-alert--error');
+    expect(alert?.textContent).toContain('auth.login.error.wrong.title');
+    expect(alert?.textContent).toContain('auth.login.error.wrong.body');
+  });
+
+  it('should have the facade forget the failure when the screen goes away', () => {
+    authFacadeMock.clearError.mockClear();
+
+    fixture.destroy();
+
+    expect(authFacadeMock.clearError).toHaveBeenCalledTimes(1);
   });
 });

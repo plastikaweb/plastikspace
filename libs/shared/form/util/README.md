@@ -14,6 +14,7 @@
     - [Addons Example](#addons-example)
     - [URL Validator Example](#url-validator-example)
     - [Plain Input Provider](#plain-input-provider)
+    - [Addons Provider](#addons-provider)
   - [API Reference](#api-reference)
     - [Addons Extension](#addons-extension-1)
     - [URL Validator](#url-validator)
@@ -47,6 +48,8 @@ Custom form validators including:
 Specialized providers to simplify Formly configuration in standalone components and routes:
 
 - **providePlainInputFormly**: Registers standard `input` and `textarea` types with their associated validation message extensions.
+- **provideFormlyAddons**: Registers the `addons` wrapper and the extension that applies it to every field with `props.addonLeft` or `props.addonRight`.
+  For routes that want a leading or trailing icon, text or button without the whole Formly Material set.
 - **registerAuthValidatorsTranslateExtension**: Registers translation-based validation messages for authentication-specific fields like `password`, `passwordMatch`, and `username`.
 
 ## Usage
@@ -103,6 +106,20 @@ const fields: FormlyFieldConfig[] = [
 providers: [providePlainInputFormly()];
 ```
 
+### Addons Provider
+
+```typescript
+// Alongside a Formly core provider: on its own it registers no field type
+providers: [providePlainInputFormly(), provideFormlyAddons()];
+```
+
+The measures and the colour of an addon icon are said in its `classes`. Material sizes and pads the icon of a prefix or a suffix with rules of its own,
+so a Tailwind utility has to be important to win:
+
+```typescript
+addonLeft: { type: 'icon', icon: 'mail', classes: 'size-[18px]! text-[18px]! text-sys-primary!' };
+```
+
 ## API Reference
 
 ### Addons Extension
@@ -127,9 +144,15 @@ interface AddonConfig {
   aria?: string;
 
   /**
-   * Type of the addon (icon or button)
+   * Type of the addon (icon, button or text)
    */
-  type?: 'icon' | 'button';
+  type?: 'icon' | 'button' | 'text';
+
+  /**
+   * CSS classes for the addon, in any shape a `[class]` binding takes.
+   * A string may hold several classes separated by spaces.
+   */
+  classes?: string | string[] | Set<string> | { [klass: string]: boolean | number | string };
 
   /**
    * Whether the icon should be hidden from screen readers

@@ -15,13 +15,66 @@ It ensures consistent form structures and validation rules for login, registrati
 
 ## Usage
 
-This library exports form configuration functions that can be injected or provided to authentication components.
+This library exports three functions, each returning the Formly configuration of one authentication form. A route provides one under `FORM_TOKEN`:
 
-- `loginFormConfig()`: Returns Formly configuration for the login form.
-- `requestPasswordFormConfig()`: Returns Formly configuration for the "forgot password" form.
-- `resetPasswordFormConfig()`: Returns Formly configuration for the password reset form.
+- `loginFormConfig(options?)`: the login form.
+- `requestPasswordFormConfig(options?)`: the "forgot password" form.
+- `resetPasswordFormConfig(options?)`: the form that sets a new password.
+
+```ts
+{ provide: FORM_TOKEN, useFactory: loginFormConfig }
+```
 
 These configurations are designed to be used with `@plastik/shared/form` and integrate with shared validation and translation systems.
+
+### One set of forms for every app
+
+The three functions say which fields a form has, what they ask for and how they look:
+
+| Form            | Fields                        | Rules                                                                                            |
+| --------------- | ----------------------------- | ------------------------------------------------------------------------------------------------ |
+| Login           | `email`, `password`           | Both required; a valid address; the password between 8 and 25 characters.                        |
+| Forgot password | `email`                       | Required; a valid address.                                                                       |
+| Reset password  | `password`, `confirmPassword` | Both required, between 8 and 25 characters, and equal (`passwordMatch`, shown under the second). |
+
+Every field says what it holds (`name`, and `autocomplete` set to `username`, `current-password` or `new-password`), so a browser or a password manager can fill it.
+
+The look is the same wherever a form is drawn, and is written once, in `auth-form-fields.ts`, which the library does not export:
+
+- The label rests inside the field and floats to its border once the field has the focus or a value (no `floatLabel`). The placeholder shows once it floats.
+- No required asterisk is drawn.
+- A field always keeps the room of one message line under it (`subscriptSizing: 'fixed'`), so a form does not grow when an error shows.
+- Each field opens with an icon (`mail`, `key`).
+- Stacked fields are spaced by `FIELD_GROUP_CLASSES` (`flex flex-col gap-2`).
+
+eco-store and eco-admin both take the three forms **with no option**: their auth forms are the same.
+
+### Options
+
+An app that needs a difference passes options and writes no form of its own. Options change how the fields look, never which fields there are or what they ask for:
+
+| Function                    | Options                                                                      |
+| --------------------------- | ---------------------------------------------------------------------------- |
+| `loginFormConfig`           | `fieldGroupClassName`, `fieldProps`, `emailProps`, `passwordProps`           |
+| `requestPasswordFormConfig` | `fieldProps`                                                                 |
+| `resetPasswordFormConfig`   | `fieldGroupClassName`, `fieldProps`, `passwordProps`, `confirmPasswordProps` |
+
+```ts
+{
+  provide: FORM_TOKEN,
+  useFactory: () => loginFormConfig({ fieldProps: { subscriptSizing: 'dynamic' } }),
+}
+```
+
+`fieldProps` reaches every field of the form; the others one field each, laid over `fieldProps`, which is laid over the defaults.
+Props are laid key by key, so a nested value such as `attributes` is replaced whole. A key set to `undefined` takes the default away.
+In the reset form a longer `maxLength` belongs in `fieldProps`: the second field must take whatever the first one does.
+
+### What the route must bring
+
+- The field types: `providePlainInputFormly()` for the address, `providePasswordWithVisibilityFormly()` for a password.
+- The addons wrapper, `provideFormlyAddons()` of `@plastik/shared/form/util`, for the leading icons. Without it Formly drops them in silence.
+- An icon font that holds `mail` and `key` (and `visibility`, `visibility_off` for the password toggle).
 
 ## Running unit tests
 

@@ -12,10 +12,11 @@
       - [Methods](#methods)
     - [Login outcome and roles](#login-outcome-and-roles)
     - [Second factor (email code)](#second-factor-email-code)
+  - [Recovery facades](#recovery-facades)
   - [Guards](#guards)
   - [Running unit tests](#running-unit-tests)
 
-This library provides the **PocketBase implementation** of the authentication logic. It implements the `AuthFacade` contract defined in [`@plastik/shared/auth/feature`](../../feature/README.md).
+This library provides the **PocketBase implementation** of the authentication logic. It implements the `AuthFacade` contract defined in [`@plastik/auth/entities`](../../entities/README.md).
 
 **Key Features:**
 
@@ -130,6 +131,27 @@ The flow follows PocketBase's MFA protocol and only runs when the `users` collec
 These outcomes were checked against a local PocketBase 0.36 with `otp` and `mfa` enabled (2026-11-11).
 A wrong code and an expired pending login are both a 400 with an empty body, so `'challenge-expired'` is read from the server message ("Invalid or expired MFA session.").
 If that text changes it degrades to `'invalid-code'`.
+
+## Recovery facades
+
+The two steps of «I forgot my password» are the same in every app that signs in against PocketBase, so their facades live here.
+Both implement `AuthFormFacade` (`@plastik/auth/entities`), take their form from the route under `FORM_TOKEN`, and are `@Injectable()` without `providedIn`:
+a route provides one under `AUTH_FORM_FACADE`, directly or through a subclass of its own (eco-store adds its activity bar that way).
+
+- **`PocketBaseRequestPasswordFacadeService`** (`AuthFormFacade<RequestPasswordData>`): asks for the email with the link.
+  `onSubmit()` never rejects, ignores a request made while another one runs, and **always** ends on `POCKETBASE_REQUEST_PASSWORD_SENT_URL`
+  (`/recuperar-contrasenya-enviada`), whether the request worked or broke: the screen must not tell whether an address has an account.
+  An app that uses this facade serves that path.
+- **`PocketBaseResetPasswordFacadeService`** (`AuthFormFacade<ResetPasswordData>`): sets the new password with the `token` query parameter of the address.
+  How the attempt ended is said on the screen, never in a toast, and the screen stays where it is: the message carries the link to the next step.
+  - `success()`: `AUTH_RESET_PASSWORD_MESSAGES.done` once the password is changed (its link goes to `/accedir`).
+  - `error()`: `AUTH_RESET_PASSWORD_MESSAGES.expired` when the store refuses the change or throws, **and from the start when the address has no token**
+    (its link goes to `/recuperar-contrasenya`). The store answers with a boolean only, so an expired link and a network failure share this text.
+  - `canSubmit()`: false once the flow ended, either way — an address with no token, a refused attempt, a changed password.
+    The reset views of both eco apps draw no form while it is false. A token is spent or expired for good, so a refused attempt is not sent again;
+    the price is that a network failure, which the store cannot tell apart, also ends the flow until the address is loaded again.
+  - `onSubmit()`: never rejects. It ignores an attempt made while another one runs, after the flow ended, or with no token to send.
+  - `clearError()`: forgets how the last attempt ended unless one is running. The message for a missing token stays: nothing on the screen can mend it.
 
 ## Guards
 

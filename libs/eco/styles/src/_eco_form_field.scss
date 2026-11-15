@@ -1,0 +1,14 @@
+@use 'core_input_material' as input;
+
+/* The form field of the eco platform: one look for eco-store and eco-admin, said once.
+
+   `core_input_material` only offers the look, as a mixin; this partial is what asks for it. An app
+   draws its fields this way by loading the partial from its global stylesheet, and sets how tall a
+   field is with `--mat-field-height` (48px when it sets nothing).
+
+   The colour of the leading icon is a token only eco-admin defines so far; the storefront falls
+   back to Material's own. */
+@include input.material-form-field(
+  $height: var(--mat-field-height, 48px),
+  $leading-icon-color: var(--eco-admin-on-surface-muted, var(--mat-sys-on-surface-variant))
+);

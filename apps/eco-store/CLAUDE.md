@@ -154,7 +154,7 @@ This version **supports separate `.pb.js` files** — no need to bundle into a s
 | File                            | Purpose                                                                      |
 | ------------------------------- | ---------------------------------------------------------------------------- |
 | `on_create_order.pb.js`         | Cycle linking, duplicate prevention, cart cleanup, NOT-01 confirmation email |
-| `on_password_reset.pb.js`       | PRV-03 password reset support                                                |
+| `on_password_reset.pb.js`       | PRV-03 localized reset email; links to eco-admin when an admin asks from it  |
 | `on_email_change.pb.js`         | PRV-02b localized email-change confirmation → `/confirmar-correu`            |
 | `single_default_address.pb.js`  | Enforces single default on `user_addresses` (PRV-04c)                        |
 | `normalize_user_name.pb.js`     | Auto-normalizes user names for search                                        |

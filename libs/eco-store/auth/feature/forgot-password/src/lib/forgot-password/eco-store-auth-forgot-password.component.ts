@@ -4,7 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { AUTH_FORM_FACADE } from '@plastik/auth/entities';
-import { EcoStoreAuthContainerComponent } from '@plastik/eco-store/auth/container';
+import { AuthFeatureComponent } from '@plastik/auth/feature';
 import { SharedFormFeatureComponent } from '@plastik/shared/form';
 
 @Component({
@@ -14,7 +14,7 @@ import { SharedFormFeatureComponent } from '@plastik/shared/form';
     MatButtonModule,
     MatIconModule,
     RouterLink,
-    EcoStoreAuthContainerComponent,
+    AuthFeatureComponent,
     SharedFormFeatureComponent,
   ],
   templateUrl: './eco-store-auth-forgot-password.component.html',

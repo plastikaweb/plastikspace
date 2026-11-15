@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { EcoStoreAuthContainerComponent } from '@plastik/eco-store/auth/container';
+import { AuthFeatureComponent } from '@plastik/auth/feature';
 import { activityStore } from '@plastik/shared/activity/data-access';
 
 /**
@@ -12,13 +12,7 @@ import { activityStore } from '@plastik/shared/activity/data-access';
  */
 @Component({
   selector: 'eco-store-auth-forgot-password-sent',
-  imports: [
-    TranslateModule,
-    MatButtonModule,
-    MatIconModule,
-    RouterLink,
-    EcoStoreAuthContainerComponent,
-  ],
+  imports: [TranslateModule, MatButtonModule, MatIconModule, RouterLink, AuthFeatureComponent],
   templateUrl: './eco-store-auth-feature-forgot-password-sent.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

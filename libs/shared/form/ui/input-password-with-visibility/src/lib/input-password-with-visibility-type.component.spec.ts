@@ -73,6 +73,48 @@ describe('InputPasswordWithVisibilityTypeComponent', () => {
     expect(button.getAttribute('aria-pressed')).toBe('true');
   });
 
+  it('should leave the naming of the input to the form field when props.label is set', () => {
+    // The Material wrapper draws `props.label`; a second label here would be read twice.
+    expect(fixture.nativeElement.querySelector('label')).toBeNull();
+  });
+
+  it('should name the input itself when the field has no visible label', () => {
+    const unlabelled = TestBed.createComponent(InputPasswordWithVisibilityTypeComponent);
+
+    unlabelled.componentInstance.field = {
+      key: 'password',
+      type: 'password-with-visibility',
+      formControl: new FormControl(),
+      props: { type: 'password' },
+    };
+    unlabelled.detectChanges();
+
+    const input: HTMLInputElement = unlabelled.nativeElement.querySelector('input');
+    const label: HTMLLabelElement = unlabelled.nativeElement.querySelector('label');
+
+    expect(label.textContent).toContain('common.form.password');
+    expect(label.htmlFor).toBe(input.id);
+  });
+
+  it('should carry the name of the field only when the field has one', () => {
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+
+    expect(input.hasAttribute('name')).toBe(false);
+
+    const named = TestBed.createComponent(InputPasswordWithVisibilityTypeComponent);
+
+    named.componentInstance.field = {
+      key: 'password',
+      name: 'password',
+      type: 'password-with-visibility',
+      formControl: new FormControl(),
+      props: { type: 'password', label: 'Contrasenya' },
+    };
+    named.detectChanges();
+
+    expect(named.nativeElement.querySelector('input').getAttribute('name')).toBe('password');
+  });
+
   it('should keep the visibility toggle in the keyboard tab order (A11Y-006, WCAG 2.1.1)', () => {
     const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
 

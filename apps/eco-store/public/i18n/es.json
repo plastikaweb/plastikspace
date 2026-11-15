@@ -139,7 +139,17 @@
       "recoverAccess": "¿Has olvidado la contraseña?",
       "newUserQuestion": "¿Aún no eres socia?",
       "createAccount": "Si eres socia, regístrate aquí",
-      "submit": "Iniciar sesión"
+      "submit": "Iniciar sesión",
+      "error": {
+        "wrong": {
+          "title": "No hemos podido iniciar la sesión.",
+          "body": "El correo electrónico o la contraseña no son correctos. Revísalos y vuelve a intentarlo."
+        },
+        "secondStep": {
+          "title": "No hemos podido iniciar la sesión.",
+          "body": "Esta cuenta pide un segundo paso de verificación que aún no está disponible."
+        }
+      }
     },
     "forgotPassword": {
       "title": "¿Has olvidado la contraseña?",
@@ -156,19 +166,29 @@
       "backToLogin": "Volver al inicio de sesión"
     },
     "resetPassword": {
-      "title": "Restablecer contraseña",
+      "title": "Elige una contraseña nueva",
       "description": "Escribe la nueva contraseña para tu cuenta.",
-      "passwordLabel": "Contraseña",
-      "passwordPlaceholder": "Contraseña",
-      "passwordConfirmLabel": "Confirmar contraseña",
-      "passwordConfirmPlaceholder": "Confirmar contraseña",
+      "passwordLabel": "Contraseña nueva",
+      "passwordPlaceholder": "Contraseña nueva",
+      "passwordConfirmLabel": "Repite la contraseña",
+      "passwordConfirmPlaceholder": "Repite la contraseña",
       "passwordsDoNotMatch": "Las contraseñas no coinciden",
-      "submitButton": "Restablecer contraseña",
-      "success": "Contraseña restablecida correctamente. Ya puedes iniciar sesión.",
-      "error": "Error al restablecer la contraseña. Inténtalo de nuevo.",
+      "submitButton": "Guardar la contraseña",
+      "loading": "Guardando la contraseña...",
       "passwordError": "La contraseña debe tener al menos 8 caracteres",
       "passwordMatchError": "Las contraseñas no coinciden",
-      "errorInvalidToken": "Token de restablecimiento de contraseña inválido"
+      "errorInvalidToken": "Token de restablecimiento de contraseña inválido",
+      "passwordHint": "Debe tener 8 caracteres como mínimo",
+      "done": {
+        "title": "Contraseña cambiada",
+        "description": "Ya puedes iniciar la sesión con la contraseña nueva.",
+        "action": "Iniciar sesión"
+      },
+      "expired": {
+        "title": "Este enlace ya no sirve",
+        "description": "Ha caducado o ya se ha usado. Pide otro y te lo enviaremos al correo.",
+        "action": "Pedir otro enlace"
+      }
     },
     "confirmEmailChange": {
       "title": "Confirmar el cambio de correo",

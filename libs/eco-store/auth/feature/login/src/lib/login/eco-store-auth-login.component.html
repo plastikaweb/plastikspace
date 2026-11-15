@@ -1,9 +1,12 @@
-<eco-store-auth-container [isLoading]="facade.isLoading?.() ?? false">
+<plastik-auth-feature
+  [isLoading]="facade.isLoading?.() ?? false"
+  [error]="facade.error?.() ?? null">
   <span title>{{ 'auth.login.title' | translate }}</span>
   <div content>
     <plastik-shared-form-feature
       [fields]="facade.formConfig.getConfig()"
       [submitConfig]="facade.formConfig.getSubmitFormConfig?.() ?? null"
+      (pendingChangesEvent)="$event && facade.clearError?.()"
       (changeEvent)="facade.onSubmit($event)">
       <div class="extra-links mt-1 mb-3 flex items-center justify-center">
         <a
@@ -35,4 +38,4 @@
       </a>
     </div>
   </div>
-</eco-store-auth-container>
+</plastik-auth-feature>

@@ -1,4 +1,3 @@
-import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { Route } from '@angular/router';
 import { EcoStoreAuthLoginComponent } from './login/eco-store-auth-login.component';
 
@@ -8,7 +7,7 @@ import { AUTH_FORM_FACADE } from '@plastik/auth/entities';
 import { pocketBaseIsNotLoggedGuard } from '@plastik/auth/pocketbase/data-access';
 import { FORM_TOKEN } from '@plastik/core/entities';
 import { providePasswordWithVisibilityFormly } from '@plastik/shared/form/password';
-import { providePlainInputFormly } from '@plastik/shared/form/util';
+import { provideFormlyAddons, providePlainInputFormly } from '@plastik/shared/form/util';
 import { EcoStoreAuthLoginFacadeService } from './login/eco-store-auth-login-facade.service';
 
 export const ecoStoreAuthLoginRoutes: Route[] = [
@@ -30,12 +29,11 @@ export const ecoStoreAuthLoginRoutes: Route[] = [
         provide: FORM_TOKEN,
         useFactory: loginFormConfig,
       },
-      {
-        provide: MAT_ICON_DEFAULT_OPTIONS,
-        useValue: { fontSet: 'material-symbols-outlined' },
-      },
+
       providePlainInputFormly(),
       providePasswordWithVisibilityFormly(),
+      // The leading icons of the shared login form.
+      provideFormlyAddons(),
     ],
   },
 ];

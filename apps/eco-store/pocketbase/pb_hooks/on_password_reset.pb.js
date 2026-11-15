@@ -4,7 +4,43 @@
 // CUSTOM PASSWORD RESET EMAIL
 // Intercepts the default password reset email and replaces it with
 // a branded HTML email matching the order confirmation style.
+//
+// Two frontends ask for it, and the link of the email goes back to
+// the one that asked:
+//   - the storefront of the user's cooperative (eco-store), and
+//   - the admin panel (eco-admin), when the request came from the
+//     panel AND the account is an administrator's.
+// Everything else in the email is the same for both.
 // =================================================================
+
+// The mailer hook below has no request to read: PocketBase sends the email in the
+// background, after the request is answered. This hook runs while the request is still
+// there and leaves its `Origin` on the record (a value that is not a field of the
+// collection: it is never saved and never returned by the API). The same record is the
+// one the mailer hook receives.
+//
+// The request lives on `e.requestEvent` in this PocketBase build (0.36.7): there is no
+// top-level `e.request` (see the note in `validate_fiscal_profile.pb.js`). Reading the
+// header must never be what stops a reset, so any failure here leaves the origin empty
+// and the email falls back to the storefront.
+onRecordRequestPasswordResetRequest((e) => {
+    let requestOrigin = "";
+
+    try {
+        requestOrigin = e.requestEvent.request.header.get("Origin") || "";
+    } catch (_) {
+        requestOrigin = "";
+    }
+
+    try {
+        if (e.record) {
+            e.record.set("resetRequestOrigin", requestOrigin);
+        }
+    } catch (_) { /* the email falls back to the storefront */ }
+
+    return e.next();
+}, "users");
+
 onMailerRecordPasswordResetSend((e) => {
     const record = e.record;
     const token = e.meta["token"];
@@ -40,19 +76,23 @@ onMailerRecordPasswordResetSend((e) => {
         console.warn("Could not fetch tenant for password reset email:", err);
     }
 
-    // --- Resolve app URL ---
-    // This comes from PocketBase Admin > Settings > Application URL.
-    let appURL = (e.app.settings().meta.appURL || "").replace(/\/+$/, "");
-    let frontendURL = appURL;
+    // --- Resolve the two frontends ---
+    // The app URL comes from PocketBase Admin > Settings > Application URL.
+    const appURL = (e.app.settings().meta.appURL || "").replace(/\/+$/, "");
+    const isLocal = !appURL || appURL.includes("localhost") || appURL.includes("127.0.0.1");
 
-    // Build the frontend URL based on the environment and tenant subdomain
-    if (!appURL || appURL.includes("localhost") || appURL.includes("127.0.0.1")) {
-        // Local environment
-        frontendURL = `http://${normalizedName}.test:4200`;
-    } else if (appURL.includes("9botiga.top")) {
-        // Staging/Prod environment specifically for 9botiga.top
-        frontendURL = `https://${normalizedName}.9botiga.top`;
-    } else {
+    // The address of the frontend served under a subdomain of the instance's domain:
+    // the storefront of a tenant (`el-llevat`) or the admin panel (`admin`).
+    const frontendFor = (subdomain, localURL) => {
+        if (isLocal) {
+            return localURL;
+        }
+
+        if (appURL.includes("9botiga.top")) {
+            // Staging/Prod environment specifically for 9botiga.top
+            return `https://${subdomain}.9botiga.top`;
+        }
+
         // Generic fallback for other domains: try to replace the first subdomain
         try {
             // Note: PocketBase JavaScript VM (Goja) has basic JS support.
@@ -60,23 +100,57 @@ onMailerRecordPasswordResetSend((e) => {
             if (appURL.startsWith("http")) {
                 const urlParts = appURL.split("://");
                 const protocol = urlParts[0];
-                let domainAndPath = urlParts[1];
-                const domainParts = domainAndPath.split('/')[0].split('.');
+                const domain = urlParts[1].split('/')[0];
+                const domainParts = domain.split('.');
 
                 if (domainParts.length >= 3) { // e.g., api.domain.com
-                    domainParts[0] = normalizedName; // replace 'api' with tenant name
-                    frontendURL = `${protocol}://${domainParts.join('.')}`;
-                } else {
-                    frontendURL = `${protocol}://${normalizedName}.${domainAndPath.split('/')[0]}`;
+                    domainParts[0] = subdomain; // replace 'api' with the subdomain
+                    return `${protocol}://${domainParts.join('.')}`;
                 }
+
+                return `${protocol}://${subdomain}.${domain}`;
             }
         } catch (err) {
             console.warn("Could not parse generic appURL, falling back to basic:", err);
         }
+
+        return appURL;
+    };
+
+    const storeURL = frontendFor(normalizedName, `http://${normalizedName}.test:4200`);
+    const adminURL = frontendFor("admin", "http://localhost:4204");
+
+    // --- Pick the frontend the link opens ---
+    // The `Origin` of the request is only ever COMPARED with the address of the panel
+    // worked out above; it is never written into the link. Anyone can send any `Origin`
+    // with someone else's address, and a link built from it would hand the token to a
+    // host of their choice.
+    // An administrator who asks from the storefront, and a member who asks from the
+    // panel, both get the storefront: the panel would turn the member away at the door.
+    let requestOrigin = "";
+    try {
+        requestOrigin = String(record.get("resetRequestOrigin") || "").replace(/\/+$/, "");
+    } catch (_) {
+        // no request behind this email (sent from the PocketBase console)
     }
 
+    const role = record.get("role");
+    const isAdministrator = role === "TENANT_ADMIN" || role === "GLOBAL_ADMIN";
+    const opensAdminPanel = isAdministrator && requestOrigin === adminURL;
+    const frontendURL = opensAdminPanel ? adminURL : storeURL;
+
+    // Both frontends serve the reset view under the same path.
     const resetPath = "restablir-contrasenya";
     const resetLink = frontendURL + "/" + resetPath + "?token=" + encodeURIComponent(token);
+
+    // Which frontend the link opens, for whoever has to answer "the email took me to the
+    // wrong place". The token and the address of the user stay out of the log.
+    e.app.logger().info(
+        "Password reset email built",
+        "record", record.id,
+        "frontend", opensAdminPanel ? "admin" : "store",
+        "frontendURL", frontendURL
+    );
 
     // --- Detect language from record (fallback to 'ca') ---
     let lang = "ca";

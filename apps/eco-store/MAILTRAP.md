@@ -102,6 +102,10 @@ All live email originates from PocketBase. Three flows exist today (see [`POCKET
 > Both custom hooks read the sender and app URL from `e.app.settings().meta` — specifically `meta.senderAddress`, `meta.senderName`, and `meta.appURL`.
 > Those are **not** Mailtrap settings; they live in `Settings → Application` (the same Sender name / Sender address fields shown in Mail settings)
 > and must be filled in too (see [step 3](#3-configure-the-sender--app-url-settings--application)), or the hooks send with an empty `from` / build broken links.
+>
+> The password-reset email serves two frontends from one hook. Its link opens the admin panel (`eco-admin`) when the request came from the panel's origin
+> **and** the account is an administrator's; any other request gets the storefront of the user's cooperative. Each build is logged as
+> `Password reset email built` with `frontend` (`admin` or `store`) and `frontendURL` (**Logs** in the Admin UI).
 
 ---
 
@@ -237,18 +241,21 @@ and a dedicated IP / stricter DMARC may be warranted. Update this section (and t
 
 ## Troubleshooting
 
-| Symptom                                            | Likely cause                                                           | Fix                                                                       |
-| -------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| "Send test email" fails in Admin UI                | Wrong host/port/credentials, or TLS mode mismatched to the port        | Re-copy creds; `Auto (StartTLS)` for `2525`/`587`, implicit TLS for `465` |
-| Email sends but `from` is empty / links are broken | `meta.senderAddress` / `meta.appURL` not set in Settings → Application | See [step 3](#3-configure-the-sender--app-url-settings--application)      |
-| Staging: send rejected / 5xx on `from`             | `from` is not on the verified domain                                   | Set sender to `no-reply@plastikaweb.com` (verified domain only)           |
-| `…demo domain has reached its email limit…`        | You're sending from the **demo domain**                                | Staging → verified `plastikaweb.com` creds; dev → Sandbox                 |
-| Nothing arrives, no error                          | Wrong PocketBase instance (you configured a different one)             | Confirm the URL and that SMTP is configured **there**                     |
-| Dev: Mailtrap stops capturing mid-month            | Sandbox free quota (~50/month) reached                                 | Wait for reset, use a second inbox, or upgrade the plan                   |
-| Staging: sends stop mid-month                      | Email Sending free quota (4,000/month) reached                         | Wait for reset or upgrade the Sending plan                                |
-| Staging stopped sending after a schema sync        | Expected — schema sync never carries SMTP settings                     | Re-apply SMTP settings in the PocketHost Admin UI                         |
-| A real person got a test email                     | Real address present in staging data                                   | Sanitize staging recipients to test-only accounts (see CAUTION above)     |
-| Wrong language in email                            | Hook localization keys off the user/tenant                             | See `on_password_reset.pb.js` / `on_create_order.pb.js`                   |
+| Symptom                                            | Likely cause                                                               | Fix                                                                          |
+| -------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| "Send test email" fails in Admin UI                | Wrong host/port/credentials, or TLS mode mismatched to the port            | Re-copy creds; `Auto (StartTLS)` for `2525`/`587`, implicit TLS for `465`    |
+| Email sends but `from` is empty / links are broken | `meta.senderAddress` / `meta.appURL` not set in Settings → Application     | See [step 3](#3-configure-the-sender--app-url-settings--application)         |
+| Staging: send rejected / 5xx on `from`             | `from` is not on the verified domain                                       | Set sender to `no-reply@plastikaweb.com` (verified domain only)              |
+| `…demo domain has reached its email limit…`        | You're sending from the **demo domain**                                    | Staging → verified `plastikaweb.com` creds; dev → Sandbox                    |
+| Nothing arrives, no error                          | Wrong PocketBase instance (you configured a different one)                 | Confirm the URL and that SMTP is configured **there**                        |
+| Dev: Mailtrap stops capturing mid-month            | Sandbox free quota (~50/month) reached                                     | Wait for reset, use a second inbox, or upgrade the plan                      |
+| Staging: sends stop mid-month                      | Email Sending free quota (4,000/month) reached                             | Wait for reset or upgrade the Sending plan                                   |
+| Staging stopped sending after a schema sync        | Expected — schema sync never carries SMTP settings                         | Re-apply SMTP settings in the PocketHost Admin UI                            |
+| A real person got a test email                     | Real address present in staging data                                       | Sanitize staging recipients to test-only accounts (see CAUTION above)        |
+| Wrong language in email                            | Hook localization keys off the user/tenant                                 | See `on_password_reset.pb.js` / `on_create_order.pb.js`                      |
+| Reset link opens the storefront for an admin       | The request did not come from the panel's origin, or the role is `PARTNER` | Read `frontend` / `frontendURL` in the `Password reset email built` log line |
+| A second reset email never arrives                 | PocketBase answers 204 and sends nothing for ~2 min per account            | Wait, then ask again                                                         |
+| `550 5.7.0 Too many emails per second`             | Sandbox free plan rate limit, hit by several requests in one second        | Space the requests out                                                       |
 
 ---
 

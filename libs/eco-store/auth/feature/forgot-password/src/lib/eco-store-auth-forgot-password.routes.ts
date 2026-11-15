@@ -5,7 +5,7 @@ import { requestPasswordFormConfig } from '@plastik/auth/config/util';
 import { AUTH_FORM_FACADE } from '@plastik/auth/entities';
 import { pocketBaseIsNotLoggedGuard } from '@plastik/auth/pocketbase/data-access';
 import { FORM_TOKEN } from '@plastik/core/entities';
-import { providePlainInputFormly } from '@plastik/shared/form/util';
+import { provideFormlyAddons, providePlainInputFormly } from '@plastik/shared/form/util';
 import { EcoStoreAuthForgotPasswordFacadeService } from './forgot-password/eco-store-auth-forgot-password-facade.service';
 import { EcoStoreAuthForgotPasswordComponent } from './forgot-password/eco-store-auth-forgot-password.component';
 
@@ -33,6 +33,8 @@ export const ecoStoreAuthForgotPasswordRoutes: Route[] = [
         useValue: { fontSet: 'material-symbols-outlined' },
       },
       providePlainInputFormly(),
+      // The leading icon of the shared form.
+      provideFormlyAddons(),
     ],
   },
 ];

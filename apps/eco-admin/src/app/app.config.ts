@@ -30,7 +30,6 @@ import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideHotToastConfig } from '@ngxpert/hot-toast';
 import { POCKETBASE_INSTANCE, pocketBaseFactory } from '@plastik/core/api-pocketbase';
 import { providePocketBaseWithTranslationsEnv } from '@plastik/core/environments';
-import { provideMatThemeColors } from '@plastik/shared/mat-theme-toggle';
 import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
 import { provideNotificationConfig } from '@plastik/shared/notification/entities';
 import { TranslateFormatJsCompiler } from 'ngx-translate-formatjs-compiler';
@@ -38,6 +37,7 @@ import { firstValueFrom } from 'rxjs';
 
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
+import { provideEcoAdminAuthScreen } from './auth-screen.provider';
 import { EcoAdminTitleStrategy } from './eco-admin-title.strategy';
 import { resolveInitialLanguage } from './initial-language';
 
@@ -94,8 +94,6 @@ export const appConfig: ApplicationConfig = {
     { provide: TitleStrategy, useExisting: EcoAdminTitleStrategy },
     { provide: MAT_ICON_DEFAULT_OPTIONS, useValue: { fontSet: 'material-symbols-outlined' } },
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
-    // The page background of the admin mocks, written to `theme-color` when the theme changes.
-    // The pre-paint script in index.html and `--eco-admin-page-background` repeat the same pair.
-    provideMatThemeColors({ light: '#f2f5ea', dark: '#11140e' }),
+    provideEcoAdminAuthScreen(),
   ],
 };

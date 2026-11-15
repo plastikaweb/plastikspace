@@ -1,3 +1,4 @@
+@use 'sass:map';
 @use '@angular/material' as mat;
 
 :root {
@@ -24,6 +25,64 @@
   .mdc-text-field--outlined .mat-mdc-form-field-infix,
   .mdc-text-field--no-label .mat-mdc-form-field-infix {
     --mat-form-field-container-vertical-padding: 8px;
+  }
+}
+
+/* The look of a form field, for the apps that ask for it. Nothing of it is written out by loading
+   this partial: an app gets it by including the mixin, at the top level of a global stylesheet (it
+   then applies to the whole app) or inside a selector (it then applies to what that selector holds).
+
+   It sets the measures of the outlined field through Material's tokens and, because no token
+   reaches it, the toggle of the shared password type: a 44px button with an 18px icon, which sits in
+   the 24px line of the field (hence the negative margins) and ends 2px from the border. */
+@mixin material-form-field(
+  $height: 48px,
+  $vertical-padding: 12px,
+  $radius: 12px,
+  $text-size: 0.9rem,
+  /* The label is drawn at three quarters of this once it sits on the border. */
+    $label-size: 0.917rem,
+  $label-weight: 500,
+  /* Left out, the leading icon keeps the colour Material gives it. */ $leading-icon-color: null
+) {
+  $tokens: (
+    container-height: $height,
+    container-vertical-padding: $vertical-padding,
+    container-text-size: $text-size,
+    outlined-container-shape: $radius,
+    outlined-label-text-populated-size: $label-size,
+    outlined-label-text-weight: $label-weight,
+  );
+
+  @if $leading-icon-color {
+    $tokens: map.merge(
+      $tokens,
+      (
+        leading-icon-color: $leading-icon-color,
+      )
+    );
+  }
+
+  @include mat.form-field-overrides($tokens);
+
+  .mat-mdc-form-field plastik-input-password-with-visibility-type {
+    @include mat.icon-button-overrides(
+      (
+        icon-size: 18px,
+        state-layer-size: 44px,
+      )
+    );
+
+    button {
+      margin: -10px -14px -10px 0;
+    }
+
+    mat-icon {
+      width: 18px;
+      height: 18px;
+      font-size: 18px;
+      line-height: 18px;
+    }
   }
 }
 

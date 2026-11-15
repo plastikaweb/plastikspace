@@ -139,7 +139,17 @@
       "recoverAccess": "Forgot password?",
       "newUserQuestion": "Not a member yet?",
       "createAccount": "If you are a member, register here",
-      "submit": "Login"
+      "submit": "Login",
+      "error": {
+        "wrong": {
+          "title": "We could not sign you in.",
+          "body": "The email or the password is not correct. Check them and try again."
+        },
+        "secondStep": {
+          "title": "We could not sign you in.",
+          "body": "This account asks for a second verification step that is not available yet."
+        }
+      }
     },
     "forgotPassword": {
       "title": "Forgot your password?",
@@ -156,19 +166,29 @@
       "backToLogin": "Back to login"
     },
     "resetPassword": {
-      "title": "Reset password",
+      "title": "Choose a new password",
       "description": "Enter the new password for your account.",
-      "passwordLabel": "Password",
-      "passwordPlaceholder": "Password",
-      "passwordConfirmLabel": "Confirm password",
-      "passwordConfirmPlaceholder": "Confirm password",
+      "passwordLabel": "New password",
+      "passwordPlaceholder": "New password",
+      "passwordConfirmLabel": "Repeat the password",
+      "passwordConfirmPlaceholder": "Repeat the password",
       "passwordsDoNotMatch": "Passwords do not match",
-      "submitButton": "Reset password",
-      "success": "Password reset successfully. You can log in again.",
-      "error": "Error resetting password. Please try again.",
+      "submitButton": "Save password",
+      "loading": "Saving password...",
       "passwordError": "Password must be at least 8 characters",
       "passwordMatchError": "Passwords do not match",
-      "errorInvalidToken": "Invalid password reset token"
+      "errorInvalidToken": "Invalid password reset token",
+      "passwordHint": "It must be at least 8 characters long",
+      "done": {
+        "title": "Password changed",
+        "description": "You can now log in with your new password.",
+        "action": "Log in"
+      },
+      "expired": {
+        "title": "This link no longer works",
+        "description": "It has expired or has already been used. Request another one and we''ll email it to you.",
+        "action": "Request another link"
+      }
     },
     "confirmEmailChange": {
       "title": "Confirm email change",
