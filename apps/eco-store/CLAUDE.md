@@ -32,6 +32,8 @@ When working here, these are authoritative — consult them before assuming:
 | **SSR**                     | `apps/eco-store/SSR.md`                                                                                             | Server-side rendering config                              |
 | **Accessibility statement** | Published Feb 22, 2025 — WCAG 2.1 AA fully conformant                                                               |
 
+Read one task with `yarn task <ID>` (`tools/scripts/task.cjs`: task ID, ClickUp ID, or a row label with `--home`), never the whole TASKS.md or BACKLOG.md. It prints the definition plus every other line that names the ID, so a status that differs between places shows up. Exit 2 means no definition was found.
+
 ### Referencing task identifiers (MANDATORY)
 
 Every change in `apps/eco-store/` or `libs/eco-store/*` must reference its **PRD/TASKS ID** (`INI-01`, `BOT-05`, `TRL-03`, `BUG-NNN`, `META-NN`, `OPS-NN`, `TECH-NN`, `SEO-NN`, `MKT-research-NN`, etc.) — they map 1:1 to PRD sections and to entries in `apps/eco-store/TASKS.md` (see source-of-truth table above).
@@ -380,7 +382,7 @@ In addition to the root CLAUDE.md testing guidance:
 ## When you're stuck
 
 1. **Read the PRD** for the feature ID you're working on (v1.8 PDF in the modeling folder)
-2. **Check TASKS.md** for the latest status and atomized spec for that ID
+2. **Check TASKS.md** for the latest status and atomized spec for that ID (`yarn task <ID>`)
 3. **Check BACKLOG.md** for context on phase / dependencies / time budget
 4. **Look at a sibling feature** in the same domain (e.g. `profile/addresses` for `profile/basic` patterns)
 5. **Inspect the cart store** for non-trivial Signal Store patterns

@@ -163,7 +163,7 @@ yarn cz                              # Interactive commit with Commitizen
 
 Each app has a corresponding `-e2e` project for Cypress testing.
 
-`eco-admin` shares the eco-store PocketBase instance and its `users` auth collection; it is a CSR SPA (no SSR) served from its own origin, and its docs live in `apps/eco-admin/{REQUIREMENTS,TASKS,DESIGN-BRIEF,DESIGN-REVIEWS}.md`.
+`eco-admin` shares the eco-store PocketBase instance and its `users` auth collection; it is a CSR SPA (no SSR) served from its own origin, and its docs live in `apps/eco-admin/{REQUIREMENTS,TASKS,DESIGN-BRIEF,DESIGN-REVIEWS}.md`. Read one task from the eco task docs (eco-store, eco-admin TASKS and REQUIREMENTS, `libs/eco`) with `yarn task <ID>`, never the whole file: eco-admin TASKS is over 200 KB.
 
 ## Library Architecture
 
