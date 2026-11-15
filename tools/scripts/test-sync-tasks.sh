@@ -108,7 +108,7 @@ put() {
 }
 
 reset_docs() {
-  rm -rf "$TEST_DIR/apps" "$TEST_DIR/libs" "$TEST_DIR/TASKS.md" "$TEST_DIR/out.json" "$TEST_DIR/err.txt"
+  rm -rf "$TEST_DIR/apps" "$TEST_DIR/libs" "$TEST_DIR/TASKS.md" "$TEST_DIR/out.json" "$TEST_DIR/out.txt" "$TEST_DIR/err.txt"
 }
 
 # Runs the sync against $TEST_DIR; JSON report in out.json, exit code in $EXIT.
@@ -902,6 +902,219 @@ if check 'cons("dangling-referral").length === 1' \
   test_pass
 else
   test_fail "half-matched referral accepted"
+fi
+
+###############################################################################
+# task.cjs — single-task reader
+###############################################################################
+
+TASK="$REPO_ROOT/tools/scripts/task.cjs"
+
+# Runs the reader against $TEST_DIR; stdout in out.txt, exit code in $EXIT.
+run_task() {
+  EXIT=0
+  node "$TASK" --root "$TEST_DIR" --config "$TEST_DIR/task-homes.json" "$@" \
+    > "$TEST_DIR/out.txt" 2> "$TEST_DIR/err.txt" || EXIT=$?
+}
+
+# Passes when out.txt contains the fixed string.
+has() {
+  /usr/bin/grep -qF -- "$1" "$TEST_DIR/out.txt"
+}
+
+# ─── 32. A non-key cell is a mention, never a definition ────────────────────
+print_test "task.cjs: an ID only in a non-key cell exits 2 and shows the mention"
+reset_docs
+put apps/eco-admin/TASKS.md << 'EOF'
+## AP-0 — Foundation
+
+| # | Task | MoSCoW | Est. | CU | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 0.7 | Login screen | MUST | 1d | `123kjkdp4kw` | Needs AREF-09 first |
+EOF
+run_task AREF-09
+if [ "$EXIT" = 2 ] && has "apps/eco-admin/TASKS.md:5" && has "Needs AREF-09 first" && ! has "---"; then
+  test_pass
+else
+  test_fail "exit $EXIT; output: $(head -c 400 "$TEST_DIR/out.txt" "$TEST_DIR/err.txt")"
+fi
+
+# Shared fixture for the remaining task.cjs tests.
+task_fixtures() {
+  reset_docs
+  put apps/eco-store/TASKS.md << 'EOF'
+# Eco Store tasks
+
+## Privacy
+
+| ID | Description | Priority | Status | ClickUp |
+| --- | --- | --- | --- | --- |
+| PRV-08 | Cookie banner | High | 📋 | `86c1234ab` |
+| PRV-09 | Data export | Low | 📋 | `86c1234ac` |
+
+### PRV-08 — Cookie banner
+
+Consent per category.
+
+#### Acceptance
+
+- Reject is as easy as accept.
+
+---
+
+### PRV-09 — Data export
+
+Export as JSON.
+
+## Bugs
+
+- **BUG-07** Totals round twice
+  - Seen on the cart page.
+  - Blocks PRV-09.
+- **BUG-08** Unrelated
+EOF
+  put apps/eco-store/BACKLOG.md << 'EOF'
+## Later
+
+- PRV-08 follow-up: per-tenant texts.
+EOF
+  put apps/eco-admin/TASKS.md << 'EOF'
+## AP-0 — Foundation
+
+| # | Task | MoSCoW | Est. | CU | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 0.7 | Login screen | MUST | 1d | `123kjkdp4kw` | AREF-04 |
+| 0.8 | Tenant context | MUST | 2d | `123kjkdp4kx` | __LONG__ |
+EOF
+  put apps/eco-admin/REQUIREMENTS.md << 'EOF'
+## 7.2 Refactoring plan
+
+| ID | Item | Notes |
+| --- | --- | --- |
+| AREF-04 | Tenant context | Shared store |
+EOF
+  # One cell over the clip limit.
+  node -e '
+    const fs = require("fs");
+    const file = process.argv[1];
+    fs.writeFileSync(file, fs.readFileSync(file, "utf8").replace("__LONG__", "x".repeat(1600) + "END"));
+  ' "$TEST_DIR/apps/eco-admin/TASKS.md"
+}
+
+# ─── 33. Heading block ───────────────────────────────────────────────────────
+print_test "task.cjs: a heading block keeps its sub-headings and stops at the next sibling"
+task_fixtures
+run_task prv-08 --home eco-store
+if [ "$EXIT" = 0 ] \
+  && has "PRV-08 · apps/eco-store/TASKS.md:10-16 (heading, 7 lines)" \
+  && has "Reject is as easy as accept." \
+  && ! has "Export as JSON." \
+  && has "apps/eco-store/BACKLOG.md:3: - PRV-08 follow-up"; then
+  test_pass
+else
+  test_fail "exit $EXIT; output: $(head -c 600 "$TEST_DIR/out.txt" "$TEST_DIR/err.txt")"
+fi
+
+# ─── 34. Key-column row as a card ────────────────────────────────────────────
+print_test "task.cjs: a key-column row prints as a column : value card"
+if has "PRV-08 · apps/eco-store/TASKS.md:7 (table, 1 line)" \
+  && /usr/bin/grep -qE '^Status +: 📋$' "$TEST_DIR/out.txt" \
+  && /usr/bin/grep -qE '^ClickUp +: `86c1234ab`$' "$TEST_DIR/out.txt"; then
+  test_pass
+else
+  test_fail "no card; output: $(head -c 600 "$TEST_DIR/out.txt")"
+fi
+
+# ─── 35. ClickUp ID lookup ───────────────────────────────────────────────────
+print_test "task.cjs: a ClickUp ID finds its row"
+task_fixtures
+run_task 123kjkdp4kw
+if [ "$EXIT" = 0 ] && has "123kjkdp4kw · apps/eco-admin/TASKS.md:5 (table, 1 line)" \
+  && /usr/bin/grep -qE '^Task +: Login screen$' "$TEST_DIR/out.txt"; then
+  test_pass
+else
+  test_fail "exit $EXIT; output: $(head -c 600 "$TEST_DIR/out.txt" "$TEST_DIR/err.txt")"
+fi
+
+# ─── 36. Row label needs --home ──────────────────────────────────────────────
+print_test "task.cjs: a row label needs --home and then finds the row"
+task_fixtures
+run_task 0.7
+FIRST=$EXIT
+run_task 0.7 --home eco-admin
+if [ "$FIRST" = 1 ] && [ "$EXIT" = 0 ] && has "0.7 · apps/eco-admin/TASKS.md:5"; then
+  test_pass
+else
+  test_fail "exit without --home $FIRST, with $EXIT; output: $(head -c 400 "$TEST_DIR/out.txt")"
+fi
+
+# ─── 37. Long cells clip unless --full ───────────────────────────────────────
+print_test "task.cjs: a long cell is clipped with a --full hint, and --full prints it whole"
+task_fixtures
+run_task 123kjkdp4kx
+CLIPPED=0
+has "… (+103 chars, --full)" && ! has "END" && CLIPPED=1
+run_task 123kjkdp4kx --full
+if [ "$CLIPPED" = 1 ] && has "xEND" && ! has "chars, --full)"; then
+  test_pass
+else
+  test_fail "clip not applied or --full ignored; output: $(head -c 300 "$TEST_DIR/out.txt")"
+fi
+
+# ─── 38. Specs hold definitions ──────────────────────────────────────────────
+print_test "task.cjs: a key-column row in REQUIREMENTS is a definition; a Notes cell is a mention"
+task_fixtures
+run_task AREF-04
+if [ "$EXIT" = 0 ] \
+  && has "AREF-04 · apps/eco-admin/REQUIREMENTS.md:5 (table, 1 line)" \
+  && has "apps/eco-admin/TASKS.md:5: | 0.7 | Login screen"; then
+  test_pass
+else
+  test_fail "exit $EXIT; output: $(head -c 600 "$TEST_DIR/out.txt" "$TEST_DIR/err.txt")"
+fi
+
+# ─── 39. Bullet definition ───────────────────────────────────────────────────
+print_test "task.cjs: a bullet definition runs over its indented children only"
+task_fixtures
+run_task BUG-07
+if [ "$EXIT" = 0 ] && has "BUG-07 · apps/eco-store/TASKS.md:26-28 (bullet, 3 lines)" \
+  && has "Blocks PRV-09." && ! has "BUG-08"; then
+  test_pass
+else
+  test_fail "exit $EXIT; output: $(head -c 600 "$TEST_DIR/out.txt" "$TEST_DIR/err.txt")"
+fi
+
+# ─── 40. Unknown ID ──────────────────────────────────────────────────────────
+print_test "task.cjs: an unknown ID exits 2 and suggests similar IDs"
+task_fixtures
+run_task PRV-80
+if [ "$EXIT" = 2 ] && has "PRV-80: not found in" && has "Similar IDs: PRV-08"; then
+  test_pass
+else
+  test_fail "exit $EXIT; output: $(head -c 400 "$TEST_DIR/out.txt" "$TEST_DIR/err.txt")"
+fi
+
+# ─── 41. Missing docs are named ──────────────────────────────────────────────
+print_test "task.cjs: docs that do not exist are listed as skipped"
+task_fixtures
+run_task META-99 --home plastikspace
+if [ "$EXIT" = 2 ] && has "Skipped (not found): TASKS.md"; then
+  test_pass
+else
+  test_fail "exit $EXIT; output: $(head -c 400 "$TEST_DIR/out.txt" "$TEST_DIR/err.txt")"
+fi
+
+# ─── 42. Usage errors ────────────────────────────────────────────────────────
+print_test "task.cjs: unknown options, unknown homes and missing IDs exit 1"
+task_fixtures
+CODES=""
+run_task PRV-08 --bogus; CODES="$CODES$EXIT"
+run_task PRV-08 --home nowhere; CODES="$CODES$EXIT"
+run_task; CODES="$CODES$EXIT"
+if [ "$CODES" = 111 ] && /usr/bin/grep -qF -- "--help" "$TEST_DIR/err.txt"; then
+  test_pass
+else
+  test_fail "exit codes $CODES; stderr: $(head -c 300 "$TEST_DIR/err.txt")"
 fi
 
 ###############################################################################

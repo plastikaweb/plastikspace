@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-15] - Single-task reader for the eco task docs (META-10)
+
+### Added
+
+- **`tools/scripts/task.cjs`** (`yarn task <ID>`): prints one task from the eco task docs instead of the whole file. It takes a task ID in any case, a ClickUp ID, or a row label such as `0.7` with `--home`. It prints the definition (a heading block with its sub-headings, a `- **ID**` bullet with its children, or a key-column table row as a `column : value` card), then every other line that names the ID. With no definition it exits 2 and lists the mentions or similar IDs, and it names the docs it could not find. `--ref` reads from a git ref and `--full` stops clipping long cells (META-10, [#123kjkdqcmy](https://app.clickup.com/t/123kjkdqcmy)).
+- **`specs` in `tools/scripts/task-homes.json`**: `apps/eco-admin/REQUIREMENTS.md` is read by `task.cjs` only; the ClickUp sync never reads it (META-10, [#123kjkdqcmy](https://app.clickup.com/t/123kjkdqcmy)).
+- Eleven fixture tests for the reader in `tools/scripts/test-sync-tasks.sh`, starting with the case that made the tool necessary: an ID that only appears in a notes cell exits 2 and shows the mention, never an empty block (META-10, [#123kjkdqcmy](https://app.clickup.com/t/123kjkdqcmy)).
+
 ## [2026-11-15] - Claude Code: smaller context and hard guards (META-09)
 
 ### Added
