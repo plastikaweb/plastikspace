@@ -33,6 +33,8 @@
 #   ✓ --ref, missing docs, fixture-backed ClickUp matching
 #   ✓ Exit codes for a missing token and bad arguments
 #   ✓ Registrations of every configured doc
+#   ✓ task.cjs: definitions, mentions, suggestions and exit codes
+#   ✓ check-task-docs.cjs: table rules, blank rows, versions, exit codes
 #
 # EXIT CODES:
 #   0 = All tests passed
@@ -1115,6 +1117,123 @@ if [ "$CODES" = 111 ] && /usr/bin/grep -qF -- "--help" "$TEST_DIR/err.txt"; then
   test_pass
 else
   test_fail "exit codes $CODES; stderr: $(head -c 300 "$TEST_DIR/err.txt")"
+fi
+
+###############################################################################
+# check-task-docs.cjs — table and version lint (yarn tasks:check)
+###############################################################################
+
+CHECK_DOCS="$REPO_ROOT/tools/scripts/check-task-docs.cjs"
+
+# Runs the doc check against $TEST_DIR; stdout in out.txt, exit code in $EXIT.
+run_check() {
+  EXIT=0
+  node "$CHECK_DOCS" --root "$TEST_DIR" --config "$TEST_DIR/task-homes.json" "$@" \
+    > "$TEST_DIR/out.txt" 2> "$TEST_DIR/err.txt" || EXIT=$?
+}
+
+# A clean eco-store home: TASKS and BACKLOG on the same version, one table.
+check_fixtures() {
+  reset_docs
+  put apps/eco-store/TASKS.md << 'EOF'
+# Tasks
+
+**Document version:** 0.54 · **Last updated:** 2026-11-07
+
+| ID | Description | Status |
+| --- | --- | --- |
+| PRV-08 | Pipe in code `a \| b` | ✅ |
+| PRV-09 | Second row | 🔄 |
+
+| ID | Other table | Status |
+| --- | --- | --- |
+| BOT-01 | Its own header | ⬜ |
+
+```text
+| a fence |
+
+| is never a table |
+```
+EOF
+  put apps/eco-store/BACKLOG.md << 'EOF'
+# Backlog
+
+**Document version:** 0.54 · **Last updated:** 2026-11-07
+EOF
+}
+
+# ─── 43. Clean docs pass ─────────────────────────────────────────────────────
+print_test "check-task-docs: clean docs, a second table and a fence exit 0"
+check_fixtures
+run_check
+if [ "$EXIT" = 0 ] && has "task doc(s) clean" && has "libs/eco/TASKS.md: not found, skipped"; then
+  test_pass
+else
+  test_fail "exit $EXIT; $(cat "$TEST_DIR/out.txt" "$TEST_DIR/err.txt" | head -c 400)"
+fi
+
+# ─── 44. Unescaped pipe ──────────────────────────────────────────────────────
+print_test "check-task-docs: an unescaped | in a cell exits 1 (MD056)"
+check_fixtures
+sed -i.bak 's/`a \\| b`/`a | b`/' "$TEST_DIR/apps/eco-store/TASKS.md"
+run_check
+if [ "$EXIT" = 1 ] && has "apps/eco-store/TASKS.md:7  MD056"; then
+  test_pass
+else
+  test_fail "exit $EXIT; $(head -c 400 "$TEST_DIR/out.txt")"
+fi
+
+# ─── 45. Blank line between rows ─────────────────────────────────────────────
+print_test "check-task-docs: a blank line between two rows exits 1 (blank-row)"
+check_fixtures
+awk '/^\| PRV-09/ { print "" } { print }' "$TEST_DIR/apps/eco-store/TASKS.md" > "$TEST_DIR/split.md"
+mv "$TEST_DIR/split.md" "$TEST_DIR/apps/eco-store/TASKS.md"
+run_check
+if [ "$EXIT" = 1 ] && has "apps/eco-store/TASKS.md:9  blank-row  blank line 8"; then
+  test_pass
+else
+  test_fail "exit $EXIT; $(head -c 400 "$TEST_DIR/out.txt")"
+fi
+
+# ─── 46. Version mismatch ────────────────────────────────────────────────────
+print_test "check-task-docs: BACKLOG on another version than TASKS exits 1"
+check_fixtures
+sed -i.bak 's/0\.54/0.55/' "$TEST_DIR/apps/eco-store/BACKLOG.md"
+run_check
+if [ "$EXIT" = 1 ] && has "apps/eco-store/BACKLOG.md:3  version-mismatch  Document version 0.55, but apps/eco-store/TASKS.md says 0.54"; then
+  test_pass
+else
+  test_fail "exit $EXIT; $(head -c 400 "$TEST_DIR/out.txt")"
+fi
+
+# ─── 47. Specs keep their own version ────────────────────────────────────────
+print_test "check-task-docs: a spec on another version than its TASKS passes"
+check_fixtures
+put apps/eco-admin/TASKS.md << 'EOF'
+**Document version:** 0.1.148 · 2026-11-11
+EOF
+put apps/eco-admin/REQUIREMENTS.md << 'EOF'
+**Document version:** 0.4.49 · 2026-11-11
+EOF
+run_check
+if [ "$EXIT" = 0 ]; then
+  test_pass
+else
+  test_fail "exit $EXIT; $(head -c 400 "$TEST_DIR/out.txt")"
+fi
+
+# ─── 48. Usage errors ────────────────────────────────────────────────────────
+print_test "check-task-docs: unknown options and an unreadable config exit 2"
+check_fixtures
+CODES=""
+run_check --bogus; CODES="$CODES$EXIT"
+EXIT=0
+node "$CHECK_DOCS" --root "$TEST_DIR" --config "$TEST_DIR/nowhere.json" > /dev/null 2>&1 || EXIT=$?
+CODES="$CODES$EXIT"
+if [ "$CODES" = 22 ]; then
+  test_pass
+else
+  test_fail "exit codes $CODES"
 fi
 
 ###############################################################################

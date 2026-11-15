@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-15] - Lint gate for the eco task docs (META-11)
+
+### Added
+
+- **`tools/scripts/check-task-docs.cjs`**: checks every doc in `tools/scripts/task-homes.json` for the markdownlint table rules MD055, MD056 and MD058 (an unescaped `|` in a cell breaks the column count), for blank lines between two rows of one table, and for a tasks doc and its companions declaring different `Document version`s. Specs keep their own version, and missing docs are notices (META-11, [#123kjkdqcqu](https://app.clickup.com/t/123kjkdqcqu)).
+- **`yarn tasks:check`**: the doc check followed by `sync-eco-store-tasks.cjs --all --offline`, which already failed on a task with two different statuses but ran nowhere automatically. CI runs it in the lint step, and the pre-commit runs it whenever a TASKS, BACKLOG or REQUIREMENTS doc changes (META-11, [#123kjkdqcqu](https://app.clickup.com/t/123kjkdqcqu)).
+- Six fixture tests in `tools/scripts/test-sync-tasks.sh`: a clean doc with a second table and a code fence passes, and an unescaped pipe, a blank row and a version mismatch each fail it (META-11, [#123kjkdqcqu](https://app.clickup.com/t/123kjkdqcqu)).
+
 ## [2026-11-15] - Single-task reader for the eco task docs (META-10)
 
 ### Added
