@@ -113,6 +113,7 @@ describe('resetPasswordFormConfig', () => {
   it('keeps the submit of the shared form', () => {
     expect(resetPasswordFormConfig().getSubmitFormConfig?.()).toMatchObject({
       label: 'auth.resetPassword.submitButton',
+      alwaysEnabled: true,
     });
   });
 });

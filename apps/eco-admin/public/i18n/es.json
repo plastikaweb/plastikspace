@@ -29,8 +29,6 @@
       "email": "Correo electrónico",
       "password": "Contraseña",
       "recoverAccess": "¿Has olvidado la contraseña?",
-      "newUserQuestion": "No basta con ser socia: hay que ser administradora.",
-      "createAccount": "Si eres administradora, regístrate aquí",
       "submit": "Iniciar sesión",
       "success": {
         "title": "Sesión iniciada.",

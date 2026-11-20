@@ -222,14 +222,14 @@ describe('EcoAdminAuthLoginComponent', () => {
       expect(find('.extra-links mat-icon').getAttribute('aria-hidden')).toBe('true');
     });
 
-    it('offers the same way to register as the storefront login', () => {
-      const link = find<HTMLAnchorElement>('a[href="/activar-compte"]');
+    it('offers no way to register: the panel has no public sign-up (Vista Login, AUTH-01)', () => {
+      const links = Array.from(host.querySelectorAll<HTMLAnchorElement>('a')).map(link =>
+        link.getAttribute('href')
+      );
 
-      expect(host.textContent).toContain('auth.login.newUserQuestion');
-      expect(link.textContent).toContain('auth.login.createAccount');
-      expect(find('a[href="/activar-compte"] mat-icon').getAttribute('aria-hidden')).toBe('true');
-      // Outside the form, so pressing Enter in a field never follows it.
-      expect(link.closest('form')).toBeNull();
+      expect(links).toEqual(['/recuperar-contrasenya']);
+      expect(host.textContent).not.toContain('auth.login.newUserQuestion');
+      expect(host.textContent).not.toContain('auth.login.createAccount');
     });
 
     it('shows and hides the password, and says which', () => {
@@ -260,15 +260,23 @@ describe('EcoAdminAuthLoginComponent', () => {
   describe('a form that cannot be sent', () => {
     beforeEach(() => render());
 
-    it('keeps the button of the form off until both fields can be sent', () => {
+    it('keeps the button of the form on, even before the fields can be sent', () => {
       const button = find<HTMLButtonElement>(SUBMIT);
 
-      expect(button.disabled).toBe(true);
-      expect(button.textContent).toContain('auth.login.submit');
-
-      fillIn();
-
       expect(button.disabled).toBe(false);
+      expect(button.textContent).toContain('auth.login.submit');
+    });
+
+    it('says what the empty fields lack on a submit and moves the focus to the first one', async () => {
+      await submit();
+
+      const errors = host.querySelectorAll('mat-error');
+
+      expect(errors).toHaveLength(2);
+      errors.forEach(error => expect(error.textContent).toContain('common.form.error.required'));
+      expect(document.activeElement).toBe(find(EMAIL));
+      expect(host.querySelector(ALERT)).toBeNull();
+      expect(mockPocketBaseUserProfileStore.login).not.toHaveBeenCalled();
     });
 
     it('says what an empty field lacks once it is left, without asking the server', () => {
@@ -292,7 +300,7 @@ describe('EcoAdminAuthLoginComponent', () => {
 
       expect(find('mat-error').textContent).toContain('common.form.error.email');
       expect(find(EMAIL).getAttribute('aria-invalid')).toBe('true');
-      expect(find<HTMLButtonElement>(SUBMIT).disabled).toBe(true);
+      expect(document.activeElement).toBe(find(EMAIL));
       expect(mockPocketBaseUserProfileStore.login).not.toHaveBeenCalled();
     });
 
@@ -304,7 +312,7 @@ describe('EcoAdminAuthLoginComponent', () => {
       await submit();
 
       expect(find('mat-error').textContent).toContain('common.form.error.minLength');
-      expect(find<HTMLButtonElement>(SUBMIT).disabled).toBe(true);
+      expect(document.activeElement).toBe(find(PASSWORD));
       expect(mockPocketBaseUserProfileStore.login).not.toHaveBeenCalled();
     });
 

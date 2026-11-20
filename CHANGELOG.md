@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`LoginFormConfigOptions`** for `loginFormConfig()` in `@plastik/auth/config/util`: an app changes how the two login fields look and writes no form of its own. Without options the form is the shared one (AP-0 0.7b, [#123kjkdqcdc](https://app.clickup.com/t/123kjkdqcdc)).
 - **`PasswordMatchOptions`** for `passwordMatchValidator` in `@plastik/shared/form/password`: the keys of the two passwords. Without them, the keys of the profile form, as before (AP-0 0.7b, [#123kjkdqcdc](https://app.clickup.com/t/123kjkdqcdc)).
 - **eco-admin translations** (`ca`, `es`): `common.form.*`, read by the shared field types, and the keys of the recovery views (AP-0 0.7b, [#123kjkdqcdc](https://app.clickup.com/t/123kjkdqcdc)).
+- **`alwaysEnabled`** for `SubmitFormConfig` (`@plastik/core/entities`), read by `plastik-shared-form-feature`: the submit is never disabled, so it stays in the tab order. A submit on an invalid form sends nothing, shows the message of each field and moves the focus to the first invalid one. The three shared auth configs set it, so **every auth form of eco-store and eco-admin keeps its submit enabled** (AP-0 0.7b, [#123kjkdqcdc](https://app.clickup.com/t/123kjkdqcdc)).
+- **eco-store login: a way in for visitors who are not members yet.** Under the form, «Encara no ets sòcia?», an invitation to write and the cooperative's address (`tenants.email`, now typed on `EcoStoreTenant`) as a `mailto:` link with the subject filled in (`auth.login.join.*`). It is not drawn while the cooperative has no address, and it stands in for the membership request until eco-store PRV-06 exists (AP-0 0.7b, eco-store INI-02, [#123kjkdqcdc](https://app.clickup.com/t/123kjkdqcdc)).
 
 ### Changed
 
@@ -29,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **How an attempt ended is said inside the card, in both apps, never in a toast.** The notice takes the focus and goes away when a field is edited. **eco-store:** the login no longer raises a toast on a wrong password, and the password reset says how it ended on the screen, in place of a toast and an automatic redirect (AP-0 0.7b, eco-store PRV-03, [#123kjkdqcdc](https://app.clickup.com/t/123kjkdqcdc)).
 - **eco-store recovery views** now extend the shared recovery facades and only add the activity bar (AP-0 0.7b, eco-store PRV-03, [#123kjkdqcdc](https://app.clickup.com/t/123kjkdqcdc)).
 - **Reset view, both apps**, on the states of the mock «10 Superadmin/Vista Recuperació»: «Contrasenya canviada» and «Aquest enllaç ja no serveix» are drawn in place of the heading — a heading, one sentence and one filled link, with no coloured box — through the new `outcome` input of `plastik-auth-feature`, which also gives them the focus. The form goes away with either (`AuthFormFacade.canSubmit()`, new and optional): an address with no token and a refused attempt both end on the second one. The view offers the way back to `/accedir` until the password is changed, and its texts are the mock's («Tria una contrasenya nova», «Desar la contrasenya»…). A notice of `plastik-auth-feature` keeps its link under its text at every width: beside it, inside the card, the text was squeezed into a third of the line (AP-0 0.7b, eco-store PRV-03, [#123kjkdqcdc](https://app.clickup.com/t/123kjkdqcdc)).
-- **Same texts in both apps** for the login and the recovery views, the register block under the login form included. In eco-admin its two texts say that being a member is not enough to enter the panel. The block links to `/activar-compte`, which no app serves yet (AP-0 0.7b, eco-store PRV-03, [#123kjkdqcdc](https://app.clickup.com/t/123kjkdqcdc)).
+- **Same texts in both apps** for the login and the recovery views (AP-0 0.7b, eco-store PRV-03, [#123kjkdqcdc](https://app.clickup.com/t/123kjkdqcdc)).
 - **eco-admin**: the line under the name is «Tauler d'administració» / «Panel de administración» (AP-0 0.7b, [#123kjkdqcdc](https://app.clickup.com/t/123kjkdqcdc)).
 - **The eco form-field look is opt-in.** `_core_input_material.scss` offers it as the mixin `material-form-field` and writes nothing out by being loaded; `eco_form_field` asks for it. Fields are 48px high through `--mat-field-height`, with a 12px outline radius, a 500-weight label and the password toggle as a 44×44 button. **The storefront's fields change with it**; `--admin-row-h` of eco-admin is now `--mat-field-height` (AP-0 0.7b, eco-store PRV-03, [#123kjkdqcdc](https://app.clickup.com/t/123kjkdqcdc)).
 - **Browser bar colour** (`<meta name="theme-color">`): the theme control of `@plastik/shared/mat-theme-toggle` reads it from the stylesheet, as the computed background of `<body>`, on every theme change. No colour is written in TypeScript. **The bar of eco-store changes colour**: it now matches the page (`#ecefe5` light, `#272b22` dark) instead of a pair that matched it in neither theme (AP-0 0.7b, eco-store PRV-03, [#123kjkdqcdc](https://app.clickup.com/t/123kjkdqcdc)).
@@ -40,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **`@plastik/eco-store/auth/container`**: the storefront's auth container moved into `plastik-auth-feature` (AP-0 0.7b, eco-store PRV-03, [#123kjkdqcdc](https://app.clickup.com/t/123kjkdqcdc)).
 - **eco-admin**: the login's own stylesheet, its fields file and the reactive form of the first login (AP-0 0.7b, [#123kjkdqcdc](https://app.clickup.com/t/123kjkdqcdc)).
+- **The register link under the login, in both apps.** The panel has no public sign-up: «Vista Login» says so since its freeze (AUTH-01). The storefront's link went to `/activar-compte`, which no app serves; eco-store PRV-05b brings one for members, to `/registre` (AP-0 0.7b, [#123kjkdqcdc](https://app.clickup.com/t/123kjkdqcdc)).
 
 ### Fixed
 
@@ -58,7 +61,7 @@ The script that sets the theme before the first paint, in each `index.html`, sti
 
 Open, in [#123kjkdqcee](https://app.clickup.com/t/123kjkdqcee): 48px for every eco field contradicts the 40px / 44px of the eco-admin design brief; the field style names `--eco-admin-on-surface-muted`, which eco-store does not define; the storefront's forms behind the login were not looked at with the new style, and Pa11y was not run.
 
-The longest password of both logins is 25 characters until eco-store BUG-016 raises the shared limit. llecoop draws the reworked shared screen and forms too and was not opened in a browser.
+A password has at most 25 characters, in every form and, with eco-store BUG-016, on the server too (ruled 2026-11-20); BUG-016 also ends the silent cut of a longer paste. llecoop, discontinued and kept as Firebase reference code, draws the reworked shared forms too and was not opened in a browser.
 
 The production build of eco-admin weighs 768.96 kB initial: over its 700 kB warning budget, under the 900 kB error budget.
 

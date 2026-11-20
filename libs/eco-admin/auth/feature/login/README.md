@@ -56,8 +56,8 @@ The application mounts the route table and nothing else:
 
 - `[title]`: the heading `auth.login.title`.
 - `[content]`: `plastik-shared-form-feature` over the fields and the submit of the facade's form, with the link to `/recuperar-contrasenya` in its `.extra-links` slot.
-- Under the form, the register block: a line of text and an outlined link to `/activar-compte`. The markup is the storefront's;
-  the two texts differ on purpose (being a member is not enough to enter the panel). **No app serves `/activar-compte` yet**, so the link falls through the wildcard route.
+- No register block under the form (Carlos, 2026-11-20). The panel has no public sign-up: «Vista Login» says so since its freeze (AUTH-01, «sense registre
+  públic aquí — les altes van per PRV-06»), and the administrator role is granted by the cooperative, never requested on this screen.
 
 Everything around them — the mark, the name «Eco Admin», the line under it, the Material card, the notice over the form and the theme control — is drawn by the shared screen
 from what `provideEcoAdminAuthScreen()` (`apps/eco-admin/src/app/auth-screen.provider.ts`) says once for the whole application under `AUTH_SCREEN_DEFAULTS`.
@@ -73,14 +73,14 @@ eco field style (`eco_form_field`, in `libs/eco/styles`), which the application 
 The facade asks `pocketBaseUserProfileStore.login()` with `allowedRoles` set to the two administrator roles and `notifyOnFailure: false`:
 how an attempt ended is said inside the card, never in a toast.
 
-| Store outcome    | What the screen shows                                                                     |
-| ---------------- | ----------------------------------------------------------------------------------------- |
-| `authenticated`  | The success notice (`global` or `tenant`), an announcement, and the navigation.           |
-| `failed`         | `auth.login.error.wrong`. The same text whether or not the address exists.                |
-| `role-rejected`  | `auth.login.error.member`, as a warning: the account belongs to a storefront member.      |
-| `mfa-required`   | `auth.login.error.secondStep`, and the pending login is dropped. Temporary, see below.    |
-| _(store throws)_ | `auth.login.error.wrong`.                                                                 |
-| _(invalid form)_ | No request and no notice: the submit stays disabled and each field shows its own message. |
+| Store outcome    | What the screen shows                                                                                              |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `authenticated`  | The success notice (`global` or `tenant`), an announcement, and the navigation.                                    |
+| `failed`         | `auth.login.error.wrong`. The same text whether or not the address exists.                                         |
+| `role-rejected`  | `auth.login.error.member`, as a warning: the account belongs to a storefront member.                               |
+| `mfa-required`   | `auth.login.error.secondStep`, and the pending login is dropped. Temporary, see below.                             |
+| _(store throws)_ | `auth.login.error.wrong`.                                                                                          |
+| _(invalid form)_ | No request and no notice: the submit shows the message of each field and moves the focus to the first invalid one. |
 
 After a login the facade navigates to `resolveReturnUrl(returnUrl, ecoAdminHomeFor(role))`, reading `returnUrl` from the query parameters of the route,
 so a value that is not a path of this application is ignored.
@@ -115,19 +115,21 @@ The route may keep one instance of the facade across visits, which is why the sh
 - The password toggle is a 44×44 button with `aria-pressed` and a label that says what a press will do.
 - The icons that lead the fields and the ones inside the links are hidden from assistive technology.
 - The shake is switched off under `prefers-reduced-motion: reduce`.
-- The submit is the shared form's: it carries the `disabled` attribute while the form is invalid.
+- The submit is the shared form's with `alwaysEnabled` (Carlos, 2026-11-20): it never carries `disabled`, so it stays in the tab order and a press on an invalid form
+  says why where the user is looking.
 
 ## What the mock has and this screen has not
 
 Design redrew «10 Superadmin/Vista Login» on 2026-11-15 from captures of this screen (round «41B · com a l'app»). The mock now has two modes:
 
 - **«Com a l'app»**, the default: this screen as it is — the shared `plastik-auth-feature` on a Material card, the label that rests inside the field and floats,
-  the submit disabled until the form is valid, the shared alert as the notice, the storefront's texts and the register block.
+  the submit disabled until the form is valid, the shared alert as the notice, the storefront's texts and the register block. Two of those changed on 2026-11-20:
+  the submit stays enabled and the register block is gone, so this mode no longer matches the screen.
 - **«Proposta»**: what Design suggests and nobody has ruled on. None of it is built.
 
 What the mock still draws and the screen does not:
 
-- **«Proposta»**: a submit that is always enabled, validates on sending and focuses the first invalid field; a busy label with a spinner; no 8-character minimum
+- **«Proposta»**: a busy label with a spinner; no 8-character minimum
   on the login password; an invitation line as the foot of the card. Each one would change the shared form or the shared login configuration, so the storefront with it.
 - «Va a la botiga →» in the member notice: neither `tenants` nor the admin environment knows the storefront's address.
 - The notice for a producer account: no role in the schema stands behind it.
@@ -142,12 +144,12 @@ The mock still calls the screen `eco-store-auth-container`, the name it had befo
 In `apps/eco-admin/public/i18n/{ca,es}.json`:
 
 - `auth.frame.subtitle`, read by `provideEcoAdminAuthScreen()`.
-- `auth.login.{title,email,password,submit,recoverAccess,newUserQuestion,createAccount}`.
+- `auth.login.{title,email,password,submit,recoverAccess}`.
 - `auth.login.success.{title,redirectTenant,redirectGlobal}` and `auth.login.error.{wrong,member,secondStep}.{title,body}`.
 - `common.form.{password,showPassword,hidePassword}` and `common.form.error.{required,email,minLength,maxLength}`, read by the shared field types.
 - `common.theme.*`, read by the theme control.
 
-The keys carry the same names and, but for `newUserQuestion` and `createAccount`, the same texts as the storefront's. They live in two copies; nothing but
+The keys carry the same names and the same texts as the storefront's. They live in two copies; nothing but
 `apps/eco-admin/src/app/i18n-parity.spec.ts` (which aligns the two languages of this app) checks them.
 
 ## Running unit tests

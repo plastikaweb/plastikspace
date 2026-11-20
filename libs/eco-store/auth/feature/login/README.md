@@ -46,7 +46,10 @@ The application mounts the route table and nothing else:
 
 - `[title]`: the heading `auth.login.title`.
 - `[content]`: `plastik-shared-form-feature` over the fields and the submit of the facade's form, with the link to `/recuperar-contrasenya` in its `.extra-links` slot.
-- Under the form, the register block: a line of text and an outlined link to `/activar-compte`. **No app serves that path yet**, so the link falls through the wildcard route.
+- Under the form, the way in for a visitor who is not a member yet (Carlos, 2026-11-20): «Encara no ets sòcia?», an invitation to write, and the tenant's
+  `email` as a `mailto:` link with the subject `auth.login.join.subject` filled in. It is not drawn while the tenant has no address. It is the interim
+  that PRV-05b already names for its «not authorized» state; INI-02 and PRV-06 replace it with the membership request form.
+- No register link: PRV-05b brings it, at `/registre`, for members who have no account yet. The old one pointed at `/activar-compte`, which no app serves.
 
 Everything around them is drawn by the shared screen from what `provideEcoStoreAuthScreen()` (`apps/eco-store/src/app/auth-screen.provider.ts`) says once for the whole
 application under `AUTH_SCREEN_DEFAULTS`: the tenant's logo, name and slogan, the terms line, the shake of the card on an error, and the «Back» button

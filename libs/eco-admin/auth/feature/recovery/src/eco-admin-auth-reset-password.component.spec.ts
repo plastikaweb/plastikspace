@@ -164,20 +164,18 @@ describe('EcoAdminAuthResetPasswordComponent', () => {
       icons.forEach(icon => expect(icon.getAttribute('aria-hidden')).toBe('true'));
     });
 
-    it('keeps the button of the form off until both passwords are the same', () => {
+    it('keeps the button of the form on, and sends nothing while the passwords differ', async () => {
       const button = find<HTMLButtonElement>(SUBMIT);
 
-      expect(button.disabled).toBe(true);
+      expect(button.disabled).toBe(false);
       expect(button.textContent).toContain('auth.resetPassword.submitButton');
 
       type(PASSWORD, 'test-new-password');
       type(REPEAT, 'test-other-password');
+      await submit();
 
-      expect(button.disabled).toBe(true);
-
-      type(REPEAT, 'test-new-password');
-
-      expect(button.disabled).toBe(false);
+      expect(mockPocketBaseUserProfileStore.resetPassword).not.toHaveBeenCalled();
+      expect(document.activeElement).toBe(find(REPEAT));
     });
 
     it('sends the token of the address with the new password', async () => {

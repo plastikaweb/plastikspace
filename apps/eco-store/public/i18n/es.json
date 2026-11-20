@@ -137,8 +137,11 @@
       "password": "Contraseña",
       "rememberMe": "Recordar sesión",
       "recoverAccess": "¿Has olvidado la contraseña?",
-      "newUserQuestion": "¿Aún no eres socia?",
-      "createAccount": "Si eres socia, regístrate aquí",
+      "join": {
+        "question": "¿Aún no eres socia?",
+        "invite": "Escríbenos y te explicaremos cómo hacerte socia:",
+        "subject": "Quiero hacerme socia"
+      },
       "submit": "Iniciar sesión",
       "error": {
         "wrong": {

@@ -1,5 +1,5 @@
 import { IMAGE_LOADER } from '@angular/common';
-import { signal } from '@angular/core';
+import { signal, WritableSignal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { FormlyModule } from '@ngx-formly/core';
@@ -86,5 +86,47 @@ describe('EcoStoreAuthLoginComponent', () => {
     fixture.destroy();
 
     expect(authFacadeMock.clearError).toHaveBeenCalledTimes(1);
+  });
+
+  describe('the way in for a visitor who is not a member yet', () => {
+    const tenant = mockEcoStoreTenantStore.tenant as unknown as WritableSignal<
+      Record<string, unknown>
+    >;
+    const original = tenant();
+    const joinLink = (): HTMLAnchorElement | null =>
+      fixture.nativeElement.querySelector('a[href^="mailto:"]');
+
+    afterEach(() => tenant.set(original));
+
+    it('is not offered while the cooperative has no address', () => {
+      expect(joinLink()).toBeNull();
+      expect(fixture.nativeElement.textContent).not.toContain('auth.login.join.question');
+    });
+
+    it('offers the address of the cooperative, with the subject filled in', () => {
+      tenant.set({ ...original, email: ' hola@el-llevat.test ' });
+      fixture.detectChanges();
+
+      const link = joinLink();
+
+      expect(link?.getAttribute('href')).toBe(
+        'mailto:hola@el-llevat.test?subject=auth.login.join.subject'
+      );
+      expect(link?.textContent).toContain('hola@el-llevat.test');
+      expect(link?.querySelector('mat-icon')?.getAttribute('aria-hidden')).toBe('true');
+      expect(fixture.nativeElement.textContent).toContain('auth.login.join.question');
+      expect(fixture.nativeElement.textContent).toContain('auth.login.join.invite');
+    });
+
+    it('offers no way to register: PRV-05b brings it', () => {
+      tenant.set({ ...original, email: 'hola@el-llevat.test' });
+      fixture.detectChanges();
+
+      const hrefs = Array.from(
+        fixture.nativeElement.querySelectorAll('a') as NodeListOf<HTMLAnchorElement>
+      ).map(link => link.getAttribute('href'));
+
+      expect(hrefs).toEqual(['/recuperar-contrasenya', expect.stringMatching(/^mailto:/)]);
+    });
   });
 });

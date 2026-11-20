@@ -57,6 +57,7 @@ export function loginFormConfig(options: LoginFormConfigOptions = {}): FormConfi
       icon: 'login',
       buttonStyle: 'w-full sm:w-full',
       disableOnSubmit: true,
+      alwaysEnabled: true,
     }),
   };
 }

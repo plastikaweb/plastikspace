@@ -137,8 +137,11 @@
       "password": "Password",
       "rememberMe": "Remember me",
       "recoverAccess": "Forgot password?",
-      "newUserQuestion": "Not a member yet?",
-      "createAccount": "If you are a member, register here",
+      "join": {
+        "question": "Not a member yet?",
+        "invite": "Write to us and we will tell you how to join:",
+        "subject": "I would like to become a member"
+      },
       "submit": "Login",
       "error": {
         "wrong": {

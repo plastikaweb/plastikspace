@@ -29,8 +29,6 @@
       "email": "Correu electrònic",
       "password": "Contrasenya",
       "recoverAccess": "Has oblidat la contrasenya?",
-      "newUserQuestion": "No n''hi ha prou amb ser sòcia: cal ser administradora.",
-      "createAccount": "Si ets administradora, registra''t aquí",
       "submit": "Iniciar sessió",
       "success": {
         "title": "Sessió iniciada.",

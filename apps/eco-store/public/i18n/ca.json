@@ -137,8 +137,11 @@
       "password": "Contrasenya",
       "rememberMe": "Recorda''m",
       "recoverAccess": "Has oblidat la contrasenya?",
-      "newUserQuestion": "Encara no ets sòcia?",
-      "createAccount": "Si ets sòcia, registra't aquí",
+      "join": {
+        "question": "Encara no ets sòcia?",
+        "invite": "Escriu-nos i t'explicarem com fer-te'n:",
+        "subject": "Vull fer-me sòcia"
+      },
       "submit": "Iniciar sessió",
       "error": {
         "wrong": {

@@ -21,7 +21,7 @@
     title="Submit"
     [class]="`w-full sm:w-auto ${formSubmitConfig().buttonStyle}`"
     [class.sr-only]="!formSubmitConfig().submitAvailable"
-    [disabled]="!form.valid"
+    [disabled]="!formSubmitConfig().alwaysEnabled && !form.valid"
     [attr.aria-label]="(formSubmitConfig().label | translate) || 'Submit'">
     {{ (formSubmitConfig().label | translate) || 'Submit' }}
   </button>

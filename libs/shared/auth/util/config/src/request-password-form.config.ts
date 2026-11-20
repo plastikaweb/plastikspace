@@ -34,6 +34,7 @@ export function requestPasswordFormConfig(
       label: 'auth.forgotPassword.submit',
       buttonStyle: 'w-full sm:w-full',
       disableOnSubmit: true,
+      alwaysEnabled: true,
     }),
   };
 }

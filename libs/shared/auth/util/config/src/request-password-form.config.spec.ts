@@ -49,6 +49,7 @@ describe('requestPasswordFormConfig', () => {
     expect(requestPasswordFormConfig().getSubmitFormConfig?.()).toMatchObject({
       label: 'auth.forgotPassword.submit',
       disableOnSubmit: true,
+      alwaysEnabled: true,
     });
   });
 });

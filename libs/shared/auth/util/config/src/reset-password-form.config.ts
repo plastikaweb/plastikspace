@@ -77,6 +77,7 @@ export function resetPasswordFormConfig(
     getSubmitFormConfig: () => ({
       label: 'auth.resetPassword.submitButton',
       buttonStyle: 'w-full sm:w-full',
+      alwaysEnabled: true,
     }),
   };
 }

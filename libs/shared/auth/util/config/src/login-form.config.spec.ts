@@ -110,6 +110,7 @@ describe('loginFormConfig', () => {
     expect(loginFormConfig().getSubmitFormConfig?.()).toMatchObject({
       label: 'auth.login.submit',
       disableOnSubmit: true,
+      alwaysEnabled: true,
     });
   });
 });

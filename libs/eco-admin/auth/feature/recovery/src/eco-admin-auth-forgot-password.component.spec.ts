@@ -124,19 +124,18 @@ describe('EcoAdminAuthForgotPasswordComponent', () => {
     expect(icons[0].getAttribute('aria-hidden')).toBe('true');
   });
 
-  it('keeps the button of the form off until the address can be sent', () => {
+  it('keeps the button of the form on, and sends nothing while the address is not one', async () => {
     const button = find<HTMLButtonElement>(SUBMIT);
 
-    expect(button.disabled).toBe(true);
+    expect(button.disabled).toBe(false);
     expect(button.textContent).toContain('auth.forgotPassword.submit');
 
     type(EMAIL, 'admin');
+    await submit();
 
-    expect(button.disabled).toBe(true);
-
-    type(EMAIL, 'admin@example.test');
-
-    expect(button.disabled).toBe(false);
+    expect(find('mat-error').textContent).toContain('common.form.error.email');
+    expect(document.activeElement).toBe(find(EMAIL));
+    expect(mockPocketBaseUserProfileStore.requestPassword).not.toHaveBeenCalled();
   });
 
   it('asks for the email and goes to the screen that says it is on its way', async () => {
