@@ -3,10 +3,10 @@
 > **Workspace-wide tasks:** tooling, git hooks, CI, Claude Code setup, and shared or core code used outside eco.
 >
 > - Home `plastikspace` in `tools/scripts/task-homes.json`; ClickUp list `1200240000011497`.
-> - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check` (once META-11 merges).
+> - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 0.1 · **Last updated:** 2026-11-20
+**Document version:** 0.2 · **Last updated:** 2026-11-20
 
 ---
 
@@ -39,8 +39,8 @@
 | **META-08** 📋 | Standing ticket for task-doc maintenance PRs | Low | `123kjkdpqjr` |
 | **META-09** ✅ | Claude Code context and guards: trim CLAUDE.md, PreToolUse guards, skill overrides | Low | `123kjkdqcgt` |
 | **META-10** ✅ | `task.cjs`: single-task reader for the eco task docs | Low | `123kjkdqcmy` |
-| **META-11** 🔄 | `tasks:check`: lint and consistency gate for the task docs | Low | `123kjkdqcqu` |
-| **META-12** 📋 | Fast git hooks: lint-staged in pre-commit, no duplicate lint in pre-push | Normal | `123kjkdqv31` |
+| **META-11** ✅ | `tasks:check`: lint and consistency gate for the task docs | Low | `123kjkdqcqu` |
+| **META-12** 🔄 | Fast git hooks: lint-staged in pre-commit, no duplicate lint in pre-push | Normal | `123kjkdqv31` |
 | **META-13** 📋 | ESLint: keep the type-aware rules out of the hooks | Normal | `123kjkdqv32` |
 | **META-14** ⛔ | Claude Code Stop hook: feedback loop before the agent says "done" | Low | `123kjkdqv33` |
 | **META-15** 📋 | `check-eco-conventions.cjs`: template and style rules for eco | Low | `123kjkdqv34` |
@@ -78,11 +78,11 @@ ClickUp `123kjkdpqjr`. Doc-only PRs that fix rows, statuses or ClickUp IDs reuse
 
 ### META-11 — `tasks:check`
 
-ClickUp `123kjkdqcqu`. Committed on `chore/123kjkdqcqu-meta-11-tasks-check` (`f174b9d6`); not pushed yet. Its pre-commit block runs when a TASKS, BACKLOG or REQUIREMENTS doc changes.
+ClickUp `123kjkdqcqu`. Merged 2026-11-20 (PR #1562, `b15d12fa`). The pre-commit runs it when a TASKS, BACKLOG or REQUIREMENTS doc changes; CI runs it in the lint step. It takes 4-6 s with yarn startup, not the ~1 s its pre-commit comment says; META-12 fixes the comment.
 
 ### META-12 — Fast git hooks
 
-ClickUp `123kjkdqv31`. Measured 2026-11-20: one lint task averages 20 s; the pre-commit lints every project the branch affects on every commit (124 projects for a change in `libs/core/entities`, all 197 when a lib is deleted); about 45 s of fixed cost per commit before any lint. Scope: lint-staged, pre-push without the duplicate lint, `NX_NO_CLOUD` in the hooks, legacy `nx.json` keys removed.
+ClickUp `123kjkdqv31`. Under way on `chore/123kjkdqv31-meta-12-fast-hooks`. Measured 2026-11-20: one lint task averages 20 s; the pre-commit lints every project the branch affects on every commit (124 projects for a change in `libs/core/entities`, all 197 when a lib is deleted); about 45 s of fixed cost per commit before any lint. Scope: lint-staged, pre-push without the duplicate lint, `NX_NO_CLOUD` in the hooks, legacy `nx.json` keys removed.
 
 ### META-13 — ESLint without types in the hooks
 
@@ -138,4 +138,5 @@ ClickUp `123kjkdqv3f`. Blocked by META-12, META-13, META-14, META-19 and META-23
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 0.2 | 2026-11-20 | **META-08** (`123kjkdpqjr`) — META-11 ✅ (PR #1562, `b15d12fa`); META-12 🔄. The header no longer says `tasks:check` is pending. |
 | 0.1 | 2026-11-20 | **META-08** (`123kjkdpqjr`) — file created for the Plastikspace home with the META family only: META-06…11 (already in ClickUp) and META-12…24 (created today from the 2026-11-20 review of hook timing and of the "feedback loop, evals, guardrails" approach). META-06 Phase 3 adds the moved rows later. |
