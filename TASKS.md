@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 0.2 · **Last updated:** 2026-11-20
+**Document version:** 0.3 · **Last updated:** 2026-11-20
 
 ---
 
@@ -41,7 +41,7 @@
 | **META-10** ✅ | `task.cjs`: single-task reader for the eco task docs | Low | `123kjkdqcmy` |
 | **META-11** ✅ | `tasks:check`: lint and consistency gate for the task docs | Low | `123kjkdqcqu` |
 | **META-12** 🔄 | Fast git hooks: lint-staged in pre-commit, no duplicate lint in pre-push | Normal | `123kjkdqv31` |
-| **META-13** 📋 | ESLint: keep the type-aware rules out of the hooks | Normal | `123kjkdqv32` |
+| **META-13** ⛔ | ESLint: keep the type-aware rules out of the hooks | Normal | `123kjkdqv32` |
 | **META-14** ⛔ | Claude Code Stop hook: feedback loop before the agent says "done" | Low | `123kjkdqv33` |
 | **META-15** 📋 | `check-eco-conventions.cjs`: template and style rules for eco | Low | `123kjkdqv34` |
 | **META-16** 📋 | `check-nx-tags`: every lib carries a `scope:*` and a `type:*` tag | Low | `123kjkdqv35` |
@@ -53,18 +53,22 @@
 | **META-22** ⛔ | Skill evals: measure that the daily skills are actually followed | Low | `123kjkdqv3d` |
 | **META-23** ⛔ | `task-audit` skill: pre-PR review of feature-sized branches | Low | `123kjkdqv3e` |
 | **META-24** ⛔ | Reusable Claude Code base: private plugin + template repo | Low | `123kjkdqv3f` |
+| **META-25** ⛔ | ESLint 10 with flat config, on the current Nx 22.7 | Normal | `123kjkdqv9f` |
+| **META-26** ⛔ | Nx 22.7 → 23 → 24.0.x with `nx migrate`, plus the legacy `nx.json` cleanup | Normal | `123kjkdqv9g` |
 
 ### Order and dependencies
 
 | Step | Tasks | Why this order |
 | --- | --- | --- |
-| 1 | META-12, META-13 | Every other check runs inside the hooks; they must be fast first |
-| 2 | META-14 | The feedback loop needs the fast lint of META-13 |
-| 3 | META-15, META-16, META-17, META-18, META-19 | Rules move from prose to scripts, ESLint and a generator |
-| 4 | META-20 | Lets an agent reproduce a reported bug on its own |
-| 5 | META-21, then META-22 | Prune the instructions before measuring them |
-| 6 | META-23 | Needs META-15, META-16 and META-18 |
-| 7 | META-24 | Packages what steps 1-6 proved |
+| 1 | META-12 | Every other check runs inside the hooks; they must be fast first |
+| 2 | META-25, then META-26 | ESLint 8 and every 9.x are out of support, and Nx 23.1 drops ESLint 8; the ESLint rules and the lint split build on the final config |
+| 3 | META-13 | Splits the lint on the final ESLint config and the inferred Nx lint tasks, and measures from there |
+| 4 | META-14 | The feedback loop needs the fast lint of META-13 |
+| 5 | META-15, META-16, META-17, META-18, META-19 | Rules move from prose to scripts, ESLint and a generator |
+| 6 | META-20 | Lets an agent reproduce a reported bug on its own |
+| 7 | META-21, then META-22 | Prune the instructions before measuring them |
+| 8 | META-23 | Needs META-15, META-16 and META-18 |
+| 9 | META-24 | Packages what steps 1-8 proved |
 
 ---
 
@@ -82,11 +86,11 @@ ClickUp `123kjkdqcqu`. Merged 2026-11-20 (PR #1562, `b15d12fa`). The pre-commit 
 
 ### META-12 — Fast git hooks
 
-ClickUp `123kjkdqv31`. Under way on `chore/123kjkdqv31-meta-12-fast-hooks`. Measured 2026-11-20: one lint task averages 20 s; the pre-commit lints every project the branch affects on every commit (124 projects for a change in `libs/core/entities`, all 197 when a lib is deleted); about 45 s of fixed cost per commit before any lint. Scope: lint-staged, pre-push without the duplicate lint, `NX_NO_CLOUD` in the hooks, legacy `nx.json` keys removed.
+ClickUp `123kjkdqv31`. Under way on `chore/123kjkdqv31-meta-12-fast-hooks`. Measured 2026-11-20: one lint task averages 20 s; the pre-commit lints every project the branch affects on every commit (124 projects for a change in `libs/core/entities`, all 197 when a lib is deleted); about 45 s of fixed cost per commit before any lint. Scope: lint-staged, pre-push without the duplicate lint, `NX_NO_CLOUD` and `NX_WORKSPACE_ROOT_PATH` in the hooks, and two safeguards against a PocketBase schema leaking from one branch into another (in the pre-commit and in a PR check). The legacy `nx.json` keys moved to META-26.
 
 ### META-13 — ESLint without types in the hooks
 
-ClickUp `123kjkdqv32`. The root `.eslintrc.json` builds a TypeScript program of the whole monorepo for every lint task (about 13 of its 20 s). Only `deprecation/deprecation` and the boolean `naming-convention` selector need it; they move to the CI profile.
+ClickUp `123kjkdqv32`. Blocked by META-25 and META-26. The root `.eslintrc.json` builds a TypeScript program of the whole monorepo for every lint task (about 13 of its 20 s). Three rules need it: `deprecation/deprecation` (`@typescript-eslint/no-deprecated` after META-25), the boolean `naming-convention` selector and `prefer-readonly`; they move to the CI profile.
 
 ### META-14 — Claude Code Stop hook
 
@@ -132,11 +136,20 @@ ClickUp `123kjkdqv3e`. Blocked by META-15, META-16 and META-18. Three lenses (co
 
 ClickUp `123kjkdqv3f`. Blocked by META-12, META-13, META-14, META-19 and META-23. A private plugin (hooks, skills, CLAUDE.md skeleton) plus a template repo (Husky, lint-staged, ESLint profiles, CI).
 
+### META-25 — ESLint 10 with flat config
+
+ClickUp `123kjkdqv9f`. Blocked by META-12. ESLint 8 and every 9.x release are out of support on npm, and ESLint 10 drops `.eslintrc`. The ticket swaps `eslint-plugin-deprecation` and `eslint-plugin-ngrx`, which break on ESLint 9 and later, converts the 191 configs to flat config and moves to ESLint 10, all on the current Nx 22.7. ESLint 10 also looks the config up per file, which the root `eslint --fix` of the META-12 lint-staged needs. Same findings before and after.
+
+### META-26 — Nx 22.7 → 24.0.x
+
+ClickUp `123kjkdqv9g`. Blocked by META-25: Nx 23.1 drops ESLint 8. Two PRs, one major each, Nx packages only: Angular 21, TypeScript 5.9 and Cypress 15 stay. Nx 24 removes the executors of 366 lint, test and e2e targets, which become inferred tasks. The legacy `nx.json` keys and the `package.json` scripts that no longer work go in the same PRs.
+
 ---
 
 ## 📝 Changelog
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 0.3 | 2026-11-20 | **META-08** (`123kjkdpqjr`) — META-25 (`123kjkdqv9f`, ESLint 10 with flat config) and META-26 (`123kjkdqv9g`, Nx 22.7 → 24.0.x) added between META-12 and META-13, which is now ⛔. The legacy `nx.json` cleanup moves from META-12 to META-26; META-12 gains the PocketBase schema safeguards. |
 | 0.2 | 2026-11-20 | **META-08** (`123kjkdpqjr`) — META-11 ✅ (PR #1562, `b15d12fa`); META-12 🔄. The header no longer says `tasks:check` is pending. |
 | 0.1 | 2026-11-20 | **META-08** (`123kjkdpqjr`) — file created for the Plastikspace home with the META family only: META-06…11 (already in ClickUp) and META-12…24 (created today from the 2026-11-20 review of hook timing and of the "feedback loop, evals, guardrails" approach). META-06 Phase 3 adds the moved rows later. |
