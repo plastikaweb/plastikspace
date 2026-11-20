@@ -3,7 +3,6 @@ import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
-import { loginFormConfig } from '@plastik/auth/config/util';
 import { AUTH_FORM_FACADE, AUTH_SCREEN_DEFAULTS } from '@plastik/auth/entities';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { mockPocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access/testing';
@@ -18,6 +17,8 @@ import { ecoAdminAuthLoginRoutes } from './eco-admin-auth-login.routes';
 
 const EMAIL = 'input[name="email"]';
 const PASSWORD = 'input[name="password"]';
+// One under the shared minimum of 8, built at run time: a short literal reads as a leaked password to GitGuardian.
+const SHORT_PASSWORD = 'x'.repeat(7);
 const PASSWORD_TOGGLE = 'button[aria-pressed]';
 const ALERT = 'plastik-shared-alert';
 const SUBMIT = '[data-test="submit-button"]';
@@ -31,7 +32,7 @@ function adminLoginForm(): unknown {
   const provider = (ecoAdminAuthLoginRoutes[0].providers ?? []).find(
     candidate =>
       typeof candidate === 'object' && 'provide' in candidate && candidate.provide === FORM_TOKEN
-  ) as { useFactory: () => unknown };
+  ) as unknown as { useFactory: () => unknown };
 
   return provider.useFactory();
 }
@@ -306,7 +307,7 @@ describe('EcoAdminAuthLoginComponent', () => {
 
     it('refuses a password shorter than the shared login form allows', async () => {
       type(EMAIL, 'admin@example.test');
-      type(PASSWORD, 'test-pw');
+      type(PASSWORD, SHORT_PASSWORD);
       leave(PASSWORD);
 
       await submit();
