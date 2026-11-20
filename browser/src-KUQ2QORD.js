@@ -5044,13 +5044,12 @@ function addonsExtension(field) {
 var _c02 = ["matPrefix"];
 var _c12 = ["matSuffix"];
 var _c22 = (a0) => ({ cursor: a0 });
-var _c3 = (a0, a1) => [a0, a1];
-var _c4 = (a0, a1) => ({ $implicit: a0, direction: "left", clickHandler: a1 });
-var _c5 = (a0, a1) => ({ $implicit: a0, direction: "right", clickHandler: a1 });
+var _c3 = (a0, a1) => ({ $implicit: a0, direction: "left", clickHandler: a1 });
+var _c4 = (a0, a1) => ({ $implicit: a0, direction: "right", clickHandler: a1 });
 function FormlyAddonsWrapperComponent_ng_template_0_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
     const _r1 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "button", 7);
+    \u0275\u0275elementStart(0, "button", 8);
     \u0275\u0275listener("click", function FormlyAddonsWrapperComponent_ng_template_0_Conditional_0_Template_button_click_0_listener($event) {
       \u0275\u0275restoreView(_r1);
       const clickHandler_r2 = \u0275\u0275nextContext().clickHandler;
@@ -5072,7 +5071,7 @@ function FormlyAddonsWrapperComponent_ng_template_0_Conditional_0_Template(rf, c
 function FormlyAddonsWrapperComponent_ng_template_0_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
     const _r4 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "button", 8);
+    \u0275\u0275elementStart(0, "button", 9);
     \u0275\u0275listener("click", function FormlyAddonsWrapperComponent_ng_template_0_Conditional_1_Template_button_click_0_listener($event) {
       \u0275\u0275restoreView(_r4);
       const clickHandler_r2 = \u0275\u0275nextContext().clickHandler;
@@ -5116,7 +5115,8 @@ function FormlyAddonsWrapperComponent_ng_template_0_Conditional_3_Template(rf, c
     const ctx_r4 = \u0275\u0275nextContext();
     const addon_r3 = ctx_r4.$implicit;
     const direction_r6 = ctx_r4.$implicit;
-    \u0275\u0275classMap(\u0275\u0275pureFunction2(4, _c3, addon_r3.classes || "", direction_r6 === "left" ? "ml-2" : "mr-2"));
+    \u0275\u0275classMap(addon_r3.classes);
+    \u0275\u0275classProp("ml-2", direction_r6 === "left")("mr-2", direction_r6 !== "left");
     \u0275\u0275attribute("aria-hidden", addon_r3.ariaHidden || true);
     \u0275\u0275advance();
     \u0275\u0275textInterpolate1(" ", addon_r3.icon, " ");
@@ -5127,7 +5127,7 @@ function FormlyAddonsWrapperComponent_ng_template_0_Template(rf, ctx) {
     \u0275\u0275conditionalCreate(0, FormlyAddonsWrapperComponent_ng_template_0_Conditional_0_Template, 3, 8, "button", 4);
     \u0275\u0275conditionalCreate(1, FormlyAddonsWrapperComponent_ng_template_0_Conditional_1_Template, 3, 8, "button", 5);
     \u0275\u0275conditionalCreate(2, FormlyAddonsWrapperComponent_ng_template_0_Conditional_2_Template, 2, 3, "span", 6);
-    \u0275\u0275conditionalCreate(3, FormlyAddonsWrapperComponent_ng_template_0_Conditional_3_Template, 2, 7, "mat-icon", 6);
+    \u0275\u0275conditionalCreate(3, FormlyAddonsWrapperComponent_ng_template_0_Conditional_3_Template, 2, 8, "mat-icon", 7);
   }
   if (rf & 2) {
     const addon_r3 = ctx.$implicit;
@@ -5147,12 +5147,12 @@ function FormlyAddonsWrapperComponent_ng_template_2_Conditional_0_ng_container_0
 }
 function FormlyAddonsWrapperComponent_ng_template_2_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, FormlyAddonsWrapperComponent_ng_template_2_Conditional_0_ng_container_0_Template, 1, 0, "ng-container", 9);
+    \u0275\u0275template(0, FormlyAddonsWrapperComponent_ng_template_2_Conditional_0_ng_container_0_Template, 1, 0, "ng-container", 10);
   }
   if (rf & 2) {
     const ctx_r6 = \u0275\u0275nextContext(2);
     const addonTemplate_r8 = \u0275\u0275reference(1);
-    \u0275\u0275property("ngTemplateOutlet", addonTemplate_r8)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c4, ctx_r6.props["addonLeft"], ctx_r6.addonLeftClick.bind(ctx_r6)));
+    \u0275\u0275property("ngTemplateOutlet", addonTemplate_r8)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c3, ctx_r6.props["addonLeft"], ctx_r6.addonLeftClick.bind(ctx_r6)));
   }
 }
 function FormlyAddonsWrapperComponent_ng_template_2_Template(rf, ctx) {
@@ -5171,12 +5171,12 @@ function FormlyAddonsWrapperComponent_ng_template_6_Conditional_0_ng_container_0
 }
 function FormlyAddonsWrapperComponent_ng_template_6_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, FormlyAddonsWrapperComponent_ng_template_6_Conditional_0_ng_container_0_Template, 1, 0, "ng-container", 9);
+    \u0275\u0275template(0, FormlyAddonsWrapperComponent_ng_template_6_Conditional_0_ng_container_0_Template, 1, 0, "ng-container", 10);
   }
   if (rf & 2) {
     const ctx_r6 = \u0275\u0275nextContext(2);
     const addonTemplate_r8 = \u0275\u0275reference(1);
-    \u0275\u0275property("ngTemplateOutlet", addonTemplate_r8)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c5, ctx_r6.props["addonRight"], ctx_r6.addonRightClick.bind(ctx_r6)));
+    \u0275\u0275property("ngTemplateOutlet", addonTemplate_r8)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c4, ctx_r6.props["addonRight"], ctx_r6.addonRightClick.bind(ctx_r6)));
   }
 }
 function FormlyAddonsWrapperComponent_ng_template_6_Template(rf, ctx) {
@@ -5232,7 +5232,7 @@ var FormlyAddonsWrapperComponent = class _FormlyAddonsWrapperComponent extends F
     if (rf & 2) {
       \u0275\u0275queryAdvance(2);
     }
-  }, features: [\u0275\u0275InheritDefinitionFeature], decls: 8, vars: 0, consts: [["addonTemplate", ""], ["matPrefix", ""], ["fieldComponent", ""], ["matSuffix", ""], ["matButton", "", "type", "button", 3, "class", "ngStyle"], ["matIconButton", "", "type", "button", 3, "class", "ngStyle"], [3, "class"], ["matButton", "", "type", "button", 3, "click", "ngStyle"], ["matIconButton", "", "type", "button", 3, "click", "ngStyle"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"]], template: function FormlyAddonsWrapperComponent_Template(rf, ctx) {
+  }, features: [\u0275\u0275InheritDefinitionFeature], decls: 8, vars: 0, consts: [["addonTemplate", ""], ["matPrefix", ""], ["fieldComponent", ""], ["matSuffix", ""], ["matButton", "", "type", "button", 3, "class", "ngStyle"], ["matIconButton", "", "type", "button", 3, "class", "ngStyle"], [3, "class"], [3, "class", "ml-2", "mr-2"], ["matButton", "", "type", "button", 3, "click", "ngStyle"], ["matIconButton", "", "type", "button", 3, "click", "ngStyle"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"]], template: function FormlyAddonsWrapperComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275template(0, FormlyAddonsWrapperComponent_ng_template_0_Template, 4, 4, "ng-template", null, 0, \u0275\u0275templateRefExtractor)(2, FormlyAddonsWrapperComponent_ng_template_2_Template, 1, 1, "ng-template", null, 1, \u0275\u0275templateRefExtractor);
       \u0275\u0275elementContainer(4, null, 2);
@@ -5276,9 +5276,12 @@ var FormlyAddonsWrapperComponent = class _FormlyAddonsWrapperComponent extends F
   }
   @if (addon.type === 'icon') {
     <!-- Decorative Icon -->
+    <!-- The classes of the addon are bound on their own: inside a list Angular drops, in silence, any entry holding more than one class. -->
     <mat-icon
       [attr.aria-hidden]="addon.ariaHidden || true"
-      [class]="[addon.classes || '', direction === 'left' ? 'ml-2' : 'mr-2']">
+      [class]="addon.classes"
+      [class.ml-2]="direction === 'left'"
+      [class.mr-2]="direction !== 'left'">
       {{ addon.icon }}
     </mat-icon>
   }
@@ -5445,7 +5448,7 @@ function FormlyWrapperFormField_ng_template_12_Template(rf, ctx) {
 var _c23 = ["matPrefix"];
 var _c32 = ["matTextPrefix"];
 var _c42 = ["matSuffix"];
-var _c52 = ["matTextSuffix"];
+var _c5 = ["matTextSuffix"];
 var _FormlyWrapperFormField = class _FormlyWrapperFormField extends FieldWrapper {
   constructor(renderer, elementRef, focusMonitor) {
     super();
@@ -5797,7 +5800,7 @@ _FieldType2.\u0275dir = /* @__PURE__ */ \u0275\u0275defineDirective({
   type: _FieldType2,
   viewQuery: function FieldType_Query(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275viewQuery(_c23, 5)(_c32, 5)(_c42, 5)(_c52, 5)(MatFormFieldControl, 5);
+      \u0275\u0275viewQuery(_c23, 5)(_c32, 5)(_c42, 5)(_c5, 5)(MatFormFieldControl, 5);
     }
     if (rf & 2) {
       let _t;
@@ -6222,6 +6225,10 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
   onSubmit(event) {
     event.preventDefault();
     event.stopPropagation();
+    if (this.form.invalid && !this.formSubmitConfig().emitInvalid) {
+      this.#revealErrors();
+      return;
+    }
     this.#emitChange(this.form.value);
   }
   ngOnDestroy() {
@@ -6253,6 +6260,14 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
       this.#submitted.set(false);
       this.#resetFormStatus();
     }
+  }
+  /**
+   * Shows the message of every invalid field and moves the focus to the first one.
+   * A submit that cannot go through then says why where the user is looking.
+   */
+  #revealErrors() {
+    this.form.markAllAsTouched();
+    this.#elementRef.nativeElement.querySelector("input.ng-invalid, textarea.ng-invalid, select.ng-invalid")?.focus();
   }
   #resetFormStatus(forceReset = false) {
     this.form.markAsUntouched();
@@ -6306,7 +6321,7 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
       \u0275\u0275advance(2);
       \u0275\u0275classMap(`w-full sm:w-auto ${ctx.formSubmitConfig().buttonStyle}`);
       \u0275\u0275classProp("sr-only", !ctx.formSubmitConfig().submitAvailable);
-      \u0275\u0275property("disabled", !ctx.form.valid);
+      \u0275\u0275property("disabled", !ctx.formSubmitConfig().alwaysEnabled && !ctx.form.valid);
       \u0275\u0275attribute("aria-label", \u0275\u0275pipeBind1(4, 12, ctx.formSubmitConfig().label) || "Submit");
       \u0275\u0275advance(2);
       \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(6, 14, ctx.formSubmitConfig().label) || "Submit", " ");
@@ -6341,7 +6356,7 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
     title="Submit"
     [class]="\`w-full sm:w-auto \${formSubmitConfig().buttonStyle}\`"
     [class.sr-only]="!formSubmitConfig().submitAvailable"
-    [disabled]="!form.valid"
+    [disabled]="!formSubmitConfig().alwaysEnabled && !form.valid"
     [attr.aria-label]="(formSubmitConfig().label | translate) || 'Submit'">
     {{ (formSubmitConfig().label | translate) || 'Submit' }}
   </button>
@@ -12059,7 +12074,7 @@ function MatDatepickerToggle_Conditional_2_Template(rf, ctx) {
     \u0275\u0275elementEnd();
   }
 }
-var _c53 = [[["input", "matStartDate", ""]], [["input", "matEndDate", ""]]];
+var _c52 = [[["input", "matStartDate", ""]], [["input", "matEndDate", ""]]];
 var _c6 = ["input[matStartDate]", "input[matEndDate]"];
 function MatDatepickerActions_ng_template_0_Template(rf, ctx) {
   if (rf & 1) {
@@ -16373,7 +16388,7 @@ var MatDateRangeInput = class _MatDateRangeInput {
     consts: [["cdkMonitorSubtreeFocus", "", 1, "mat-date-range-input-container", 3, "cdkFocusChange"], [1, "mat-date-range-input-wrapper"], ["aria-hidden", "true", 1, "mat-date-range-input-mirror"], [1, "mat-date-range-input-separator"], [1, "mat-date-range-input-wrapper", "mat-date-range-input-end-wrapper"]],
     template: function MatDateRangeInput_Template(rf, ctx) {
       if (rf & 1) {
-        \u0275\u0275projectionDef(_c53);
+        \u0275\u0275projectionDef(_c52);
         \u0275\u0275elementStart(0, "div", 0);
         \u0275\u0275listener("cdkFocusChange", function MatDateRangeInput_Template_div_cdkFocusChange_0_listener($event) {
           return ctx._updateFocus($event);
@@ -18159,4 +18174,4 @@ export {
   NasaImagesSearchFeatureComponent,
   nasaImagesSearchFeatureRoutes
 };
-//# sourceMappingURL=src-OHNWV4EC.js.map
+//# sourceMappingURL=src-KUQ2QORD.js.map
