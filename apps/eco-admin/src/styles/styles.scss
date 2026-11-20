@@ -2,7 +2,10 @@
 @use 'core_tailwind_theme';
 @use 'tailwindcss';
 @use 'eco_tokens';
+@use 'eco_error_shake';
+@use 'eco_auth_card';
 @use 'core_input_material';
+@use 'eco_form_field';
 @use 'core_button_material';
 @use 'core_table_material';
 @use 'core_a11y';

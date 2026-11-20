@@ -42,20 +42,25 @@
 
     <link id="app-manifest" rel="manifest" href="/manifest.webmanifest" />
 
+    <!-- Applies the stored theme before the first paint. The two colors are the page background of
+         the default eco theme (`--mat-sys-surface-container`, what `<body>` is painted with): no
+         stylesheet exists yet to read them from. Once the app runs, the theme control reads the color
+         from the stylesheet itself, so a tenant with a theme of its own gets its own color. -->
     <script>
       (function () {
+        const light = '#ecefe5';
+        const dark = '#272b22';
         const theme = localStorage.getItem('eco-theme');
-        let color = '#f8faf0';
+        let color = light;
 
         if (theme === 'dark') {
           document.documentElement.classList.add('dark');
-          color = '#11140f';
+          color = dark;
         } else if (theme === 'light') {
           document.documentElement.classList.add('light');
-          color = '#f8faf0';
         } else if (!theme || theme === 'system') {
           const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          color = isDark ? '#11140f' : '#f8faf0';
+          color = isDark ? dark : light;
         }
 
         const meta = document.createElement('meta');
@@ -67,7 +72,7 @@
 
     <link
       rel="preload"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block&icon_names=access_time,account_cancel,account_circle,add,add_home,admin_panel_settings,arrow_back,arrow_downward,arrow_forward,arrow_upward,auto_awesome,badge,balance,bento,box,calendar_month,chat_bubble_outline,check,check_circle,chevron_right,cleaning_services,clear,clock_loader_10,close,cookie,counter_1,counter_2,counter_3,dark_mode,delete,delete_outline,desktop_mac,done,eco,eco_logo,edit,egg,error,expand_more,favorite,gps_fixed,grain,grocery,help_outline,history,history_toggle_off,home,hourglass_top,how_to_reg,image,image_not_supported,info,ios_share,keyboard_arrow_down,keyboard_arrow_up,language,light_mode,lightbulb,liquor,list_alt,local_cafe,local_offer,local_shipping,location_on,lock,lock_clock,lock_reset,logout,mail,manage_accounts,menu,more_vert,nature,nutrition,order_approve,package_2,pause,payments,pending,person,phone,photo_camera,priority,public,receipt,receipt_long,remove,restaurant,rice_bowl,search,security,sentiment_very_dissatisfied,shopping_basket,shopping_cart,spa,star,store,storefront,takeout_dining,thumb_up,timer,trending_down,trending_up,upload,verified,visibility,visibility_off,warning,water_drop,zoom_in,zoom_out"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block&icon_names=access_time,account_cancel,account_circle,add,add_home,admin_panel_settings,arrow_back,arrow_downward,arrow_forward,arrow_upward,auto_awesome,badge,balance,bento,box,calendar_month,chat_bubble_outline,check,check_circle,chevron_right,cleaning_services,clear,clock_loader_10,close,cookie,counter_1,counter_2,counter_3,dark_mode,delete,delete_outline,desktop_mac,done,eco,eco_logo,edit,egg,error,expand_more,favorite,gps_fixed,grain,grocery,help_outline,history,history_toggle_off,home,hourglass_top,how_to_reg,image,image_not_supported,info,ios_share,key,keyboard_arrow_down,keyboard_arrow_up,language,light_mode,lightbulb,liquor,list_alt,local_cafe,local_offer,local_shipping,location_on,lock,lock_clock,lock_reset,logout,mail,manage_accounts,menu,more_vert,nature,nutrition,order_approve,package_2,pause,payments,pending,person,phone,photo_camera,priority,public,receipt,receipt_long,remove,restaurant,rice_bowl,search,security,sentiment_very_dissatisfied,shopping_basket,shopping_cart,spa,star,store,storefront,takeout_dining,thumb_up,timer,trending_down,trending_up,upload,verified,visibility,visibility_off,warning,water_drop,zoom_in,zoom_out"
       as="style"
       type="text/css"
       onload="
@@ -77,7 +82,7 @@
     <noscript>
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block&icon_names=access_time,account_cancel,account_circle,add,add_home,admin_panel_settings,arrow_back,arrow_downward,arrow_forward,arrow_upward,auto_awesome,badge,balance,bento,box,calendar_month,chat_bubble_outline,check,check_circle,chevron_right,cleaning_services,clear,clock_loader_10,close,cookie,counter_1,counter_2,counter_3,dark_mode,delete,delete_outline,desktop_mac,done,eco,eco_logo,edit,egg,error,expand_more,favorite,gps_fixed,grain,grocery,help_outline,history,history_toggle_off,home,hourglass_top,how_to_reg,image,image_not_supported,info,ios_share,keyboard_arrow_down,keyboard_arrow_up,language,light_mode,lightbulb,liquor,list_alt,local_cafe,local_offer,local_shipping,location_on,lock,lock_clock,lock_reset,logout,mail,manage_accounts,menu,more_vert,nature,nutrition,order_approve,package_2,pause,payments,pending,person,phone,photo_camera,priority,public,receipt,receipt_long,remove,restaurant,rice_bowl,search,security,sentiment_very_dissatisfied,shopping_basket,shopping_cart,spa,star,store,storefront,takeout_dining,thumb_up,timer,trending_down,trending_up,upload,verified,visibility,visibility_off,warning,water_drop,zoom_in,zoom_out" />
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block&icon_names=access_time,account_cancel,account_circle,add,add_home,admin_panel_settings,arrow_back,arrow_downward,arrow_forward,arrow_upward,auto_awesome,badge,balance,bento,box,calendar_month,chat_bubble_outline,check,check_circle,chevron_right,cleaning_services,clear,clock_loader_10,close,cookie,counter_1,counter_2,counter_3,dark_mode,delete,delete_outline,desktop_mac,done,eco,eco_logo,edit,egg,error,expand_more,favorite,gps_fixed,grain,grocery,help_outline,history,history_toggle_off,home,hourglass_top,how_to_reg,image,image_not_supported,info,ios_share,key,keyboard_arrow_down,keyboard_arrow_up,language,light_mode,lightbulb,liquor,list_alt,local_cafe,local_offer,local_shipping,location_on,lock,lock_clock,lock_reset,logout,mail,manage_accounts,menu,more_vert,nature,nutrition,order_approve,package_2,pause,payments,pending,person,phone,photo_camera,priority,public,receipt,receipt_long,remove,restaurant,rice_bowl,search,security,sentiment_very_dissatisfied,shopping_basket,shopping_cart,spa,star,store,storefront,takeout_dining,thumb_up,timer,trending_down,trending_up,upload,verified,visibility,visibility_off,warning,water_drop,zoom_in,zoom_out" />
     </noscript>
 
     <style>

@@ -29,6 +29,20 @@
     --content-detail-max-width: 1400px;
     --translucid-bg: color-mix(in srgb, var(--mat-sys-surface), transparent 20%);
 
+    /* What the card of the auth screens is painted with (`eco_auth_card`, `libs/eco/styles`): a
+       surface role at 80%, over the blur of the card. In light the role is the one the shared screen
+       uses. In dark that one is darker than the page (`surface-container`), so the card takes the
+       lightest container role.
+
+       Two custom properties and not one: the fallbacks the build writes for `light-dark()` and for
+       `color-mix()` overwrite each other when one custom property uses both, and the fill comes
+       out opaque. */
+    --eco-auth-card-surface: light-dark(
+      var(--mat-sys-surface-container-low),
+      var(--mat-sys-surface-container-highest)
+    );
+    --eco-auth-card-background: color-mix(in srgb, var(--eco-auth-card-surface) 80%, transparent);
+
     scroll-padding-top: 120px;
 
     @media (prefers-reduced-motion: no-preference) {
@@ -235,4 +249,6 @@
 :root {
   --focus-ring-color: var(--tertiary-600);
   --focus-ring-width: 2px;
+
+  --mat-field-height: 48px;
 }

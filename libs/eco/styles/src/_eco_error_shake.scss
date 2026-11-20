@@ -1,0 +1,30 @@
+/* The shake of a card whose form the server rejected, the same in eco-store and eco-admin.
+
+   Put `eco-shake-on-error` on the card. It shakes once each time an error or a warning alert
+   (`plastik-shared-alert`) appears inside it. No script and no counter: the animation starts again
+   because the alert leaves the page while the form is sent again, and comes back with the answer.
+   Whoever shows the alert has to take it away when a new attempt starts.
+
+   The measures are those of the frozen mock «Vista Login» (Round 41 · 41A): 0.4s, 7px each way. */
+@media (prefers-reduced-motion: no-preference) {
+  .eco-shake-on-error:has(.plastik-alert--error, .plastik-alert--warning) {
+    animation: eco-error-shake 0.4s ease both;
+  }
+}
+
+@keyframes eco-error-shake {
+  0%,
+  100% {
+    transform: none;
+  }
+
+  20%,
+  60% {
+    transform: translateX(-7px);
+  }
+
+  40%,
+  80% {
+    transform: translateX(7px);
+  }
+}

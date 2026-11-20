@@ -34,6 +34,11 @@ export interface SubmitFormConfig {
   disabled?: boolean;
   /** Whether it should be enabled by default. */
   enabledByDefault?: boolean;
+  /**
+   * Whether the submit stays enabled while the form is invalid. A submit then emits nothing: it
+   * shows the message of every field and moves the focus to the first invalid one.
+   */
+  alwaysEnabled?: boolean;
   /** Additional CSS classes for the button. */
   buttonStyle?: string;
   /** Whether the form should be reset on submit. */

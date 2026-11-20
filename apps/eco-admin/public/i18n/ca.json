@@ -4,21 +4,32 @@
       "light": "Clar",
       "dark": "Fosc",
       "system": "Sistema",
+      "toggleAriaLabel": "Canviar el tema de la interfície a clar, fosc o de sistema",
+      "toggleTooltip": "Canviar el tema de la interfície",
       "changedTo": "Tema de la interfície canviat a {theme}"
-    }
-  },
-  "auth": {
-    "login": {
-      "title": "Accés",
-      "subtitle": "Administració de cooperatives",
-      "email": "Adreça electrònica",
+    },
+    "form": {
       "password": "Contrasenya",
       "showPassword": "Mostra la contrasenya",
       "hidePassword": "Amaga la contrasenya",
-      "submit": "Entra",
-      "submitting": "Entrant…",
-      "themeToDark": "Activa el tema fosc",
-      "themeToLight": "Activa el tema clar",
+      "error": {
+        "required": "Aquest camp és obligatori",
+        "email": "El format de l''adreça electrònica no és correcte",
+        "minLength": "El camp ha de tenir almenys {value} caràcters",
+        "maxLength": "El camp no pot tenir més de {value} caràcters"
+      }
+    }
+  },
+  "auth": {
+    "frame": {
+      "subtitle": "Tauler d''administració"
+    },
+    "login": {
+      "title": "Inici de sessió",
+      "email": "Correu electrònic",
+      "password": "Contrasenya",
+      "recoverAccess": "Has oblidat la contrasenya?",
+      "submit": "Iniciar sessió",
       "success": {
         "title": "Sessió iniciada.",
         "redirectTenant": "Redirigint al Tauler…",
@@ -37,6 +48,40 @@
           "title": "No hem pogut iniciar la sessió.",
           "body": "Aquest compte demana un segon pas de verificació que encara no està disponible."
         }
+      }
+    },
+    "forgotPassword": {
+      "title": "Has oblidat la contrasenya?",
+      "description": "Escriu el teu correu electrònic i t''enviarem un enllaç per restablir-la.",
+      "email": "Correu electrònic",
+      "backToLogin": "Tornar a l''inici de sessió",
+      "submit": "Enviar enllaç"
+    },
+    "forgotPasswordSent": {
+      "title": "Correu de recuperació enviat!",
+      "description": "T''hem enviat un correu electrònic amb les instruccions per restablir la teva contrasenya.",
+      "checkSpam": "Si no el reps en uns minuts, revisa la teva carpeta de correu brossa (spam).",
+      "backToLogin": "Tornar a l''inici de sessió"
+    },
+    "resetPassword": {
+      "title": "Tria una contrasenya nova",
+      "passwordLabel": "Contrasenya nova",
+      "passwordPlaceholder": "Contrasenya nova",
+      "passwordConfirmLabel": "Repeteix la contrasenya",
+      "passwordConfirmPlaceholder": "Repeteix la contrasenya",
+      "submitButton": "Desar la contrasenya",
+      "passwordError": "La contrasenya ha de tenir almenys 8 caràcters",
+      "passwordMatchError": "Les contrasenyes no coincideixen",
+      "passwordHint": "Ha de tenir 8 caràcters com a mínim",
+      "done": {
+        "title": "Contrasenya canviada",
+        "description": "Ja pots iniciar la sessió amb la contrasenya nova.",
+        "action": "Iniciar sessió"
+      },
+      "expired": {
+        "title": "Aquest enllaç ja no serveix",
+        "description": "Ha caducat o ja s''ha fet servir. Demana''n un altre i te l''enviarem al correu.",
+        "action": "Demanar un altre enllaç"
       }
     }
   },

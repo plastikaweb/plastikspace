@@ -117,6 +117,13 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit, OnDestroy {
   onSubmit(event: Event): void {
     event.preventDefault();
     event.stopPropagation();
+
+    if (this.form.invalid && !this.formSubmitConfig().emitInvalid) {
+      this.#revealErrors();
+
+      return;
+    }
+
     this.#emitChange(this.form.value as T);
   }
 
@@ -158,6 +165,17 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit, OnDestroy {
       this.#submitted.set(false);
       this.#resetFormStatus();
     }
+  }
+
+  /**
+   * Shows the message of every invalid field and moves the focus to the first one.
+   * A submit that cannot go through then says why where the user is looking.
+   */
+  #revealErrors(): void {
+    this.form.markAllAsTouched();
+    (this.#elementRef.nativeElement as HTMLElement)
+      .querySelector<HTMLElement>('input.ng-invalid, textarea.ng-invalid, select.ng-invalid')
+      ?.focus();
   }
 
   #resetFormStatus(forceReset = false): void {

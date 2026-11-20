@@ -4,21 +4,32 @@
       "light": "Claro",
       "dark": "Oscuro",
       "system": "Sistema",
+      "toggleAriaLabel": "Cambiar el tema de la interfaz a claro, oscuro o del sistema",
+      "toggleTooltip": "Cambiar el tema de la interfaz",
       "changedTo": "Tema de la interfaz cambiado a {theme}"
-    }
-  },
-  "auth": {
-    "login": {
-      "title": "Acceso",
-      "subtitle": "Administración de cooperativas",
-      "email": "Correo electrónico",
+    },
+    "form": {
       "password": "Contraseña",
       "showPassword": "Mostrar la contraseña",
       "hidePassword": "Ocultar la contraseña",
-      "submit": "Entrar",
-      "submitting": "Entrando…",
-      "themeToDark": "Activar el tema oscuro",
-      "themeToLight": "Activar el tema claro",
+      "error": {
+        "required": "Este campo es obligatorio",
+        "email": "El formato del correo electrónico no es correcto",
+        "minLength": "El campo debe tener al menos {value} caracteres",
+        "maxLength": "El campo no puede tener más de {value} caracteres"
+      }
+    }
+  },
+  "auth": {
+    "frame": {
+      "subtitle": "Panel de administración"
+    },
+    "login": {
+      "title": "Iniciar sesión",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "recoverAccess": "¿Has olvidado la contraseña?",
+      "submit": "Iniciar sesión",
       "success": {
         "title": "Sesión iniciada.",
         "redirectTenant": "Redirigiendo al Panel…",
@@ -37,6 +48,40 @@
           "title": "No hemos podido iniciar la sesión.",
           "body": "Esta cuenta pide un segundo paso de verificación que aún no está disponible."
         }
+      }
+    },
+    "forgotPassword": {
+      "title": "¿Has olvidado la contraseña?",
+      "description": "Escribe tu correo electrónico y te enviaremos un enlace para restablecerla.",
+      "email": "Correo electrónico",
+      "backToLogin": "Volver al inicio de sesión",
+      "submit": "Enviar"
+    },
+    "forgotPasswordSent": {
+      "title": "¡Correo enviado!",
+      "description": "Te hemos enviado un correo electrónico con las instrucciones para restablecer tu contraseña. Revisa tu bandeja de entrada.",
+      "checkSpam": "Si no lo recibes en unos minutos, revisa tu carpeta de correo no deseado (spam).",
+      "backToLogin": "Volver al inicio de sesión"
+    },
+    "resetPassword": {
+      "title": "Elige una contraseña nueva",
+      "passwordLabel": "Contraseña nueva",
+      "passwordPlaceholder": "Contraseña nueva",
+      "passwordConfirmLabel": "Repite la contraseña",
+      "passwordConfirmPlaceholder": "Repite la contraseña",
+      "submitButton": "Guardar la contraseña",
+      "passwordError": "La contraseña debe tener al menos 8 caracteres",
+      "passwordMatchError": "Las contraseñas no coinciden",
+      "passwordHint": "Debe tener 8 caracteres como mínimo",
+      "done": {
+        "title": "Contraseña cambiada",
+        "description": "Ya puedes iniciar la sesión con la contraseña nueva.",
+        "action": "Iniciar sesión"
+      },
+      "expired": {
+        "title": "Este enlace ya no sirve",
+        "description": "Ha caducado o ya se ha usado. Pide otro y te lo enviaremos al correo.",
+        "action": "Pedir otro enlace"
       }
     }
   },

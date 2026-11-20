@@ -1,7 +1,7 @@
 {
   "name": "plastik-shared-auth-feature",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/shared/auth/util/src",
+  "sourceRoot": "libs/shared/auth/feature/src",
   "prefix": "plastik",
   "projectType": "library",
   "tags": ["type:feature", "scope:shared"],

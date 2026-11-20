@@ -151,15 +151,15 @@ yarn cz                              # Interactive commit with Commitizen
 
 ## Applications
 
-| Application          | Framework          | Backend    | Purpose                                      |
-| -------------------- | ------------------ | ---------- | -------------------------------------------- |
-| **nasa-images**      | Angular 21         | NASA API   | Image gallery with search                    |
-| **llecoop**          | Angular 21         | Firebase   | Consumer cooperative management (production) |
-| **llecoop-firebase** | Firebase Functions | -          | Cloud functions for Llecoop                  |
-| **llecoop-triggers** | Firebase Functions | -          | Event triggers for Llecoop                   |
-| **eco-store**        | Angular 21         | PocketBase | E-commerce demo                              |
-| **eco-admin**        | Angular 21         | PocketBase | Admin panel for eco-store (scaffold, AP-0)   |
-| **plastikaweb**      | Angular 21         | GraphQL    | Personal portfolio (static site)             |
+| Application          | Framework          | Backend    | Purpose                                    |
+| -------------------- | ------------------ | ---------- | ------------------------------------------ |
+| **nasa-images**      | Angular 21         | NASA API   | Image gallery with search                  |
+| **llecoop**          | Angular 21         | Firebase   | Discontinued: Firebase reference code only |
+| **llecoop-firebase** | Firebase Functions | -          | Cloud functions for Llecoop                |
+| **llecoop-triggers** | Firebase Functions | -          | Event triggers for Llecoop                 |
+| **eco-store**        | Angular 21         | PocketBase | E-commerce demo                            |
+| **eco-admin**        | Angular 21         | PocketBase | Admin panel for eco-store (scaffold, AP-0) |
+| **plastikaweb**      | Angular 21         | GraphQL    | Personal portfolio (static site)           |
 
 Each app has a corresponding `-e2e` project for Cypress testing.
 

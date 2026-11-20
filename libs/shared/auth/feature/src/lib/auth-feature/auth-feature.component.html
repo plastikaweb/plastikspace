@@ -1,54 +1,173 @@
-<main class="flex flex-col">
-  @defer {
-    <plastik-mat-theme-toggle class="top-md right-md absolute z-10"></plastik-mat-theme-toggle>
+<main
+  id="mainContent"
+  tabindex="-1"
+  class="relative flex min-h-screen items-center justify-center p-4">
+  @let brandName = brandTitle();
+  @let brandLogo = brandImage();
+  @let footerText = cardFooter();
+
+  <!-- The way back, for an installed application that has no browser bar. -->
+  @if (canGoBack()) {
+    <div class="absolute top-6 left-6 z-50">
+      <div
+        class="bg-surface-container/30 hover:bg-surface-container/50 rounded-full shadow-sm backdrop-blur-md transition-colors">
+        <button
+          matIconButton
+          class="opacity-70 transition-opacity hover:opacity-100"
+          [attr.aria-label]="'auth.common.back' | translate"
+          [matTooltip]="'auth.common.back' | translate"
+          (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+    </div>
   }
 
-  <div class="p-sub flex min-h-screen items-center justify-center contain-layout">
-    @let formConfig = facade.formConfig;
+  <mat-card
+    appearance="raised"
+    [class]="cardClasses"
+    [class.pointer-events-none]="isLoading()"
+    [class.opacity-60]="isLoading()">
+    <!-- Hero Header with Organic Texture -->
+    <mat-card-header
+      class="relative flex flex-col items-center justify-center gap-4 overflow-hidden pt-8 pb-4">
+      <!-- Decorative Organic Shape -->
+      <div
+        class="bg-primary-500/10 absolute -top-12 -right-12 h-40 w-40 rounded-full blur-lg"
+        aria-hidden="true"></div>
+      <div
+        class="bg-tertiary-500/10 absolute bottom-4 -left-12 h-40 w-40 rounded-full blur-lg"
+        aria-hidden="true"></div>
 
-    <mat-card
-      appearance="raised"
-      class="flex max-w-[425px] min-w-[425px] items-center justify-center align-middle shadow-md">
-      @defer {
-        <mat-card-header>
-          <mat-card-title class="gap-sub flex justify-center align-middle">
-            @if (logo() && title()) {
-              <img
-                loading="lazy"
-                class="h-[32px] w-[32px] object-contain"
-                [attr.alt]="title() || ''"
-                [src]="logo()" />
-            }
-            @if (title()) {
-              <h1 class="text-lg">{{ title() }}</h1>
-            }
-          </mat-card-title>
-        </mat-card-header>
+      @if (brandLogo) {
+        <div
+          class="bg-secondary-500/40 shadow-secondary-100/50 relative z-10 flex h-20 w-20 items-center justify-center rounded-3xl p-4 shadow-2xl ring-4 ring-white dark:ring-neutral-800">
+          <plastik-img-container
+            [src]="brandLogo"
+            [title]="brandName"
+            [dimensions]="{ width: 64, height: 64 }"></plastik-img-container>
+        </div>
+      } @else {
+        <div
+          class="text-primary-600 bg-primary-50 dark:bg-primary-900 dark:text-primary-200 relative z-10 flex h-20 w-20 items-center justify-center rounded-3xl shadow-xl ring-4 ring-white dark:ring-neutral-800">
+          <mat-icon class="scale-150" [attr.aria-label]="brandName + ' logo'">{{
+            brandIcon
+          }}</mat-icon>
+        </div>
+      }
 
-        <mat-card-content class="my-sm w-full">
+      <div class="relative z-10 flex flex-col items-center gap-1">
+        <h1
+          class="text-on-surface m-0 text-center text-2xl leading-none font-black tracking-tight sm:text-3xl">
+          {{ brandName }}
+        </h1>
+        <p
+          class="text-on-surface-variant text-center text-xs font-bold tracking-[0.1em] uppercase opacity-80">
+          {{ brandSubtitle() }}
+        </p>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content class="px-8! py-4!">
+      @if (outcome(); as end) {
+        <!-- Where the flow of the view ended. It stands in place of the heading, the description and the notice,
+             and takes the focus: the control the user came from is no longer on the screen. No colour and no icon,
+             the heading says the state. -->
+        <div
+          #outcomePanel
+          class="make-it-focusable rounded-lg"
+          role="group"
+          tabindex="-1"
+          aria-labelledby="authOutcomeTitle"
+          [attr.aria-describedby]="end.body ? 'authOutcomeBody' : null">
+          <h2 id="authOutcomeTitle" class="text-headline-small mb-2 text-center">
+            {{ end.title | translate }}
+          </h2>
+          @if (end.body; as body) {
+            <p id="authOutcomeBody" class="text-body-medium mb-6 text-center text-balance">
+              {{ body | translate }}
+            </p>
+          }
+          @if (end.link; as link) {
+            <a matButton="filled" class="w-full!" [routerLink]="link.route">
+              {{ link.label | translate }}
+            </a>
+          }
+        </div>
+      } @else {
+        <!-- prettier-ignore -->
+        <h2 class="text-headline-small mb-2 text-center empty:hidden"><ng-content select="[title]"></ng-content></h2>
+        <p class="text-body-medium mb-4 text-center text-balance">
+          <ng-content select="[description]"></ng-content>
+        </p>
+
+        <!-- What the last attempt ended in. The alert is a live region of its own, and a failure also takes the focus.
+             It stays a column at every width: the card is never wide enough for its link to sit beside the text. -->
+        @if (message(); as notice) {
+          <plastik-shared-alert
+            #messageAlert
+            class="make-it-focusable mb-4 md:flex-col!"
+            tabindex="-1"
+            [type]="notice.type">
+            <span alert-title>{{ notice.title | translate }}</span>
+            @if (notice.body; as body) {
+              <span alert-subtitle>{{ body | translate }}</span>
+            }
+            @if (notice.link; as link) {
+              <a alert-extras matButton [routerLink]="link.route">{{ link.label | translate }}</a>
+            }
+          </plastik-shared-alert>
+        }
+      }
+
+      <ng-content select="[content]">
+        <!-- A screen that projects nothing gets the form of the facade its route provides. -->
+        @if (facade; as formFacade) {
           <plastik-shared-form-feature
-            [fields]="formConfig.getConfig() || []"
-            [submitConfig]="formConfig.getSubmitFormConfig?.() || {}"
-            (changeEvent)="facade.onSubmit($event)">
-            <div class="my-sub extraLinks md:my-sm">
-              @for (link of facade.extraLinks?.(); track link) {
-                <a [routerLink]="link.route">{{ link.label }}</a>
+            [fields]="formFacade.formConfig.getConfig()"
+            [submitConfig]="formFacade.formConfig.getSubmitFormConfig?.() ?? null"
+            (changeEvent)="formFacade.onSubmit($event)">
+            <div class="extra-links mt-1 mb-3 flex flex-col items-center justify-center">
+              @for (link of formFacade.extraLinks?.(); track link.route) {
+                <a matButton [routerLink]="link.route">{{ link.label | translate }}</a>
               }
             </div>
           </plastik-shared-form-feature>
-        </mat-card-content>
+        }
+      </ng-content>
+    </mat-card-content>
 
-        <mat-card-footer
-          class="py-sub border-spacing-sm border-t-secondary w-full border-t-2 border-neutral-700 text-center text-[12px] text-balance text-white">
-          <a
-            class="hover:text-neutral-100 hover:decoration-neutral-100"
-            target="_self"
-            [href]="nameLink()"
-            >{{ name() }}</a
-          >
-          {{ currentDate | date: 'yyyy' }}
-        </mat-card-footer>
-      }
-    </mat-card>
-  </div>
+    @if (footerText) {
+      <mat-card-footer class="bg-surface-container-high/30 px-8 py-2 text-center backdrop-blur-sm">
+        <p
+          class="text-on-surface-variant text-sm leading-relaxed font-medium tracking-normal opacity-70">
+          {{ footerText }}
+        </p>
+      </mat-card-footer>
+    } @else if (name(); as ownerName) {
+      <mat-card-footer class="bg-surface-container-high/30 px-8 py-2 text-center backdrop-blur-sm">
+        <p
+          class="text-on-surface-variant text-sm leading-relaxed font-medium tracking-normal opacity-70">
+          @if (nameLink(); as ownerLink) {
+            <a target="_self" [href]="ownerLink">{{ ownerName }}</a>
+          } @else {
+            {{ ownerName }}
+          }
+          {{ currentYear }}
+        </p>
+      </mat-card-footer>
+    }
+  </mat-card>
+
+  @defer (on idle) {
+    <div class="absolute top-6 right-6 z-50">
+      <div
+        class="bg-surface-container/30 hover:bg-surface-container/50 rounded-full shadow-sm backdrop-blur-md transition-colors">
+        <plastik-mat-theme-toggle
+          class="opacity-70 transition-opacity hover:opacity-100"></plastik-mat-theme-toggle>
+      </div>
+    </div>
+  } @placeholder {
+    <div class="hidden"></div>
+  }
 </main>

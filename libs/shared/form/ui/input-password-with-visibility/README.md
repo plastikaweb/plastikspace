@@ -21,6 +21,9 @@
 
 A formly controller to pick up a password with a visibility toggle. It provides a password input field with a button to show/hide the password content.
 
+The input is named once. With `props.label` the `<mat-label>` of the form field names it; without a label, or with `props.hideLabel`,
+the type adds a visually hidden `<label>` (`common.form.password`).
+
 ## Usage
 
 ### HTML Element
@@ -79,6 +82,28 @@ interface PasswordWithVisibilityProps extends FormlyFieldProps {
    * @default false
    */
   selectOnFocus?: boolean;
+
+  /**
+   * The `autocomplete` attribute of the input, e.g. `current-password` or `new-password`.
+   * @default 'off'
+   */
+  autocomplete?: string;
+}
+```
+
+The `name` of the field config, when set, becomes the `name` attribute of the input; without it the input has none.
+
+The toggle is a 24px icon button by default. In the eco apps (eco-store and eco-admin) it is a 44px button with an 18px icon:
+the field style they share sets it, in `libs/core/styles/util/material/src/_core_input_material.scss`.
+Another application overrides the Material tokens on the type's element in the same way:
+
+```scss
+plastik-input-password-with-visibility-type {
+  @include mat.icon-button-overrides(
+    (
+      state-layer-size: 44px,
+    )
+  );
 }
 ```
 

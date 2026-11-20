@@ -31,9 +31,12 @@
   }
   @if (addon.type === 'icon') {
     <!-- Decorative Icon -->
+    <!-- The classes of the addon are bound on their own: inside a list Angular drops, in silence, any entry holding more than one class. -->
     <mat-icon
       [attr.aria-hidden]="addon.ariaHidden || true"
-      [class]="[addon.classes || '', direction === 'left' ? 'ml-2' : 'mr-2']">
+      [class]="addon.classes"
+      [class.ml-2]="direction === 'left'"
+      [class.mr-2]="direction !== 'left'">
       {{ addon.icon }}
     </mat-icon>
   }

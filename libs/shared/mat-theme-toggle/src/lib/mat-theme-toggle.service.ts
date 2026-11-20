@@ -4,7 +4,7 @@ import { computed, DOCUMENT, effect, inject, Injectable, OnDestroy, signal } fro
 import { Meta } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 
-import { MAT_THEME_COLORS, THEMES, MatThemeToggleConfig } from './mat-theme';
+import { THEMES, MatThemeToggleConfig } from './mat-theme';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +16,6 @@ export class MatThemeToggleService implements OnDestroy {
   readonly #theme = signal<keyof typeof THEMES>(this.#getThemeFromLocalStorage() || 'system');
   readonly selectedTheme = computed(() => THEMES[this.#theme()]);
   readonly #liveAnnouncer = inject(LiveAnnouncer);
-  readonly #themeColors = inject(MAT_THEME_COLORS);
   readonly #query = window.matchMedia('(prefers-color-scheme: dark)');
 
   readonly #setSystemTheme = effect(() => {
@@ -57,19 +56,25 @@ export class MatThemeToggleService implements OnDestroy {
   }
 
   readonly #onSystemThemeChange = (): void => {
+    // With the system theme `light-dark()` has already repainted the page: only the browser bar is
+    // left to follow. Setting the signal to the value it holds would notify nobody.
     if (this.#theme() === 'system') {
-      // Re-trigger the effect to ensure classes are clean,
-      // although light-dark() CSS handles the actual visual change.
-      this.#theme.set('system');
+      this.#updateThemeColorMeta();
     }
   };
 
+  /**
+   * Paints the browser bar (`<meta name="theme-color">`) with the color the stylesheet gives the page.
+   * The color is read from the `background-color` of `<body>` once the theme is applied, so it comes
+   * from the palette of the application and follows whatever the stylesheet reacts to.
+   */
   #updateThemeColorMeta(): void {
-    const currentTheme = this.#theme();
-    let color = this.#themeColors.light; // Default light surface
+    const body = this.#document.body;
+    const color = this.#document.defaultView?.getComputedStyle(body).backgroundColor;
 
-    if (currentTheme === 'dark' || (currentTheme === 'system' && this.#query.matches)) {
-      color = this.#themeColors.dark; // Dark surface
+    // A page that paints no background of its own keeps the bar as its `index.html` left it.
+    if (!color || color === 'transparent' || color === 'rgba(0, 0, 0, 0)') {
+      return;
     }
 
     this.#meta.updateTag({ name: 'theme-color', content: color });

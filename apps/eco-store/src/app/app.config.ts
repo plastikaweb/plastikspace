@@ -46,6 +46,7 @@ import { TranslateFormatJsCompiler } from 'ngx-translate-formatjs-compiler';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
+import { provideEcoStoreAuthScreen } from './auth-screen.provider';
 
 // `LOCALE_ID` is fixed to 'ca', so Angular pipes (currency/date/number) only
 // ever need the Catalan locale data. The 'es' locale is intentionally not
@@ -108,6 +109,7 @@ export const appConfig: ApplicationConfig = {
         environment.defaultLanguage,
     }),
     provideEcoStoreTenant,
+    provideEcoStoreAuthScreen(),
     provideAppInitializer(async () => {
       // All injections must be done before any async code
       const translate = inject(TranslateService);

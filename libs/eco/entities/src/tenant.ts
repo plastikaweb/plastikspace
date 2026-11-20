@@ -52,6 +52,7 @@ export interface EcoStoreTenantLogistics {
 export type EcoStoreTenant = BasePocketBaseEntity &
   UserContact & {
     shortName?: string; // PWA manifest short_name (≤12 chars); falls back to a truncation of name.
+    email?: string; // The cooperative's public address; the storefront login offers it to visitors who are not members yet.
     logo?: string;
     slogan?: string;
     languages: string[];
