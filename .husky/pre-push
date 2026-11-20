@@ -9,25 +9,68 @@ export NX_NO_CLOUD=true
 export NX_CLI_SET=classic
 export PAGER=cat
 
+# --- WHAT IS BEING PUSHED ---
+# git passes one line per ref: <local ref> <local sha> <remote ref> <remote sha>. The
+# checks below run on HEAD and the files on disk, so every branch pushed must be HEAD:
+# `git push origin other-branch` from here would test this branch and push that one.
+# Deletions and tags carry no new code and are let through.
+HEAD_SHA=$(git rev-parse HEAD)
+PUSHES_CODE=false
+while read -r LOCAL_REF LOCAL_SHA REMOTE_REF REMOTE_SHA; do
+  if [ -z "$LOCAL_SHA" ]; then
+    continue
+  fi
+  case "$LOCAL_SHA" in
+    *[!0]*) ;;
+    *) continue ;; # all zeros: a deletion
+  esac
+  case "$LOCAL_REF $REMOTE_REF" in
+    refs/tags/* | *" refs/tags/"*) continue ;;
+  esac
+  if [ "$LOCAL_SHA" != "$HEAD_SHA" ]; then
+    echo "❌ This push sends $LOCAL_REF ($LOCAL_SHA) to $REMOTE_REF, but HEAD is $HEAD_SHA."
+    echo "   The checks run on HEAD and the files on disk, so they would test another commit."
+    echo "   Check out what you push and push from there."
+    exit 1
+  fi
+  PUSHES_CODE=true
+done
+if [ "$PUSHES_CODE" = "false" ]; then
+  echo "ℹ️  No branch tip to check in this push (only deletions, tags, or nothing new)."
+  exit 0
+fi
+
 # Resolve the base of the range being pushed. Prefer this branch's upstream (exactly
 # the commits not yet on the remote); for a brand-new branch with no upstream, fall
 # back to the merge-base with origin/develop so the WHOLE branch is covered — NOT just
 # the tip commit (the old `HEAD~1...HEAD` fallback silently scoped every check to the
 # last commit on new branches, e.g. letting a 2-commit push build/lint nothing).
 BASE=$(git rev-parse @{upstream} 2>/dev/null || git merge-base origin/develop HEAD 2>/dev/null || echo HEAD~1)
-CHANGED_FILES=$(git diff --name-only "$BASE"..HEAD)
+# What this branch changed since it left BASE (the three-dot diff, spelled out). Two
+# dots compare the trees, so a branch whose upstream is origin/develop would also list
+# every file develop changed since. The merge base is found first: under `sh -e`, a
+# failing git inside the pipe below would look like an empty diff, a Markdown-only push.
+if ! MERGE_BASE=$(git merge-base "$BASE" HEAD); then
+  echo "❌ $BASE and HEAD share no history, so this push cannot be scoped. Set the upstream"
+  echo "   to a branch HEAD grows from: git branch --set-upstream-to=origin/develop"
+  exit 1
+fi
+# -z: git C-quotes paths with a double quote otherwise.
+CHANGED_FILES=$(git diff --name-only -z "$MERGE_BASE" HEAD | tr '\0' '\n')
 
 # --- FORMAT GATE (runs for EVERY push) ---
-# `git rebase --continue` and `git commit --amend` do NOT fire the pre-commit hook, so
-# Prettier never ran on commits authored that way. pre-push is the only hook that
-# always runs regardless of how a commit was created, so this is where that drift is
-# caught — locally, before it reaches the remote and CI. Prettier formats .md too,
-# so this runs even for doc-only pushes (before the markdown fast-path below).
+# Commits that git writes itself (a rebase, a merge, a cherry-pick or revert without a
+# conflict) do NOT fire the pre-commit hook, so Prettier never ran on them. pre-push is
+# the only hook that always runs regardless of how a commit was created, so this is
+# where that drift is caught — locally, before it reaches the remote and CI. Prettier
+# formats .md too, so this runs even for doc-only pushes (before the markdown
+# fast-path below).
 # Lint is not repeated here (META-12): lint-staged checks every commit's staged files,
-# and CI runs `nx affected --target=lint` on every push, rebased or amended ones too.
+# and CI runs `nx affected --target=lint` on every pull request and every push to
+# develop, rebased commits included.
 echo "🎨 Checking formatting (Prettier)..."
 if ! yarn nx format:check --base="$BASE" --head=HEAD; then
-  echo "❌ Formatting drift detected — often from 'git rebase --continue' or 'git commit --amend', which skip the pre-commit hook."
+  echo "❌ Formatting drift detected — often from a rebase, merge or cherry-pick, which skip the pre-commit hook."
   echo "   Fix: run 'yarn format:write', then amend/rebase the affected commit(s) and re-push."
   exit 1
 fi
@@ -44,8 +87,25 @@ if [ -z "$NON_MD_CHANGED" ]; then
 fi
 # --------------------------------
 
+# Tests and builds use the same range as the format gate. They run on the files on
+# disk, and the pre-commit leaves unstaged work and untracked files there by design:
+# say so when the working tree differs from the pushed commits.
+if ! git diff --quiet HEAD --; then
+  echo "⚠️  Tracked files differ from HEAD: tests and builds run on the files on disk, so they"
+  echo "   may pass or fail where the pushed commits would not. Commit or stash them for an exact run."
+fi
+UNTRACKED=$(git ls-files --others --exclude-standard --directory --no-empty-directory)
+if [ -n "$UNTRACKED" ]; then
+  echo "⚠️  Untracked files are on disk but not in the pushed commits; tests and builds still see"
+  echo "   them, so code that imports one passes here and fails in CI:"
+  printf '%s\n' "$UNTRACKED" | head -n 5 | sed 's/^/     /'
+  if [ "$(printf '%s\n' "$UNTRACKED" | wc -l)" -gt 5 ]; then
+    echo "     ..."
+  fi
+fi
+
 echo "🏃 Running affected tests..."
-if ! yarn nx affected --target=test --parallel --max-parallel=2 --cache; then
+if ! yarn nx affected --target=test --base="$BASE" --head=HEAD --parallel --max-parallel=2 --cache; then
   echo "❌ Tests failed! Push aborted."
   exit 1
 fi
@@ -56,7 +116,7 @@ echo "🏗️  Running affected build..."
 # `build` automatically (cacheable target), so no `--cache` flag is needed — and the Angular
 # build executor rejects it ("'cache' is not found in schema"). Reduced parallelization
 # avoids a disk I/O bottleneck.
-if ! yarn nx affected --target=build --configuration=production --parallel --max-parallel=2; then
+if ! yarn nx affected --target=build --configuration=production --base="$BASE" --head=HEAD --parallel --max-parallel=2; then
   echo "❌ Build failed! Push aborted."
   exit 1
 fi

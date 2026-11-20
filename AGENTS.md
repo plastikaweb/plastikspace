@@ -105,8 +105,12 @@ The test target should be just:
 ## PocketBase Schema Workflow (eco-store)
 
 Every worktree shares the PocketBase on :8090, so its schema can hold edits made for another branch.
-The pre-commit exports it on every commit that is not Markdown-only, but stages `pb_schema.json` only when
-the commit already stages eco files (`apps/eco-*`, `libs/eco*`); otherwise it puts the file back as it was and warns.
+The pre-commit exports it on every commit that is not Markdown-only. When the export differs from the staged schema,
+it stages `pb_schema.json` only if the commit already stages eco files (`apps/eco-*`, `libs/eco*`), once every other check has passed.
+Any other commit keeps the file as it was, with a warning, and so does a commit that names its paths (`git commit <paths>`).
+A `pb_schema.json` you staged yourself is kept and not exported; staged without other eco files, it needs `ALLOW_SCHEMA_ONLY=1 git commit ...`.
+A merge, cherry-pick, revert or rebase in progress skips the export.
+A commit that stops after the pre-commit (commitlint, an empty message) leaves the export staged; the next commit unstages it and decides again.
 
 Manual workflow:
 
@@ -115,20 +119,32 @@ Manual workflow:
 3. `yarn eco-store:pb:diff` — review changes
 4. Commit schema with code changes
 
-On every PR that changes `pb_schema.json`, `.github/workflows/pb-schema-guard.yml` posts a per-collection summary.
-It fails when no other eco file changes, or when a collection or field disappears (the staging sync drops it with its data),
-unless the PR has the `pb-schema` label.
+On every PR into develop that changes `pb_schema.json`, `.github/workflows/pb-schema-guard.yml` posts a per-collection summary.
+It fails when no other eco file changes, or when a collection or field disappears, unless the PR has the `pb-schema` label.
+The staging sync drops a removed field with its data; it never deletes a collection, so a removed one stays on staging.
+Like the sync, the check finds a collection by id or else by name, so a collection whose id changed under the same name is no removal.
+View fields are matched by name, because their `_clone_` ids change each time the view is saved.
+A push that changes the schema, as the check reads it, voids the label: the workflow removes it, and you add it again once the new summary is reviewed.
 
 ## Pre-commit Hook (`.husky/pre-commit`)
 
-Checks the **staged** files only; nothing unstaged enters the commit. Runs in order:
+Checks the **staged** content only; nothing unstaged enters the commit. Runs in order:
 
 1. Task-docs guard, then `tasks:check` when a task doc is staged.
-2. PocketBase schema export: reuses a PocketBase already on :8090, otherwise starts and stops its own; stages `pb_schema.json` only when the commit already stages eco files.
+2. PocketBase schema export (see above): reuses a PocketBase already on :8090, otherwise starts and stops its own.
 3. branch-lint and i18n:validate.
-4. `lint-staged` (`lint-staged.config.mjs`): ESLint `--fix`, markdownlint and Prettier on the staged files.
+4. `nx show projects` when TypeScript under `apps/` or `libs/` is staged: ESLint's module-boundaries rule reads the cached Nx graph and skips itself without one.
+5. `lint-staged` (`lint-staged.config.mjs`): ESLint `--fix` (problem and layout fixes only), markdownlint and Prettier on the staged files.
+6. Stages the exported `pb_schema.json` when step 2 decided to.
 
+`tasks:check` and i18n:validate run on a copy of the index, so they read the content being committed.
+Untracked files are never added: the hook lists them after the commit, and the pre-push warns about them.
 Markdown-only commits skip the export and i18n. The affected lint over whole projects runs in CI, not in the hooks; pre-push keeps format check, affected test, build and a11y.
+A worktree on a branch older than META-12 has neither lint-staged nor `lint-staged.config.mjs`; the hook then uses those of the main checkout.
+
+While a commit runs, lint-staged keeps a `lint-staged automatic backup` entry on the stash, which every worktree shares.
+Apply an entry by its SHA (`git stash apply <sha>`), never with `pop`: the `stash@{n}` numbers shift while any checkout is committing.
+`git stash drop` takes no SHA, so find the entry's current `stash@{n}` right before dropping it: `git stash list --format='%gd %H'`.
 
 **Do not bypass.** If the PocketBase binary isn't available, the hook may fail — install it via `yarn eco-store:pb:download`.
 

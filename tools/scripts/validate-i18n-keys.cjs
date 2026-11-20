@@ -183,11 +183,9 @@ function walkDir(dir, callback) {
     const stat = fs.statSync(filePath);
 
     if (stat.isDirectory()) {
-      if (
-        !filePath.includes('node_modules') &&
-        !filePath.includes('dist') &&
-        !filePath.includes('.nx')
-      ) {
+      // By the directory's own name, not by its absolute path: the pre-commit runs this
+      // script in a temporary copy of the index, whose path may contain these words.
+      if (!['node_modules', 'dist', '.nx'].includes(file)) {
         walkDir(filePath, callback);
       }
     } else if (filePath.endsWith('.html') || filePath.endsWith('.ts')) {
