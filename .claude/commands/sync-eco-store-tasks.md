@@ -80,6 +80,8 @@ Exit codes:
 
 Tests: `yarn tasks:test` (`tools/scripts/test-sync-tasks.sh`, also run in CI) exercises the script on throwaway repos with `--offline` and `--clickup-fixture`. It also checks that every configured doc is registered in the three places listed below.
 
+`yarn tasks:check` runs `tools/scripts/check-task-docs.cjs` (table rules MD055/MD056/MD058, blank lines between rows, one `Document version` per home) and then this script with `--all --offline`, so a task with two different statuses fails it too. The pre-commit runs it when a TASKS, BACKLOG or REQUIREMENTS doc changes; CI runs it on every push.
+
 ## Adding a home
 
 1. Add the entry to `tools/scripts/task-homes.json` (`key`, `name`, `listId`, `tasks`, `companions`). Add any new ID family to `idFamilies`.

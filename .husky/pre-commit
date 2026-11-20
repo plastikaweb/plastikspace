@@ -11,8 +11,8 @@ set -e
 # We therefore check every changed file (staged or not), not just the staged set.
 # Legitimate one-off cleanups (e.g. deleting an obsolete doc together with code)
 # can bypass:  ALLOW_BACKLOG_MIX=1 git commit ...
+CHANGED=$(git status --porcelain | awk '{print $NF}')
 if [ -z "$ALLOW_BACKLOG_MIX" ]; then
-  CHANGED=$(git status --porcelain | awk '{print $NF}')
   TASK_DOCS=$(printf '%s\n' "$CHANGED" | grep -E '^(apps/eco-store/(TASKS|BACKLOG)|apps/eco-admin/TASKS|libs/eco/TASKS|TASKS)\.md$' || true)
   if [ -n "$TASK_DOCS" ]; then
     NON_DOC=$(printf '%s\n' "$CHANGED" | grep -vE '\.md$' || true)
@@ -61,6 +61,18 @@ alias yarn="npx yarn"
 
 export NX_CLI_SET=classic
 export PAGER=cat
+
+# --- TASK DOCS LINT (META-11) ---
+# Any changed TASKS, BACKLOG or REQUIREMENTS doc runs `yarn tasks:check` (~1 s):
+# table rules, blank lines between rows, one Document version per home, and a
+# task with two different statuses. Matching by name also covers new homes.
+if printf '%s\n' "$CHANGED" | grep -qE '(^|/)(TASKS|BACKLOG|REQUIREMENTS)\.md$'; then
+  if ! npx yarn tasks:check; then
+    echo "❌ tasks:check failed! Fix the task docs above. Commit aborted!"
+    exit 1
+  fi
+fi
+# --------------------------------
 
 if [ "$ONLY_MD" = "true" ]; then
   echo "📝 Markdown-only commit — skipping PocketBase export, i18n, and lint"
