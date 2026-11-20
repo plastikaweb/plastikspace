@@ -65,7 +65,7 @@ describe('loginFormConfig', () => {
     const { email, password } = fieldsOf();
 
     expect(email.name).toBe('email');
-    expect(email.props?.attributes?.['autocomplete']).toBe('username');
+    expect(email.props?.attributes?.['autocomplete']).toBe('email');
     expect(password.name).toBe('password');
     expect(password.props?.['autocomplete']).toBe('current-password');
   });

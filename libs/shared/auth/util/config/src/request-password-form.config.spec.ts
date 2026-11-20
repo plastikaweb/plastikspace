@@ -32,7 +32,7 @@ describe('requestPasswordFormConfig', () => {
     const [email] = requestPasswordFormConfig().getConfig();
 
     expect(email.name).toBe('email');
-    expect(email.props?.attributes?.['autocomplete']).toBe('username');
+    expect(email.props?.attributes?.['autocomplete']).toBe('email');
   });
 
   it('lays the props of the app over the field, and takes away a default set to undefined', () => {

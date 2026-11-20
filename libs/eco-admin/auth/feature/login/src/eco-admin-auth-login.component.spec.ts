@@ -207,7 +207,7 @@ describe('EcoAdminAuthLoginComponent', () => {
       const email = find<HTMLInputElement>(EMAIL);
       const password = find<HTMLInputElement>(PASSWORD);
 
-      expect(email.getAttribute('autocomplete')).toBe('username');
+      expect(email.getAttribute('autocomplete')).toBe('email');
       expect(email.name).toBe('email');
       expect(password.getAttribute('autocomplete')).toBe('current-password');
       expect(password.name).toBe('password');

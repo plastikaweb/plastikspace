@@ -88,7 +88,7 @@ export function emailField(
         type: 'email',
         label,
         placeholder: label,
-        attributes: { autocomplete: 'username', autocapitalize: 'none', spellcheck: 'false' },
+        attributes: { autocomplete: 'email', autocapitalize: 'none', spellcheck: 'false' },
         addonLeft: leadingIcon('mail'),
       },
       ...layers

@@ -37,7 +37,10 @@ The three functions say which fields a form has, what they ask for and how they 
 | Forgot password | `email`                       | Required; a valid address.                                                                       |
 | Reset password  | `password`, `confirmPassword` | Both required, between 8 and 25 characters, and equal (`passwordMatch`, shown under the second). |
 
-Every field says what it holds (`name`, and `autocomplete` set to `username`, `current-password` or `new-password`), so a browser or a password manager can fill it.
+Every field says what it holds (`name`, and `autocomplete` set to `email`, `current-password` or `new-password`), so a browser or a password manager can fill it.
+
+The email field says `email`, not `username`. The HTML standard allows `username` on a `type="email"` input,
+but the HTML_CodeSniffer rules behind Pa11y still reject it (WCAG 1.3.5), and Pa11y gates every eco-store push.
 
 The look is the same wherever a form is drawn, and is written once, in `auth-form-fields.ts`, which the library does not export:
 
