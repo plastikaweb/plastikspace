@@ -1,5 +1,11 @@
 #!/usr/bin/env sh
 set -e
+# Pin Nx to this checkout: NX_WORKSPACE_ROOT_PATH wins over the cwd, and editor or
+# agent sessions may export it pointing at the main checkout, which made a worktree
+# push test and build the main checkout's affected set. See .husky/pre-commit.
+NX_WORKSPACE_ROOT_PATH=$(git rev-parse --show-toplevel)
+export NX_WORKSPACE_ROOT_PATH
+export NX_NO_CLOUD=true
 export NX_CLI_SET=classic
 export PAGER=cat
 
@@ -13,10 +19,12 @@ CHANGED_FILES=$(git diff --name-only "$BASE"..HEAD)
 
 # --- FORMAT GATE (runs for EVERY push) ---
 # `git rebase --continue` and `git commit --amend` do NOT fire the pre-commit hook, so
-# Prettier (and lint) never ran on commits authored that way. pre-push is the only hook
-# that always runs regardless of how a commit was created, so this is where that drift
-# is caught — locally, before it reaches the remote and CI. Prettier formats .md too,
+# Prettier never ran on commits authored that way. pre-push is the only hook that
+# always runs regardless of how a commit was created, so this is where that drift is
+# caught — locally, before it reaches the remote and CI. Prettier formats .md too,
 # so this runs even for doc-only pushes (before the markdown fast-path below).
+# Lint is not repeated here (META-12): lint-staged checks every commit's staged files,
+# and CI runs `nx affected --target=lint` on every push, rebased or amended ones too.
 echo "🎨 Checking formatting (Prettier)..."
 if ! yarn nx format:check --base="$BASE" --head=HEAD; then
   echo "❌ Formatting drift detected — often from 'git rebase --continue' or 'git commit --amend', which skip the pre-commit hook."
@@ -35,14 +43,6 @@ if [ -z "$NON_MD_CHANGED" ]; then
   exit 0
 fi
 # --------------------------------
-
-echo "🔍 Running affected lint..."
-# Like the format gate above, this catches lint errors on rebase/amend commits that
-# bypassed the pre-commit lint. Scoped to the exact push range via $BASE..HEAD.
-if ! yarn nx affected --target=lint --base="$BASE" --head=HEAD --parallel --max-parallel=3 --cache; then
-  echo "❌ Lint failed! Push aborted."
-  exit 1
-fi
 
 echo "🏃 Running affected tests..."
 if ! yarn nx affected --target=test --parallel --max-parallel=2 --cache; then

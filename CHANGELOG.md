@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-20] - Fast git hooks: lint-staged in pre-commit (META-12)
+
+### Changed
+
+- **`.husky/pre-commit` checks the staged files only**, through lint-staged (`lint-staged.config.mjs`): ESLint `--fix`, markdownlint and Prettier on what is staged, one process per tool. It no longer runs `nx affected --target=lint` against `develop`, markdownlint over all ~200 docs or `nx format:write --affected`, and it no longer ends with `git add -A`: unstaged files stay out of the commit, and the task-doc guard reads the staged set. Measured on a 4-core machine: a one-line change in a feature lib went from 199 s to 63 s, one in `libs/core/entities` from 45 min to 49 s, and a Markdown-only commit from 20 s to 8 s (META-12, [#123kjkdqv31](https://app.clickup.com/t/123kjkdqv31)).
+- **The PocketBase schema export in the pre-commit** reuses a PocketBase that already answers on :8090 instead of opening the same `pb_data` with a second process. When it has to start its own, it waits for `/api/health` instead of `sleep 3` and always stops it, also when the export fails. Only `pb_schema.json` is staged (META-12, [#123kjkdqv31](https://app.clickup.com/t/123kjkdqv31)).
+- **`.husky/pre-push`** no longer repeats the affected lint; CI still runs it on every push. Format check, affected test, build and a11y stay (META-12, [#123kjkdqv31](https://app.clickup.com/t/123kjkdqv31)).
+- **Both hooks pin `NX_WORKSPACE_ROOT_PATH`** to the checkout they run in and set `NX_NO_CLOUD`. Editor and agent sessions can export that variable pointing at the main checkout, which made Nx in a worktree read the main checkout's git state and project graph: a one-line change was reported as affecting all 197 projects (META-12, [#123kjkdqv31](https://app.clickup.com/t/123kjkdqv31)).
+
+### Added
+
+- **`lint-staged` 16.4.0** as a dev dependency; the 17.x line needs Node 22.22.1 or later. A checkout that has not run `yarn install` since gets a clear error from the pre-commit instead of an `npx` download (META-12, [#123kjkdqv31](https://app.clickup.com/t/123kjkdqv31)).
+
 ## [2026-11-20] - Task doc for the Plastikspace home (META-08)
 
 ### Added

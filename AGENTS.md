@@ -113,7 +113,15 @@ Pre-commit hook auto-exports schema. Manual workflow:
 
 ## Pre-commit Hook (`.husky/pre-commit`)
 
-Runs in order: PocketBase schema export → branch-lint → i18n:validate → lint affected → markdownlint → format:write.
+Checks the **staged** files only; nothing unstaged enters the commit. Runs in order:
+
+1. Task-docs guard, then `tasks:check` when a task doc is staged.
+2. PocketBase schema export: reuses a PocketBase already on :8090, otherwise starts and stops its own; stages only `pb_schema.json`.
+3. branch-lint and i18n:validate.
+4. `lint-staged` (`lint-staged.config.mjs`): ESLint `--fix`, markdownlint and Prettier on the staged files.
+
+Markdown-only commits skip the export and i18n. The affected lint over whole projects runs in CI, not in the hooks; pre-push keeps format check, affected test, build and a11y.
+
 **Do not bypass.** If the PocketBase binary isn't available, the hook may fail — install it via `yarn eco-store:pb:download`.
 
 ## CI Strategy

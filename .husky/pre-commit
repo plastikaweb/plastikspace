@@ -1,38 +1,49 @@
 #!/usr/bin/env sh
 set -e
 
+# --- NX ENVIRONMENT (META-12) ---
+# Nx reads NX_WORKSPACE_ROOT_PATH before the cwd when it looks for the workspace, and
+# editor or agent sessions can export it pointing at the main checkout. In a worktree,
+# every Nx lookup (here, the ESLint module-boundaries rule) then read the main
+# checkout's project graph. Pin it to this checkout. The Nx Cloud quota is off by
+# choice, so no call should wait on it.
+NX_WORKSPACE_ROOT_PATH=$(git rev-parse --show-toplevel)
+export NX_WORKSPACE_ROOT_PATH
+export NX_NO_CLOUD=true
+export NX_CLI_SET=classic
+export PAGER=cat
+# --------------------------------
+
+# The commit is the staged set. Every check below reads it, and the hook stages only
+# what its own fixers and the PocketBase export change: unstaged files stay out.
+STAGED=$(git diff --cached --name-only --diff-filter=ACMRD)
+if [ -z "$STAGED" ]; then
+  exit 0
+fi
+
 # --- TASK DOCS / CODE SEPARATION GUARD ---
 # The task docs of every task home (tools/scripts/task-homes.json) are living
 # planning docs and must be committed on their own — mixing them with source code
 # pollutes feature-commit history (see apps/eco-store/CLAUDE.md, "Committing
 # changes to TASKS.md / BACKLOG.md only"). A new home's doc is added to the regex
 # below; `yarn tasks:test` fails until it is.
-# NOTE: this hook ends with `git add -A`, so the commit = the whole working tree.
-# We therefore check every changed file (staged or not), not just the staged set.
 # Legitimate one-off cleanups (e.g. deleting an obsolete doc together with code)
 # can bypass:  ALLOW_BACKLOG_MIX=1 git commit ...
-CHANGED=$(git status --porcelain | awk '{print $NF}')
 if [ -z "$ALLOW_BACKLOG_MIX" ]; then
-  TASK_DOCS=$(printf '%s\n' "$CHANGED" | grep -E '^(apps/eco-store/(TASKS|BACKLOG)|apps/eco-admin/TASKS|libs/eco/TASKS|TASKS)\.md$' || true)
+  TASK_DOCS=$(printf '%s\n' "$STAGED" | grep -E '^(apps/eco-store/(TASKS|BACKLOG)|apps/eco-admin/TASKS|libs/eco/TASKS|TASKS)\.md$' || true)
   if [ -n "$TASK_DOCS" ]; then
-    NON_DOC=$(printf '%s\n' "$CHANGED" | grep -vE '\.md$' || true)
+    NON_DOC=$(printf '%s\n' "$STAGED" | grep -vE '\.md$' || true)
     if [ -n "$NON_DOC" ]; then
       DOC_ARGS=$(echo $TASK_DOCS)
-      echo "❌ task docs would be committed together with non-doc files:"
+      echo "❌ task docs are staged together with non-doc files:"
       printf '%s\n' "$TASK_DOCS" | sed 's/^/   task doc: /'
       printf '%s\n' "$NON_DOC" | sed 's/^/   other:    /'
       echo ""
       echo "   Task docs belong in their own commit. Split it:"
-      echo "     git stash push -- $DOC_ARGS"
+      echo "     git restore --staged $DOC_ARGS"
       echo "     git commit                       # the code change"
-      echo "     git checkout 'stash@{0}' -- $DOC_ARGS && git stash drop"
       echo "     git add $DOC_ARGS"
       echo "     git commit -m 'docs(<scope>): #<task> <ID> flip status'"
-      echo ""
-      echo "   Never 'git stash pop' here: a pathspec stash records the whole tree,"
-      echo "   so popping it would bring back changes the code commit already holds."
-      echo "   A new (untracked) doc doesn't fit these steps: move it out of the"
-      echo "   repo for the code commit instead."
       echo ""
       echo "   One-off cleanup that genuinely needs both? ALLOW_BACKLOG_MIX=1 git commit ..."
       exit 1
@@ -42,31 +53,42 @@ fi
 # ----------------------------------------------------
 
 # --- MARKDOWN-ONLY FAST PATH ---
-# If every changed file is a .md, skip the heavy checks (PocketBase export,
-# i18n validation, nx lint) — none of them are relevant for doc-only commits.
-# branch:lint, markdownlint and format:write still run.
-ALL_CHANGED=$(git status --porcelain | awk '{print $NF}' | grep -v '^$')
-NON_MD=$(printf '%s\n' "$ALL_CHANGED" | grep -v '\.md$' | grep -v '^$' || true)
+# If every staged file is a .md, skip the PocketBase export and i18n validation;
+# branch:lint and lint-staged (markdownlint + Prettier on the staged docs) still run.
+NON_MD=$(printf '%s\n' "$STAGED" | grep -v '\.md$' || true)
 ONLY_MD=false
-[ -z "$NON_MD" ] && ONLY_MD=true
+if [ -z "$NON_MD" ]; then
+  ONLY_MD=true
+fi
+# --------------------------------
+
+# --- LINT-STAGED (META-12) ---
+# Called from node_modules directly: npx would try to download it when a checkout has
+# not run `yarn install` since lint-staged was added, and fail without saying why.
+LINT_STAGED=./node_modules/.bin/lint-staged
+if [ ! -x "$LINT_STAGED" ]; then
+  echo "❌ lint-staged is not installed in this checkout. Run 'yarn install' and commit again."
+  exit 1
+fi
 # --------------------------------
 
 # --- SANDBOX BRIDGE ---
-# Redirect HOME to a temp directory to avoid EPERM on /Users/plastikaweb/.yarnrc
+# Redirect HOME to a temp directory to avoid EPERM on /Users/plastikaweb/.yarnrc.
+# lint-staged runs no Yarn but does run git (its backup stash needs the user's
+# identity from ~/.gitconfig), so it gets the original HOME back.
+ORIGINAL_HOME=$HOME
 export HOME=/tmp/husky-sandbox
 mkdir -p $HOME
 # Ensure we use the project-local Yarn (v4) via Corepack/NPX
 alias yarn="npx yarn"
 # ----------------------
 
-export NX_CLI_SET=classic
-export PAGER=cat
-
 # --- TASK DOCS LINT (META-11) ---
-# Any changed TASKS, BACKLOG or REQUIREMENTS doc runs `yarn tasks:check` (~1 s):
-# table rules, blank lines between rows, one Document version per home, and a
-# task with two different statuses. Matching by name also covers new homes.
-if printf '%s\n' "$CHANGED" | grep -qE '(^|/)(TASKS|BACKLOG|REQUIREMENTS)\.md$'; then
+# A staged TASKS, BACKLOG or REQUIREMENTS doc runs `yarn tasks:check` (4-6 s, about
+# 2 s of it Yarn startup): table rules, blank lines between rows, one Document
+# version per home, and a task with two different statuses. Matching by name also
+# covers new homes.
+if printf '%s\n' "$STAGED" | grep -qE '(^|/)(TASKS|BACKLOG|REQUIREMENTS)\.md$'; then
   if ! npx yarn tasks:check; then
     echo "❌ tasks:check failed! Fix the task docs above. Commit aborted!"
     exit 1
@@ -75,48 +97,67 @@ fi
 # --------------------------------
 
 if [ "$ONLY_MD" = "true" ]; then
-  echo "📝 Markdown-only commit — skipping PocketBase export, i18n, and lint"
-  if npx yarn branch:lint \
-    && npx yarn markdownlint \
-    && npx yarn nx format:write --affected; then
-    git add -A
-  else
-    echo "❌ Checks failed! Commit aborted!"
-    exit 1
+  echo "📝 Markdown-only commit — skipping PocketBase export and i18n"
+  if npx yarn branch:lint && HOME="$ORIGINAL_HOME" "$LINT_STAGED"; then
+    exit 0
   fi
-else
-  # 1. Start PocketBase in the background
-  (cd apps/eco-store/pocketbase && ./pocketbase serve > /dev/null 2>&1) &
-  PB_PID=$!
-
-  # 2. Wait for initialization
-  sleep 3
-
-  # 3. Run the export (Using npx to ensure Yarn 4 is used)
-  npx yarn eco-store:pb:export
-  EXPORT_EXIT_CODE=$?
-
-  # 4. Kill the background PocketBase instance
-  kill $PB_PID 2>/dev/null || true
-  wait $PB_PID 2>/dev/null || true
-
-  # 5. Check if export failed
-  if [ $EXPORT_EXIT_CODE -ne 0 ]; then
-    echo "❌ PocketBase schema export failed!"
-    exit $EXPORT_EXIT_CODE
-  fi
-
-  # Run checks using npx yarn to ensure Yarn 4 Berry execution
-  if npx yarn branch:lint \
-    && npx yarn i18n:validate \
-    && npx yarn nx affected --target=lint --parallel --max-parallel=2 --cache \
-    && npx yarn markdownlint \
-    && npx yarn nx format:write --affected; then
-
-    # 6. Add all changes to the commit
-    git add -A
-  else
-    echo "❌ Checks failed! Commit aborted!"
-    exit 1
-  fi
+  echo "❌ Checks failed! Commit aborted!"
+  exit 1
 fi
+
+# --- POCKETBASE SCHEMA EXPORT ---
+# Schema edits made in the local Admin UI live only in pb_data, which git cannot see;
+# the export writes them to pb_schema.json and only that file is staged. When a
+# PocketBase already answers on :8090 (yarn eco-store:local), the export uses it and
+# no second process opens the same pb_data. Otherwise the hook starts one and always
+# stops it, also when the export fails.
+PB_HEALTH_URL=http://127.0.0.1:8090/api/health
+PB_PID=""
+pb_is_up() {
+  curl -fs -m 2 "$PB_HEALTH_URL" > /dev/null 2>&1
+}
+stop_own_pb() {
+  if [ -n "$PB_PID" ]; then
+    kill "$PB_PID" 2>/dev/null || true
+    wait "$PB_PID" 2>/dev/null || true
+    PB_PID=""
+  fi
+}
+trap stop_own_pb EXIT
+
+if ! pb_is_up; then
+  # exec: $! is then the PocketBase process itself, not a subshell that kill would miss.
+  (cd apps/eco-store/pocketbase && exec ./pocketbase serve > /dev/null 2>&1) &
+  PB_PID=$!
+  TRIES=0
+  until pb_is_up; do
+    if ! kill -0 "$PB_PID" 2>/dev/null; then
+      echo "❌ PocketBase exited on start. Is the binary there? (yarn eco-store:pb:download)"
+      exit 1
+    fi
+    TRIES=$((TRIES + 1))
+    if [ "$TRIES" -ge 40 ]; then
+      echo "❌ PocketBase did not answer on :8090 within 10 s."
+      exit 1
+    fi
+    sleep 0.25
+  done
+fi
+
+if ! npx yarn eco-store:pb:export; then
+  echo "❌ PocketBase schema export failed!"
+  exit 1
+fi
+stop_own_pb
+git add apps/eco-store/pocketbase/pb_schema.json
+# --------------------------------
+
+# lint-staged (lint-staged.config.mjs): ESLint --fix, markdownlint and Prettier on the
+# staged files only. CI still runs the affected lint over whole projects.
+if npx yarn branch:lint \
+  && npx yarn i18n:validate \
+  && HOME="$ORIGINAL_HOME" "$LINT_STAGED"; then
+  exit 0
+fi
+echo "❌ Checks failed! Commit aborted!"
+exit 1
