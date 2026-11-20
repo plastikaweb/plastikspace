@@ -11,6 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Root `TASKS.md`**, the doc of the `plastikspace` task home in `tools/scripts/task-homes.json` (ClickUp list `1200240000011497`). Version 0.1 holds the META family only: META-06 to META-11, which existed only in ClickUp, and META-12 to META-24, created from the 2026-11-20 review of hook timing and of agent feedback loops, evals and guardrails. It adds an order-and-dependencies table and one short block per open task; the ClickUp ticket keeps the full scope. META-06 Phase 3 adds the rows that move here from the eco docs (META-08, [#123kjkdpqjr](https://app.clickup.com/t/123kjkdpqjr)).
 
+## [2026-11-15] - Lint gate for the eco task docs (META-11)
+
+### Added
+
+- **`tools/scripts/check-task-docs.cjs`**: checks every doc in `tools/scripts/task-homes.json` for the markdownlint table rules MD055, MD056 and MD058 (an unescaped `|` in a cell breaks the column count), for blank lines between two rows of one table, and for a tasks doc and its companions declaring different `Document version`s. Specs keep their own version, and missing docs are notices (META-11, [#123kjkdqcqu](https://app.clickup.com/t/123kjkdqcqu)).
+- **`yarn tasks:check`**: the doc check followed by `sync-eco-store-tasks.cjs --all --offline`, which already failed on a task with two different statuses but ran nowhere automatically. CI runs it in the lint step, and the pre-commit runs it whenever a TASKS, BACKLOG or REQUIREMENTS doc changes (META-11, [#123kjkdqcqu](https://app.clickup.com/t/123kjkdqcqu)).
+- Six fixture tests in `tools/scripts/test-sync-tasks.sh`: a clean doc with a second table and a code fence passes, and an unescaped pipe, a blank row and a version mismatch each fail it (META-11, [#123kjkdqcqu](https://app.clickup.com/t/123kjkdqcqu)).
+
 ## [2026-11-15] - Single-task reader for the eco task docs (META-10)
 
 ### Added
