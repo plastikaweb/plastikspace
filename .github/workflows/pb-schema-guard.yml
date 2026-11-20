@@ -1,0 +1,52 @@
+name: PocketBase schema guard
+
+# META-12. Every worktree exports the same local PocketBase into pb_schema.json, so a
+# branch can carry schema edits made for another branch; on merge to develop,
+# pocketbase-schema.yml applies the file to staging and drops the fields it lacks.
+# This check compares develop now with the PR's merge commit (what the sync would
+# apply) and fails on a schema change without other eco files, or on removals, unless
+# the PR carries the `pb-schema` label. Adding or removing the label re-runs it.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+    paths:
+      - 'apps/eco-store/pocketbase/pb_schema.json'
+      - 'tools/scripts/check-pb-schema-change.cjs'
+      - 'tools/scripts/test-pb-schema-check.sh'
+      - '.github/workflows/pb-schema-guard.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  pb-schema:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the merge commit
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Fixture tests for the guard
+        run: bash tools/scripts/test-pb-schema-check.sh
+
+      # HEAD is refs/pull/N/merge; its first parent is the develop tip it was merged onto.
+      - name: Compare pb_schema.json with develop
+        env:
+          PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
+        run: |
+          SCHEMA=apps/eco-store/pocketbase/pb_schema.json
+          git show "HEAD^1:$SCHEMA" > "$RUNNER_TEMP/pb_schema.base.json"
+          git diff --name-only HEAD^1 HEAD > "$RUNNER_TEMP/changed.txt"
+          node tools/scripts/check-pb-schema-change.cjs \
+            --base "$RUNNER_TEMP/pb_schema.base.json" \
+            --head "$SCHEMA" \
+            --changed "$RUNNER_TEMP/changed.txt" \
+            --labels "$PR_LABELS" \
+            --summary "$GITHUB_STEP_SUMMARY"

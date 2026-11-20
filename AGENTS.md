@@ -104,19 +104,27 @@ The test target should be just:
 
 ## PocketBase Schema Workflow (eco-store)
 
-Pre-commit hook auto-exports schema. Manual workflow:
+Every worktree shares the PocketBase on :8090, so its schema can hold edits made for another branch.
+The pre-commit exports it on every commit that is not Markdown-only, but stages `pb_schema.json` only when
+the commit already stages eco files (`apps/eco-*`, `libs/eco*`); otherwise it puts the file back as it was and warns.
+
+Manual workflow:
 
 1. Make changes in PocketBase Admin UI (`http://localhost:8090/_/`)
 2. `yarn eco-store:pb:export` — exports to `apps/eco-store/pocketbase/pb_schema.json`
 3. `yarn eco-store:pb:diff` — review changes
 4. Commit schema with code changes
 
+On every PR that changes `pb_schema.json`, `.github/workflows/pb-schema-guard.yml` posts a per-collection summary.
+It fails when no other eco file changes, or when a collection or field disappears (the staging sync drops it with its data),
+unless the PR has the `pb-schema` label.
+
 ## Pre-commit Hook (`.husky/pre-commit`)
 
 Checks the **staged** files only; nothing unstaged enters the commit. Runs in order:
 
 1. Task-docs guard, then `tasks:check` when a task doc is staged.
-2. PocketBase schema export: reuses a PocketBase already on :8090, otherwise starts and stops its own; stages only `pb_schema.json`.
+2. PocketBase schema export: reuses a PocketBase already on :8090, otherwise starts and stops its own; stages `pb_schema.json` only when the commit already stages eco files.
 3. branch-lint and i18n:validate.
 4. `lint-staged` (`lint-staged.config.mjs`): ESLint `--fix`, markdownlint and Prettier on the staged files.
 

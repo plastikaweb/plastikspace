@@ -177,8 +177,11 @@ yarn eco-store:pb:export
 # 3. Review diff
 yarn eco-store:pb:diff
 
-# 4. Commit. Pre-commit hook will also auto-export.
+# 4. Commit it with the eco code that needs it. The pre-commit exports again, but
+#    stages pb_schema.json only when the commit already stages eco files.
 ```
+
+A PR that changes `pb_schema.json` without any other eco file, or that removes a collection or field, fails `.github/workflows/pb-schema-guard.yml` unless it has the `pb-schema` label.
 
 Pushing to `develop` triggers `.github/workflows/pocketbase-schema.yml`, which syncs the schema to staging (PocketHost).
 
@@ -374,7 +377,7 @@ In addition to the root CLAUDE.md testing guidance:
 
 1. **`onSameUrlNavigation: 'reload'` is set in router config.** Re-runs guards/resolvers on identical URLs — convenient but can cause double-fetches if you also subscribe to `queryParams` inside a component. Prefer one pattern per route.
 2. **`yarn eco-store:local` starts 3 processes** (PocketBase + Angular dev server + SCSS watcher). Stop them all when tearing down.
-3. **PocketBase pre-commit auto-export.** If you forget to commit `pb_schema.json` after editing collections, the hook does it for you. If you're offline or the binary is missing, the hook fails — install via `yarn eco-store:pb:download`.
+3. **PocketBase pre-commit export.** Every worktree shares the PocketBase on :8090, so its schema can carry edits made for another branch. The hook exports on every commit that is not Markdown-only, but stages `pb_schema.json` only when the commit already stages eco files; otherwise it restores the file and warns. If no PocketBase answers and the binary is missing, the hook fails — install via `yarn eco-store:pb:download`.
 4. **Trial badge in header uses `lg:flex` (hidden on mobile by default).** If product wants trial visibility on mobile too, change in `header.component.html`.
 5. **`membershipStatus` has 4 values**: `TRIAL`, `ACTIVE`, `INACTIVE`, `SUSPENDED`. Trial expiry is checked via `trialEndsAt > @now`; status doesn't change on expiry until manual conversion.
 6. **Cart merge uses `SharedConfirmDialogService`**, not `MatSnackBar`. Don't "fix" this back to snackbar unless product asks — the dialog allows a CTA to navigate to `/cistella`.

@@ -107,12 +107,19 @@ fi
 
 # --- POCKETBASE SCHEMA EXPORT ---
 # Schema edits made in the local Admin UI live only in pb_data, which git cannot see;
-# the export writes them to pb_schema.json and only that file is staged. When a
-# PocketBase already answers on :8090 (yarn eco-store:local), the export uses it and
-# no second process opens the same pb_data. Otherwise the hook starts one and always
-# stops it, also when the export fails.
+# the export writes them to pb_schema.json. When a PocketBase already answers on :8090
+# (yarn eco-store:local), the export uses it and no second process opens the same
+# pb_data. Otherwise the hook starts one and always stops it, also when the export fails.
+#
+# Every worktree exports that same PocketBase, so the live schema can hold edits made
+# for another branch. pb_schema.json joins the commit only when the commit already
+# stages eco files; otherwise the hook puts the file back as it was and warns. CI checks
+# the schema again on every PR (.github/workflows/pb-schema-guard.yml).
+SCHEMA=apps/eco-store/pocketbase/pb_schema.json
+ECO_FILES='^(apps/eco-(store|admin)(-e2e)?|libs/eco(-store|-admin)?)/'
 PB_HEALTH_URL=http://127.0.0.1:8090/api/health
 PB_PID=""
+SCHEMA_BACKUP=""
 pb_is_up() {
   curl -fs -m 2 "$PB_HEALTH_URL" > /dev/null 2>&1
 }
@@ -123,7 +130,13 @@ stop_own_pb() {
     PB_PID=""
   fi
 }
-trap stop_own_pb EXIT
+cleanup() {
+  stop_own_pb
+  if [ -n "$SCHEMA_BACKUP" ]; then
+    rm -f "$SCHEMA_BACKUP"
+  fi
+}
+trap cleanup EXIT
 
 if ! pb_is_up; then
   # exec: $! is then the PocketBase process itself, not a subshell that kill would miss.
@@ -144,12 +157,29 @@ if ! pb_is_up; then
   done
 fi
 
+SCHEMA_BACKUP=$(mktemp "${TMPDIR:-/tmp}/pb_schema.XXXXXX") || {
+  echo "❌ Cannot create a temporary copy of $SCHEMA."
+  exit 1
+}
+cp "$SCHEMA" "$SCHEMA_BACKUP"
 if ! npx yarn eco-store:pb:export; then
+  cp "$SCHEMA_BACKUP" "$SCHEMA"
   echo "❌ PocketBase schema export failed!"
   exit 1
 fi
 stop_own_pb
-git add apps/eco-store/pocketbase/pb_schema.json
+if ! git diff --quiet -- "$SCHEMA"; then
+  if printf '%s\n' "$STAGED" | grep -qE "$ECO_FILES"; then
+    git add "$SCHEMA"
+    echo "ℹ️  The live PocketBase schema differs from this branch: pb_schema.json joins this eco commit."
+    echo "   Check that every change in it is yours: git show HEAD -- $SCHEMA"
+  else
+    cp "$SCHEMA_BACKUP" "$SCHEMA"
+    echo "⚠️  The live PocketBase schema differs from this branch, but this commit stages no eco"
+    echo "   files, so pb_schema.json stays as it was: the difference may be edits made for"
+    echo "   another branch. If they belong to this one: yarn eco-store:pb:export && git add $SCHEMA"
+  fi
+fi
 # --------------------------------
 
 # lint-staged (lint-staged.config.mjs): ESLint --fix, markdownlint and Prettier on the
