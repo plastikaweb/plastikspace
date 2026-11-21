@@ -2,6 +2,7 @@ import { inject, Provider, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
 import { AUTH_SCREEN_DEFAULTS, AuthScreenDefaults } from '@plastik/auth/entities';
+import { ECO_ADMIN_APP_NAME } from '@plastik/eco-admin/entities';
 
 /**
  * What every auth screen of the admin panel shows around its form. Unlike the storefront, the panel
@@ -14,7 +15,7 @@ export function provideEcoAdminAuthScreen(): Provider {
   return {
     provide: AUTH_SCREEN_DEFAULTS,
     useFactory: (): AuthScreenDefaults => ({
-      title: signal('Eco Admin'),
+      title: signal(ECO_ADMIN_APP_NAME),
       subtitle: toSignal(inject(TranslateService).stream('auth.frame.subtitle'), {
         initialValue: '',
       }),

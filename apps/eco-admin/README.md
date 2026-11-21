@@ -26,7 +26,7 @@
 It is a client-rendered single-page application (no SSR, no service worker) built with **Angular 21** (zoneless, signals, standalone) on the **PocketBase** instance it shares with [eco-store](../eco-store/README.md).
 It is served from its own origin, and it takes the cooperative from the signed-in account, never from the domain.
 
-The application is being built row by row (`TASKS.md`, phase AP-0). Today it has a login screen and one provisional page behind it; the application shell and its views come next.
+The application is being built row by row (`TASKS.md`, phase AP-0). Today it has the login and password-recovery screens and the application shell: the side navigation, the top bar and one provisional view per section. The views themselves come next.
 
 ## Quick Start
 
@@ -58,14 +58,19 @@ The configuration decides which PocketBase the application talks to. Check it be
 
 ## Routes
 
-| Path       | Guards                                               | What it shows                              |
-| :--------- | :--------------------------------------------------- | :----------------------------------------- |
-| `/accedir` | `ecoAdminAnonymousGuard`                             | The login screen (lazy-loaded).            |
-| `/`        | `ecoAdminSessionGuard`, `ecoAdminTenantContextGuard` | A provisional page with a way to sign out. |
-| `**`       | —                                                    | Redirects to `/`.                          |
+| Path                                                                         | Guards                                                                    | What it shows                                                 |
+| :--------------------------------------------------------------------------- | :------------------------------------------------------------------------ | :------------------------------------------------------------ |
+| `/accedir`                                                                   | `ecoAdminAnonymousGuard`                                                  | The login screen.                                             |
+| `/recuperar-contrasenya`, `/recuperar-contrasenya-enviada`                   | `ecoAdminAnonymousGuard`                                                  | Asking for a password reset, and the notice that it was sent. |
+| `/restablir-contrasenya`                                                     | `ecoAdminAnonymousGuard`                                                  | The new password, from the link in the mail.                  |
+| `/tauler`, `/sol-licituds`, `/socis`, `/comandes`, `/lliuraments`, `/cicles` | `ecoAdminSessionGuard`, `ecoAdminTenantContextGuard`, `TENANT_ADMIN` only | The shell, with a provisional view titled with the section.   |
+| `/productes`, `/categories`, `/botiga`, `/estadistiques`                     | the same                                                                  | the same                                                      |
+| `/cooperatives`, `/catalegs`, `/idiomes`                                     | `ecoAdminSessionGuard`, `ecoAdminTenantContextGuard`, `GLOBAL_ADMIN` only | the same, with the platform's dark rail                       |
+| `/` and any unknown path                                                     | —                                                                         | Redirect to the home of the role, or to `/accedir`.           |
 
-This table is temporary. The application shell replaces `/` with its own route table (`/tauler`, `/cooperatives` and the rest).
-Until then the homes the login navigates to fall through the wildcard to the provisional page, and a deep link loses its `returnUrl` on the way.
+Every screen is lazy-loaded. The paths under the shell come from the two rails in `@plastik/eco-admin/layout-config`, so the side navigation and the route table cannot drift apart.
+A role that opens the other role's section is sent to its own home. A deep link opened without a session keeps its path in `returnUrl` through the login.
+The session and tenant guards also run as `canActivateChild`, so moving between sections notices a session that expired; the role guard sits on each section.
 
 ## Who Can Sign In
 
@@ -92,11 +97,16 @@ The API rules of PocketBase are the real barrier; the guards only keep the inter
 | :----------------------------------------------------------------------------- | :------------------------------------- | :------------------------------------------------------------------ |
 | [**Auth · data access**](../../libs/eco-admin/auth/data-access/README.md)      | `@plastik/eco-admin/auth/data-access`  | Admitted roles, home per role, the two guards, `resolveReturnUrl`.  |
 | [**Auth · login**](../../libs/eco-admin/auth/feature/login/README.md)          | `@plastik/eco-admin/auth/login`        | The login screen and its facade.                                    |
+| [**Auth · recovery**](../../libs/eco-admin/auth/feature/recovery/README.md)    | `@plastik/eco-admin/auth/recovery`     | The three password-recovery screens.                                |
 | [**Tenant context**](../../libs/eco-admin/core/tenant-context/README.md)       | `@plastik/eco-admin/tenant-context`    | The cooperative of the signed-in administrator, and its wait guard. |
+| [**Layout**](../../libs/eco-admin/core/layout/README.md)                       | `@plastik/eco-admin/layout`            | The application shell: rail, drawer, top bar, account menu.         |
+| [**Layout config**](../../libs/eco-admin/core/layout-config/README.md)         | `@plastik/eco-admin/layout-config`     | The two rails and the navigation of the signed-in role.             |
+| [**Entities**](../../libs/eco-admin/core/entities/README.md)                   | `@plastik/eco-admin/entities`          | Admin-only models and constants: the app and platform names.        |
+| [**Swipe to close**](../../libs/shared/util/swipe-to-close/README.md)          | `@plastik/shared/util/swipe-to-close`  | The swipe that closes the drawer, which Material does not offer.    |
 | [**Eco styles**](../../libs/eco/styles/README.md)                              | Sass include path `eco_tokens`         | The colour tokens shared with eco-store.                            |
 | [**PocketBase auth**](../../libs/shared/auth/pocketbase/data-access/README.md) | `@plastik/auth/pocketbase/data-access` | The session store both eco applications use.                        |
 
-The application's own styles live in `src/styles/`: `styles.scss` wires Tailwind, the shared tokens and Material; `_base.scss` holds the admin-only variables (`--admin-*`) and the 15 px root.
+The application's own styles live in `src/styles/`: `styles.scss` wires Tailwind, the shared tokens and Material; `_base.scss` holds the admin-only variables (`--eco-admin-*`) and the 15 px root. Colours come from the Material roles of `eco_tokens`; do not add fixed colours here.
 
 ## Testing
 

@@ -1,0 +1,66 @@
+// Measures and colours of the frozen `00 Components/Top bar` and of the platform header of
+// `10 Superadmin/Vista Superadmin` (round 40.18).
+
+:host {
+  display: block;
+  flex: none;
+  container: top-bar / inline-size;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-sizing: border-box;
+  height: 56px;
+  padding: 0 1.25rem;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+}
+
+.top-bar-title {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.top-bar-spacer {
+  flex: 1;
+}
+
+// Material pads an icon button by (state layer − icon) / 2, with a 24px icon by default: the 32px
+// avatar would overflow the 40px button and sit low. Declaring it as the icon centres it.
+.top-bar-account {
+  flex: none;
+
+  --mat-icon-button-state-layer-size: 40px;
+  --mat-icon-button-icon-size: 32px;
+}
+
+// A block-level flex box: inline, it would sit on the baseline of the button's text line and drop.
+.top-bar-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9999px;
+  background: var(--mat-sys-tertiary-container);
+  color: var(--mat-sys-on-tertiary-container);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+// No frozen surface draws the top bar on a phone: CALAIX (< 792px) is still to build. Until then,
+// on a bar this narrow the gaps close, so the account menu always fits; the title gives way.
+@container top-bar (width < 560px) {
+  .top-bar {
+    gap: 0.25rem;
+    padding: 0 0.75rem;
+  }
+}

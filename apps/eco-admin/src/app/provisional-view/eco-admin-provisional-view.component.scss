@@ -1,20 +1,17 @@
-/* Stand-in page until the application shell lands. It is not in the frozen corpus: the measures
-   repeat the login screen so the two pages of this stage read as one application. */
+/* Stand-in for every view of the shell that is not built yet. It is not in the frozen corpus: a
+   heading and one line, centred in the panel. */
 
 :host {
-  display: flex;
-  min-height: 100dvh;
-  background: var(--eco-admin-page-background);
-  color: var(--mat-sys-on-surface);
+  display: block;
 }
 
 .provisional {
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
+  min-height: 50dvh;
   padding: 2rem 1rem;
   text-align: center;
 }
@@ -29,28 +26,12 @@
 
 .provisional__title {
   margin: 0;
-  font-size: 1.4rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 2rem;
 }
 
 .provisional__body {
   margin: 0;
-  color: var(--eco-admin-on-surface-muted);
-}
-
-.provisional__logout {
-  height: var(--mat-field-height);
-  margin-top: 0.75rem;
-  padding: 0 1.5rem;
-  border: 1px solid var(--mat-sys-outline);
-  border-radius: 9999px;
-  background: transparent;
-  color: var(--mat-sys-primary);
-  font: inherit;
-  font-weight: 500;
-  cursor: pointer;
-
-  &:hover {
-    background: var(--mat-sys-surface-container-high);
-  }
+  color: var(--mat-sys-on-surface-variant);
 }

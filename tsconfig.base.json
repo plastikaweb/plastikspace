@@ -316,7 +316,9 @@
       "@plastik/eco-admin/layout-config": ["libs/eco-admin/core/layout-config/src/index.ts"],
       "@plastik/eco-admin/auth/data-access": ["libs/eco-admin/auth/data-access/src/index.ts"],
       "@plastik/eco-admin/auth/login": ["libs/eco-admin/auth/feature/login/src/index.ts"],
-      "@plastik/eco-admin/auth/recovery": ["libs/eco-admin/auth/feature/recovery/src/index.ts"]
+      "@plastik/eco-admin/auth/recovery": ["libs/eco-admin/auth/feature/recovery/src/index.ts"],
+      "@plastik/eco-admin/layout": ["libs/eco-admin/core/layout/src/index.ts"],
+      "@plastik/shared/util/swipe-to-close": ["libs/shared/util/swipe-to-close/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

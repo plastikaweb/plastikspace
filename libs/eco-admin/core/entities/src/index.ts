@@ -1,5 +1,4 @@
 /**
- * Placeholder for admin-only entity types. Filled as the AP-1 to AP-3 modules
- * need them; anything both apps share belongs in `@plastik/eco/entities`.
+ * Admin-only models and constants. Anything both eco apps share belongs in `@plastik/eco/entities`.
  */
-export type EcoAdminEntitiesPlaceholder = never;
+export { ECO_ADMIN_APP_NAME, ECO_ADMIN_PLATFORM_NAME } from './eco-admin-app';

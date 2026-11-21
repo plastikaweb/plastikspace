@@ -87,11 +87,43 @@
   },
   "shell": {
     "account": {
+      "menuLabel": "Menú de la cuenta",
+      "menuLabelNamed": "Menú de la cuenta — {name}",
+      "role": {
+        "TENANT_ADMIN": "Administración",
+        "GLOBAL_ADMIN": "Superadmin"
+      },
       "logout": "Cerrar sesión"
     },
     "placeholder": {
       "title": "Sección en construcción",
       "body": "Esta sección aún no está disponible."
+    },
+    "nav": {
+      "label": "Navegación principal",
+      "drawerLabel": "Navegación",
+      "close": "Cierra el menú",
+      "foldMenu": "Pliega el menú",
+      "unfoldMenu": "Despliega el menú",
+      "platformRole": "Superadmin",
+      "tauler": "Panel",
+      "solLicituds": "Solicitudes",
+      "socis": "Socios",
+      "comandes": "Pedidos",
+      "lliuraments": "Entregas",
+      "cicles": "Ciclos",
+      "productes": "Productos",
+      "categories": "Categorías",
+      "botiga": "Tienda",
+      "estadistiques": "Estadísticas",
+      "cooperatives": "Cooperativas",
+      "catalegs": "Catálogos globales",
+      "idiomes": "Idiomas"
+    }
+  },
+  "shared": {
+    "translation": {
+      "selectLanguage": "Seleccionar idioma"
     }
   }
 }

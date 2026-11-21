@@ -1,0 +1,50 @@
+// The shell of the frozen `01 Tauler/Shell Tauler A` (round 40.18): the rail full height on the
+// left, and beside it a column with the 56px top bar above `<main>`. The drawer of PLEGAT is
+// Material's, tuned through its own tokens.
+
+:host {
+  display: block;
+  height: 100dvh;
+}
+
+.shell {
+  height: 100%;
+
+  // Flush and flat, as `Calaix mòbil` draws it: Material's drawer is a rounded sheet by default.
+  --mat-sidenav-container-shape: 0;
+  --mat-sidenav-container-width: 290px;
+  --mat-sidenav-container-elevation-shadow: var(--mat-sys-level3);
+  --mat-sidenav-container-background-color: var(--mat-sys-surface-container-low);
+  --mat-sidenav-content-background-color: var(--mat-sys-surface);
+  // The mock's scrim: neutral-variant 20 at 45% in light, the scrim role at 55% in dark.
+  --mat-sidenav-scrim-color: light-dark(
+    color-mix(in srgb, var(--mat-sys-neutral-variant20) 45%, transparent),
+    color-mix(in srgb, var(--mat-sys-scrim) 55%, transparent)
+  );
+}
+
+.shell-body {
+  display: flex;
+  overflow: hidden;
+}
+
+.shell-column {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.shell-main {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  outline: none;
+  container: panell / inline-size;
+}
+
+.shell-panel {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 1.25rem 2rem 2.5rem;
+}
