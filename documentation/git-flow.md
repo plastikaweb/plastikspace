@@ -194,9 +194,9 @@ was authored. This matters because commits that git writes itself (a rebase, a m
 a cherry-pick or revert without a conflict) do **not** fire the pre-commit hook, so
 Prettier never runs on them; `git commit --amend` does fire it.
 The checks run on `HEAD` and the files on disk, so the hook stops a push of any other branch
-(check it out and push from there); deletions and tags pass without checks.
-The pre-push hook therefore enforces, scoped to the range being pushed (the upstream, or the merge-base with `origin/develop` for a new branch;
-a push whose upstream shares no history with `HEAD` stops):
+(check it out and push from there), and of a tag pushed to a branch; deletions and pushes outside `refs/heads/` (tags, notes) pass without checks.
+The pre-push hook therefore enforces, scoped to the range being pushed (the upstream, or the merge-base with `origin/develop` for a branch
+without one or whose upstream is gone from the remote; a push whose upstream shares no history with `HEAD` stops):
 
 - `nx format:check` — runs for every push (including markdown-only ones, since Prettier also formats `.md`). On failure: run `yarn format:write`, amend/rebase the affected commit(s), then re-push.
 - `nx affected` `test` and production `build` — on non-markdown pushes; plus `eco-store`/`nasa-images` Pa11y when those apps are affected.

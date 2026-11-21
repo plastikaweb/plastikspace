@@ -13,7 +13,10 @@ export PAGER=cat
 # git passes one line per ref: <local ref> <local sha> <remote ref> <remote sha>. The
 # checks below run on HEAD and the files on disk, so every branch pushed must be HEAD:
 # `git push origin other-branch` from here would test this branch and push that one.
-# Deletions and tags carry no new code and are let through.
+# What counts is where the push lands, and only branches (refs/heads/) are built: a tag
+# pushed to a branch (`git push origin v1:refs/heads/x`) is a branch, and must be HEAD,
+# while deletions and pushes to any other ref (tags, notes, refs/remotes/) are let
+# through unchecked.
 HEAD_SHA=$(git rev-parse HEAD)
 PUSHES_CODE=false
 while read -r LOCAL_REF LOCAL_SHA REMOTE_REF REMOTE_SHA; do
@@ -24,8 +27,9 @@ while read -r LOCAL_REF LOCAL_SHA REMOTE_REF REMOTE_SHA; do
     *[!0]*) ;;
     *) continue ;; # all zeros: a deletion
   esac
-  case "$LOCAL_REF $REMOTE_REF" in
-    refs/tags/* | *" refs/tags/"*) continue ;;
+  case "$REMOTE_REF" in
+    refs/heads/*) ;;
+    *) continue ;;
   esac
   if [ "$LOCAL_SHA" != "$HEAD_SHA" ]; then
     echo "❌ This push sends $LOCAL_REF ($LOCAL_SHA) to $REMOTE_REF, but HEAD is $HEAD_SHA."
@@ -36,16 +40,18 @@ while read -r LOCAL_REF LOCAL_SHA REMOTE_REF REMOTE_SHA; do
   PUSHES_CODE=true
 done
 if [ "$PUSHES_CODE" = "false" ]; then
-  echo "ℹ️  No branch tip to check in this push (only deletions, tags, or nothing new)."
+  echo "ℹ️  No branch tip to check in this push (only deletions, refs outside refs/heads/, or nothing new)."
   exit 0
 fi
 
 # Resolve the base of the range being pushed. Prefer this branch's upstream (exactly
-# the commits not yet on the remote); for a brand-new branch with no upstream, fall
-# back to the merge-base with origin/develop so the WHOLE branch is covered — NOT just
-# the tip commit (the old `HEAD~1...HEAD` fallback silently scoped every check to the
-# last commit on new branches, e.g. letting a 2-commit push build/lint nothing).
-BASE=$(git rev-parse @{upstream} 2>/dev/null || git merge-base origin/develop HEAD 2>/dev/null || echo HEAD~1)
+# the commits not yet on the remote); for a branch with no upstream, or whose upstream
+# is gone from the remote, fall back to the merge-base with origin/develop so the WHOLE
+# branch is covered — NOT just the tip commit (the old `HEAD~1...HEAD` fallback
+# silently scoped every check to the last commit on new branches, e.g. letting a
+# 2-commit push build/lint nothing). --verify --quiet: when the upstream is gone (merged
+# with --delete-branch, then pruned), plain rev-parse prints "@{upstream}" and fails.
+BASE=$(git rev-parse --verify --quiet '@{upstream}' 2>/dev/null || git merge-base origin/develop HEAD 2>/dev/null || echo HEAD~1)
 # What this branch changed since it left BASE (the three-dot diff, spelled out). Two
 # dots compare the trees, so a branch whose upstream is origin/develop would also list
 # every file develop changed since. The merge base is found first: under `sh -e`, a

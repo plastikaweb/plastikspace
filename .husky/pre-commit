@@ -60,23 +60,66 @@ case "${GIT_INDEX_FILE:-}" in
   */next-index-*.lock) PARTIAL_COMMIT=true ;;
 esac
 
-# --- SCHEMA LEFT STAGED BY AN UNFINISHED COMMIT ---
+# --- OPERATION IN PROGRESS ---
+# A merge (a squash merge too), cherry-pick, revert or rebase decides pb_schema.json
+# itself: the hook neither exports it nor unstages it.
+OPERATION=""
+for ref in MERGE_HEAD CHERRY_PICK_HEAD REVERT_HEAD; do
+  if git rev-parse -q --verify "$ref" > /dev/null; then
+    OPERATION=$ref
+  fi
+done
+# git merge --squash writes no MERGE_HEAD, only SQUASH_MSG. git commit and a git reset
+# of the whole index delete it; git restore, git checkout -- <paths> and a refused git
+# merge --abort leave it, so an abandoned squash passes for one until the next commit.
+# The schema-only rule still applies to a squash, and the hook says how to tell.
+if [ -f "$(git rev-parse --git-path SQUASH_MSG)" ]; then
+  OPERATION="merge --squash"
+fi
+if [ -d "$(git rev-parse --git-path rebase-merge)" ] || [ -d "$(git rev-parse --git-path rebase-apply)" ]; then
+  OPERATION=rebase
+fi
+# --------------------------------
+
+# --- SCHEMA LEFT BY A COMMIT THAT DID NOT FINISH ---
 # The export is staged at the very end of this hook, but the commit can still stop
 # after it: commit-msg (commitlint) or an empty message. The hook records the blob it
-# staged. When the index still holds that blob and HEAD does not, nobody staged it by
-# hand: it is unstaged (and the working copy put back, if it is still that export), and
-# the rules below decide again.
+# staged, and .husky/post-commit deletes the record once a commit lands with it. A
+# record found here therefore means that such a commit stopped, and the blob is the
+# hook's own write, not the user's:
+#   - staged with other files: unstaged (the working copy too, if it still holds it),
+#     and the rules below decide again;
+#   - staged alone, or with ALLOW_SCHEMA_ONLY=1: kept, and the rules below block it or
+#     commit it. Unstaging it could leave nothing staged, and git, which looked for
+#     changes before this hook ran, would then record an empty commit;
+#   - on disk only (a stopped `git commit -a` or `-i`: git threw their index away): the
+#     working copy is put back.
+# An operation decides the schema itself, and a commit that names its paths runs on a
+# temporary index: both leave the record for a later commit.
 SCHEMA_RECORD=$(git rev-parse --git-path pre-commit-staged-schema)
-if [ "$PARTIAL_COMMIT" = "false" ] && [ -f "$SCHEMA_RECORD" ]; then
+if [ "$PARTIAL_COMMIT" = "false" ] && [ -z "$OPERATION" ] && [ -f "$SCHEMA_RECORD" ]; then
   RECORDED=$(cat "$SCHEMA_RECORD")
-  rm -f "$SCHEMA_RECORD"
-  if [ "$(git rev-parse -q --verify ":$SCHEMA" || true)" = "$RECORDED" ] \
-    && [ "$(git rev-parse -q --verify "HEAD:$SCHEMA" || true)" != "$RECORDED" ]; then
-    git reset -q -- "$SCHEMA"
-    if [ "$(git hash-object "$SCHEMA" 2> /dev/null || true)" = "$RECORDED" ]; then
-      git checkout -q -- "$SCHEMA" 2> /dev/null || true
+  ON_DISK=$(git hash-object "$SCHEMA" 2> /dev/null || true)
+  if [ "$(git rev-parse -q --verify "HEAD:$SCHEMA" || true)" = "$RECORDED" ]; then
+    rm -f "$SCHEMA_RECORD"
+  elif [ "$(git rev-parse -q --verify ":$SCHEMA" || true)" = "$RECORDED" ]; then
+    if [ -z "$ALLOW_SCHEMA_ONLY" ] && git diff --cached --name-only | grep -qvxF "$SCHEMA"; then
+      rm -f "$SCHEMA_RECORD"
+      git reset -q -- "$SCHEMA"
+      if [ "$ON_DISK" = "$RECORDED" ]; then
+        git checkout -q -- "$SCHEMA" 2> /dev/null || true
+      fi
+      echo "ℹ️  pb_schema.json was still staged by a commit that did not finish: unstaged, decided again below."
+    else
+      echo "ℹ️  pb_schema.json is still staged by a commit that did not finish. Staged alone, or with"
+      echo "   ALLOW_SCHEMA_ONLY=1, it is kept and treated as staged by you."
     fi
-    echo "ℹ️  pb_schema.json was still staged by a commit that did not finish: unstaged, decided again below."
+  else
+    rm -f "$SCHEMA_RECORD"
+    if [ "$ON_DISK" = "$RECORDED" ]; then
+      git checkout -q -- "$SCHEMA" 2> /dev/null || true
+      echo "ℹ️  pb_schema.json on disk still held the export of a commit that did not finish: put back."
+    fi
   fi
 fi
 # --------------------------------
@@ -199,7 +242,7 @@ i18n_on_index() {
 # @nx/enforce-module-boundaries reads the cached Nx project graph. With none (a fresh
 # worktree) it skips itself with a warning that lint-staged hides, and a boundary
 # violation gets committed. `nx show projects` builds the graph or brings it up to
-# date: 1.5-3 s with a warm cache, 20-40 s the first time in a checkout. Only staged
+# date: 1.5-3.5 s with a warm cache, 20-40 s the first time in a checkout. Only staged
 # TypeScript under apps/ or libs/ needs it.
 refresh_nx_graph() {
   if printf '%s\n' "$STAGED" | grep -qE '^(apps|libs)/.+\.ts$'; then
@@ -207,9 +250,12 @@ refresh_nx_graph() {
     if [ ! -x "$NX_BIN" ]; then
       NX_BIN="$HOOK_ROOT/node_modules/.bin/nx"
     fi
-    if ! HOME="$ORIGINAL_HOME" "$NX_BIN" show projects > /dev/null; then
-      echo "❌ Nx could not build the project graph, which ESLint needs to check module boundaries."
-      echo "   Run 'yarn nx show projects' to see why."
+    # Nx prints why it failed (a broken project.json, two projects with one name) on
+    # stdout, which a success would only fill with the project list.
+    if ! NX_OUT=$(HOME="$ORIGINAL_HOME" "$NX_BIN" show projects 2>&1); then
+      printf '%s\n' "$NX_OUT" | tail -n 25
+      echo "❌ Nx could not build the project graph (above), which ESLint needs to check module"
+      echo "   boundaries. Fix it, or run 'yarn nx show projects' to see it again."
       return 1
     fi
   fi
@@ -218,9 +264,26 @@ refresh_nx_graph() {
 
 # --- UNTRACKED FILES ---
 # This hook adds no untracked file (develop's `git add -A` did): a new file left out of
-# the commit is listed, so that one the staged code imports is not forgotten.
+# the commit is listed, so that one the staged code imports is not forgotten. A commit
+# that names its paths runs on a temporary index, HEAD plus those paths: a file staged
+# but not named looks untracked there, and one removed with git rm --cached is still in
+# it, and in the commit. So the paths listed are those neither index tracks: untracked in
+# the real index (--git-path index would follow GIT_INDEX_FILE back to the temporary
+# one) and with nothing under them in the temporary one. Six are enough to show five.
 untracked_notice() {
-  UNTRACKED=$(git ls-files --others --exclude-standard --directory --no-empty-directory)
+  if [ "$PARTIAL_COMMIT" = "true" ]; then
+    UNTRACKED=$(GIT_INDEX_FILE="$(git rev-parse --git-dir)/index" git -c core.quotePath=false ls-files --others --exclude-standard --directory --no-empty-directory | {
+      FOUND=0
+      while [ "$FOUND" -le 5 ] && IFS= read -r ENTRY; do
+        if [ -z "$(git -c core.quotePath=false --literal-pathspecs ls-files -- "$ENTRY" | head -n 1)" ]; then
+          printf '%s\n' "$ENTRY"
+          FOUND=$((FOUND + 1))
+        fi
+      done
+    })
+  else
+    UNTRACKED=$(git -c core.quotePath=false ls-files --others --exclude-standard --directory --no-empty-directory)
+  fi
   if [ -n "$UNTRACKED" ]; then
     echo "ℹ️  Untracked, so not in this commit (git add them if they belong to it):"
     printf '%s\n' "$UNTRACKED" | head -n 5 | sed 's/^/     /'
@@ -266,38 +329,35 @@ fi
 # the export writes them to pb_schema.json. Every worktree exports that same local
 # PocketBase, so its schema can hold edits made for another branch. The rules:
 #   - pb_schema.json already staged (by hand or by a merge): kept as staged, no export.
-#     Staged without any other eco file, it stops the commit unless ALLOW_SCHEMA_ONLY=1.
-#   - a merge, cherry-pick, revert or rebase in progress: no export; it decides the schema.
+#     Staged without eco code, it stops the commit unless ALLOW_SCHEMA_ONLY=1.
+#   - a merge (squash too), cherry-pick, revert or rebase in progress: no export; it
+#     decides the schema (OPERATION, above). A squash merge still follows the rule
+#     above for a schema staged without eco code.
 #   - otherwise the hook exports. A live schema that differs from the staged one joins
 #     an eco commit once every other check has passed, and stays out of any other
 #     commit, or of a commit that names its paths, with a warning.
 # When a PocketBase already answers on :8090 (yarn eco-store:local), the export uses it
 # and no second process opens the same pb_data; otherwise the hook starts one and
 # always stops it. CI checks the schema again on every PR (pb-schema-guard.yml).
+# Eco code is any file under the eco apps and libs but Markdown: a doc that changes
+# there (a CLAUDE.md, a task doc) says nothing about whose edits the export holds.
 ECO_FILES='^(apps/eco-(store|admin)(-e2e)?|libs/eco(-store|-admin)?)/'
 ECO_COMMIT=false
-if printf '%s\n' "$STAGED" | grep -vxF "$SCHEMA" | grep -qE "$ECO_FILES"; then
+if printf '%s\n' "$STAGED" | grep -vxF "$SCHEMA" | grep -v '\.md$' | grep -qE "$ECO_FILES"; then
   ECO_COMMIT=true
 fi
 SCHEMA_STAGED=false
 if printf '%s\n' "$STAGED" | grep -qxF "$SCHEMA"; then
   SCHEMA_STAGED=true
 fi
-OPERATION=""
-for ref in MERGE_HEAD CHERRY_PICK_HEAD REVERT_HEAD; do
-  if git rev-parse -q --verify "$ref" > /dev/null; then
-    OPERATION=$ref
-  fi
-done
-if [ -d "$(git rev-parse --git-path rebase-merge)" ] || [ -d "$(git rev-parse --git-path rebase-apply)" ]; then
-  OPERATION=rebase
-fi
 STAGE_LIVE_SCHEMA=false
 
-if [ "$SCHEMA_STAGED" = "true" ] && [ "$ECO_COMMIT" = "false" ] && [ -z "$OPERATION" ] && [ -z "$ALLOW_SCHEMA_ONLY" ]; then
-  echo "❌ pb_schema.json is staged, but no other eco file is. Every worktree exports the same"
-  echo "   local PocketBase, so it may hold edits made for another branch. Stage the eco code it"
-  echo "   belongs to, unstage it (git restore --staged $SCHEMA), or, for a"
+# A merge, cherry-pick, revert or rebase brings a schema someone already committed. A
+# squash merge cannot be told from a SQUASH_MSG left behind, so it follows the rule.
+if [ "$SCHEMA_STAGED" = "true" ] && [ "$ECO_COMMIT" = "false" ] && { [ -z "$OPERATION" ] || [ "$OPERATION" = "merge --squash" ]; } && [ -z "$ALLOW_SCHEMA_ONLY" ]; then
+  echo "❌ pb_schema.json is staged, but no eco code is (Markdown does not count). Every worktree"
+  echo "   exports the same local PocketBase, so it may hold edits made for another branch. Stage"
+  echo "   the eco code it belongs to, unstage it (git restore --staged $SCHEMA), or, for a"
   echo "   schema-only change: ALLOW_SCHEMA_ONLY=1 git commit ..."
   exit 1
 fi
@@ -307,6 +367,11 @@ if [ "$SCHEMA_STAGED" = "true" ]; then
 elif [ -n "$OPERATION" ]; then
   echo "ℹ️  A merge, cherry-pick, revert or rebase is in progress ($OPERATION): the live PocketBase is"
   echo "   not exported, that operation decides pb_schema.json."
+  if [ "$OPERATION" = "merge --squash" ]; then
+    echo "   No squash merge in progress? Then $(git rev-parse --git-path SQUASH_MSG) is left from an"
+    echo "   abandoned one, and this commit gets no export: once it lands (git deletes that file"
+    echo "   with it), undo it with git reset --soft HEAD~1 and commit again."
+  fi
 else
   PB_HEALTH_URL=http://127.0.0.1:8090/api/health
   pb_is_up() {
@@ -358,13 +423,13 @@ else
       echo "⚠️  The live PocketBase schema differs from this branch, but this commit names its paths"
       echo "   (git commit <paths>, or an IDE that commits that way), so the hook cannot add"
       echo "   pb_schema.json to it. If the difference belongs to this branch, stage the export with"
-      echo "   the eco files and commit without paths:"
+      echo "   the eco code and commit without paths:"
       echo "     yarn eco-store:pb:export && git add $SCHEMA <eco files> && git commit"
     else
       echo "⚠️  The live PocketBase schema differs from this branch, but this commit stages no eco"
-      echo "   files, so pb_schema.json stays as it was: the difference may be edits made for"
-      echo "   another branch. If they belong to this one, commit them with the eco code they"
-      echo "   belong to, or on their own:"
+      echo "   code (Markdown does not count), so pb_schema.json stays as it was: the difference may"
+      echo "   be edits made for another branch. If they belong to this one, commit them with the eco"
+      echo "   code they belong to, or on their own:"
       echo "     yarn eco-store:pb:export && git add $SCHEMA && ALLOW_SCHEMA_ONLY=1 git commit ..."
     fi
   fi
@@ -373,7 +438,8 @@ fi
 
 # Run after every other check has passed, so that a commit this hook stops leaves
 # nothing staged. One stopped later (commit-msg, an empty message) leaves the export
-# staged; the next commit finds it through SCHEMA_RECORD and unstages it.
+# staged, and its record: the next commit finds it (SCHEMA LEFT BY A COMMIT THAT DID
+# NOT FINISH, above). .husky/post-commit deletes the record when the commit lands.
 stage_live_schema() {
   if [ "$STAGE_LIVE_SCHEMA" = "true" ]; then
     if ! git show ":$SCHEMA" | cmp -s - "$SCHEMA_BEFORE" && ! cmp -s "$SCHEMA_BEFORE" "$SCHEMA_LIVE"; then

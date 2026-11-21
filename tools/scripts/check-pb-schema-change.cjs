@@ -14,17 +14,20 @@
  * Compares two versions of the schema (in CI: develop now, and develop after the
  * merge), pairing collections the way the sync does, and:
  *   - prints a per-collection summary: added, removed, renamed, fields, rules, indexes;
- *   - fails with `schema-only-change` when the schema changes but no other eco file
- *     does (the likely sign of edits that belong to another branch);
+ *   - fails with `schema-only-change` when the schema changes but no eco code does: no
+ *     file under the eco apps and libs other than Markdown (the likely sign of edits
+ *     that belong to another branch);
  *   - fails with `schema-removal` when a collection, or a field of a kept collection,
  *     disappears.
  * The `pb-schema` label acknowledges both: they are still listed, as notices. With
- * --label-stale (the workflow passes it when the push being checked changed the schema)
- * the label no longer counts until it is added again.
+ * --label-stale (the workflow passes it when the schema is not the one the label was
+ * added for) the label does not count.
  *
  * A collection whose id changes under the same name is updated in place by the sync, so
- * it is not a removal. A relation is compared by the name of the collection it points
- * to, since the sync remaps that id by name. The fields of a view are matched by name:
+ * it is not a removal. A relation is compared through the pairing of the collection it
+ * points to: the sync remaps that id by name, so a target renumbered under the same name
+ * is the same target, and one that only took the old name of another is not. The
+ * fields of a view are matched by name:
  * PocketBase derives them from the view's query and gives them random `_clone_` ids
  * that change each time the view is saved. A view stores no data, so a view field that
  * disappears is listed but is not a removal.
@@ -46,6 +49,9 @@ const fs = require('fs');
 
 const SCHEMA_PATH = 'apps/eco-store/pocketbase/pb_schema.json';
 const ECO_PATH = /^(apps\/eco-(store|admin)(-e2e)?|libs\/eco(-store|-admin)?)\//;
+// A doc that changes next to the schema (a CLAUDE.md, a task doc) says nothing about
+// whose edits it holds, so Markdown is not eco code. .husky/pre-commit says the same.
+const isEcoCode = file => file !== SCHEMA_PATH && ECO_PATH.test(file) && !file.endsWith('.md');
 const ACK_LABEL = 'pb-schema';
 const RULE_KEYS = [
   'listRule',
@@ -157,12 +163,13 @@ function pairCollections(base, head) {
 function compare(base, head) {
   const { pairs, removed, added } = pairCollections(base, head);
   const rows = [];
-  // A relation points to a collection id, which the sync remaps by name: two relations
-  // point to the same collection when the ids are equal or both resolve to one name.
-  const baseNames = new Map((base ?? []).map(collection => [collection.id, collection.name]));
-  const headNames = new Map((head ?? []).map(collection => [collection.id, collection.name]));
+  // A relation points to a collection id, which the sync remaps by name. Two relations
+  // point to the same collection when the ids are equal, or when the old target is
+  // paired with the new one: same name under a new id. A name alone is not enough: a
+  // new collection that takes the name of one renamed away is another collection.
+  const pairedHeadId = new Map(pairs.map(([old, collection]) => [old.id, collection.id]));
   const sameTarget = (oldId, newId) =>
-    oldId === newId || (baseNames.has(oldId) && baseNames.get(oldId) === headNames.get(newId));
+    oldId === newId || (pairedHeadId.has(oldId) && pairedHeadId.get(oldId) === newId);
   const withoutIds = (field, isView) => {
     const copy = { ...field };
     delete copy.collectionId;
@@ -276,9 +283,10 @@ function printHelp() {
   [--changed <file>] [--labels <a,b>] [--label-stale] [--summary <md file>]
   node tools/scripts/check-pb-schema-change.cjs --compare-only --base <json> --head <json>
 
-Fails when pb_schema.json changes without any other eco file (schema-only-change) or
-loses a collection or a field (schema-removal), unless the labels include "${ACK_LABEL}".
---label-stale: the label was added before the schema last changed, so it does not count.
+Fails when pb_schema.json changes without any eco code, Markdown aside
+(schema-only-change), or loses a collection or a field (schema-removal), unless the
+labels include "${ACK_LABEL}".
+--label-stale: the label was not added for this version of the schema, so it does not count.
 --compare-only: exit 0 when both files describe the same schema, 1 when they do not.`);
 }
 
@@ -312,12 +320,10 @@ function main() {
 
   const problems = [];
   if (args.changed) {
-    const otherEco = readChanged(args.changed).filter(
-      file => file !== SCHEMA_PATH && ECO_PATH.test(file)
-    );
-    if (otherEco.length === 0) {
+    const ecoCode = readChanged(args.changed).filter(isEcoCode);
+    if (ecoCode.length === 0) {
       problems.push(
-        'schema-only-change: pb_schema.json changes but no other eco file does. The schema may come from edits another branch made to the shared local PocketBase.'
+        'schema-only-change: pb_schema.json changes but no eco code does (Markdown does not count). The schema may come from edits another branch made to the shared local PocketBase.'
       );
     }
   }
@@ -344,7 +350,7 @@ function main() {
   write('');
 
   if (problems.length === 0) {
-    write('✓ No removals, and other eco files change with the schema.');
+    write('✓ No removals, and eco code changes with the schema.');
 
     return 0;
   }
@@ -364,7 +370,7 @@ function main() {
   }
   if (labelled) {
     write(
-      `\nThe "${ACK_LABEL}" label was on the pull request before this push changed pb_schema.json, so it no longer counts. Review the table, then add the label again; the check runs again.`
+      `\nThe "${ACK_LABEL}" label was not added for this version of pb_schema.json, so it does not count. Review the table, then add the label again; the check runs again.`
     );
 
     return 1;

@@ -58,10 +58,17 @@ s = clone(); s[2].fields[1].id = "_clone_ZZZZ"; s[2].fields[2].id = "_clone_YYYY
 s = clone(); s[1].id = "c_products_new"; s[0].fields[2].collectionId = "c_products_new"; write("collection-id-flipped", s);
 s = clone(); s[1].id = "c_products_new"; s[1].fields[0].id = "f_title_json"; write("collection-id-flipped-field-id", s);
 s = clone(); s[2].fields.pop(); s[2].fields[1].id = "_clone_ZZZZ"; s[2].viewQuery = "SELECT id, title FROM products"; write("view-field-removed", s);
+// A name reused in one change: the relation goes to another collection, although the
+// names of its old and new targets match.
+s = clone(); s[1].name = "products_old"; s[0].fields[2].collectionId = "c_new";
+s.push({ id: "c_new", name: "products", type: "base", fields: [{ id: "f_label", name: "label", type: "text" }], indexes: [], listRule: "" });
+write("relation-to-reused-name", s);
+s = clone(); s[0].name = "products"; s[1].name = "users"; s[0].fields[2].collectionId = "c_users"; write("names-swapped", s);
 ' "$WORK"
 
 printf '%s\n' apps/eco-store/pocketbase/pb_schema.json libs/eco-store/profile/basic/src/index.ts > "$WORK/changed-eco.txt"
 printf '%s\n' apps/eco-store/pocketbase/pb_schema.json .husky/pre-commit > "$WORK/changed-schema-only.txt"
+printf '%s\n' apps/eco-store/pocketbase/pb_schema.json apps/eco-store/CLAUDE.md libs/eco/TASKS.md .husky/pre-commit > "$WORK/changed-docs.txt"
 
 # expect <name> <expected exit> <grep pattern or ""> -- <args...>
 expect() {
@@ -85,7 +92,8 @@ expect() {
 B="--base $WORK/base.json"
 expect "identical schemas pass" 0 'no schema change' -- $B --head "$WORK/base.json" --changed "$WORK/changed-schema-only.txt"
 expect "added field with eco code passes (no false positive)" 0 'fields added: phone' -- $B --head "$WORK/field-added.json" --changed "$WORK/changed-eco.txt"
-expect "schema change without other eco files fails" 1 'schema-only-change' -- $B --head "$WORK/field-added.json" --changed "$WORK/changed-schema-only.txt"
+expect "schema change without eco code fails" 1 'schema-only-change' -- $B --head "$WORK/field-added.json" --changed "$WORK/changed-schema-only.txt"
+expect "Markdown under the eco apps and libs is no eco code" 1 'no eco code does' -- $B --head "$WORK/field-added.json" --changed "$WORK/changed-docs.txt"
 expect "the pb-schema label acknowledges it" 0 'Acknowledged' -- $B --head "$WORK/field-added.json" --changed "$WORK/changed-schema-only.txt" --labels "chore,pb-schema"
 expect "a removed field fails even with eco code" 1 'schema-removal: users' -- $B --head "$WORK/field-removed.json" --changed "$WORK/changed-eco.txt"
 expect "a removed collection fails" 1 'schema-removal: products removed' -- $B --head "$WORK/collection-removed.json" --changed "$WORK/changed-eco.txt"
@@ -104,11 +112,13 @@ else
   PASSED=$((PASSED + 1)); echo "✓ a relation to the renumbered collection is no change"
 fi
 expect "a field whose id changes in that collection is a removal" 1 'schema-removal: products lose fields' -- $B --head "$WORK/collection-id-flipped-field-id.json" --changed "$WORK/changed-eco.txt"
+expect "a relation moved to a new collection that took a reused name is a change" 0 '\| users \| changed \| fields changed: favourite' -- $B --head "$WORK/relation-to-reused-name.json" --changed "$WORK/changed-eco.txt"
+expect "a relation that follows a name two collections swapped is a change" 0 'renamed from users; fields changed: favourite' -- $B --head "$WORK/names-swapped.json" --changed "$WORK/changed-eco.txt"
 expect "--compare-only: identical schemas" 0 'same schema' -- --compare-only $B --head "$WORK/base.json"
 expect "--compare-only: regenerated view ids are the same schema" 0 'same schema' -- --compare-only $B --head "$WORK/view-ids-regenerated.json"
 expect "--compare-only: an id change under the same name is a change" 1 'schema changed: products' -- --compare-only $B --head "$WORK/collection-id-flipped.json"
 expect "--compare-only: an added field is a change" 1 'schema changed: users' -- --compare-only $B --head "$WORK/field-added.json"
-expect "a stale label no longer acknowledges" 1 'no longer counts' -- $B --head "$WORK/field-removed.json" --changed "$WORK/changed-eco.txt" --labels "pb-schema" --label-stale
+expect "a stale label no longer acknowledges" 1 'does not count' -- $B --head "$WORK/field-removed.json" --changed "$WORK/changed-eco.txt" --labels "pb-schema" --label-stale
 expect "a stale flag without the label asks for the label" 1 'add the "pb-schema" label' -- $B --head "$WORK/field-removed.json" --changed "$WORK/changed-eco.txt" --label-stale
 expect "a stale flag on a clean change passes" 0 'No removals' -- $B --head "$WORK/field-added.json" --changed "$WORK/changed-eco.txt" --labels "pb-schema" --label-stale
 expect "without --changed only removals are judged" 0 'fields added' -- $B --head "$WORK/field-added.json"

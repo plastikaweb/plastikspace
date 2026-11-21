@@ -106,11 +106,14 @@ The test target should be just:
 
 Every worktree shares the PocketBase on :8090, so its schema can hold edits made for another branch.
 The pre-commit exports it on every commit that is not Markdown-only. When the export differs from the staged schema,
-it stages `pb_schema.json` only if the commit already stages eco files (`apps/eco-*`, `libs/eco*`), once every other check has passed.
+it stages `pb_schema.json` only if the commit already stages eco code (files under `apps/eco-*` or `libs/eco*`, Markdown aside), once every other check has passed.
 Any other commit keeps the file as it was, with a warning, and so does a commit that names its paths (`git commit <paths>`).
-A `pb_schema.json` you staged yourself is kept and not exported; staged without other eco files, it needs `ALLOW_SCHEMA_ONLY=1 git commit ...`.
-A merge, cherry-pick, revert or rebase in progress skips the export.
-A commit that stops after the pre-commit (commitlint, an empty message) leaves the export staged; the next commit unstages it and decides again.
+A `pb_schema.json` you staged yourself is kept and not exported; staged without eco code, it needs `ALLOW_SCHEMA_ONLY=1 git commit ...`.
+A merge (a squash merge too), cherry-pick, revert or rebase in progress skips the export.
+A squash still needs eco code or `ALLOW_SCHEMA_ONLY=1` for a staged schema: git cannot tell one in progress from the `SQUASH_MSG` an abandoned squash leaves, and the hook says how to recover.
+A commit that stops after the pre-commit (commitlint, an empty message) leaves the export staged, or only on disk after `git commit -a`.
+The next commit unstages it and decides again, or keeps it when nothing else is staged or `ALLOW_SCHEMA_ONLY=1` is set; an export left only on disk is put back.
+The hook knows its own export by a record that `.husky/post-commit` deletes once a commit lands with it.
 
 Manual workflow:
 
@@ -120,11 +123,14 @@ Manual workflow:
 4. Commit schema with code changes
 
 On every PR into develop that changes `pb_schema.json`, `.github/workflows/pb-schema-guard.yml` posts a per-collection summary.
-It fails when no other eco file changes, or when a collection or field disappears, unless the PR has the `pb-schema` label.
+It fails when no eco code changes (Markdown does not count), or when a collection or field disappears, unless the PR has the `pb-schema` label.
 The staging sync drops a removed field with its data; it never deletes a collection, so a removed one stays on staging.
 Like the sync, the check finds a collection by id or else by name, so a collection whose id changed under the same name is no removal.
 View fields are matched by name, because their `_clone_` ids change each time the view is saved.
-A push that changes the schema, as the check reads it, voids the label: the workflow removes it, and you add it again once the new summary is reviewed.
+The label covers the schema of the head it was added at, which the workflow records in a comment of its bot.
+Any later run whose schema differs from that head's, as the check reads it, removes the label, even when the check passes; add it again once the new summary is reviewed.
+A record written before the label's latest addition (that run was dropped, or could not write) does not count,
+and neither does a label with no record (added before the workflow kept one): remove it and add it again.
 
 ## Pre-commit Hook (`.husky/pre-commit`)
 
@@ -137,6 +143,7 @@ Checks the **staged** content only; nothing unstaged enters the commit. Runs in 
 5. `lint-staged` (`lint-staged.config.mjs`): ESLint `--fix` (problem and layout fixes only), markdownlint and Prettier on the staged files.
 6. Stages the exported `pb_schema.json` when step 2 decided to.
 
+`.husky/post-commit` only deletes the pre-commit's record of that export once the commit lands.
 `tasks:check` and i18n:validate run on a copy of the index, so they read the content being committed.
 Untracked files are never added: the hook lists them after the commit, and the pre-push warns about them.
 Markdown-only commits skip the export and i18n. The affected lint over whole projects runs in CI, not in the hooks; pre-push keeps format check, affected test, build and a11y.
