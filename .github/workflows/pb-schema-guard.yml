@@ -1,0 +1,182 @@
+name: PocketBase schema guard
+
+# META-12. Every worktree exports the same local PocketBase into pb_schema.json, so a
+# branch can carry schema edits made for another branch; on merge to develop,
+# pocketbase-schema.yml applies the file to staging, which drops the fields it lacks
+# (it never deletes collections). This check compares develop now with the PR's merge
+# commit (what the sync would apply) and fails on a schema change without eco code
+# (Markdown does not count), or on removals, unless the PR carries the `pb-schema`
+# label. Adding or removing the label re-runs it. The label covers the schema of the
+# head it was added at: the run of that event records the head in a comment, and any
+# later run whose schema differs from that head's, as the check reads it, removes the
+# label, to be added again after review. A record written before the label's latest
+# addition belongs to an earlier one, and does not count. A re-run replays its event as
+# it was: it stops once the pull request's head has moved on, and otherwise takes the
+# labels the pull request has now.
+
+on:
+  pull_request:
+    branches: [develop]
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+    paths:
+      - 'apps/eco-store/pocketbase/pb_schema.json'
+      - 'tools/scripts/check-pb-schema-change.cjs'
+      - 'tools/scripts/test-pb-schema-check.sh'
+      - '.github/workflows/pb-schema-guard.yml'
+
+# Runs for one PR take turns, so a record and a removal follow the order of the events;
+# a re-run of an older event takes its turn later, which is why it stops once the head
+# has moved on. GitHub drops a pending run when a newer one queues. When the dropped run
+# is the one that records a new addition of the label, the record left predates that
+# addition, so the label does not count until it is added again, or until that run is
+# re-run while its head is still the pull request's.
+concurrency:
+  group: pb-schema-guard-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  # To read when the pb-schema label was last added (the pull request's issue events).
+  issues: read
+  # To record in a comment which head the pb-schema label acknowledges, to remove the
+  # label once the schema differs from that head's, and for a re-run to read the pull
+  # request as it is now.
+  pull-requests: write
+
+jobs:
+  pb-schema:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the merge commit
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Fixture tests for the guard
+        run: bash tools/scripts/test-pb-schema-check.sh
+
+      # HEAD is refs/pull/N/merge; its first parent is the develop tip it was merged onto.
+      # shell: bash adds -o pipefail. With no shell key GitHub runs bash -e only, and a gh
+      # call that failed after printing a page of results would go unnoticed.
+      - name: Compare pb_schema.json with develop
+        shell: bash
+        env:
+          PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          EVENT_ACTION: ${{ github.event.action }}
+          EVENT_LABEL: ${{ github.event.label.name }}
+          AFTER: ${{ github.event.pull_request.head.sha }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          SCHEMA=apps/eco-store/pocketbase/pb_schema.json
+          CHECK=tools/scripts/check-pb-schema-change.cjs
+          ISSUE="repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER"
+          # A re-run reuses its first attempt's event: that head and those labels. Once
+          # the head has moved on, it could record an old head or remove a label added
+          # since, so it stops before any write; otherwise it takes the live labels.
+          if [ "$GITHUB_RUN_ATTEMPT" != 1 ]; then
+            LIVE=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" --jq '"\(.head.sha) \([.labels[].name] | join(","))"') || LIVE=
+            if [ -z "$LIVE" ] || [ "${LIVE%% *}" != "$AFTER" ]; then
+              echo "::error title=pb-schema guard::This re-run replays an event for $AFTER, which is no longer the head of the pull request, or the pull request could not be read. Push, or remove and add the pb-schema label, to check the current head."
+              exit 1
+            fi
+            PR_LABELS=${LIVE#* }
+          fi
+          git show "HEAD^1:$SCHEMA" > "$RUNNER_TEMP/pb_schema.base.json"
+          git diff --name-only HEAD^1 HEAD > "$RUNNER_TEMP/changed.txt"
+          # The label acknowledges the schema of the head it was added at. The run of that
+          # labeled event records the head in a comment of this workflow's bot; any other
+          # run compares that head's schema with this head's, as the check reads it
+          # (regenerated view ids or a new order are no change). A different schema, or a
+          # recorded head that cannot be fetched, voids the label: it does not count, and
+          # it is removed even when the check passes, so it cannot count for a later
+          # schema. A record counts only when written after the label's latest addition:
+          # when the run of that addition was dropped or could not write, the record left
+          # acknowledged an earlier one. With no record that counts (also a label added
+          # before this check kept one) the label does not count either, and is left for a
+          # person. Only the bot's comments are read: anyone can comment on a pull request.
+          MARK='<!-- pb-schema-ack '
+          ACK_FILTER='.[] | select(.user.login == "github-actions[bot]" and (.body | startswith("<!-- pb-schema-ack "))) | "\(.updated_at) \(.id) \(.body | ltrimstr("<!-- pb-schema-ack ") | split(" ")[0])"'
+          LABELED_FILTER='.[] | select(.event == "labeled" and .label.name == "pb-schema") | .created_at'
+          STALE=
+          VOID=false
+          NO_RECORD=false
+          ACK_ID=
+          ACKED=
+          case ",$PR_LABELS," in
+            *,pb-schema,*)
+              ACK_LINE=$(gh api --paginate "$ISSUE/comments?per_page=100" --jq "$ACK_FILTER" | LC_ALL=C sort | tail -n 1) || ACK_LINE=
+              read -r ACK_AT ACK_ID ACKED <<< "$ACK_LINE" || true
+              case "$ACKED" in
+                *[!0-9a-f]* | '') ACKED= ;;
+              esac
+              if [ "$EVENT_ACTION" = labeled ] && [ "$EVENT_LABEL" = pb-schema ]; then
+                # The run id and attempt give every record a new body, so a PATCH always
+                # moves updated_at, which the next run compares with the label's latest
+                # addition, even when the label is added again at the same head.
+                BODY=$(printf '%s%s -->\nThe `pb-schema` label acknowledges the schema of %s (run %s, attempt %s). A later run whose schema differs, as the check reads it, removes the label; add it again once the new table is reviewed.' "$MARK" "$AFTER" "$AFTER" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT")
+                if [ -n "$ACK_ID" ]; then
+                  WRITE=(--method PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$ACK_ID")
+                else
+                  WRITE=(--method POST "$ISSUE/comments")
+                fi
+                if ! gh api "${WRITE[@]}" -f body="$BODY" > /dev/null; then
+                  echo "::warning title=pb-schema label::Could not record that the pb-schema label acknowledges $AFTER, so it counts in this run only."
+                fi
+              else
+                if [ -n "$ACKED" ]; then
+                  # A failed read, a record from the same second or an older one: no record.
+                  LABELED_AT=$(gh api --paginate "$ISSUE/events?per_page=100" --jq "$LABELED_FILTER" | LC_ALL=C sort | tail -n 1) || LABELED_AT=
+                  if [ -z "$LABELED_AT" ] || [ "$LABELED_AT" = "$ACK_AT" ] ||
+                    [ "$(printf '%s\n%s\n' "$LABELED_AT" "$ACK_AT" | LC_ALL=C sort | tail -n 1)" != "$ACK_AT" ]; then
+                    ACKED=
+                  fi
+                fi
+                if [ -z "$ACKED" ]; then
+                  STALE=--label-stale
+                  NO_RECORD=true
+                else
+                  git cat-file -e "$ACKED^{commit}" 2>/dev/null ||
+                    git fetch --no-tags --depth=1 origin "$ACKED" 2>/dev/null || true
+                  if ! git show "$ACKED:$SCHEMA" > "$RUNNER_TEMP/pb_schema.ack.json" 2>/dev/null ||
+                    ! git show "$AFTER:$SCHEMA" > "$RUNNER_TEMP/pb_schema.after.json" ||
+                    ! node "$CHECK" --compare-only \
+                      --base "$RUNNER_TEMP/pb_schema.ack.json" --head "$RUNNER_TEMP/pb_schema.after.json"; then
+                    STALE=--label-stale
+                    VOID=true
+                  fi
+                fi
+              fi
+              ;;
+          esac
+          RC=0
+          node "$CHECK" \
+            --base "$RUNNER_TEMP/pb_schema.base.json" \
+            --head "$SCHEMA" \
+            --changed "$RUNNER_TEMP/changed.txt" \
+            --labels "$PR_LABELS" \
+            $STALE \
+            --summary "$GITHUB_STEP_SUMMARY" || RC=$?
+          if [ "$NO_RECORD" = true ] && [ "$RC" -ne 0 ]; then
+            echo "The pb-schema label has no record of the head it acknowledged when it was last added (the run of that addition was dropped or could not write the record, the record could not be read, or the label predates this check): remove it, and add it again once the table is reviewed." |
+              tee -a "$GITHUB_STEP_SUMMARY"
+          fi
+          # A label change made with GITHUB_TOKEN starts no new run.
+          if [ "$VOID" = true ]; then
+            if gh api --method DELETE "$ISSUE/labels/pb-schema" > /dev/null; then
+              echo "The pb-schema label acknowledged the schema of $ACKED, which this head no longer has, so it was removed: add it again once the table is reviewed." |
+                tee -a "$GITHUB_STEP_SUMMARY"
+            else
+              # A run that queued before another removed it finds it gone: no warning then.
+              LIVE_LABELS=$(gh api "$ISSUE/labels" --jq '.[].name') || LIVE_LABELS=pb-schema
+              if printf '%s\n' "$LIVE_LABELS" | grep -qx pb-schema; then
+                echo "::warning title=pb-schema label::The pb-schema label acknowledged $ACKED, whose schema this head no longer has, and could not be removed: remove it, and add it again once the table is reviewed."
+              fi
+            fi
+          fi
+          exit "$RC"

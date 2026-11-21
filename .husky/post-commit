@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+# The pre-commit records the pb_schema.json blob it stages ("SCHEMA LEFT BY A COMMIT
+# THAT DID NOT FINISH" in .husky/pre-commit). Once a commit lands holding that blob,
+# the record is spent and goes: a record the next pre-commit finds then always belongs
+# to a commit that stopped after the pre-commit (commit-msg, an empty message).
+RECORD=$(git rev-parse --git-path pre-commit-staged-schema)
+if [ -f "$RECORD" ] \
+  && [ "$(git rev-parse -q --verify HEAD:apps/eco-store/pocketbase/pb_schema.json || true)" = "$(cat "$RECORD")" ]; then
+  rm -f "$RECORD"
+fi
