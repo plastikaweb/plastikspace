@@ -9,6 +9,7 @@
   - [Usage](#usage)
     - [1. Import the `MatThemeToggleComponent` in your component](#1-import-the-matthemetogglecomponent-in-your-component)
     - [2. Use the component in your template](#2-use-the-component-in-your-template)
+  - [The browser bar](#the-browser-bar)
   - [API](#api)
     - [MatThemeToggleService](#matthemetoggleservice)
       - [Methods](#methods)
@@ -34,7 +35,7 @@ A reusable **Angular Material theme toggle component** that allows users to swit
 ### 1. Import the `MatThemeToggleComponent` in your component
 
 ```typescript
-import { MatThemeToggleComponent } from '@plastikspace/shared-mat-theme-toggle';
+import { MatThemeToggleComponent } from '@plastik/shared/mat-theme-toggle';
 
 @Component({
   imports: [MatThemeToggleComponent],
@@ -47,6 +48,21 @@ export class YourComponent {}
 ```html
 <plastik-mat-theme-toggle></plastik-mat-theme-toggle>
 ```
+
+## The browser bar
+
+The service also paints the browser bar (`<meta name="theme-color">`): the address bar of a mobile browser, the title bar of an installed app, the tab bar of Safari.
+It needs no configuration. Every time the theme changes, and when the operating system changes scheme while the theme is `system`,
+it reads the computed `background-color` of `<body>` and writes it to the tag.
+
+- **The color comes from the stylesheet of the application**, so it follows the palette, a theme a tenant brings, and anything else the stylesheet reacts to
+  (`prefers-contrast`, for one). No color is written in TypeScript.
+- **CSS alone cannot do this.** The tag takes no `var()`, and its `media` attribute follows the operating system only, never the theme the user picks in the control.
+  That is why a script writes it; the value it writes is the stylesheet's.
+- **The convention is `<body>`**: an application paints its page background there. One whose `<body>` paints none (`transparent`) keeps the bar as its `index.html` left it.
+- **Before Angular starts**, an application that wants the bar right from the first paint sets it from a script in its `index.html`.
+  That script runs before any stylesheet exists, so it is the one place where the two colors are written by hand. Keep them equal to the page background.
+- The value is written as the browser computes it (`rgb(…)` today).
 
 ## API
 

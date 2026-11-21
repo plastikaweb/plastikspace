@@ -6,7 +6,7 @@ import { AUTH_FORM_FACADE } from '@plastik/auth/entities';
 import { pocketBaseIsNotLoggedGuard } from '@plastik/auth/pocketbase/data-access';
 import { FORM_TOKEN } from '@plastik/core/entities';
 import { providePasswordWithVisibilityFormly } from '@plastik/shared/form/password';
-import { providePlainInputFormly } from '@plastik/shared/form/util';
+import { provideFormlyAddons, providePlainInputFormly } from '@plastik/shared/form/util';
 import { EcoStoreAuthResetPasswordFacadeService } from './reset-password/eco-store-auth-reset-password-facade.service';
 import { EcoStoreAuthResetPasswordComponent } from './reset-password/eco-store-auth-reset-password.component';
 
@@ -35,6 +35,8 @@ export const ecoStoreAuthFeatureResetPasswordRoutes: Route[] = [
       },
       providePlainInputFormly(),
       providePasswordWithVisibilityFormly(),
+      // The leading icons of the shared form.
+      provideFormlyAddons(),
     ],
   },
 ];

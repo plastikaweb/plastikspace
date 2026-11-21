@@ -1,0 +1,18 @@
+/* The card of the auth screens (`plastik-auth-feature`, a Material card), the same in eco-store and
+   eco-admin: the fill the application names and a hairline edge in the palette's outline colour.
+
+   Over a dark page the shadow of the card does not read, so the fill and the edge are what keep the
+   card apart from the page. Each application has a page of its own colour, so each one says which
+   fill stands out over it, in `--eco-auth-card-background`. Without it the card keeps the fill the
+   shared screen gives it (`surface-container-low` at 80%).
+
+   Left out of any layer on purpose, so that it wins over the fill utility the shared screen puts on
+   the card. An outline and not a border or a ring: the shared screen switches the border off and
+   owns the box shadow. */
+plastik-auth-feature .mat-mdc-card {
+  background-color: var(
+    --eco-auth-card-background,
+    color-mix(in srgb, var(--mat-sys-surface-container-low) 80%, transparent)
+  );
+  outline: 1px solid var(--mat-sys-outline-variant);
+}

@@ -51,11 +51,24 @@
   --focus-ring-width: 2px;
 
   /* Page background and muted text of the admin mocks. Neither has a Material role in
-     `eco_tokens`, so they are admin-owned. The pre-paint script in index.html repeats the
-     background pair for `theme-color`; change both together. */
+     `eco_tokens`, so they are admin-owned. The theme control reads the browser bar color
+     (`theme-color`) from this background; only the pre-paint script in index.html repeats the
+     pair, for the moment before the stylesheet exists. Change both together. */
   --eco-admin-page-background: light-dark(#f2f5ea, #11140e);
+
+  /* What a card is painted with over that page. No single Material surface role stands out in both
+     schemes: `surface-container-low` is the page colour itself in light, and
+     `surface-container-lowest` is one step from it in dark. */
+  --eco-admin-card-background: light-dark(
+    var(--mat-sys-surface-container-lowest),
+    var(--mat-sys-surface-container-low)
+  );
+
+  /* The card of the auth screens takes the panel's card colour (`eco_auth_card`, `libs/eco/styles`). */
+  --eco-auth-card-background: var(--eco-admin-card-background);
+
   --eco-admin-on-surface-muted: light-dark(#5a614f, #aab29d);
 
   /* Touch-sized field height of the admin design system. */
-  --admin-row-h: 48px;
+  --mat-field-height: 48px;
 }

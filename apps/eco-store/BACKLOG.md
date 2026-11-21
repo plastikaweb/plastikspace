@@ -4,7 +4,7 @@
 >
 > Companion to `TASKS.md` and PRD v1.8.
 
-**Document version:** 0.54 · **Last updated:** 2026-11-07
+**Document version:** 0.55 · **Last updated:** 2026-11-20
 
 ---
 
@@ -94,7 +94,7 @@
 | 3.2 | Asset prep: 4 hero presets × {mobile, desktop} × {webp, avif} | MUST | 1.5d | — | Design effort more than dev |
 | 3.3 | Lib scaffolding `libs/eco-store/home/feature` + route at `''` | MUST | 0.25d | — | Remove `**` fallback |
 | 3.4 | **INI-01** Hero section | MUST | 1.5d | 3.1, 3.2, 3.3 | `<picture>` + preload; LCP < 2.5s |
-| 3.5 | **INI-02** "Fes-te soci" anonymous CTA | MUST | 0.5d | 3.3 | Routes to PRV-06 or `/accedir` |
+| 3.5 | **INI-02** "Fes-te sòcia" anonymous CTA | MUST | 0.5d | 3.3 | CU `86c9uq95d`. `MEMBERSHIP` tenants → PRV-06 (until it lands, the `mailto:` to the tenant already under the store login since eco-admin AP-0 0.7b); `OPEN` tenants → `/registre` |
 | 3.6 | **INI-05** Visual category navigation | MUST | 1d | 3.3 | From `product_categories_stats` view |
 | 3.7 | **INI-03** "Com funciona" with auto-gen from `logisticsConfig` | MUST | 2d | 3.1, 3.3 | Hard part is the auto-gen logic |
 | 3.8 | **INI-04** Featured products showcase | SHOULD | 1d | 3.1, 3.3 | Manual mode only (defer Q-11) |
@@ -258,7 +258,7 @@
 
 | # | Task | Priority | Est | Depends on | Notes |
 | --- | --- | --- | --- | --- | --- |
-| 9.1 | **PRV-06** Membership request form (anonymous) | SHOULD | 1.5d | — |  |
+| 9.1 | **PRV-06** Membership request form (anonymous) | SHOULD | 1.5d | — | CU `86c9uq9um`. Normal priority (2026-11-20): needs the eco-admin inbox (AP-1 1.1) before anyone can answer a request |
 | 9.2 | **PRV-07** Contact form | SHOULD | 1d | — |  |
 | 9.3 | **PRV-05b** Registration with pre-auth email | MUST | 1.5d | PRV-05a (eco-admin) | CU `86c9uq9vb` |
 
@@ -388,6 +388,7 @@
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 0.55 | 2026-11-20 | Doc-only, in lockstep with TASKS.md 0.55 (eco-admin AP-0 0.7b, `123kjkdqcdc`). Rows 3.5 (**INI-02**) and 9.1 (**PRV-06**) gain their ClickUp IDs and where they lead: INI-02 → PRV-06 on `MEMBERSHIP` tenants, `/registre` only on `OPEN` ones; PRV-06 stays at normal priority, with the `mailto:` to the tenant under the store login as the interim. No estimate or phase changes |
 | 0.54 | 2026-11-07 | **META-08** (`123kjkdpqjr`) — doc-only maintenance in lockstep with TASKS.md 0.54. 18 stale ClickUp IDs re-pointed to the live re-created tickets: rows 1.5–1.7 (PRV-04d, PRV-09, PRV-08), 2.1–2.2 (BOT-02b/c), 6.5 (PST-04), 7.1, 7.2, 7.4, 7.6, 7.7, 7.18 (UI-04, LGL-01, LGL-02, SEO-01, OPS-01, BOT-16), 8.3 (PST-02; `86c9dpjmz` kept), 11.1 (EST-06) and four Out-of-scope rows (HLP-01, MKT-research-01, META-03, META-04). History rows keep the old IDs. No estimate or phase changes; the new SEC-09/10, BUG-011/012/015/016 and PRV-05b-C rows and the PRV-08/PRV-09/UI-04/VAL-01 status fixes live in TASKS.md. |
 | 0.53 | 2026-11-01 | **OPS-03** (`123kjkdp4ht`) shipped outside the phase plan as an urgent CI fix — PockHost retired FTP, so the staging `pb_hooks` deploy moved to SFTP (#1531, #1532). CI-only, no phase row. |
 | 0.52 | 2026-11-01 | **Table repair (rendering only, no task changes)** — a blank line after row 7.35 (since v0.32) detached rows 7.36–7.53 from the Phase-7 table, so GitHub showed those 18 tasks as one paragraph; removed. Row 0.39 (2026-07-21) carried an unescaped double pipe inside a code span that split this version-history table into 5 columns, so the whole history rendered as a paragraph; escaped, and the mangled text restored. Same row-0.39 fix in TASKS.md. Versions in lockstep. |

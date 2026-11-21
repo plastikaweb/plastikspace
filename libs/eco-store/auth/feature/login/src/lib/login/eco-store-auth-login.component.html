@@ -1,9 +1,12 @@
-<eco-store-auth-container [isLoading]="facade.isLoading?.() ?? false">
+<plastik-auth-feature
+  [isLoading]="facade.isLoading?.() ?? false"
+  [error]="facade.error?.() ?? null">
   <span title>{{ 'auth.login.title' | translate }}</span>
   <div content>
     <plastik-shared-form-feature
       [fields]="facade.formConfig.getConfig()"
       [submitConfig]="facade.formConfig.getSubmitFormConfig?.() ?? null"
+      (pendingChangesEvent)="$event && facade.clearError?.()"
       (changeEvent)="facade.onSubmit($event)">
       <div class="extra-links mt-1 mb-3 flex items-center justify-center">
         <a
@@ -18,21 +21,21 @@
       </div>
     </plastik-shared-form-feature>
 
-    <div
-      class="border-outline-variant/30 mt-6 flex flex-col items-center justify-center gap-3 border-t pt-2">
-      <p class="text-on-surface-variant text-xs font-bold tracking-wider opacity-60">
-        {{ 'auth.login.newUserQuestion' | translate }}
-      </p>
-      <a
-        matButton
-        appearance="outlined"
-        class="w-full! py-6! text-sm! font-black! tracking-widest"
-        routerLink="/activar-compte">
-        {{ 'auth.login.createAccount' | translate }}
-        <mat-icon aria-hidden="true" iconPositionEnd class="ml-1 scale-110 align-middle"
-          >how_to_reg</mat-icon
-        >
-      </a>
-    </div>
+    @if (joinHref(); as href) {
+      <div
+        class="border-outline-variant/30 mt-6 flex flex-col items-center justify-center gap-1 border-t pt-4 text-center">
+        <p class="text-on-surface-variant text-xs font-bold tracking-wider">
+          {{ 'auth.login.join.question' | translate }}
+        </p>
+        <p class="text-on-surface-variant text-sm">{{ 'auth.login.join.invite' | translate }}</p>
+        <a
+          matButton
+          class="text-primary-700 dark:text-primary-300 text-sm! tracking-wider"
+          [href]="href">
+          <mat-icon aria-hidden="true">mail</mat-icon>
+          {{ joinEmail() }}
+        </a>
+      </div>
+    }
   </div>
-</eco-store-auth-container>
+</plastik-auth-feature>

@@ -1,21 +1,42 @@
-import { ComponentRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { FormlyModule } from '@ngx-formly/core';
+import { FieldType, FieldTypeConfig, FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { provideTranslateService } from '@ngx-translate/core';
 import { axe } from 'vitest-axe';
 
 import { SharedFormFeatureComponent } from './shared-form-feature.component';
+
+@Component({
+  selector: 'plastik-test-input-type',
+  imports: [ReactiveFormsModule, FormlyModule],
+  template: `<input aria-label="name" [formControl]="formControl" [formlyAttributes]="field" />`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+class TestInputTypeComponent extends FieldType<FieldTypeConfig> {}
+
+const REQUIRED_FIELD: FormlyFieldConfig[] = [
+  { key: 'name', type: 'test-input', props: { required: true } },
+];
 
 describe('SharedFormFeatureComponent', () => {
   let component: SharedFormFeatureComponent<unknown>;
   let fixture: ComponentFixture<SharedFormFeatureComponent<unknown>>;
   let componentRef: ComponentRef<SharedFormFeatureComponent<unknown>>;
 
+  const submitButton = (): HTMLButtonElement =>
+    fixture.nativeElement.querySelector('button[type="submit"]');
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SharedFormFeatureComponent, ReactiveFormsModule, FormlyModule.forRoot()],
+      imports: [
+        SharedFormFeatureComponent,
+        ReactiveFormsModule,
+        FormlyModule.forRoot({
+          types: [{ name: 'test-input', component: TestInputTypeComponent }],
+        }),
+      ],
       providers: [provideTranslateService()],
     }).compileComponents();
 
@@ -57,6 +78,57 @@ describe('SharedFormFeatureComponent', () => {
       expect(submitEvent).toBeFalsy();
     });
   });
+
+  describe('alwaysEnabled', () => {
+    it('keeps the submit disabled while the form is invalid when not set', () => {
+      componentRef.setInput('fields', REQUIRED_FIELD);
+      fixture.detectChanges();
+
+      expect(submitButton().disabled).toBe(true);
+    });
+
+    it('keeps the submit enabled while the form is invalid when set', () => {
+      componentRef.setInput('submitConfig', { alwaysEnabled: true });
+      componentRef.setInput('fields', REQUIRED_FIELD);
+      fixture.detectChanges();
+
+      expect(submitButton().disabled).toBe(false);
+    });
+
+    it('emits nothing on an invalid submit, shows the messages and focuses the first invalid field', () => {
+      const emitted = vi.fn();
+
+      componentRef.setInput('submitConfig', { alwaysEnabled: true });
+      componentRef.setInput('fields', REQUIRED_FIELD);
+      fixture.detectChanges();
+      component.changeEvent.subscribe(emitted);
+
+      fixture.debugElement
+        .query(By.directive(FormGroupDirective))
+        .triggerEventHandler('submit', new Event('submit'));
+
+      expect(emitted).not.toHaveBeenCalled();
+      expect((component as any).form.get('name').touched).toBe(true);
+      expect(document.activeElement).toBe(fixture.nativeElement.querySelector('input'));
+    });
+
+    it('emits once the form is valid', () => {
+      const emitted = vi.fn();
+
+      componentRef.setInput('submitConfig', { alwaysEnabled: true });
+      componentRef.setInput('fields', REQUIRED_FIELD);
+      fixture.detectChanges();
+      component.changeEvent.subscribe(emitted);
+      (component as any).form.get('name').setValue('Núria');
+
+      fixture.debugElement
+        .query(By.directive(FormGroupDirective))
+        .triggerEventHandler('submit', new Event('submit'));
+
+      expect(emitted).toHaveBeenCalledWith({ name: 'Núria' });
+    });
+  });
+
   describe('onModelChange', () => {
     it('should update model and emit changeEvent', () => {
       let submitEvent = false;

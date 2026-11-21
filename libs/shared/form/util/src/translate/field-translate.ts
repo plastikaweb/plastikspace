@@ -31,6 +31,9 @@ class FieldTranslateExtension implements FormlyExtension {
       ...(props['title'] && {
         'props.title': this.translate.stream(props['title']),
       }),
+      ...(props['description'] && {
+        'props.description': this.translate.stream(props['description']),
+      }),
       ...(props['options'] && {
         'props.options': (() => {
           const options = props.options;
@@ -47,8 +50,13 @@ class FieldTranslateExtension implements FormlyExtension {
             return (options as Observable<{ label: string; value: unknown }[]>).pipe(
               switchMap(opts =>
                 opts && opts.length
-                  ? combineLatest(opts.map(o => this.translate.stream(o.label))).pipe(
-                      map((labels: string[]) => opts.map((o, i) => ({ ...o, label: labels[i] })))
+                  ? combineLatest(opts.map(option => this.translate.stream(option.label))).pipe(
+                      map((labels: string[]) =>
+                        opts.map((option: { label: string; value: unknown }, i: number) => ({
+                          ...option,
+                          label: labels[i],
+                        }))
+                      )
                     )
                   : of(opts)
               )
