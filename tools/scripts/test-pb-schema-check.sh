@@ -66,7 +66,7 @@ write("relation-to-reused-name", s);
 s = clone(); s[0].name = "products"; s[1].name = "users"; s[0].fields[2].collectionId = "c_users"; write("names-swapped", s);
 // Names that a Markdown table cell has to escape: a pipe, and a backslash before one.
 s = clone(); s[0].fields.push({ id: "f_pipe", name: "p|q", type: "text" }); write("field-pipe-name", s);
-s = clone(); s[0].fields.push({ id: "f_slash", name: "x\\|y", type: "text" }); write("field-backslash-pipe-name", s);
+s = clone(); s[0].fields.push({ id: "f_slash", name: "x\\|y", type: "text" }, { id: "f_under", name: "a\\_b", type: "text" }); write("field-backslash-names", s);
 ' "$WORK"
 
 printf '%s\n' apps/eco-store/pocketbase/pb_schema.json libs/eco-store/profile/basic/src/index.ts > "$WORK/changed-eco.txt"
@@ -136,19 +136,22 @@ else
   FAILED=$((FAILED + 1)); echo "✗ summary row missing"; sed 's/^/    /' "$SUMMARY"
 fi
 # summary_row <name> <head variant> <row the summary file must hold, verbatim>
+# The variant adds fields and the eco code changes too, so the checker must exit 0.
 summary_row() {
-  local name=$1 file="$WORK/summary-$2.md" row=$3
+  local name=$1 file="$WORK/summary-$2.md" row=$3 rc
   RUN=$((RUN + 1))
   node "$CHECK" $B --head "$WORK/$2.json" --changed "$WORK/changed-eco.txt" --summary "$file" > /dev/null 2>&1
-  if grep -qxF -- "$row" "$file" 2> /dev/null; then
+  rc=$?
+  if [ "$rc" -eq 0 ] && grep -qxF -- "$row" "$file" 2> /dev/null; then
     PASSED=$((PASSED + 1)); echo "✓ $name"
   else
-    FAILED=$((FAILED + 1)); echo "✗ $name"; sed 's/^/    /' "$file" 2>&1
+    FAILED=$((FAILED + 1)); echo "✗ $name: exit $rc"; sed 's/^/    /' "$file" 2>&1
   fi
 }
-# GitHub renders \\| as |: without the backslash escaped first, the one before the pipe vanishes.
+# GitHub renders \\| as | and \_ as _: unless every backslash is escaped, one before a
+# pipe or any other punctuation mark vanishes.
 summary_row "a pipe in a name is escaped in the summary table" field-pipe-name '| users | changed | fields added: p\|q |'
-summary_row "a backslash before a pipe is escaped too" field-backslash-pipe-name '| users | changed | fields added: x\\\|y |'
+summary_row "so is every backslash, before a pipe or not" field-backslash-names '| users | changed | fields added: x\\\|y, a\\_b |'
 
 # Annotations: errors in GitHub Actions, warnings once acknowledged, nothing elsewhere.
 ANNOTATION='file=apps/eco-store/pocketbase/pb_schema.json,title=schema-removal'
