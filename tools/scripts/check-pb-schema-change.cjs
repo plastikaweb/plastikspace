@@ -264,7 +264,9 @@ function readChanged(file) {
   }
 }
 
-const cell = text => String(text).replace(/\|/g, '\\|');
+// A Markdown table cell. GitHub renders \\| as |, so the backslashes are escaped before
+// the pipes, or one right before a pipe would vanish.
+const cell = text => String(text).replace(/\\/g, '\\\\').replace(/\|/g, '\\|');
 
 // GitHub workflow commands: https://docs.github.com/actions/reference/workflow-commands-for-github-actions
 const escapeData = text =>
