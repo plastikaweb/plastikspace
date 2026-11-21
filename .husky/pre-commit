@@ -72,13 +72,22 @@ done
 if [ -d "$(git rev-parse --git-path rebase-merge)" ] || [ -d "$(git rev-parse --git-path rebase-apply)" ]; then
   OPERATION=rebase
 fi
-# git merge --squash writes no MERGE_HEAD, only SQUASH_MSG. git commit and a git reset
-# of the whole index delete it; git restore, git checkout -- <paths>, a refused git merge
-# --abort and a real git merge started later leave it. So it counts only when nothing
-# else is in progress, and an abandoned squash passes for one until the next commit: the
-# schema-only rule still applies to a squash, and the hook says how to tell.
+# git merge --squash writes no MERGE_HEAD, only SQUASH_MSG. git commit, a branch switch
+# and a git reset of the whole index delete it; git restore, git checkout -- <paths>, a
+# refused git merge --abort and a real git merge started later leave it. So it counts
+# only when nothing else is in progress, and an abandoned squash passes for one until the
+# next commit: the schema-only rule still applies to a squash, and the hook says how to tell.
 if [ -z "$OPERATION" ] && [ -f "$(git rev-parse --git-path SQUASH_MSG)" ]; then
   OPERATION="merge --squash"
+fi
+# git also puts a SQUASH_MSG above the message of a merge, cherry-pick, revert or rebase
+# commit that takes its message from git (no -m or -F). A cherry-pick then gets "Squashed
+# commit of the following:" as its subject, which commitlint refuses. The file stays:
+# next to a stale ref, it may belong to the squash in progress.
+if [ -n "$OPERATION" ] && [ "$OPERATION" != "merge --squash" ] && [ -f "$(git rev-parse --git-path SQUASH_MSG)" ]; then
+  echo "ℹ️  $(git rev-parse --git-path SQUASH_MSG) is left from a squash merge. Unless -m or -F gives the"
+  echo "   message, git puts its text above this commit's: fix it once the commit lands (git commit"
+  echo "   --amend keeps a merge's parents), or delete that file if commitlint refuses the message."
 fi
 # --------------------------------
 
@@ -203,7 +212,8 @@ fi
 # --- SANDBOX BRIDGE ---
 # Redirect HOME to a temp directory to avoid EPERM on /Users/plastikaweb/.yarnrc.
 # lint-staged runs no Yarn but does run git (its backup stash needs the user's
-# identity from ~/.gitconfig), so it gets the original HOME back.
+# identity from ~/.gitconfig), so it gets the original HOME back. So do nx and the
+# untracked listings, which read the user's global excludes file.
 ORIGINAL_HOME=$HOME
 export HOME=/tmp/husky-sandbox
 mkdir -p $HOME
@@ -270,22 +280,20 @@ refresh_nx_graph() {
 # but not named looks untracked there, and one removed with git rm --cached is still in
 # it, and in the commit. So the paths listed are those neither index tracks: untracked in
 # the real index (--git-path index would follow GIT_INDEX_FILE back to the temporary
-# one) and not in the temporary one, where a directory that still has files is listed
-# file by file. -z, because git quotes a name with a double quote or a backslash even
-# with core.quotePath=false. Six are enough to show five.
+# one) and not in the temporary one. A directory the real index has nothing in is one
+# entry there; what the temporary index leaves untracked under it is untracked in both,
+# so one listing on the temporary index gives it. -z, because git quotes a name with a
+# double quote or a backslash even with core.quotePath=false; a newline inside a name
+# shows as ?. The listings get the user's HOME back, for the user's global excludes.
+# Six are enough to show five.
 untracked_in_path_commit() {
   REAL_INDEX="$(git rev-parse --git-dir)/index"
-  GIT_INDEX_FILE="$REAL_INDEX" git ls-files -z --others --exclude-standard --directory --no-empty-directory | tr '\0' '\n' |
+  GIT_INDEX_FILE="$REAL_INDEX" HOME="$ORIGINAL_HOME" git ls-files -z --others --exclude-standard --directory --no-empty-directory | tr '\n\0' '?\n' |
     while IFS= read -r ENTRY; do
       if [ -z "$(git --literal-pathspecs ls-files -- "$ENTRY" | head -n 1)" ]; then
         printf '%s\n' "$ENTRY"
       elif [ "${ENTRY%/}" != "$ENTRY" ]; then
-        GIT_INDEX_FILE="$REAL_INDEX" git --literal-pathspecs ls-files -z --others --exclude-standard -- "$ENTRY" | tr '\0' '\n' |
-          while IFS= read -r FILE; do
-            if [ -z "$(git --literal-pathspecs ls-files -- "$FILE" | head -n 1)" ]; then
-              printf '%s\n' "$FILE"
-            fi
-          done
+        HOME="$ORIGINAL_HOME" git --literal-pathspecs ls-files -z --others --exclude-standard --directory --no-empty-directory -- "$ENTRY" | tr '\n\0' '?\n'
       fi
     done | head -n 6
 }
@@ -293,7 +301,7 @@ untracked_notice() {
   if [ "$PARTIAL_COMMIT" = "true" ]; then
     UNTRACKED=$(untracked_in_path_commit)
   else
-    UNTRACKED=$(git ls-files -z --others --exclude-standard --directory --no-empty-directory | tr '\0' '\n')
+    UNTRACKED=$(HOME="$ORIGINAL_HOME" git ls-files -z --others --exclude-standard --directory --no-empty-directory | tr '\n\0' '?\n')
   fi
   if [ -n "$UNTRACKED" ]; then
     echo "ℹ️  Untracked, so not in this commit (git add them if they belong to it):"

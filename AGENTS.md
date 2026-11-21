@@ -111,6 +111,7 @@ Any other commit keeps the file as it was, with a warning, and so does a commit 
 A `pb_schema.json` you staged yourself is kept and not exported; staged without eco code, it needs `ALLOW_SCHEMA_ONLY=1 git commit ...`.
 A merge (a squash merge too), cherry-pick, revert or rebase in progress skips the export.
 A squash still needs eco code or `ALLOW_SCHEMA_ONLY=1` for a staged schema: git cannot tell one in progress from the `SQUASH_MSG` an abandoned squash leaves, and the hook says how to recover.
+Next to a real merge or cherry-pick, git puts that `SQUASH_MSG` in the commit message (a cherry-pick then fails commitlint): the hook names the file, and deleting it fixes the message.
 A commit that stops after the pre-commit (commitlint, an empty message) leaves the export staged, or only on disk after `git commit -a`.
 The next commit unstages it and decides again, or keeps it when nothing else is staged or `ALLOW_SCHEMA_ONLY=1` is set; an export left only on disk is put back.
 The hook knows its own export by a record that `.husky/post-commit` deletes once a commit lands with it.
@@ -131,6 +132,7 @@ The label covers the schema of the head it was added at, which the workflow reco
 Any later run whose schema differs from that head's, as the check reads it, removes the label, even when the check passes; add it again once the new summary is reviewed.
 A record written before the label's latest addition (that run was dropped, or could not write) does not count,
 and neither does a label with no record (added before the workflow kept one): remove it and add it again.
+A re-run of an older run stops once the pull request's head has moved on (push, or remove and add the label); at the same head it takes the labels the pull request has now.
 
 ## Pre-commit Hook (`.husky/pre-commit`)
 

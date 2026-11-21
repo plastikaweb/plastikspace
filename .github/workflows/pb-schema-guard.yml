@@ -10,7 +10,9 @@ name: PocketBase schema guard
 # head it was added at: the run of that event records the head in a comment, and any
 # later run whose schema differs from that head's, as the check reads it, removes the
 # label, to be added again after review. A record written before the label's latest
-# addition belongs to an earlier one, and does not count.
+# addition belongs to an earlier one, and does not count. A re-run replays its event as
+# it was: it stops once the pull request's head has moved on, and otherwise takes the
+# labels the pull request has now.
 
 on:
   pull_request:
@@ -22,10 +24,12 @@ on:
       - 'tools/scripts/test-pb-schema-check.sh'
       - '.github/workflows/pb-schema-guard.yml'
 
-# Runs for one PR take turns, so a record and a removal follow the order of the events.
-# GitHub drops a pending run when a newer one queues. When the dropped run is the one
-# that records a new addition of the label, the record left predates that addition, so
-# the label does not count until it is added again.
+# Runs for one PR take turns, so a record and a removal follow the order of the events;
+# a re-run of an older event takes its turn later, which is why it stops once the head
+# has moved on. GitHub drops a pending run when a newer one queues. When the dropped run
+# is the one that records a new addition of the label, the record left predates that
+# addition, so the label does not count until it is added again, or until that run is
+# re-run while its head is still the pull request's.
 concurrency:
   group: pb-schema-guard-${{ github.event.pull_request.number }}
   cancel-in-progress: false
@@ -34,8 +38,9 @@ permissions:
   contents: read
   # To read when the pb-schema label was last added (the pull request's issue events).
   issues: read
-  # To record in a comment which head the pb-schema label acknowledges, and to remove
-  # the label once the schema differs from that head's.
+  # To record in a comment which head the pb-schema label acknowledges, to remove the
+  # label once the schema differs from that head's, and for a re-run to read the pull
+  # request as it is now.
   pull-requests: write
 
 jobs:
@@ -71,6 +76,17 @@ jobs:
           SCHEMA=apps/eco-store/pocketbase/pb_schema.json
           CHECK=tools/scripts/check-pb-schema-change.cjs
           ISSUE="repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER"
+          # A re-run reuses its first attempt's event: that head and those labels. Once
+          # the head has moved on, it could record an old head or remove a label added
+          # since, so it stops before any write; otherwise it takes the live labels.
+          if [ "$GITHUB_RUN_ATTEMPT" != 1 ]; then
+            LIVE=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" --jq '"\(.head.sha) \([.labels[].name] | join(","))"') || LIVE=
+            if [ -z "$LIVE" ] || [ "${LIVE%% *}" != "$AFTER" ]; then
+              echo "::error title=pb-schema guard::This re-run replays an event for $AFTER, which is no longer the head of the pull request, or the pull request could not be read. Push, or remove and add the pb-schema label, to check the current head."
+              exit 1
+            fi
+            PR_LABELS=${LIVE#* }
+          fi
           git show "HEAD^1:$SCHEMA" > "$RUNNER_TEMP/pb_schema.base.json"
           git diff --name-only HEAD^1 HEAD > "$RUNNER_TEMP/changed.txt"
           # The label acknowledges the schema of the head it was added at. The run of that
