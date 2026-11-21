@@ -100,7 +100,10 @@ jobs:
                 *[!0-9a-f]* | '') ACKED= ;;
               esac
               if [ "$EVENT_ACTION" = labeled ] && [ "$EVENT_LABEL" = pb-schema ]; then
-                BODY=$(printf '%s%s -->\nThe `pb-schema` label acknowledges the schema of %s. A later run whose schema differs, as the check reads it, removes the label; add it again once the new table is reviewed.' "$MARK" "$AFTER" "$AFTER")
+                # The run id and attempt give every record a new body, so a PATCH always
+                # moves updated_at, which the next run compares with the label's latest
+                # addition, even when the label is added again at the same head.
+                BODY=$(printf '%s%s -->\nThe `pb-schema` label acknowledges the schema of %s (run %s, attempt %s). A later run whose schema differs, as the check reads it, removes the label; add it again once the new table is reviewed.' "$MARK" "$AFTER" "$AFTER" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT")
                 if [ -n "$ACK_ID" ]; then
                   WRITE=(--method PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$ACK_ID")
                 else

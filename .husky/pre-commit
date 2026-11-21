@@ -69,15 +69,16 @@ for ref in MERGE_HEAD CHERRY_PICK_HEAD REVERT_HEAD; do
     OPERATION=$ref
   fi
 done
-# git merge --squash writes no MERGE_HEAD, only SQUASH_MSG. git commit and a git reset
-# of the whole index delete it; git restore, git checkout -- <paths> and a refused git
-# merge --abort leave it, so an abandoned squash passes for one until the next commit.
-# The schema-only rule still applies to a squash, and the hook says how to tell.
-if [ -f "$(git rev-parse --git-path SQUASH_MSG)" ]; then
-  OPERATION="merge --squash"
-fi
 if [ -d "$(git rev-parse --git-path rebase-merge)" ] || [ -d "$(git rev-parse --git-path rebase-apply)" ]; then
   OPERATION=rebase
+fi
+# git merge --squash writes no MERGE_HEAD, only SQUASH_MSG. git commit and a git reset
+# of the whole index delete it; git restore, git checkout -- <paths>, a refused git merge
+# --abort and a real git merge started later leave it. So it counts only when nothing
+# else is in progress, and an abandoned squash passes for one until the next commit: the
+# schema-only rule still applies to a squash, and the hook says how to tell.
+if [ -z "$OPERATION" ] && [ -f "$(git rev-parse --git-path SQUASH_MSG)" ]; then
+  OPERATION="merge --squash"
 fi
 # --------------------------------
 
@@ -269,20 +270,30 @@ refresh_nx_graph() {
 # but not named looks untracked there, and one removed with git rm --cached is still in
 # it, and in the commit. So the paths listed are those neither index tracks: untracked in
 # the real index (--git-path index would follow GIT_INDEX_FILE back to the temporary
-# one) and with nothing under them in the temporary one. Six are enough to show five.
+# one) and not in the temporary one, where a directory that still has files is listed
+# file by file. -z, because git quotes a name with a double quote or a backslash even
+# with core.quotePath=false. Six are enough to show five.
+untracked_in_path_commit() {
+  REAL_INDEX="$(git rev-parse --git-dir)/index"
+  GIT_INDEX_FILE="$REAL_INDEX" git ls-files -z --others --exclude-standard --directory --no-empty-directory | tr '\0' '\n' |
+    while IFS= read -r ENTRY; do
+      if [ -z "$(git --literal-pathspecs ls-files -- "$ENTRY" | head -n 1)" ]; then
+        printf '%s\n' "$ENTRY"
+      elif [ "${ENTRY%/}" != "$ENTRY" ]; then
+        GIT_INDEX_FILE="$REAL_INDEX" git --literal-pathspecs ls-files -z --others --exclude-standard -- "$ENTRY" | tr '\0' '\n' |
+          while IFS= read -r FILE; do
+            if [ -z "$(git --literal-pathspecs ls-files -- "$FILE" | head -n 1)" ]; then
+              printf '%s\n' "$FILE"
+            fi
+          done
+      fi
+    done | head -n 6
+}
 untracked_notice() {
   if [ "$PARTIAL_COMMIT" = "true" ]; then
-    UNTRACKED=$(GIT_INDEX_FILE="$(git rev-parse --git-dir)/index" git -c core.quotePath=false ls-files --others --exclude-standard --directory --no-empty-directory | {
-      FOUND=0
-      while [ "$FOUND" -le 5 ] && IFS= read -r ENTRY; do
-        if [ -z "$(git -c core.quotePath=false --literal-pathspecs ls-files -- "$ENTRY" | head -n 1)" ]; then
-          printf '%s\n' "$ENTRY"
-          FOUND=$((FOUND + 1))
-        fi
-      done
-    })
+    UNTRACKED=$(untracked_in_path_commit)
   else
-    UNTRACKED=$(git -c core.quotePath=false ls-files --others --exclude-standard --directory --no-empty-directory)
+    UNTRACKED=$(git ls-files -z --others --exclude-standard --directory --no-empty-directory | tr '\0' '\n')
   fi
   if [ -n "$UNTRACKED" ]; then
     echo "ℹ️  Untracked, so not in this commit (git add them if they belong to it):"
