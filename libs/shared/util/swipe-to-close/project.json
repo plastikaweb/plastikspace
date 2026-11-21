@@ -1,0 +1,16 @@
+{
+  "name": "swipe-to-close-util",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/util/swipe-to-close/src",
+  "prefix": "plastik",
+  "projectType": "library",
+  "tags": ["scope:shared", "type:util"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/vitest:test"
+    }
+  }
+}

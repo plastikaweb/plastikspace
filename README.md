@@ -224,6 +224,7 @@ Reusable features and UI components.
 - [**countdown**](libs/shared/countdown/util/README.md)
 - [**view-transition**](libs/shared/util/view-transition/README.md)
 - [**highlight**](libs/shared/util/highlight/README.md)
+- [**swipe-to-close**](libs/shared/util/swipe-to-close/README.md)
 
 ---
 

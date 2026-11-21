@@ -1,0 +1,75 @@
+@let isRail = layer() === 'rail';
+@let isDrawer = layer() === 'drawer';
+@let isPlatform = variant() === 'platform';
+@let markIcon = isPlatform ? 'admin_panel_settings' : 'eco';
+
+<div class="nav-body">
+  @if (isDrawer) {
+    <div class="nav-head">
+      <span aria-hidden="true" class="nav-mark">
+        <mat-icon>{{ markIcon }}</mat-icon>
+      </span>
+      <span class="nav-id">
+        <span class="nav-heading">{{ heading() }}</span>
+        <span class="nav-subheading">{{ subheading() }}</span>
+      </span>
+      <button
+        class="nav-close"
+        matIconButton
+        type="button"
+        [attr.aria-label]="'shell.nav.close' | translate"
+        (click)="closeRequested.emit()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  } @else {
+    <!-- The header is «menu»: it folds or expands the rail, or opens the drawer in PLEGAT. Its name
+         starts with the words on screen (WCAG 2.5.3) and ends with what it does; folded, it shows no
+         words, so the name is the action alone, which the tooltip repeats. -->
+    @let action = (menuExpanded() ? 'shell.nav.foldMenu' : 'shell.nav.unfoldMenu') | translate;
+    <button
+      class="nav-head is-toggle"
+      matTooltipPosition="right"
+      type="button"
+      [attr.aria-controls]="menuControls() || null"
+      [attr.aria-label]="isRail ? action : heading() + ', ' + subheading() + ', ' + action"
+      [attr.aria-expanded]="menuExpanded()"
+      [matTooltip]="action"
+      [matTooltipDisabled]="!isRail"
+      (click)="menuToggled.emit()">
+      <span aria-hidden="true" class="nav-mark">
+        <mat-icon class="nav-mark-icon">{{ markIcon }}</mat-icon>
+        <mat-icon class="nav-mark-action">left_panel_open</mat-icon>
+      </span>
+      @if (!isRail) {
+        <span class="nav-id">
+          <span class="nav-heading">{{ heading() }}</span>
+          <span class="nav-subheading">{{ subheading() }}</span>
+        </span>
+        <mat-icon aria-hidden="true" class="nav-fold">left_panel_close</mat-icon>
+      }
+    </button>
+  }
+
+  <!-- Two navigations can be on screen, the rail's under the open drawer's: one name each. -->
+  <nav [attr.aria-label]="(isDrawer ? 'shell.nav.drawerLabel' : 'shell.nav.label') | translate">
+    <ul class="nav-list" role="list">
+      @for (item of items(); track item.path) {
+        @let label = item.labelKey | translate;
+        <li>
+          <a
+            ariaCurrentWhenActive="page"
+            class="nav-item"
+            matTooltipPosition="right"
+            routerLinkActive="is-active"
+            [matTooltip]="label"
+            [matTooltipDisabled]="!isRail"
+            [routerLink]="['/', item.path]">
+            <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>
+            <span class="nav-label" [class.sr-only]="isRail">{{ label }}</span>
+          </a>
+        </li>
+      }
+    </ul>
+  </nav>
+</div>

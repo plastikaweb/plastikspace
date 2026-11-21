@@ -87,11 +87,43 @@
   },
   "shell": {
     "account": {
+      "menuLabel": "Menú del compte",
+      "menuLabelNamed": "Menú del compte — {name}",
+      "role": {
+        "TENANT_ADMIN": "Administració",
+        "GLOBAL_ADMIN": "Superadmin"
+      },
       "logout": "Tanca la sessió"
     },
     "placeholder": {
       "title": "Secció en construcció",
       "body": "Aquesta secció encara no està disponible."
+    },
+    "nav": {
+      "label": "Navegació principal",
+      "drawerLabel": "Navegació",
+      "close": "Tanca el menú",
+      "foldMenu": "Plega el menú",
+      "unfoldMenu": "Desplega el menú",
+      "platformRole": "Superadmin",
+      "tauler": "Tauler",
+      "solLicituds": "Sol·licituds",
+      "socis": "Socis",
+      "comandes": "Comandes",
+      "lliuraments": "Lliuraments",
+      "cicles": "Cicles",
+      "productes": "Productes",
+      "categories": "Categories",
+      "botiga": "Botiga",
+      "estadistiques": "Estadístiques",
+      "cooperatives": "Cooperatives",
+      "catalegs": "Catàlegs globals",
+      "idiomes": "Idiomes"
+    }
+  },
+  "shared": {
+    "translation": {
+      "selectLanguage": "Seleccionar idioma"
     }
   }
 }

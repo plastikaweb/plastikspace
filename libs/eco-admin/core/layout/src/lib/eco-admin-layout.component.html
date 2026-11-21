@@ -1,0 +1,53 @@
+@let subheading = isPlatform() ? ('shell.nav.platformRole' | translate) : appName;
+
+<mat-sidenav-container class="shell">
+  <!-- The drawer of PLEGAT (`00 Components/Calaix mòbil`). Material closes it on Escape and on the
+       scrim, and `openedChange` tells the shell state; the state closes it on navigation and when the
+       window grows to AMPLE; a swipe to the left closes it too. `openedChange` and not `closedStart`,
+       which needs an animation to start. -->
+  <mat-sidenav
+    aria-modal="true"
+    class="shell-drawer"
+    mode="over"
+    plastikSwipeToClose
+    role="dialog"
+    [attr.aria-label]="'shell.nav.drawerLabel' | translate"
+    [id]="drawerId"
+    [opened]="shell.drawerOpen()"
+    (openedChange)="$event || shell.closeDrawer()"
+    (swipeClose)="shell.closeDrawer()">
+    <eco-admin-nav-panel
+      layer="drawer"
+      [heading]="heading()"
+      [items]="navigation.items()"
+      [subheading]="subheading"
+      [variant]="navigation.variant()"
+      (closeRequested)="shell.closeDrawer()" />
+  </mat-sidenav>
+
+  <mat-sidenav-content class="shell-body">
+    <!-- Never inert under the open drawer: its header is «menu», and Material gives the focus back to
+         it as the drawer closes. The drawer is a modal dialog with a focus trap meanwhile. -->
+    <eco-admin-nav-panel
+      [attr.id]="railId"
+      [animated]="shell.railAnimated()"
+      [heading]="heading()"
+      [items]="navigation.items()"
+      [layer]="shell.rail() ? 'rail' : 'full'"
+      [menuControls]="menuControls()"
+      [menuExpanded]="menuExpanded()"
+      [subheading]="subheading"
+      [variant]="navigation.variant()"
+      (menuToggled)="shell.toggle()" />
+
+    <div class="shell-column">
+      <eco-admin-top-bar [titleKey]="titleKey()" [variant]="navigation.variant()" />
+
+      <main class="shell-main" id="mainContent" tabindex="-1">
+        <div class="shell-panel">
+          <router-outlet />
+        </div>
+      </main>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -47,12 +47,8 @@ None is part of the token base. An application gets one only by loading it from 
 
 One look for every Material form field of the eco family: 48px high, 12px corners, a 0.9rem text, a medium-weight label, and a 44px password toggle with an 18px icon.
 It writes nothing of its own: it includes the mixin `material-form-field` of
-[`core_input_material`](../../core/styles/util/material/README.md), which no application gets unless it asks. Two variables tune it per application:
-
-| Variable                       | What it changes                 | Without it                     |
-| ------------------------------ | ------------------------------- | ------------------------------ |
-| `--mat-field-height`           | The height of the field.        | `48px`                         |
-| `--eco-admin-on-surface-muted` | The colour of the leading icon. | `--mat-sys-on-surface-variant` |
+[`core_input_material`](../../core/styles/util/material/README.md), which no application gets unless it asks.
+`--mat-field-height` sets the height of the field per application (`48px` without it). The leading icon takes `--mat-sys-on-surface-variant` in both apps.
 
 The partial needs `libs/core/styles/util/material/src` among the `includePaths` of the application.
 
@@ -83,10 +79,10 @@ plastik-auth-feature .mat-mdc-card {
 The rule is shared; the fill is not, because each application has a page of its own colour and the card has to stand apart from it.
 Each one names its fill in `--eco-auth-card-background`, in its `_base.scss`:
 
-| Application | The page                                          | `--eco-auth-card-background`                                                                            |
-| ----------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `eco-admin` | `--eco-admin-page-background`                     | `--eco-admin-card-background`, the colour of every card of the panel.                                   |
-| `eco-store` | `surface-container`, under a gradient and a grain | A surface role at 80%, over the blur of the card: `surface-container-low` in light, `-highest` in dark. |
+| Application | The page                                            | `--eco-auth-card-background`                                                                            |
+| ----------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `eco-admin` | `surface-container-low` in light, `-lowest` in dark | `--eco-admin-card-background`, the colour of every card of the panel.                                   |
+| `eco-store` | `surface-container`, under a gradient and a grain   | A surface role at 80%, over the blur of the card: `surface-container-low` in light, `-highest` in dark. |
 
 Without the variable the card keeps the fill the shared screen gives it (`surface-container-low` at 80%).
 In dark that role is darker than the storefront's page, which is why the storefront names another one.
