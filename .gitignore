@@ -116,7 +116,7 @@ vitest.config.*.timestamp*
 .claude/worktrees/
 .claude/worktrees
 
-# macOS screenshots dropped in the repo root (pre-commit runs git add -A)
+# macOS screenshots dropped in the repo root, kept out of `git add -A`
 Captura de pantalla*.png
 
 # superpowers SDD scratch

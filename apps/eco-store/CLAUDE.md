@@ -177,8 +177,14 @@ yarn eco-store:pb:export
 # 3. Review diff
 yarn eco-store:pb:diff
 
-# 4. Commit. Pre-commit hook will also auto-export.
+# 4. Stage pb_schema.json with the eco code that needs it, and commit. A staged
+#    pb_schema.json is kept as it is and the pre-commit does not export again, so
+#    export after your last Admin UI edit. Left unstaged, it is exported and staged
+#    only when the commit stages eco code (Markdown does not count). A schema-only
+#    commit needs ALLOW_SCHEMA_ONLY=1 git commit ...
 ```
+
+A PR into develop that changes `pb_schema.json` without any eco code (Markdown does not count), or that removes a collection or field, fails `.github/workflows/pb-schema-guard.yml` unless it has the `pb-schema` label. The staging sync drops a removed field with its data and never deletes a collection; like the sync, the check finds a collection by id or else by name. The label covers the schema of the head it was added at, which the workflow records in a comment: any later run whose schema differs from that head's removes the label, even when the check passes, and it is added again once the new summary is reviewed. A record written before the label's latest addition (that run was dropped, or could not write) does not count. A re-run of an older run stops once the head has moved on, and otherwise takes the labels the pull request has now.
 
 Pushing to `develop` triggers `.github/workflows/pocketbase-schema.yml`, which syncs the schema to staging (PocketHost).
 
@@ -374,7 +380,7 @@ In addition to the root CLAUDE.md testing guidance:
 
 1. **`onSameUrlNavigation: 'reload'` is set in router config.** Re-runs guards/resolvers on identical URLs — convenient but can cause double-fetches if you also subscribe to `queryParams` inside a component. Prefer one pattern per route.
 2. **`yarn eco-store:local` starts 3 processes** (PocketBase + Angular dev server + SCSS watcher). Stop them all when tearing down.
-3. **PocketBase pre-commit auto-export.** If you forget to commit `pb_schema.json` after editing collections, the hook does it for you. If you're offline or the binary is missing, the hook fails — install via `yarn eco-store:pb:download`.
+3. **PocketBase pre-commit export.** Every worktree shares the PocketBase on :8090, so its schema can carry edits made for another branch. The hook exports on every commit that is not Markdown-only, but stages `pb_schema.json` only when the commit already stages eco code (Markdown does not count), after every other check has passed; otherwise it leaves the file as it was and warns. A `pb_schema.json` you staged yourself is kept; a merge (a squash merge too), cherry-pick, revert or rebase skips the export (a squash still needs eco code or `ALLOW_SCHEMA_ONLY=1` for a staged schema), and a commit that names its paths (`git commit <paths>`) only warns. When commitlint stops a commit after the hook, the export stays staged, or only on disk after `git commit -a`, until the next commit: a staged one is unstaged and decided again, or kept when nothing else is staged or `ALLOW_SCHEMA_ONLY=1` is set; one left only on disk is put back. If no PocketBase answers and the binary is missing, the hook fails — install via `yarn eco-store:pb:download`.
 4. **Trial badge in header uses `lg:flex` (hidden on mobile by default).** If product wants trial visibility on mobile too, change in `header.component.html`.
 5. **`membershipStatus` has 4 values**: `TRIAL`, `ACTIVE`, `INACTIVE`, `SUSPENDED`. Trial expiry is checked via `trialEndsAt > @now`; status doesn't change on expiry until manual conversion.
 6. **Cart merge uses `SharedConfirmDialogService`**, not `MatSnackBar`. Don't "fix" this back to snackbar unless product asks — the dialog allows a CTA to navigate to `/cistella`.

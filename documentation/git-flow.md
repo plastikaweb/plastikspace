@@ -190,15 +190,22 @@ For more details, see [i18n documentation](./i18n.md).
 ### Pre-push Hook
 
 `.husky/pre-push` is the gate that runs on **every** push, regardless of how a commit
-was authored. This matters because `git rebase --continue` and `git commit --amend` do
-**not** fire the pre-commit hook, so Prettier/lint never run on commits created that way.
-The pre-push hook therefore enforces, scoped to the range being pushed:
+was authored. This matters because commits that git writes itself (a rebase, a merge,
+a cherry-pick or revert without a conflict) do **not** fire the pre-commit hook, so
+Prettier never runs on them; `git commit --amend` does fire it.
+The checks run on `HEAD` and the files on disk, so the hook stops a push of any other branch
+(check it out and push from there), and of a tag pushed to a branch; deletions and pushes outside `refs/heads/` (tags, notes) pass without checks.
+The pre-push hook therefore enforces, scoped to the range being pushed (the upstream, or the merge-base with `origin/develop` for a branch
+without one or whose upstream is gone from the remote; a push whose upstream shares no history with `HEAD` stops):
 
 - `nx format:check` — runs for every push (including markdown-only ones, since Prettier also formats `.md`). On failure: run `yarn format:write`, amend/rebase the affected commit(s), then re-push.
-- `nx affected --target=lint` — on non-markdown pushes.
 - `nx affected` `test` and production `build` — on non-markdown pushes; plus `eco-store`/`nasa-images` Pa11y when those apps are affected.
+  They run on the files on disk, and the hook warns when tracked files differ from `HEAD` and lists untracked files.
 
 Markdown-only pushes skip the test/build/a11y steps (but still run `format:check`).
+
+Lint is not part of the pre-push. The pre-commit lints the staged files (see the Pre-commit Hook section of `AGENTS.md`),
+and CI runs `nx affected --target=lint` on every pull request and every push to develop, rebased or amended commits included.
 
 ## Useful links
 
