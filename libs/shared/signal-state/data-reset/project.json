@@ -5,12 +5,6 @@
   "prefix": "plastik",
   "projectType": "library",
   "tags": ["type:data-access", "scope:shared"],
-  "targets": {
-    "test": {
-      "executor": "@nx/vitest:test"
-    },
-    "lint": {
-      "executor": "@nx/eslint:lint"
-    }
-  }
+  "// targets": "to see all targets run: nx show project signal-state-data-reset --web",
+  "targets": {}
 }

@@ -9,6 +9,7 @@
     "build": {
       "executor": "@angular-devkit/build-angular:application",
       "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/apps/llecoop",
         "index": "apps/llecoop/src/index.html",
@@ -80,11 +81,12 @@
             }
           ]
         }
-      },
-      "defaultConfiguration": "production"
+      }
     },
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
+      "defaultConfiguration": "development",
+      "continuous": true,
       "configurations": {
         "production": {
           "buildTarget": "llecoop:build:production"
@@ -96,8 +98,9 @@
           "buildTarget": "llecoop:build:staging"
         }
       },
-      "defaultConfiguration": "development",
-      "continuous": true
+      "readyWhen": {
+        "signal": true
+      }
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
@@ -105,18 +108,16 @@
         "buildTarget": "llecoop:build"
       }
     },
-    "lint": {
-      "executor": "@nx/eslint:lint"
-    },
     "serve-static": {
       "executor": "@nx/web:file-server",
+      "readyWhen": {
+        "signal": true
+      },
+      "dependsOn": ["build"],
       "options": {
         "buildTarget": "llecoop:build",
         "port": 4201
       }
-    },
-    "test": {
-      "executor": "@nx/vitest:test"
     }
   }
 }

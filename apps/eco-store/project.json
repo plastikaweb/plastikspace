@@ -10,6 +10,7 @@
     "build": {
       "executor": "@angular/build:application",
       "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/apps/eco-store",
         "index": "apps/eco-store/src/index.html",
@@ -136,12 +137,11 @@
             }
           ]
         }
-      },
-      "defaultConfiguration": "production"
+      }
     },
-
     "build-cf": {
       "executor": "nx:run-commands",
+      "defaultConfiguration": "production",
       "options": {
         "parallel": false,
         "commands": [
@@ -168,12 +168,12 @@
             "node apps/eco-store/scripts/generate-cf-headers.cjs"
           ]
         }
-      },
-      "defaultConfiguration": "production"
+      }
     },
     "serve": {
       "continuous": true,
       "executor": "@angular/build:dev-server",
+      "defaultConfiguration": "development",
       "options": {
         "port": 4200,
         "host": "0.0.0.0",
@@ -193,7 +193,9 @@
           "buildTarget": "eco-store:build:development"
         }
       },
-      "defaultConfiguration": "development"
+      "readyWhen": {
+        "signal": true
+      }
     },
     "extract-i18n": {
       "executor": "@angular/build:extract-i18n",
@@ -201,21 +203,19 @@
         "buildTarget": "eco-store:build"
       }
     },
-    "lint": {
-      "executor": "@nx/eslint:lint"
-    },
     "serve-static": {
       "continuous": true,
       "executor": "@nx/web:file-server",
+      "readyWhen": {
+        "signal": true
+      },
+      "dependsOn": ["build"],
       "options": {
         "buildTarget": "eco-store:build",
         "port": 4200,
         "staticFilePath": "dist/apps/eco-store/browser",
         "spa": true
       }
-    },
-    "test": {
-      "executor": "@nx/vitest:test"
     }
   }
 }

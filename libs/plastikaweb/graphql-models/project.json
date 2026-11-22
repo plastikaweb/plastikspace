@@ -6,14 +6,8 @@
   "projectType": "library",
   "tags": ["type:entity", "scope:plastikaweb"],
   "targets": {
-    "lint": {
-      "executor": "@nx/eslint:lint"
-    },
     "codegen": {
       "command": "npx graphql-codegen --config {projectRoot}/codegen.yml"
-    },
-    "test": {
-      "executor": "@nx/vitest:test"
     }
   }
 }
