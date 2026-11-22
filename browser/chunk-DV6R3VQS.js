@@ -5,7 +5,7 @@ import {
   withDevtools,
   withImmutableState,
   withMethods
-} from "./chunk-R7HHJJQ6.js";
+} from "./chunk-UDK2PXDE.js";
 import {
   LiveAnnouncer
 } from "./chunk-O5T33GSN.js";
@@ -162,7 +162,7 @@ var ErrorHandlerService = class _ErrorHandlerService {
   #injector = inject(Injector);
   handleError(error) {
     const store = this.#injector.get(notificationStore);
-    let message = "";
+    let message;
     if (typeof ErrorEvent !== "undefined" && error instanceof ErrorEvent || error instanceof Error) {
       message = error?.message.includes("ChunkLoadError") ? error.message.split(".")[0] : error.message;
     } else {
@@ -218,4 +218,4 @@ export {
   notificationStore,
   NotificationConfigService
 };
-//# sourceMappingURL=chunk-7BEJU7I4.js.map
+//# sourceMappingURL=chunk-DV6R3VQS.js.map
