@@ -61,8 +61,8 @@ async function download() {
   const platform = os.platform();
   const arch = os.arch();
 
-  let osName = '';
-  let archName = '';
+  let osName;
+  let archName;
 
   if (platform === 'darwin') osName = 'darwin';
   else if (platform === 'win32') osName = 'windows';

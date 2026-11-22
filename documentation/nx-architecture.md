@@ -168,7 +168,8 @@ The following invariants should hold true:
 - a project that lazy loads another project cannot import it directly.
 
 ```json
-# current root .eslintrc.json fragment
+// An illustration of the @nx/enforce-module-boundaries options, with fewer constraints and
+// shorter tag lists than the real ones. The current constraints are in the root eslint.config.mjs.
 
 {
   "depConstraints": [

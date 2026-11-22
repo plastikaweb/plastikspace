@@ -48,7 +48,7 @@ When working inside an app directory, read its CLAUDE.md alongside this one:
 | --------------------------------- | ------------------------------------------------------------------------------------------------------------- |
 | Nx cache (custom)                 | `tmp/my-cache`                                                                                                |
 | Path aliases (200+)               | `tsconfig.base.json`                                                                                          |
-| Architectural boundary rules      | `.eslintrc.json` (`@nx/enforce-module-boundaries`)                                                            |
+| Architectural boundary rules      | `eslint.config.mjs` (`@nx/enforce-module-boundaries`)                                                         |
 | Workspace scripts                 | `tools/scripts/` (i18n validation, PocketBase helpers, local setup)                                           |
 | Branch-name rules                 | `branchNameLint.json`                                                                                         |
 | Commitizen config                 | `.cz-config.cjs` (scopes auto-loaded from `tsconfig.base.json`)                                               |
@@ -207,7 +207,7 @@ Libraries are organized by **scope** (domain) and **type** (layer):
 
 ### Module Boundaries (ESLint Enforced)
 
-The following dependency rules are enforced via `.eslintrc.json`:
+The following dependency rules are enforced by `@nx/enforce-module-boundaries` in the root `eslint.config.mjs`:
 
 > Apps → can depend on: features, ui, util, data-access, entities (from core/shared)
 >
@@ -241,8 +241,8 @@ Beyond architectural boundaries, the following code quality rules are enforced:
 - **Private fields**: Must use ES6 private fields (`#fieldName`) instead of TypeScript `private` modifier
 - **Member ordering**: Enforced order - signature, field, constructor, method
 - **JSDoc**: Required for public APIs; must start with capital letter and end with period
-- **Deprecation warnings**: Enabled for non-test files to catch deprecated API usage
-- **NgRx**: Select style is enforced; recommended NgRx patterns required
+- **Deprecation warnings** (`@typescript-eslint/no-deprecated`): Enabled for non-test files to catch deprecated API usage
+- **NgRx** (`@ngrx/eslint-plugin`): `select-style` and `no-effects-in-providers` are errors; the other 23 rules kept from the former `eslint-plugin-ngrx` recommended set warn
 - **Accessibility**: Comprehensive a11y rules for templates (no-positive-tabindex, alt-text, label-has-associated-control, etc.)
 - **Naming** (warnings, not errors): `id-length` 2-40 chars (short loop/callback names like `i`, `e`, `id` are whitelisted), `id-denylist` rejects vague names (`data`, `info`, `temp`, `val`, `item`), and `@typescript-eslint/naming-convention` enforces camelCase members, PascalCase types, and `is`/`has`/`can`/`should`/`will` prefixes on boolean variables. The boolean selector is the only type-aware part and is switched off for `*.spec.ts`, which lint without a TS program (`"project": null`) — leaving it on there crashes ESLint instead of reporting
 - **Statement padding**: `padding-line-between-statements` requires a blank line before every `return` and after a block of variable declarations
@@ -480,7 +480,7 @@ Key documentation in `/documentation/`:
 
 - `nx.json` - Nx workspace configuration (custom cache: `./tmp/my-cache`, default base: `develop`)
 - `tsconfig.base.json` - TypeScript config with 200+ path aliases
-- `.eslintrc.json` - Architectural boundary rules (critical for understanding constraints)
+- `eslint.config.mjs` - Root ESLint flat config with the architectural boundary rules (critical for understanding constraints); every project's `eslint.config.mjs` spreads it (the five Cypress e2e configs after `cypress.configs.recommended`)
 - `.mcp.json` - MCP server configuration (Nx CLI integration)
 - `decorate-angular-cli.cjs` - Nx CLI decoration for caching
 - `branchNameLint.json` - Branch naming rules enforced by Husky

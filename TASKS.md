@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 0.5 · **Last updated:** 2026-11-22
+**Document version:** 0.6 · **Last updated:** 2026-11-22
 
 ---
 
@@ -53,7 +53,7 @@
 | **META-22** ⛔ | Skill evals: measure that the daily skills are actually followed | Low | `123kjkdqv3d` |
 | **META-23** ⛔ | `task-audit` skill: pre-PR review of feature-sized branches | Low | `123kjkdqv3e` |
 | **META-24** ⛔ | Reusable Claude Code base: private plugin + template repo | Low | `123kjkdqv3f` |
-| **META-25** 📋 | ESLint 10 with flat config, on the current Nx 22.7 | Normal | `123kjkdqv9f` |
+| **META-25** 🔄 | ESLint 10 with flat config, on the current Nx 22.7 | Normal | `123kjkdqv9f` |
 | **META-26** ⛔ | Nx 22.7 → 23 → 24.0.x with `nx migrate`, plus the legacy `nx.json` cleanup | Normal | `123kjkdqv9g` |
 | **META-28** 🔄 | Root the Vite cache and coverage paths of the three eco-store orders feature libs | Normal | `123kjkdqwrm` |
 
@@ -140,7 +140,7 @@ ClickUp `123kjkdqv3f`. Blocked by META-13, META-14, META-19 and META-23. A priva
 
 ### META-25 — ESLint 10 with flat config
 
-ClickUp `123kjkdqv9f`. Ready since META-12 merged on 2026-11-21. ESLint 8 and every 9.x release are out of support on npm, and ESLint 10 drops `.eslintrc`. The ticket swaps `eslint-plugin-deprecation` and `eslint-plugin-ngrx`, which break on ESLint 9 and later, converts the 191 configs to flat config and moves to ESLint 10, all on the current Nx 22.7. ESLint 10 also looks the config up per file, which the root `eslint --fix` of the META-12 lint-staged needs. Same findings before and after.
+ClickUp `123kjkdqv9f`. In progress since 2026-11-21. ESLint 8 and every 9.x release are out of support on npm, and ESLint 10 drops `.eslintrc`. The ticket swaps `eslint-plugin-deprecation` and `eslint-plugin-ngrx`, which break on ESLint 9 and later, converts the 191 configs to flat config and moves to ESLint 10, all on the current Nx 22.7. ESLint 10 also looks the config up per file, which the root `eslint --fix` of the META-12 lint-staged needs. Same findings before and after.
 
 ### META-26 — Nx 22.7 → 24.0.x
 
@@ -156,6 +156,7 @@ ClickUp `123kjkdqwrm`. In progress since 2026-11-22. The `vite.config.mts` of `l
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 0.6 | 2026-11-22 | **META-25** (`123kjkdqv9f`) — META-25 🔄: work started on `chore/123kjkdqv9f-meta-25-eslint-10-flat-config`. |
 | 0.5 | 2026-11-22 | **META-28** (`123kjkdqwrm`) — META-28 (cache and coverage paths of the orders feature libs) added as 🔄, with work started on `fix/123kjkdqwrm-meta-28-orders-vite-paths`; the order table puts it first, since CI test jobs that test all projects need it. |
 | 0.4 | 2026-11-21 | **META-08** (`123kjkdpqjr`) — META-12 ✅ (PR #1568, `2ab4b20b`), with its before/after commit times; META-25 📋, its only blocker done; META-14 and META-24 no longer list META-12 among their blockers. The META-11 note gives the pre-commit's cost of `tasks:check`. |
 | 0.3 | 2026-11-20 | **META-08** (`123kjkdpqjr`) — META-25 (`123kjkdqv9f`, ESLint 10 with flat config) and META-26 (`123kjkdqv9g`, Nx 22.7 → 24.0.x) added between META-12 and META-13, which is now ⛔. The legacy `nx.json` cleanup moves from META-12 to META-26; META-12 gains the PocketBase schema safeguards. |
