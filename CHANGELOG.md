@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-22] - Nx 23.3.2 (META-26)
+
+### Changed
+
+- **Nx 23.0.2 → 23.3.2, Nx packages only.** `nx migrate 23.3.2` also proposed Angular 22.1, TypeScript 6.0.3, Cypress 15.21.2, NgRx 22 and `angular-eslint` 22.8. Those changes, and the 18 migrations that come with them or need them, were left out by hand: the 10 from Angular, CDK and Material, 5 from `@nx/angular` that require Angular 22, 2 that require TypeScript 6, and `upgrade-to-cypress-16`. Of the 9 that ran, only one changed files (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **The 188 `vite.config.mts` and `vitest.config.mts` files** use `import.meta.dirname` instead of `__dirname` for `root`, as Vite's native config loader expects (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **`CLAUDE.md` names Nx 23.3.2, Vitest 4.1.5 and `@analogjs/vitest-angular` 2.9.7** (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+
+## [2026-11-22] - Nx 23.0.2, with Vite 8 for Vitest (META-26)
+
+### Changed
+
+- **Nx 22.7.1 → 23.0.2**, through `nx migrate 23.0.2` and its 25 migrations, none of which changed a file. `nx` and the twelve `@nx/*` packages move together, and `@nrwl/nx-cloud` goes from 19.1.3 to 19.1.5. Angular 21.2.9, TypeScript 5.9.3 and Cypress 15.14.2 stay where they were. Every project keeps the same targets: 191 with `lint`, 184 with `test`, 7 with `build`, 5 with `e2e` and 5 with `serve-static` (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **`vite` `^7.0.0` → 8.3.8**, the only third-party update the migration brings. It reaches Vitest, Analog and the Nx Vite plugins. Angular builds and dev servers keep the 7.3.2 that `@angular/build` 21.2.9 pins in its own copy (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **`@analogjs/vite-plugin-angular` and `@analogjs/vitest-angular` ^2.5.0 → ^2.9.7.** With Vite 8, the 2.5.0 test plugin hands every file to Oxc as JavaScript (`lang: 'js'`). Every spec then fails before it runs, on the `import type` in `vitest-setup.ts`. 2.9.7 passes `ts` or `tsx` per file and lists Vite 8 among its peers (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+
+## [2026-11-22] - Legacy Nx settings and scripts removed before the Nx 23 migration (META-26)
+
+### Removed
+
+- **Dead `nx.json` settings.**
+  - `defaultProject: "llecoop"`: no command reached it, because the root project `plastikspace` contains every folder.
+  - The `targetDefaults` for `@nx/jest:jest`, `@angular-devkit/build-angular:browser` and `@nx/js:tsc`, executors that no target uses.
+  - The two `sharedGlobals` entries. One pointed at a `.cursorrules` file that does not exist. The other, `.cursor/rules/*.mdc`, made any edit to that file invalidate every cached task.
+  - The project graph of the 197 projects is the same before and after (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **Root `package.json` scripts and the Zed task that ran without a project.**
+  - `start`, `test`, `test:watch`, `test:coverage` and `lint` worked only through `defaultProject`. The Zed task «NG: Serve (Default Project)» ran `nx serve` the same way.
+  - `affected:apps`, `affected:libs`, `affected:dep-graph` and `workspace-generator` call Nx commands that no longer exist.
+  - `update` ran `nx migrate latest`, which from Nx 23.1 also upgrades Angular, TypeScript and Cypress.
+  - `test:all` and `affected:test` stay, but drop `--ci`, `--run-in-band` and `--code-coverage`, flags Vitest does not define; `test:all` keeps coverage through `--coverage` (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **`@nrwl/cli` 15.9.3 and `@nx/powerpack-license`.** No file used them. `@nrwl/cli` installed two extra copies of nx 15.9.3. `yarn.lock` loses 39 entries and gains none (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+
 ## [2026-11-22] - Remove Verdaccio and the root `local-registry` target (META-27)
 
 ### Removed

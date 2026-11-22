@@ -492,7 +492,7 @@ Key documentation in `/documentation/`:
 
 - Angular 21.0.6
 - TypeScript 5.9.3
-- Nx 22.3.3
+- Nx 23.3.2
 - RxJS 7.8
 - Astro 5.16.16
 
@@ -521,7 +521,7 @@ Key documentation in `/documentation/`:
 
 **Testing**:
 
-- Vitest 4.0.18 + @analogjs/vitest-angular 2.1.2
+- Vitest 4.1.5 + @analogjs/vitest-angular 2.9.7
 - Cypress 15.8.1
 - Pa11y CI 4.0.1
 - vitest-axe 0.1.0
