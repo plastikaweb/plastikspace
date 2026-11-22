@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 0.4 · **Last updated:** 2026-11-21
+**Document version:** 0.5 · **Last updated:** 2026-11-22
 
 ---
 
@@ -55,6 +55,7 @@
 | **META-24** ⛔ | Reusable Claude Code base: private plugin + template repo | Low | `123kjkdqv3f` |
 | **META-25** 📋 | ESLint 10 with flat config, on the current Nx 22.7 | Normal | `123kjkdqv9f` |
 | **META-26** ⛔ | Nx 22.7 → 23 → 24.0.x with `nx migrate`, plus the legacy `nx.json` cleanup | Normal | `123kjkdqv9g` |
+| **META-27** 🔄 | Remove Verdaccio: the root `local-registry` target, its config and the dependency | Low | `123kjkdqwqp` |
 
 ### Order and dependencies
 
@@ -69,6 +70,7 @@
 | 7 | META-21, then META-22 | Prune the instructions before measuring them |
 | 8 | META-23 | Needs META-15, META-16 and META-18 |
 | 9 | META-24 | Packages what steps 1-8 proved |
+| Any | META-27 | No blocker, and it blocks none of the others |
 
 ---
 
@@ -144,12 +146,17 @@ ClickUp `123kjkdqv9f`. Ready since META-12 merged on 2026-11-21. ESLint 8 and ev
 
 ClickUp `123kjkdqv9g`. Blocked by META-25: Nx 23.1 drops ESLint 8. Two PRs, one major each, Nx packages only: Angular 21, TypeScript 5.9 and Cypress 15 stay. Nx 24 removes the executors of 366 lint, test and e2e targets, which become inferred tasks. The legacy `nx.json` keys and the `package.json` scripts that no longer work go in the same PRs.
 
+### META-27 — Remove Verdaccio
+
+ClickUp `123kjkdqwqp`. In progress since 2026-11-22. The root project's only target, `local-registry`, runs `@nx/js:verdaccio`, a local npm registry for publishing packages, and nothing in the repo publishes any. The executor points the user-level npm and Yarn configs at `localhost:4873` and restores them only on a clean exit, so one run that did not, on 2026-11-20, broke every `yarn install` on the machine until 2026-11-22. The ticket removes the target, `.verdaccio/`, the `verdaccio` dependency and the two ignore entries for the folder, and keeps the root project.
+
 ---
 
 ## 📝 Changelog
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 0.5 | 2026-11-22 | **META-27** (`123kjkdqwqp`) — META-27 (remove Verdaccio) added as 🔄, with work started on `chore/123kjkdqwqp-meta-27-remove-verdaccio`; the order table lists it as independent of the other tasks. |
 | 0.4 | 2026-11-21 | **META-08** (`123kjkdpqjr`) — META-12 ✅ (PR #1568, `2ab4b20b`), with its before/after commit times; META-25 📋, its only blocker done; META-14 and META-24 no longer list META-12 among their blockers. The META-11 note gives the pre-commit's cost of `tasks:check`. |
 | 0.3 | 2026-11-20 | **META-08** (`123kjkdpqjr`) — META-25 (`123kjkdqv9f`, ESLint 10 with flat config) and META-26 (`123kjkdqv9g`, Nx 22.7 → 24.0.x) added between META-12 and META-13, which is now ⛔. The legacy `nx.json` cleanup moves from META-12 to META-26; META-12 gains the PocketBase schema safeguards. |
 | 0.2 | 2026-11-20 | **META-08** (`123kjkdpqjr`) — META-11 ✅ (PR #1562, `b15d12fa`); META-12 🔄. The header no longer says `tasks:check` is pending. |
