@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-22] - Nx 24.0.6, with inferred lint and test tasks (META-26)
+
+### Changed
+
+- **Nx 23.3.2 → 24.0.6, Nx packages only**, through `nx migrate 24.0.6` and its 14 migrations, run with `--no-agentic --no-create-commits`: without them, Nx 24 detects an agent and makes its own checkpoint commit with `--no-verify` (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **`lint` and `test` are inferred tasks.** The 186 `project.json` files that used them lose their `@nx/eslint:lint` and `@nx/vitest:test` targets. `@nx/eslint/plugin` now runs `eslint .` and the newly registered `@nx/vitest` plugin runs `vitest run` (`testMode: "run"`), both cached, and `passWithNoTests` moves to a `targetDefaults` entry filtered by plugin. The `@nx/vitest` plugin excludes `apps/*-e2e/**`, so the same 191 projects have `lint` and the same 184 have `test`. `store-window` and `shared-countdown-util` lose their own `lintFilePatterns` (`.ts` and `.html` only) and lint the whole project like the rest, with the same warnings. `llecoop-triggers` sets `"nx": { "includedScripts": [] }`, because its `package.json` scripts `test` and `lint` call `nx test` and `nx lint` on itself and would otherwise replace the inferred targets (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **The 188 Vite and Vitest configs** use Vite's own `resolve.tsconfigPaths` instead of `nxViteTsPaths()`, and the 187 that had it drop `nxCopyAssetsPlugin()`. No project builds with Vite, so there were no assets to copy (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **Dev servers and `serve-static` targets get `readyWhen: { signal: true }`** from the migrations, and `serve-static` now depends on `build`. No hook, workflow or script calls `serve-static`. The `nxReadySignal()` plugin the migration also added to seven Vite configs was removed: it only feeds `@nx/vite/plugin`, which this workspace does not register (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **`nx.json`** gets `affected.legacy: true` from the migration, so `nx affected` keeps selecting whole projects, as in Nx 23, instead of individual affected tasks (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **`nasa-images-e2e` and `llecoop-e2e`** lose `@nx/cypress:cypress` and run the inferred, cached `cypress run`, like the other three e2e projects. Their `cypress.config.ts` start the web server with `npx nx`. The scripts that pass `--watch` (`*:e2e:local`, `e2e:all`, `e2e:ci`) now exit 1 for them too, as they already did for the other three. They were not checked or fixed: Cypress e2e are out of scope (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **`CLAUDE.md` and `AGENTS.md`** explain that a generated library has `"targets": {}` and must not get `lint` or `test` by hand. A single spec now runs with `nx test <project> <file> --passWithNoTests=false`, the path relative to the project root: Vitest rejects `--testFile`, and without the flag a path that matches nothing passes. Both point at `node_modules/@nx/<plugin>/dist/PLUGIN.md`, where the file really is, and `.agent/rules/nx-style.md` names Nx 24.0.6 instead of 21.2.0 (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+
+### Removed
+
+- **`tasksRunnerOptions`** in `nx.json`, the legacy `nx-cloud` runner with an empty token. `nxCloudId` stays, and CI keeps falling back to `NX_NO_CLOUD` when the free quota runs out (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+
 ## [2026-11-22] - Nx 23.3.2 (META-26)
 
 ### Changed

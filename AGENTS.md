@@ -7,7 +7,7 @@
 - When running tasks (for example build, lint, test, e2e, etc.), always prefer running the task through `nx` (i.e. `nx run`, `nx run-many`, `nx affected`) instead of using the underlying tooling directly
 - Prefix nx commands with the workspace's package manager (e.g., `pnpm nx build`, `npm exec nx test`) - avoids using globally installed CLI
 - You have access to the Nx MCP server and its tools, use them to help the user
-- For Nx plugin best practices, check `node_modules/@nx/<plugin>/PLUGIN.md`. Not all plugins have this file - proceed without it if unavailable.
+- For Nx plugin best practices, check `node_modules/@nx/<plugin>/dist/PLUGIN.md`. Not all plugins have this file - proceed without it if unavailable.
 - NEVER guess CLI flags - always check nx_docs or `--help` first when unsure
 
 ## Scaffolding & Generators
@@ -57,7 +57,7 @@ Personal Nx monorepo (Angular 21, Tailwind 4, NgRx Signal Store) with 4 apps + e
 ```bash
 # Test specific project
 yarn nx test <project>                              # e.g. yarn nx test eco-store
-yarn nx test <project> --testFile=<path>              # single file
+yarn nx test <project> <path> --passWithNoTests=false # single file, path relative to the project root
 yarn nx test <project> --testNamePattern="<pattern>"  # by test name
 yarn nx test <project> --watch                        # watch mode
 
@@ -94,13 +94,9 @@ yarn plastikaweb:codegen                             # GraphQL types
 
 ## After Generating a Library
 
-Remove `outputs` and `reportsDirectory` from the `test` target in the generated `project.json`.
-Coverage paths are managed globally via `nx.json` — the generator adds lib-relative paths that are wrong.
-The test target should be just:
-
-```json
-"test": { "executor": "@nx/vitest:test" }
-```
+`lint` and `test` are inferred by `@nx/eslint/plugin` and `@nx/vitest` (Nx 24), so the generated `project.json` has `"targets": {}`.
+Do not add them by hand. Coverage goes to the `reportsDirectory` in the project's `vite.config.mts`.
+Check the resolved targets with `nx show project <name>`.
 
 ## PocketBase Schema Workflow (eco-store)
 

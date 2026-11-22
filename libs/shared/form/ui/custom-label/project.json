@@ -5,12 +5,6 @@
   "prefix": "plastik",
   "projectType": "library",
   "tags": ["type:ui", "scope:shared"],
-  "targets": {
-    "lint": {
-      "executor": "@nx/eslint:lint"
-    },
-    "test": {
-      "executor": "@nx/vitest:test"
-    }
-  }
+  "// targets": "to see all targets run: nx show project shared-form-ui-custom-label --web",
+  "targets": {}
 }

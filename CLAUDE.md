@@ -11,7 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - When running tasks (for example build, lint, test, e2e, etc.), always prefer running the task through `nx` (i.e. `nx run`, `nx run-many`, `nx affected`) instead of using the underlying tooling directly
 - Prefix nx commands with the workspace's package manager (e.g., `pnpm nx build`, `npm exec nx test`) - avoids using globally installed CLI
 - You have access to the Nx MCP server and its tools, use them to help the user
-- For Nx plugin best practices, check `node_modules/@nx/<plugin>/PLUGIN.md`. Not all plugins have this file - proceed without it if unavailable.
+- For Nx plugin best practices, check `node_modules/@nx/<plugin>/dist/PLUGIN.md` (Nx's generated agent rules say `node_modules/@nx/<plugin>/PLUGIN.md`, which does not exist). Not all plugins have this file - proceed without it if unavailable.
 - NEVER guess CLI flags - always check nx_docs or `--help` first when unsure
 
 ## Scaffolding & Generators
@@ -256,9 +256,12 @@ yarn <app-name>:test                 # Run tests for app
 yarn test:all                        # All tests with coverage
 nx test <lib-name>                   # Test specific library
 
-# Run single test file (use relative path from project root)
-nx test <project-name> --testFile=<file-name>
-# Example: nx test eco-store --testFile=src/app/app.component.spec.ts
+# Run single test file: the path goes straight to `vitest run`, which runs in the project root,
+# so give it relative to the project root (or part of the file name). A path from the repo
+# root matches nothing, and the workspace default passWithNoTests would report that as a pass:
+# --passWithNoTests=false makes it fail instead.
+nx test <project-name> <file-name> --passWithNoTests=false
+# Example: nx test eco-store src/app/app.component.spec.ts --passWithNoTests=false
 
 # Run tests matching a pattern (matches test name, not file name)
 nx test <project-name> --testNamePattern="<pattern>"
@@ -269,10 +272,10 @@ nx test <project-name> --watch
 
 # Run test for a specific library (faster than running app tests)
 nx test <lib-name>
-# Example: nx test core-util-api-http
+# Example: nx test api-http
 ```
 
-- Runner: `@analogjs/vitest-angular` via `@nx/vite` preset
+- Runner: `vitest run`, inferred by the `@nx/vitest` plugin (`testMode: "run"`, cwd = project root), with `@analogjs/vite-plugin-angular` in each project's `vite.config.mts`
 - Setup: `src/test-setup.ts` in each project
 - Coverage reports in `/coverage`
 
@@ -379,13 +382,7 @@ nx g @nx/angular:lib button --directory=shared/ui --tags=scope:shared,type:ui
 - **Libraries**: Standalone by default with Vitest for unit testing
 - **Applications**: Vitest for unit tests, Cypress for E2E, ESLint for linting, SCSS for styling
 
-**After generating a new library**, remove the `outputs` and `reportsDirectory` lines that the generator adds to the `test` target in `project.json`. Coverage paths are managed globally via `nx.json` `targetDefaults` (`coverage/{projectRoot}`), and the generator-added paths are wrong (lib-relative instead of workspace-root-relative). The test target should look like:
-
-```json
-"test": {
-  "executor": "@nx/vitest:test"
-}
-```
+**`lint` and `test` are inferred, not declared.** Since Nx 24, `@nx/eslint/plugin` and `@nx/vitest` (both registered in `nx.json`) create them from each project's `eslint.config.mjs` and `vite.config.mts`, so a generated `project.json` has `"targets": {}`. Do not add `lint` or `test` targets by hand. An entry without an `executor` is merged into the inferred target, and its `args` are appended to `eslint .` / `vitest run`, so they cannot narrow what runs. An entry with an `executor` replaces the inferred target, and the old `@nx/eslint:lint` and `@nx/vitest:test` no longer exist. Coverage goes to the `reportsDirectory` in the project's `vite.config.mts` (`coverage/{projectRoot}`), which Nx also uses as the task's cached output. Run `nx show project <name>` to see the resolved targets. A `package.json` script with the same name also becomes a target and wins over the plugins; `llecoop-triggers` opts out with `"nx": { "includedScripts": [] }`.
 
 - These defaults are pre-configured, so you don't need to specify these flags when generating
 
@@ -492,7 +489,7 @@ Key documentation in `/documentation/`:
 
 - Angular 21.0.6
 - TypeScript 5.9.3
-- Nx 23.3.2
+- Nx 24.0.6
 - RxJS 7.8
 - Astro 5.16.16
 

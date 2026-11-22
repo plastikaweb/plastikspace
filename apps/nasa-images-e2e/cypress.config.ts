@@ -8,8 +8,8 @@ export default defineConfig({
     ...nxE2EPreset(__filename, {
       cypressDir: 'src',
       webServerCommands: {
-        default: 'nx run nasa-images:serve:development',
-        production: 'nx run nasa-images:serve:production',
+        default: 'npx nx run nasa-images:serve:development',
+        production: 'npx nx run nasa-images:serve:production',
       },
       ciWebServerCommand: 'nx run nasa-images:serve-static',
     }),

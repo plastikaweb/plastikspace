@@ -7,10 +7,11 @@ export default defineConfig({
     ...nxE2EPreset(__filename, {
       cypressDir: 'src',
       webServerCommands: {
-        default: 'nx run llecoop:serve:development',
-        production: 'nx run llecoop:serve:production',
+        default: 'npx nx run llecoop:serve:development',
+        production: 'npx nx run llecoop:serve:production',
+        ci: 'npx nx run llecoop:serve-static',
       },
-      ciWebServerCommand: 'nx run llecoop:serve-static',
+      ciWebServerCommand: 'npx nx run llecoop:serve-static',
     }),
     baseUrl: 'http://localhost:4203',
     setupNodeEvents(on, config) {
