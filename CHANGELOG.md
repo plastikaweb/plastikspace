@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-22] - Legacy Nx settings and scripts removed before the Nx 23 migration (META-26)
+
+### Removed
+
+- **Dead `nx.json` settings.**
+  - `defaultProject: "llecoop"`: no command reached it, because the root project `plastikspace` contains every folder.
+  - The `targetDefaults` for `@nx/jest:jest`, `@angular-devkit/build-angular:browser` and `@nx/js:tsc`, executors that no target uses.
+  - The two `sharedGlobals` entries. One pointed at a `.cursorrules` file that does not exist. The other, `.cursor/rules/*.mdc`, made any edit to that file invalidate every cached task.
+  - The project graph of the 197 projects is the same before and after (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **Root `package.json` scripts and the Zed task that ran without a project.**
+  - `start`, `test`, `test:watch`, `test:coverage` and `lint` worked only through `defaultProject`. The Zed task «NG: Serve (Default Project)» ran `nx serve` the same way.
+  - `affected:apps`, `affected:libs`, `affected:dep-graph` and `workspace-generator` call Nx commands that no longer exist.
+  - `update` ran `nx migrate latest`, which from Nx 23.1 also upgrades Angular, TypeScript and Cypress.
+  - `test:all` and `affected:test` stay, but drop `--ci`, `--run-in-band` and `--code-coverage`, flags Vitest does not define; `test:all` keeps coverage through `--coverage` (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **`@nrwl/cli` 15.9.3 and `@nx/powerpack-license`.** No file used them. `@nrwl/cli` installed two extra copies of nx 15.9.3. `yarn.lock` loses 39 entries and gains none (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+
 ## [2026-11-22] - Remove Verdaccio and the root `local-registry` target (META-27)
 
 ### Removed
