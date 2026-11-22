@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-22] - Explicit tsconfig for Analog in the Vite configs (META-26)
+
+### Fixed
+
+- **CI printed 178 «Unable to resolve tsconfig» errors from `@analogjs/vite-plugin-angular`** in its first Nx step, while every task passed. Since Nx 24, `@nx/vitest` resolves each `vite.config.mts` outside Vitest to infer the targets. There Analog does not know it is under test, looks for `tsconfig.app.json`, and libraries have none. The 185 configs now call `angular({ tsconfig: 'tsconfig.spec.json' })`, the file Analog already used inside Vitest, so tests compile as before. Building the graph from scratch prints none of them; `CLAUDE.md` and `AGENTS.md` ask for the option in new libraries (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+
 ## [2026-11-22] - Nx 24.0.6, with inferred lint and test tasks (META-26)
 
 ### Changed

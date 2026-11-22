@@ -6,7 +6,7 @@ export default defineConfig(() => ({
   },
   root: import.meta.dirname,
   cacheDir: '../../../../node_modules/.vite/libs/shared/alert/ui',
-  plugins: [angular()],
+  plugins: [angular({ tsconfig: 'tsconfig.spec.json' })],
   test: {
     name: 'shared-alert-ui',
     watch: false,

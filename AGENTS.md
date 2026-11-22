@@ -97,6 +97,7 @@ yarn plastikaweb:codegen                             # GraphQL types
 `lint` and `test` are inferred by `@nx/eslint/plugin` and `@nx/vitest` (Nx 24), so the generated `project.json` has `"targets": {}`.
 Do not add them by hand. Coverage goes to the `reportsDirectory` in the project's `vite.config.mts`.
 Check the resolved targets with `nx show project <name>`.
+In its `vite.config.mts`, call `angular({ tsconfig: 'tsconfig.spec.json' })` like every other config, or building the graph prints «Unable to resolve tsconfig».
 
 ## PocketBase Schema Workflow (eco-store)
 

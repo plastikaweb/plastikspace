@@ -6,7 +6,7 @@ export default defineConfig(() => ({
   },
   root: import.meta.dirname,
   cacheDir: '../../../../../node_modules/.vite/libs/llecoop/order-list/feature/user-order-resume',
-  plugins: [angular()],
+  plugins: [angular({ tsconfig: 'tsconfig.spec.json' })],
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [],

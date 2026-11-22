@@ -8,7 +8,7 @@ export default defineConfig(() => ({
   },
   root: import.meta.dirname,
   cacheDir: '../../../../node_modules/.vite/libs/eco-store/profile/fiscal-data',
-  plugins: [angular()],
+  plugins: [angular({ tsconfig: 'tsconfig.spec.json' })],
   test: {
     name: 'eco-store-profile-fiscal-data-feature',
     watch: false,
