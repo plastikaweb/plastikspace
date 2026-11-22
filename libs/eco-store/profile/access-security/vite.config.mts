@@ -8,7 +8,7 @@ export default defineConfig(() => ({
   },
   root: import.meta.dirname,
   cacheDir: '../../../../node_modules/.vite/libs/eco-store/profile/access-security',
-  plugins: [angular()],
+  plugins: [angular({ tsconfig: 'tsconfig.spec.json' })],
   test: {
     name: 'eco-store-profile-access-security-feature',
     watch: false,
