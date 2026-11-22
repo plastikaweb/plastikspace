@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-22] - Cache and coverage paths of the eco-store orders feature libs (META-28)
+
+### Fixed
+
+- **`libs/eco-store/orders/feature/{created,detail,list}/vite.config.mts`** climbed four levels where their projects sit five deep, so their Vite cache and coverage went to `libs/node_modules/.vite/...` and `libs/coverage/...`, which no rule ignores. `created` also left out its own folder, so its coverage folder was the parent of those of `detail` and `list`: Vitest empties its coverage folder when it starts, and a `created` run beside `detail` deleted the files `detail` was writing (CI on PR #1570 failed on `eco-store-orders-detail:test` that way). Both paths now end in `coverage/<project>` and `node_modules/.vite/<project>` at the root, like the other 185 configs, and CI's coverage summary counts these three projects for the first time (META-28, [#123kjkdqwrm](https://app.clickup.com/t/123kjkdqwrm)).
+
 ## [2026-11-20] - Fast git hooks: lint-staged in pre-commit (META-12)
 
 ### Changed

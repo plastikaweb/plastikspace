@@ -4,7 +4,7 @@ import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
 export default defineConfig(() => ({
   root: __dirname,
-  cacheDir: '../../../../node_modules/.vite/libs/eco-store/orders/feature/list',
+  cacheDir: '../../../../../node_modules/.vite/libs/eco-store/orders/feature/list',
   plugins: [angular(), nxViteTsPaths(), nxCopyAssetsPlugin(['*.md'])],
   test: {
     name: 'eco-store-orders-list',
@@ -16,7 +16,7 @@ export default defineConfig(() => ({
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     reporters: ['default'],
     coverage: {
-      reportsDirectory: '../../../../coverage/libs/eco-store/orders/feature/list',
+      reportsDirectory: '../../../../../coverage/libs/eco-store/orders/feature/list',
       provider: 'v8' as const,
       reporter: ['text', 'json-summary'],
     },
