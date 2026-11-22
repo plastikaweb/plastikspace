@@ -20,7 +20,6 @@ import { Countdown, CountdownConfig, CountdownData } from './countdown.model';
  */
 @Injectable({ providedIn: 'root' })
 export class CountdownService {
-  readonly #destroyRef = inject(DestroyRef);
   readonly #injector = inject(Injector);
 
   // Cache to store shared countdowns by target date

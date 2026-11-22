@@ -45,10 +45,10 @@ We use prettier for automatic code formatting on save. The minimal configuration
 
 ## Lint rules
 
-These are the manually added rules to the `.eslintrc.json` base file:
+These are the manually added rules in the root `eslint.config.mjs`:
 
-- [eslint-plugin-ngrx](https://github.com/timdeschryver/eslint-plugin-ngrx): with its default configuration to automatically lint all code while running nx lint.
-  >![eslint-plugin-ngrx](img/ngrx-linter.png)
+- [@ngrx/eslint-plugin](https://ngrx.io/guide/eslint-plugin): the 25 rules of the former eslint-plugin-ngrx recommended set that it still has, at their old severities:
+  `select-style` and `no-effects-in-providers` fail, the rest warn. Its own presets would turn every rule into an error and add 10 more.
 - [no-console](https://eslint.org/docs/latest/rules/no-console): warns about any console related methods in the code.
 - [@typescript-eslint/prefer-readonly](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-readonly.md):
   require private members to be marked as `readonly` if they're never modified outside of the constructor.

@@ -1,6 +1,6 @@
 import { tap } from 'rxjs';
 
-/* eslint-disable ngrx/no-dispatch-in-effects */
+/* eslint-disable @ngrx/no-dispatch-in-effects */
 import { Location } from '@angular/common';
 import { inject, Injectable, NgZone } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
