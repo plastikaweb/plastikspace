@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-22] - Remove Verdaccio and the root `local-registry` target (META-27)
+
+### Removed
+
+- **The `local-registry` target of the root project**, its `.verdaccio/config.yml` and the `verdaccio` dev dependency, which takes 90 of the 3,450 `yarn.lock` entries with it (3,360 left; no other entry changes version). The target ran a local npm registry for publishing packages, and the workspace publishes none. Each run pointed the user-level npm and Yarn configs at `http://localhost:4873/` and put them back only from its exit and signal handlers, so a run killed before they ran, or whose npm reset failed, left every `yarn install` on the machine failing. The root project `plastikspace` stays, now with no target, so the graph keeps its 197 projects, and `.markdownlint-cli2.yaml` and `.cursorignore` no longer list the folder (META-27, [#123kjkdqwqp](https://app.clickup.com/t/123kjkdqwqp)).
+
 ## [2026-11-22] - ESLint 10 with flat config (META-25)
 
 ### Changed
