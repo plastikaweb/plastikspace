@@ -10,7 +10,9 @@
  */
 import path from 'node:path';
 
-const ESLINT_FILES = /^(apps|libs)\/.+\.(ts|html)$/;
+// apps/eco-store/scripts is left out as the former root .eslintignore left it out: ESLint 10
+// lints a file with its nearest config, and that folder has one, for its own lint target.
+const ESLINT_FILES = /^(apps|libs)\/(?!eco-store\/scripts\/).+\.(ts|html)$/;
 const MARKDOWN_FILES = /\.md$/;
 
 // lint-staged splits each command with string-argv, which knows quotes but no

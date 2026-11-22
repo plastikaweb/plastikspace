@@ -64,7 +64,7 @@ export abstract class EcoStoreTenantBaseService {
       }
     } catch (error) {
       if (!this.tenant()) {
-        throw new Error(`❌ Tenant '${slug}' not found or inactive: ${error}`);
+        throw new Error(`❌ Tenant '${slug}' not found or inactive: ${error}`, { cause: error });
       }
     }
   }

@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
@@ -39,7 +39,6 @@ export class CartSummaryComponent {
   readonly tenantStore = inject(ecoStoreTenantStore);
   readonly profileStore = inject(pocketBaseUserProfileStore);
   readonly #confirmService = inject(SharedConfirmDialogService);
-  readonly #translate = inject(TranslateService);
   readonly #router = inject(Router);
 
   /**

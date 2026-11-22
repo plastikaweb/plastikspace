@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CartProductCardComponent } from '@plastik/eco-store/cart';
 import { BreadcrumbItem, EcoStoreBreadcrumbsComponent } from '@plastik/eco-store/breadcrumbs';
@@ -47,7 +47,6 @@ import { SharedChipComponent } from '@plastik/shared/chip/ui';
 export class EcoStoreOrdersDetailComponent {
   readonly #ordersStore = inject(ecoStoreOrdersStore);
   readonly #router = inject(Router);
-  readonly #route = inject(ActivatedRoute);
   readonly #translate = inject(TranslateService);
 
   // TODO: Make this reactive if language switching within the same view session is required.

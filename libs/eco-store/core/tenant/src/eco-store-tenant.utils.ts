@@ -112,7 +112,7 @@ export function calculateStoreWindowStatus(
   const openVal = getMinutesFromStartOfWeek(DAYS_MAP[openDay], openTime);
   const closeVal = getMinutesFromStartOfWeek(DAYS_MAP[closeDay], closeTime);
 
-  let isOpen = false;
+  let isOpen: boolean;
 
   if (openVal < closeVal) {
     isOpen = nowVal >= openVal && nowVal < closeVal;

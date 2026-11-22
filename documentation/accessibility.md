@@ -235,47 +235,27 @@ Some lint patterns are used to review accessibility.
 
 See [@angular-eslint/schematics](https://github.com/angular-eslint/angular-eslint#readme) for further information.
 
-```json
-// .eslintrc.json
-// to see the current configuration please take a look at the root eslint file.
+```js
+// Root eslint.config.mjs, abridged: every *.html file gets the template presets, then the
+// accessibility rules below (and more template rules; the file has the full list).
+...scoped([...angular.configs.templateRecommended, ...angular.configs.templateAccessibility], ['**/*.html']),
 {
-      "files": ["*.html"],
-      "extends": ["plugin:@angular-eslint/template/recommended"],
-      "rules": {
-        "@angular-eslint/template/no-positive-tabindex": 2,
-        "@angular-eslint/template/no-autofocus": 2,
-        "@angular-eslint/template/mouse-events-have-key-events": 2,
-        "@angular-eslint/template/click-events-have-key-events": 2,
-        "@angular-eslint/template/accessibility-interactive-supports-focus": 2,
-        "@angular-eslint/template/accessibility-valid-aria": 2,
-        "@angular-eslint/template/accessibility-role-has-required-aria": 2,
-        "@angular-eslint/template/accessibility-label-for": 2,
-        "@angular-eslint/template/accessibility-label-has-associated-control": 2,
-        "@angular-eslint/template/accessibility-alt-text": 2,
-        "@angular-eslint/template/accessibility-elements-content": 2,
-        "@angular-eslint/template/accessibility-table-scope": 2,
-        "@angular-eslint/template/no-any": 2,
-        "@angular-eslint/no-input-prefix": 2,
-        "@angular-eslint/use-lifecycle-interface": 2,
-        "@angular-eslint/prefer-output-readonly": 2,
-        "@angular-eslint/component-max-inline-declarations": 2,
-        "@angular-eslint/template/no-call-expression": 2,
-        "@angular-eslint/template/use-track-by-function": 2,
-        "@angular-eslint/use-pipe-transform-interface": 2,
-        "@angular-eslint/no-conflicting-lifecycle": 2,
-        "@angular-eslint/relative-url-prefix": 2,
-        "@angular-eslint/use-component-selector": 2,
-        "@angular-eslint/template/conditional-complexity": 2,
-        "@angular-eslint/use-injectable-provided-in": 2,
-        "@angular-eslint/no-host-metadata-property": 2,
-        "@angular-eslint/no-inputs-metadata-property": 2,
-        "@angular-eslint/no-outputs-metadata-property": 2,
-        "@angular-eslint/no-queries-metadata-property": 2,
-        "@angular-eslint/template/no-distracting-elements": 2,
-        "@angular-eslint/component-class-suffix": 2
-      }
-    }
-
+  files: ['**/*.html'],
+  rules: {
+    '@angular-eslint/template/no-positive-tabindex': 'error',
+    '@angular-eslint/template/alt-text': 'error',
+    '@angular-eslint/template/click-events-have-key-events': 'error',
+    '@angular-eslint/template/elements-content': 'error',
+    '@angular-eslint/template/interactive-supports-focus': 'error',
+    '@angular-eslint/template/label-has-associated-control': 'error',
+    '@angular-eslint/template/mouse-events-have-key-events': 'error',
+    '@angular-eslint/template/no-autofocus': 'error',
+    '@angular-eslint/template/role-has-required-aria': 'error',
+    '@angular-eslint/template/table-scope': 'error',
+    '@angular-eslint/template/valid-aria': 'error',
+    '@angular-eslint/template/no-distracting-elements': 'error',
+  },
+},
 ```
 
 ### Pa11y CI Accessibility Test Runner
