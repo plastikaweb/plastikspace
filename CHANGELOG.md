@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-22] - Nx 23.0.2, with Vite 8 for Vitest (META-26)
+
+### Changed
+
+- **Nx 22.7.1 → 23.0.2**, through `nx migrate 23.0.2` and its 25 migrations, none of which changed a file. `nx` and the twelve `@nx/*` packages move together, and `@nrwl/nx-cloud` goes from 19.1.3 to 19.1.5. Angular 21.2.9, TypeScript 5.9.3 and Cypress 15.14.2 stay where they were. Every project keeps the same targets: 191 with `lint`, 184 with `test`, 7 with `build`, 5 with `e2e` and 5 with `serve-static` (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **`vite` `^7.0.0` → 8.3.8**, the only third-party update the migration brings. It reaches Vitest, Analog and the Nx Vite plugins. Angular builds and dev servers keep the 7.3.2 that `@angular/build` 21.2.9 pins in its own copy (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **`@analogjs/vite-plugin-angular` and `@analogjs/vitest-angular` ^2.5.0 → ^2.9.7.** With Vite 8, the 2.5.0 test plugin hands every file to Oxc as JavaScript (`lang: 'js'`). Every spec then fails before it runs, on the `import type` in `vitest-setup.ts`. 2.9.7 passes `ts` or `tsx` per file and lists Vite 8 among its peers (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+
 ## [2026-11-22] - Legacy Nx settings and scripts removed before the Nx 23 migration (META-26)
 
 ### Removed
