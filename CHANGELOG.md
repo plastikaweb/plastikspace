@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-22] - Nx 23.3.2 (META-26)
+
+### Changed
+
+- **Nx 23.0.2 → 23.3.2, Nx packages only.** `nx migrate 23.3.2` also proposed Angular 22.1, TypeScript 6.0.3, Cypress 15.21.2, NgRx 22 and `angular-eslint` 22.8. Those changes, and the 18 migrations that come with them or need them, were left out by hand: the 10 from Angular, CDK and Material, 5 from `@nx/angular` that require Angular 22, 2 that require TypeScript 6, and `upgrade-to-cypress-16`. Of the 9 that ran, only one changed files (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **The 188 `vite.config.mts` and `vitest.config.mts` files** use `import.meta.dirname` instead of `__dirname` for `root`, as Vite's native config loader expects (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **`CLAUDE.md` names Nx 23.3.2, Vitest 4.1.5 and `@analogjs/vitest-angular` 2.9.7** (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+
 ## [2026-11-22] - Nx 23.0.2, with Vite 8 for Vitest (META-26)
 
 ### Changed
