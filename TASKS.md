@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 0.7 · **Last updated:** 2026-11-22
+**Document version:** 0.8 · **Last updated:** 2026-11-22
 
 ---
 
@@ -53,10 +53,10 @@
 | **META-22** ⛔ | Skill evals: measure that the daily skills are actually followed | Low | `123kjkdqv3d` |
 | **META-23** ⛔ | `task-audit` skill: pre-PR review of feature-sized branches | Low | `123kjkdqv3e` |
 | **META-24** ⛔ | Reusable Claude Code base: private plugin + template repo | Low | `123kjkdqv3f` |
-| **META-25** 🔄 | ESLint 10 with flat config, on the current Nx 22.7 | Normal | `123kjkdqv9f` |
-| **META-26** ⛔ | Nx 22.7 → 23 → 24.0.x with `nx migrate`, plus the legacy `nx.json` cleanup | Normal | `123kjkdqv9g` |
-| **META-27** 🔄 | Remove Verdaccio: the root `local-registry` target, its config and the dependency | Low | `123kjkdqwqp` |
-| **META-28** 🔄 | Root the Vite cache and coverage paths of the three eco-store orders feature libs | Normal | `123kjkdqwrm` |
+| **META-25** ✅ | ESLint 10 with flat config, on the current Nx 22.7 | Normal | `123kjkdqv9f` |
+| **META-26** 📋 | Nx 22.7 → 23 → 24.0.x with `nx migrate`, plus the legacy `nx.json` cleanup | Normal | `123kjkdqv9g` |
+| **META-27** ✅ | Remove Verdaccio: the root `local-registry` target, its config and the dependency | Low | `123kjkdqwqp` |
+| **META-28** ✅ | Root the Vite cache and coverage paths of the three eco-store orders feature libs | Normal | `123kjkdqwrm` |
 
 ### Order and dependencies
 
@@ -94,7 +94,7 @@ ClickUp `123kjkdqv31`. Merged 2026-11-21 (PR #1568, `2ab4b20b`). Wall time of `g
 
 ### META-13 — ESLint without types in the hooks
 
-ClickUp `123kjkdqv32`. Blocked by META-25 and META-26. The root `.eslintrc.json` builds a TypeScript program of the whole monorepo for every lint task (about 13 of its 20 s). Three rules need it: `deprecation/deprecation` (`@typescript-eslint/no-deprecated` after META-25), the boolean `naming-convention` selector and `prefer-readonly`; they move to the CI profile.
+ClickUp `123kjkdqv32`. Blocked by META-26. The root `eslint.config.mjs` builds a TypeScript program of the whole monorepo for every lint task (about 13 of its 20 s). Three rules need it: `@typescript-eslint/no-deprecated` (`deprecation/deprecation` before META-25), the boolean `naming-convention` selector and `prefer-readonly`; they move to the CI profile.
 
 ### META-14 — Claude Code Stop hook
 
@@ -142,19 +142,19 @@ ClickUp `123kjkdqv3f`. Blocked by META-13, META-14, META-19 and META-23. A priva
 
 ### META-25 — ESLint 10 with flat config
 
-ClickUp `123kjkdqv9f`. In progress since 2026-11-21. ESLint 8 and every 9.x release are out of support on npm, and ESLint 10 drops `.eslintrc`. The ticket swaps `eslint-plugin-deprecation` and `eslint-plugin-ngrx`, which break on ESLint 9 and later, converts the 191 configs to flat config and moves to ESLint 10, all on the current Nx 22.7. ESLint 10 also looks the config up per file, which the root `eslint --fix` of the META-12 lint-staged needs. Same findings before and after.
+ClickUp `123kjkdqv9f`. Merged 2026-11-22 (PR #1570, `95c51bf8`). ESLint 10.15 with 191 flat configs replaced ESLint 8.57; `nx run-many -t lint` gives the same findings per project and rule (2,672 files, 0 errors, 675 warnings) except where ESLint 10 changed `eslint:recommended`, whose nine new findings were fixed. A checkout or worktree that merges develop needs `yarn install` before its next commit, or Nx fails to build the project graph. ESLint 8 and every 9.x release are out of support on npm, and ESLint 10 drops `.eslintrc`. The ticket swaps `eslint-plugin-deprecation` and `eslint-plugin-ngrx`, which break on ESLint 9 and later, converts the 191 configs to flat config and moves to ESLint 10, all on the current Nx 22.7. ESLint 10 also looks the config up per file, which the root `eslint --fix` of the META-12 lint-staged needs. Same findings before and after.
 
 ### META-26 — Nx 22.7 → 24.0.x
 
-ClickUp `123kjkdqv9g`. Blocked by META-25: Nx 23.1 drops ESLint 8. Two PRs, one major each, Nx packages only: Angular 21, TypeScript 5.9 and Cypress 15 stay. Nx 24 removes the executors of 366 lint, test and e2e targets, which become inferred tasks. The legacy `nx.json` keys and the `package.json` scripts that no longer work go in the same PRs.
+ClickUp `123kjkdqv9g`. Its only blocker, META-25 (Nx 23.1 drops ESLint 8), merged 2026-11-22. Two PRs, one major each, Nx packages only: Angular 21, TypeScript 5.9 and Cypress 15 stay. Nx 24 removes the executors of 366 lint, test and e2e targets, which become inferred tasks. The legacy `nx.json` keys and the `package.json` scripts that no longer work go in the same PRs.
 
 ### META-27 — Remove Verdaccio
 
-ClickUp `123kjkdqwqp`. In progress since 2026-11-22. The root project's only target, `local-registry`, runs `@nx/js:verdaccio`, a local npm registry for publishing packages, and nothing in the repo publishes any. The executor points the user-level npm and Yarn configs at `localhost:4873` and restores them only on a clean exit, so one run that did not, on 2026-11-20, broke every `yarn install` on the machine until 2026-11-22. The ticket removes the target, `.verdaccio/`, the `verdaccio` dependency and the two ignore entries for the folder, and keeps the root project.
+ClickUp `123kjkdqwqp`. Merged 2026-11-22 (PR #1572, `e981d4c5`); `yarn.lock` lost exactly the 90 entries only `verdaccio` reached, 3,450 → 3,360. The root project's only target, `local-registry`, runs `@nx/js:verdaccio`, a local npm registry for publishing packages, and nothing in the repo publishes any. The executor points the user-level npm and Yarn configs at `localhost:4873` and restores them only from its exit and signal handlers, so one run killed before they ran, on 2026-11-20, broke every `yarn install` on the machine until 2026-11-22. The ticket removes the target, `.verdaccio/`, the `verdaccio` dependency and the two ignore entries for the folder, and keeps the root project.
 
 ### META-28 — Orders feature libs: cache and coverage paths
 
-ClickUp `123kjkdqwrm`. In progress since 2026-11-22. The `vite.config.mts` of `libs/eco-store/orders/feature/{created,detail,list}` climbed four levels from projects five deep, and the coverage folder of `created` was the parent of those of `detail` and `list`. Vitest empties its coverage folder when it starts, so `created` running beside `detail` deleted the coverage files `detail` was writing, and CI on #1570 failed on `eco-store-orders-detail:test` twice in a row. The ticket points both paths at the root, in each project's own folder.
+ClickUp `123kjkdqwrm`. Merged 2026-11-22 (PR #1571, `d6f42b64`); CI then collected the coverage of the three libs for the first time. The `vite.config.mts` of `libs/eco-store/orders/feature/{created,detail,list}` climbed four levels from projects five deep, and the coverage folder of `created` was the parent of those of `detail` and `list`. Vitest empties its coverage folder when it starts, so `created` running beside `detail` deleted the coverage files `detail` was writing, and CI on #1570 failed on `eco-store-orders-detail:test` twice in a row. The ticket points both paths at the root, in each project's own folder.
 
 ---
 
@@ -162,6 +162,7 @@ ClickUp `123kjkdqwrm`. In progress since 2026-11-22. The `vite.config.mts` of `l
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 0.8 | 2026-11-22 | **META-08** (`123kjkdpqjr`) — META-25 ✅ (PR #1570, `95c51bf8`), META-27 ✅ (PR #1572, `e981d4c5`) and META-28 ✅ (PR #1571, `d6f42b64`); META-26 📋, its only blocker done; META-13 names `eslint.config.mjs` and only META-26 as its blocker; the META-27 block says the executor restores the configs from its exit and signal handlers. |
 | 0.7 | 2026-11-22 | **META-27** (`123kjkdqwqp`) — META-27 (remove Verdaccio) added as 🔄, with work started on `chore/123kjkdqwqp-meta-27-remove-verdaccio`; the order table lists it as independent of the other tasks. |
 | 0.6 | 2026-11-22 | **META-25** (`123kjkdqv9f`) — META-25 🔄: work started on `chore/123kjkdqv9f-meta-25-eslint-10-flat-config`. |
 | 0.5 | 2026-11-22 | **META-28** (`123kjkdqwrm`) — META-28 (cache and coverage paths of the orders feature libs) added as 🔄, with work started on `fix/123kjkdqwrm-meta-28-orders-vite-paths`; the order table puts it first, since CI test jobs that test all projects need it. |
