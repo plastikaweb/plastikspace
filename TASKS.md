@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 1.0 · **Last updated:** 2026-11-22
+**Document version:** 1.1 · **Last updated:** 2026-11-22
 
 ---
 
@@ -41,7 +41,7 @@
 | **META-10** ✅ | `task.cjs`: single-task reader for the eco task docs | Low | `123kjkdqcmy` |
 | **META-11** ✅ | `tasks:check`: lint and consistency gate for the task docs | Low | `123kjkdqcqu` |
 | **META-12** ✅ | Fast git hooks: lint-staged in pre-commit, no duplicate lint in pre-push | Normal | `123kjkdqv31` |
-| **META-13** 📋 | ESLint: keep the type-aware rules out of the hooks | Normal | `123kjkdqv32` |
+| **META-13** 🔄 | ESLint: keep the type-aware rules out of the hooks | Normal | `123kjkdqv32` |
 | **META-14** ⛔ | Claude Code Stop hook: feedback loop before the agent says "done" | Low | `123kjkdqv33` |
 | **META-15** 📋 | `check-eco-conventions.cjs`: template and style rules for eco | Low | `123kjkdqv34` |
 | **META-16** 📋 | `check-nx-tags`: every lib carries a `scope:*` and a `type:*` tag | Low | `123kjkdqv35` |
@@ -94,7 +94,7 @@ ClickUp `123kjkdqv31`. Merged 2026-11-21 (PR #1568, `2ab4b20b`). Wall time of `g
 
 ### META-13 — ESLint without types in the hooks
 
-ClickUp `123kjkdqv32`. Ready since 2026-11-22, when META-26 merged: lint is now the inferred `eslint .` task, and one lint task averages 11.8 s instead of 19.0 s (all 191 projects, no cache). Measured on 2026-11-20, the root `eslint.config.mjs` built a TypeScript program of the whole monorepo for every lint task (about 13 of its 20 s). Three rules need it: `@typescript-eslint/no-deprecated` (`deprecation/deprecation` before META-25), the boolean `naming-convention` selector and `prefer-readonly`; they move to the CI profile.
+ClickUp `123kjkdqv32`. In progress since 2026-11-22, the day META-26 merged: lint is now the inferred `eslint .` task, and one lint task averages 11.8 s instead of 19.0 s (all 191 projects, no cache). Measured on 2026-11-20, the root `eslint.config.mjs` built a TypeScript program of the whole monorepo for every lint task (about 13 of its 20 s). Three rules need it: `@typescript-eslint/no-deprecated` (`deprecation/deprecation` before META-25), the boolean `naming-convention` selector and `prefer-readonly`; they move to the CI profile.
 
 ### META-14 — Claude Code Stop hook
 
@@ -162,6 +162,7 @@ ClickUp `123kjkdqwrm`. Merged 2026-11-22 (PR #1571, `d6f42b64`); CI then collect
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 1.1 | 2026-11-22 | **META-13** (`123kjkdqv32`) — META-13 🔄: work started on `chore/123kjkdqv32-meta-13-eslint-without-types-in-hooks`. |
 | 1.0 | 2026-11-22 | **META-08** (`123kjkdpqjr`) — META-26 ✅ (PR #1574, `2f2306b1`, and PR #1575, `6a8a5019`); META-13 📋, its last blocker done, with the lint task time after Nx 24. |
 | 0.9 | 2026-11-22 | **META-26** (`123kjkdqv9g`) — META-26 🔄: work started on `chore/123kjkdqv9g-meta-26-nx-23`, the branch of its first PR (Nx 23). |
 | 0.8 | 2026-11-22 | **META-08** (`123kjkdpqjr`) — META-25 ✅ (PR #1570, `95c51bf8`), META-27 ✅ (PR #1572, `e981d4c5`) and META-28 ✅ (PR #1571, `d6f42b64`); META-26 📋, its only blocker done; META-13 names `eslint.config.mjs` and only META-26 as its blocker; the META-27 block says the executor restores the configs from its exit and signal handlers. |
