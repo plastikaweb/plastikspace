@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 0.8 · **Last updated:** 2026-11-22
+**Document version:** 0.9 · **Last updated:** 2026-11-22
 
 ---
 
@@ -54,7 +54,7 @@
 | **META-23** ⛔ | `task-audit` skill: pre-PR review of feature-sized branches | Low | `123kjkdqv3e` |
 | **META-24** ⛔ | Reusable Claude Code base: private plugin + template repo | Low | `123kjkdqv3f` |
 | **META-25** ✅ | ESLint 10 with flat config, on the current Nx 22.7 | Normal | `123kjkdqv9f` |
-| **META-26** 📋 | Nx 22.7 → 23 → 24.0.x with `nx migrate`, plus the legacy `nx.json` cleanup | Normal | `123kjkdqv9g` |
+| **META-26** 🔄 | Nx 22.7 → 23 → 24.0.x with `nx migrate`, plus the legacy `nx.json` cleanup | Normal | `123kjkdqv9g` |
 | **META-27** ✅ | Remove Verdaccio: the root `local-registry` target, its config and the dependency | Low | `123kjkdqwqp` |
 | **META-28** ✅ | Root the Vite cache and coverage paths of the three eco-store orders feature libs | Normal | `123kjkdqwrm` |
 
@@ -146,7 +146,7 @@ ClickUp `123kjkdqv9f`. Merged 2026-11-22 (PR #1570, `95c51bf8`). ESLint 10.15 wi
 
 ### META-26 — Nx 22.7 → 24.0.x
 
-ClickUp `123kjkdqv9g`. Its only blocker, META-25 (Nx 23.1 drops ESLint 8), merged 2026-11-22. Two PRs, one major each, Nx packages only: Angular 21, TypeScript 5.9 and Cypress 15 stay. Nx 24 removes the executors of 366 lint, test and e2e targets, which become inferred tasks. The legacy `nx.json` keys and the `package.json` scripts that no longer work go in the same PRs.
+ClickUp `123kjkdqv9g`. In progress since 2026-11-22; its only blocker, META-25 (Nx 23.1 drops ESLint 8), merged that day. Two PRs, one major each, Nx packages only: Angular 21, TypeScript 5.9 and Cypress 15 stay. Nx 24 removes the executors of 366 lint, test and e2e targets, which become inferred tasks. The legacy `nx.json` keys and the `package.json` scripts that no longer work go in the same PRs.
 
 ### META-27 — Remove Verdaccio
 
@@ -162,6 +162,7 @@ ClickUp `123kjkdqwrm`. Merged 2026-11-22 (PR #1571, `d6f42b64`); CI then collect
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 0.9 | 2026-11-22 | **META-26** (`123kjkdqv9g`) — META-26 🔄: work started on `chore/123kjkdqv9g-meta-26-nx-23`, the branch of its first PR (Nx 23). |
 | 0.8 | 2026-11-22 | **META-08** (`123kjkdpqjr`) — META-25 ✅ (PR #1570, `95c51bf8`), META-27 ✅ (PR #1572, `e981d4c5`) and META-28 ✅ (PR #1571, `d6f42b64`); META-26 📋, its only blocker done; META-13 names `eslint.config.mjs` and only META-26 as its blocker; the META-27 block says the executor restores the configs from its exit and signal handlers. |
 | 0.7 | 2026-11-22 | **META-27** (`123kjkdqwqp`) — META-27 (remove Verdaccio) added as 🔄, with work started on `chore/123kjkdqwqp-meta-27-remove-verdaccio`; the order table lists it as independent of the other tasks. |
 | 0.6 | 2026-11-22 | **META-25** (`123kjkdqv9f`) — META-25 🔄: work started on `chore/123kjkdqv9f-meta-25-eslint-10-flat-config`. |
