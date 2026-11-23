@@ -9,10 +9,10 @@
  * - Fast profile (hooks, editors, local runs): ESLint lints the fixture without throwing (a rule
  *   that needs types throws there, "requires type information", instead of reporting) and reports
  *   none of those findings. No project config may bring one back into the hooks, which two checks
- *   cover: every block of every tracked eslint.config.mjs, whatever files it targets, turns on no
- *   rule that needs types and sets no parser option that asks for a TypeScript program; and in
- *   every folder with such a config, the config ESLint computes for a virtual .ts, .mts, .cts,
- *   .tsx and .spec.ts file has neither.
+ *   cover: every block of every tracked ESLint config (eslint.config.js, .mjs, .cjs, .ts, .mts or
+ *   .cts), whatever files it targets, turns on no rule that needs types and sets no parser option
+ *   that asks for a TypeScript program; and in every folder with such a config, the config ESLint
+ *   computes for a virtual .ts, .mts, .cts, .tsx and .spec.ts file has neither.
  * - On CI (CI=true), ESLINT_TYPED must be 1, since the same step then lints the projects.
  *
  * Rules are told apart by their metadata (`requiresTypeChecking`). A rule that only uses type
@@ -36,6 +36,10 @@ const TYPED_RULES = [
   '@typescript-eslint/prefer-readonly',
 ].sort();
 const PROBE_EXTENSIONS = ['ts', 'mts', 'cts', 'tsx', 'spec.ts'];
+// Every name ESLint looks up for a flat config, as does @nx/eslint/plugin to infer a lint target.
+const CONFIG_NAMES = ['js', 'mjs', 'cjs', 'ts', 'mts', 'cts'].map(
+  extension => `*eslint.config.${extension}`
+);
 const MARKER = '@@eslint-profile@@';
 const SEVERITIES = { 1: 'warn', 2: 'error' };
 
@@ -79,7 +83,7 @@ function asksForProgram(config) {
  * @returns {string[]} Their paths, relative to ROOT.
  */
 function listConfigFiles() {
-  const files = execFileSync('git', ['ls-files', '-z', '--', '*eslint.config.mjs'], {
+  const files = execFileSync('git', ['ls-files', '-z', '--', ...CONFIG_NAMES], {
     cwd: ROOT,
     encoding: 'utf8',
   })
@@ -87,8 +91,8 @@ function listConfigFiles() {
     .filter(Boolean);
 
   return [
-    ...files.filter(file => file === 'eslint.config.mjs'),
-    ...files.filter(file => file !== 'eslint.config.mjs'),
+    ...files.filter(file => !file.includes('/')),
+    ...files.filter(file => file.includes('/')),
   ];
 }
 
@@ -103,19 +107,28 @@ async function scanBlocks(configFiles) {
   const seen = new Set();
   const offenders = [];
   for (const file of configFiles) {
-    const exported = (await import(pathToFileURL(path.join(ROOT, file)).href)).default;
+    const exported = await import(pathToFileURL(path.join(ROOT, file)).href).then(
+      module => module.default,
+      error => {
+        throw new Error(`${file} does not load: ${error?.message ?? error}`);
+      }
+    );
     const blocks = [await exported].flat(Infinity);
     const plugins = Object.assign({}, ...blocks.map(block => block?.plugins ?? {}));
     blocks.forEach((block, index) => {
       if (!block || seen.has(block)) return;
       seen.add(block);
-      const found = [
+      // A later block that gives naming-convention only a severity keeps these options, so a
+      // `types` selector counts even where this block turns the rule off.
+      const naming = [block.rules?.['@typescript-eslint/naming-convention']].flat().slice(1);
+      const found = new Set([
         ...(asksForProgram(block) ? ['a TypeScript program'] : []),
         ...rulesNeedingTypes({ rules: block.rules, plugins }),
-      ];
-      if (found.length > 0) {
+        ...(naming.some(option => option?.types) ? ['@typescript-eslint/naming-convention'] : []),
+      ]);
+      if (found.size > 0) {
         const files = JSON.stringify(block.files ?? 'every file');
-        offenders.push(`${file}, block ${index + 1} (files ${files}): ${found.join(', ')}`);
+        offenders.push(`${file}, block ${index + 1} (files ${files}): ${[...found].join(', ')}`);
       }
     });
   }
@@ -132,7 +145,7 @@ async function scanBlocks(configFiles) {
  */
 async function sweepConfigs(ESLint, configFiles) {
   const eslint = new ESLint({ cwd: ROOT });
-  const folders = configFiles.map(file => path.dirname(file));
+  const folders = [...new Set(configFiles.map(file => path.dirname(file)))];
   const offenders = [];
   let probed = 0;
   for (const folder of folders) {

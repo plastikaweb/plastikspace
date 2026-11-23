@@ -452,10 +452,11 @@ export default [
     },
   },
   // The typed profile (ESLINT_TYPED=1): the three rules that need type information, on TypeScript
-  // files that are not specs. The project service types each file with the program of its own
-  // project, the tsconfig.json it finds as the comment on TS_DEFAULT_PROJECT says. Before META-13
-  // every lint task, hooks included, built one program of the whole monorepo from
-  // tsconfig.base.json.
+  // files that are not specs. The project service types each file with the program of the
+  // tsconfig that takes it in: for most files, the tsconfig.lib.json, tsconfig.app.json or
+  // tsconfig.spec.json that their tsconfig.json references (the comment on TS_DEFAULT_PROJECT says
+  // how it looks for them). Before META-13 every lint task, hooks included, built one program of
+  // the whole monorepo from tsconfig.base.json.
   ...(isTyped
     ? [
         {
