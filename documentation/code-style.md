@@ -45,19 +45,15 @@ We use prettier for automatic code formatting on save. The minimal configuration
 
 ## Lint rules
 
-These are the manually added rules in the root `eslint.config.mjs`:
+The rules live in the root `eslint.config.mjs`. Their list, with the severity, the files and the lint profile of each one,
+is kept in one place only, the root `CLAUDE.md`:
 
-- [@ngrx/eslint-plugin](https://ngrx.io/guide/eslint-plugin): the 25 rules of the former eslint-plugin-ngrx recommended set that it still has, at their old severities:
-  `select-style` and `no-effects-in-providers` fail, the rest warn. Its own presets would turn every rule into an error and add 10 more.
-- [no-console](https://eslint.org/docs/latest/rules/no-console): warns about any console related methods in the code.
-- [@typescript-eslint/prefer-readonly](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-readonly.md):
-  require private members to be marked as `readonly` if they're never modified outside of the constructor.
-  It needs type information, so it only runs with `ESLINT_TYPED=1`: in CI, or locally with `yarn lint:ci`. The same
-  goes for `@typescript-eslint/no-deprecated` and the boolean selector of `@typescript-eslint/naming-convention` (META-13).
-- [eslint-plugin-jsdoc](https://github.com/gajus/eslint-plugin-jsdoc):
-  - adds the recommended linting rules for `JSDoc`.
-  - adds a regex match for description text in order to begin it in Uppercase and always end with a ".".
-- [@angular-eslint/schematics](https://github.com/angular-eslint/angular-eslint#readme): enables ESLint to lint Angular projects. Added accessibility related rules. For more information visit [accessibility.md](accessibility).
+- [Code Quality Rules (ESLint)](../CLAUDE.md#code-quality-rules-eslint): `no-console`, private fields, member ordering,
+  JSDoc, NgRx, template and accessibility rules, naming, statement padding, and the rules that run in CI only.
+- [Module Boundaries](../CLAUDE.md#module-boundaries-eslint-enforced): `@nx/enforce-module-boundaries`.
+
+To see every rule that applies to one file, with its severity: `yarn eslint --print-config <file>`. Prefix it with
+`ESLINT_TYPED=1` for the profile that CI runs.
 
 ## Other recommended rules
 

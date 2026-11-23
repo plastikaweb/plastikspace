@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-23] - One list of the ESLint rules (META-31)
+
+### Fixed
+
+- **`documentation/code-style.md` listed five of the rules, and got some wrong.** It said `no-console` warns (it is an error), credited `@angular-eslint/schematics` (not installed) and linked `accessibility.md` with a broken path. Its "Lint rules" section now points to the list in the root `CLAUDE.md` and says how to print the rules of one file (META-31, ([#123kjkdqzvb](https://app.clickup.com/t/123kjkdqzvb))).
+- **The root `CLAUDE.md` list now matches the config.** JSDoc is not required "for public APIs": a missing block on a `function` declaration is a warning, exported or not, and other declarations need none. `no-console` also applies to Cypress files. Each rule now gives its severity, and the template rules say they cover inline templates too (META-31, ([#123kjkdqzvb](https://app.clickup.com/t/123kjkdqzvb))).
+
 ## [2026-11-23] - The private-fields ESLint rule fires (META-29)
 
 ### Fixed
