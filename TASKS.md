@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 1.4 · **Last updated:** 2026-11-23
+**Document version:** 1.5 · **Last updated:** 2026-11-23
 
 ---
 
@@ -42,7 +42,7 @@
 | **META-11** ✅ | `tasks:check`: lint and consistency gate for the task docs | Low | `123kjkdqcqu` |
 | **META-12** ✅ | Fast git hooks: lint-staged in pre-commit, no duplicate lint in pre-push | Normal | `123kjkdqv31` |
 | **META-13** ✅ | ESLint: keep the type-aware rules out of the hooks | Normal | `123kjkdqv32` |
-| **META-14** 🔄 | Claude Code Stop hook: feedback loop before the agent says "done" | Low | `123kjkdqv33` |
+| **META-14** ✅ | Claude Code Stop hook: feedback loop before the agent says "done" | Low | `123kjkdqv33` |
 | **META-15** 📋 | `check-eco-conventions.cjs`: template and style rules for eco | Low | `123kjkdqv34` |
 | **META-16** 📋 | `check-nx-tags`: every lib carries a `scope:*` and a `type:*` tag | Low | `123kjkdqv35` |
 | **META-17** 📋 | ESLint: Angular rules that `.claude/CLAUDE.md` asks for in prose become errors | Low | `123kjkdqv36` |
@@ -102,7 +102,7 @@ ClickUp `123kjkdqv32`. Merged 2026-11-23 (PR #1578, `6d06d675`). By default ESLi
 
 ### META-14 — Claude Code Stop hook
 
-ClickUp `123kjkdqv33`. In progress since 2026-11-23 on `chore/123kjkdqv33-meta-14-stop-hook`. At the end of each turn: fast lint, Prettier, related tests and `tasks:check` on the changed files; exit 2 keeps the turn open until they pass.
+ClickUp `123kjkdqv33`. Merged 2026-11-23 (PR #1581, `332d794f`). When Claude ends a turn, `.claude/hooks/stop-check.mjs` checks the files changed since the session started (a `SessionStart` run records those already modified): ESLint with the fast profile (errors only), markdownlint, `prettier --check`, `vitest related` for at most two projects, `tasks:check` when a task doc changed, and new suppression comments in `apps/` and `libs/`. A failure keeps the turn open once; if it is still there at the next stop, the turn ends and the user is told. A turn without new changes adds 0.4 s, a Markdown change 2.5 s, a TypeScript change in one library about 20 s. In a `claude -p` trial the hook blocked a `no-console` error and Claude removed it; in an earlier trial, before the suppression check, Claude had silenced it with `eslint-disable`. A session gets the hook only once the checkout it starts in has it. Left out: subagents (`SubagentStop`), deleted files, and an automated test of the script.
 
 ### META-15 — `check-eco-conventions.cjs`
 
@@ -142,7 +142,7 @@ ClickUp `123kjkdqv3e`. Blocked by META-15, META-16 and META-18. Three lenses (co
 
 ### META-24 — Reusable Claude Code base
 
-ClickUp `123kjkdqv3f`. Blocked by META-14, META-19 and META-23. A private plugin (hooks, skills, CLAUDE.md skeleton) plus a template repo (Husky, lint-staged, ESLint profiles, CI).
+ClickUp `123kjkdqv3f`. Blocked by META-19 and META-23. A private plugin (hooks, skills, CLAUDE.md skeleton) plus a template repo (Husky, lint-staged, ESLint profiles, CI).
 
 ### META-25 — ESLint 10 with flat config
 
@@ -178,6 +178,7 @@ ClickUp `123kjkdqzvb`. No blocker. The "Lint rules" section of `documentation/co
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 1.5 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-14 ✅ (PR #1581, `332d794f`), with the time the hook adds to a turn and the live trial; META-24 no longer lists META-14 among its blockers. |
 | 1.4 | 2026-11-23 | **META-14** (`123kjkdqv33`) — META-14 🔄: work started on `chore/123kjkdqv33-meta-14-stop-hook`. |
 | 1.3 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-29 (private-fields rule selector), META-30 (dead `jest.config.cts` files) and META-31 (ESLint rule list in `code-style.md`) added as 📋, three cleanups META-13 found; the order table lists them as free of blockers. |
 | 1.2 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-13 ✅ (PR #1578, `6d06d675`), with its before/after lint times; META-14 📋, its only blocker done; META-24 no longer lists META-13 among its blockers. |
