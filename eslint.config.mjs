@@ -67,15 +67,16 @@ const BOOLEAN_NAMING = {
   format: ['PascalCase'],
   prefix: ['is', 'has', 'can', 'should', 'will'],
 };
-// TypeScript files the project service cannot place. It only looks in the nearest tsconfig.json
-// and the tsconfigs that one references: the e2e Vite and Vitest configs are in a
-// tsconfig.spec.json that the e2e tsconfig.json does not reference, the eco-store scripts are in no
-// tsconfig, and the product-categories mock store is excluded by its tsconfig.lib.json. Unlisted,
-// each stops the typed lint with a parse error ("was not found by the project service"); listed,
-// it gets the options of tsconfig.base.json, as every non-spec file did before META-13. A listed
-// file that one of those tsconfigs later takes in is a parse error too ("was included by
-// allowDefaultProject but also was found in the project service"): take it off the list. The
-// globs may not contain `**`, and at most 8 files of one lint task may match them.
+// TypeScript files the project service cannot place. It looks in the nearest tsconfig.json, the
+// tsconfigs that one references and any tsconfig.json further up (this repo has none), never in
+// tsconfig.base.json: the e2e Vite and Vitest configs are in a tsconfig.spec.json that the e2e
+// tsconfig.json does not reference, no project tsconfig takes in the eco-store scripts, and the
+// product-categories mock store is excluded by its tsconfig.lib.json. Unlisted, each stops the
+// typed lint with a parse error ("was not found by the project service"); listed, it gets the
+// options of tsconfig.base.json, as every non-spec file did before META-13. A listed file that one
+// of those tsconfigs later takes in is a parse error too ("was included by allowDefaultProject but
+// also was found in the project service"): take it off the list. The globs may not contain `**`,
+// and at most 8 files of one lint task may match them.
 const TS_DEFAULT_PROJECT = [
   'apps/*-e2e/vite.config.mts',
   'apps/*-e2e/vitest.config.mts',
@@ -452,8 +453,8 @@ export default [
   },
   // The typed profile (ESLINT_TYPED=1): the three rules that need type information, on TypeScript
   // files that are not specs. The project service types each file with the program of its own
-  // project, found from its nearest tsconfig.json and the tsconfigs that one references. Before
-  // META-13 every lint task, hooks included, built one program of the whole monorepo from
+  // project, the tsconfig.json it finds as the comment on TS_DEFAULT_PROJECT says. Before META-13
+  // every lint task, hooks included, built one program of the whole monorepo from
   // tsconfig.base.json.
   ...(isTyped
     ? [

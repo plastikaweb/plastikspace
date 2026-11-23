@@ -68,6 +68,7 @@ yarn affected:test                                   # affected vs develop
 # Lint
 yarn nx lint <project>
 yarn lint:all
+yarn lint:ci                                         # affected projects with the type-aware rules, as CI
 
 # Build
 yarn nx build <project>
@@ -161,7 +162,8 @@ Apply an entry by its SHA (`git stash apply <sha>`), never with `pop`: the `stas
 - **PR:** `nx affected --target=test` (fast feedback)
 - **Push to develop:** `nx run-many --target=test --all` (full validation + coverage badge)
 - **Format check** runs first, then lint → test → build (in that order)
-- **Lint** runs with `ESLINT_TYPED=1`, the profile with the rules that need type information, after `yarn lint:profiles` checks both ESLint profiles on a fixture (META-13)
+- **Lint** runs with `ESLINT_TYPED=1`, the profile with the rules that need type information (META-13)
+- Before it, `yarn lint:profiles` lints a fixture with both ESLint profiles and checks every ESLint config in the fast one
 - **llecoop-firebase** excluded from lint/test/build (handled separately)
 - Nx Cloud for caching; CI falls back to local cache if unavailable
 - Coverage badge updates from `coverage/**/coverage-summary.json` on push to develop

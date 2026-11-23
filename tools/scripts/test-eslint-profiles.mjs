@@ -8,9 +8,11 @@
  *   fixture (line, rule, severity) and nothing else.
  * - Fast profile (hooks, editors, local runs): ESLint lints the fixture without throwing (a rule
  *   that needs types throws there, "requires type information", instead of reporting) and reports
- *   none of those findings. In every folder with an eslint.config.mjs, a virtual .ts, .mts, .cts,
- *   .tsx and .spec.ts file gets no rule that needs types and no parser option that asks for a
- *   TypeScript program, so no project config brings one back into the hooks.
+ *   none of those findings. No project config may bring one back into the hooks, which two checks
+ *   cover: every block of every tracked eslint.config.mjs, whatever files it targets, turns on no
+ *   rule that needs types and sets no parser option that asks for a TypeScript program; and in
+ *   every folder with such a config, the config ESLint computes for a virtual .ts, .mts, .cts,
+ *   .tsx and .spec.ts file has neither.
  * - On CI (CI=true), ESLINT_TYPED must be 1, since the same step then lints the projects.
  *
  * Rules are told apart by their metadata (`requiresTypeChecking`). A rule that only uses type
@@ -24,6 +26,7 @@
 import { execFileSync, spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 const ROOT = path.resolve(import.meta.dirname, '../..');
 const FIXTURE = path.join(import.meta.dirname, 'fixtures/eslint-profiles/typed-rules.ts');
@@ -72,20 +75,64 @@ function asksForProgram(config) {
 }
 
 /**
- * Fast profile only: probes a virtual file of each extension in every folder with an ESLint
- * config, with the ignores real runs apply, for a program or a rule that needs types.
- * @param {typeof import('eslint').ESLint} ESLint The ESLint class.
- * @returns {Promise<{probed: number, offenders: string[]}>} What it probed and what failed.
+ * Lists the tracked ESLint configs, the root one first.
+ * @returns {string[]} Their paths, relative to ROOT.
  */
-async function sweepConfigs(ESLint) {
-  const eslint = new ESLint({ cwd: ROOT });
-  const folders = execFileSync('git', ['ls-files', '-z', '--', '*eslint.config.mjs'], {
+function listConfigFiles() {
+  const files = execFileSync('git', ['ls-files', '-z', '--', '*eslint.config.mjs'], {
     cwd: ROOT,
     encoding: 'utf8',
   })
     .split('\0')
-    .filter(Boolean)
-    .map(file => path.dirname(file));
+    .filter(Boolean);
+
+  return [
+    ...files.filter(file => file === 'eslint.config.mjs'),
+    ...files.filter(file => file !== 'eslint.config.mjs'),
+  ];
+}
+
+/**
+ * Fast profile only: reads every block of every config, whatever files it targets, for a program
+ * or a rule that needs types. A block shared by several configs (the root's, spread into each
+ * project's) is read once, under the first config that has it.
+ * @param {string[]} configFiles The configs, relative to ROOT, the root one first.
+ * @returns {Promise<{blocks: number, offenders: string[]}>} What it read and what failed.
+ */
+async function scanBlocks(configFiles) {
+  const seen = new Set();
+  const offenders = [];
+  for (const file of configFiles) {
+    const exported = (await import(pathToFileURL(path.join(ROOT, file)).href)).default;
+    const blocks = [await exported].flat(Infinity);
+    const plugins = Object.assign({}, ...blocks.map(block => block?.plugins ?? {}));
+    blocks.forEach((block, index) => {
+      if (!block || seen.has(block)) return;
+      seen.add(block);
+      const found = [
+        ...(asksForProgram(block) ? ['a TypeScript program'] : []),
+        ...rulesNeedingTypes({ rules: block.rules, plugins }),
+      ];
+      if (found.length > 0) {
+        const files = JSON.stringify(block.files ?? 'every file');
+        offenders.push(`${file}, block ${index + 1} (files ${files}): ${found.join(', ')}`);
+      }
+    });
+  }
+
+  return { blocks: seen.size, offenders };
+}
+
+/**
+ * Fast profile only: probes a virtual file of each extension in every folder with an ESLint
+ * config, with the ignores real runs apply, for a program or a rule that needs types.
+ * @param {typeof import('eslint').ESLint} ESLint The ESLint class.
+ * @param {string[]} configFiles The configs, relative to ROOT.
+ * @returns {Promise<{probed: number, offenders: string[]}>} What it probed and what failed.
+ */
+async function sweepConfigs(ESLint, configFiles) {
+  const eslint = new ESLint({ cwd: ROOT });
+  const folders = configFiles.map(file => path.dirname(file));
   const offenders = [];
   let probed = 0;
   for (const folder of folders) {
@@ -107,7 +154,7 @@ async function sweepConfigs(ESLint) {
 
 /**
  * Child process: lints the fixture with the profile its environment selects (and, in the fast
- * profile, sweeps the configs), then prints the result after MARKER.
+ * profile, checks every config), then prints the result after MARKER.
  * @returns {Promise<void>}
  */
 async function lintFixture() {
@@ -115,10 +162,12 @@ async function lintFixture() {
   // The root config ignores every folder beside apps/ and libs/. `ignore: false` lifts that; the
   // config is still the one ESLint finds for the fixture, the root eslint.config.mjs.
   const eslint = new ESLint({ cwd: ROOT, ignore: false });
+  const isFast = process.env.ESLINT_TYPED !== '1';
   let result;
   try {
     const config = await eslint.calculateConfigForFile(FIXTURE);
     const [report] = await eslint.lintFiles([FIXTURE]);
+    const configFiles = isFast ? listConfigFiles() : [];
     result = {
       rulesNeedingTypes: rulesNeedingTypes(config),
       asksForProgram: asksForProgram(config),
@@ -129,7 +178,8 @@ async function lintFixture() {
         fatal: Boolean(fatal),
         message,
       })),
-      sweep: process.env.ESLINT_TYPED === '1' ? null : await sweepConfigs(ESLint),
+      scan: isFast ? await scanBlocks(configFiles) : null,
+      sweep: isFast ? await sweepConfigs(ESLint, configFiles) : null,
     };
   } catch (error) {
     result = { thrown: String(error?.message ?? error) };
@@ -234,6 +284,8 @@ function main() {
       if (result.asksForProgram) {
         failures.push(`${name}: sets parserOptions.project or projectService`);
       }
+      if (result.scan.blocks === 0) failures.push(`${name}: the config scan read no block`);
+      result.scan.offenders.forEach(offender => failures.push(`${name}: ${offender}`));
       if (result.sweep.probed === 0) failures.push(`${name}: the config sweep probed no file`);
       result.sweep.offenders.forEach(offender => failures.push(`${name}: ${offender}`));
     }
@@ -254,8 +306,9 @@ function main() {
   }
   console.log(`✓ typed profile: ${expected.join('; ')}`);
   console.log(
-    `✓ fast profile: no rule that needs types and no TypeScript program, on the fixture and ` +
-      `${fast.sweep.probed} virtual files of the ESLint configs; no error`
+    `✓ fast profile: no rule that needs types and no TypeScript program, on the fixture, in ` +
+      `${fast.scan.blocks} blocks of the ESLint configs and for ${fast.sweep.probed} virtual ` +
+      `files; no error`
   );
 }
 
