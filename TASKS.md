@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 1.6 · **Last updated:** 2026-11-23
+**Document version:** 1.7 · **Last updated:** 2026-11-23
 
 ---
 
@@ -57,7 +57,7 @@
 | **META-26** ✅ | Nx 22.7 → 23 → 24.0.x with `nx migrate`, plus the legacy `nx.json` cleanup | Normal | `123kjkdqv9g` |
 | **META-27** ✅ | Remove Verdaccio: the root `local-registry` target, its config and the dependency | Low | `123kjkdqwqp` |
 | **META-28** ✅ | Root the Vite cache and coverage paths of the three eco-store orders feature libs | Normal | `123kjkdqwrm` |
-| **META-29** 📋 | ESLint: make the private-fields rule fire (`ClassProperty` → `PropertyDefinition`) | Low | `123kjkdqzv8` |
+| **META-29** ✅ | ESLint: make the private-fields rule fire (`ClassProperty` → `PropertyDefinition`) | Low | `123kjkdqzv8` |
 | **META-30** ✅ | Delete the 18 dead `jest.config.cts` files | Low | `123kjkdqzv9` |
 | **META-31** 📋 | `documentation/code-style.md`: match the ESLint rule list to `eslint.config.mjs` | Low | `123kjkdqzvb` |
 
@@ -162,7 +162,7 @@ ClickUp `123kjkdqwrm`. Merged 2026-11-22 (PR #1571, `d6f42b64`); CI then collect
 
 ### META-29 — Private-fields rule selector
 
-ClickUp `123kjkdqzv8`. No blocker. The root `no-restricted-syntax` rule against the `private` modifier selects `ClassProperty`, a node typescript-eslint v8 calls `PropertyDefinition`, so it has never fired; root `CLAUDE.md` presents it as enforced. Limited to fields it reports nothing today; widened to every private member it reports 19 methods and 3 constructor parameter properties in 16 files, and the owner picks which when the work starts. A check fails if the selector stops matching again.
+ClickUp `123kjkdqzv8`. Merged 2026-11-23 (PR #1585, `483c622c`). The root `no-restricted-syntax` rule now selects `PropertyDefinition[accessibility='private']`; the old `ClassProperty` matched nothing under typescript-eslint v8. It stays on class fields, the owner's choice: private methods and constructor parameter properties keep the modifier (19 and 3 today), and `CLAUDE.md` says so. No class field uses `private`, so the 191 lint tasks pass with no finding from it. `yarn lint:profiles` lints a probe file and fails if the rule stops reporting its `private` field; a check by hand on a real file showed the error in both profiles.
 
 ### META-30 — Dead `jest.config.cts` files
 
@@ -178,6 +178,7 @@ ClickUp `123kjkdqzvb`. No blocker. The "Lint rules" section of `documentation/co
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 1.7 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-29 ✅ (PR #1585, `483c622c`), with the selector fix, its scope (class fields only) and the `lint:profiles` check. |
 | 1.6 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-30 ✅ (PR #1583, `590ede94`), with its before/after checks; it went from 📋 to ✅ without an in-progress row, because #1582 held the previous version while it ran. |
 | 1.5 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-14 ✅ (PR #1581, `332d794f`), with the time the hook adds to a turn and the live trial; META-24 no longer lists META-14 among its blockers. |
 | 1.4 | 2026-11-23 | **META-14** (`123kjkdqv33`) — META-14 🔄: work started on `chore/123kjkdqv33-meta-14-stop-hook`. |
