@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 1.7 · **Last updated:** 2026-11-23
+**Document version:** 1.8 · **Last updated:** 2026-11-23
 
 ---
 
@@ -59,7 +59,7 @@
 | **META-28** ✅ | Root the Vite cache and coverage paths of the three eco-store orders feature libs | Normal | `123kjkdqwrm` |
 | **META-29** ✅ | ESLint: make the private-fields rule fire (`ClassProperty` → `PropertyDefinition`) | Low | `123kjkdqzv8` |
 | **META-30** ✅ | Delete the 18 dead `jest.config.cts` files | Low | `123kjkdqzv9` |
-| **META-31** 📋 | `documentation/code-style.md`: match the ESLint rule list to `eslint.config.mjs` | Low | `123kjkdqzvb` |
+| **META-31** ✅ | `documentation/code-style.md`: match the ESLint rule list to `eslint.config.mjs` | Low | `123kjkdqzvb` |
 
 ### Order and dependencies
 
@@ -114,7 +114,7 @@ ClickUp `123kjkdqv35`. Four libs fail today: `core/styles/util/{material,tailwin
 
 ### META-17 — Angular ESLint rules to errors
 
-ClickUp `123kjkdqv36`. `prefer-signals`, `prefer-inject`, `prefer-output-emitter-ref`, `prefer-control-flow`, `button-has-type`, plus bans on `standalone: true`, `ngClass`/`ngStyle` and `@HostBinding`/`@HostListener`. Count, sweep, then `error`.
+ClickUp `123kjkdqv36`. `prefer-signals`, `prefer-inject`, `prefer-output-emitter-ref`, `prefer-control-flow`, `button-has-type`, plus bans on `standalone: true`, `ngClass`/`ngStyle` and `@HostBinding`/`@HostListener`. Count, sweep, then `error`. META-31 found 9 component-class rules set only in the root config's `*.html` block, where they have nothing to check, and given to no TypeScript file, so they never run: `no-input-prefix`, `prefer-output-readonly`, `component-max-inline-declarations`, `no-conflicting-lifecycle`, `relative-url-prefix`, `use-component-selector`, `use-injectable-provided-in`, `no-queries-metadata-property`, `component-class-suffix`.
 
 ### META-18 — `lint-delta`
 
@@ -170,7 +170,7 @@ ClickUp `123kjkdqzv9`. Merged 2026-11-23 (PR #1583, `590ede94`). The 18 `jest.co
 
 ### META-31 — ESLint rule list in `code-style.md`
 
-ClickUp `123kjkdqzvb`. No blocker. The "Lint rules" section of `documentation/code-style.md` says `no-console` warns, where the root config makes it an error outside test files; it names five of the custom rules and credits `@angular-eslint/schematics`, which is not installed. Docs only: every entry checked against `eslint.config.mjs`, with one wording shared with root `CLAUDE.md`.
+ClickUp `123kjkdqzvb`. Merged 2026-11-23 (PR #1587, `edc1c5cf`). The "Lint rules" section of `documentation/code-style.md` no longer lists rules: it points to the list in root `CLAUDE.md`, the one copy every Claude session loads, and gives `yarn eslint --print-config <file>`. That list was checked line by line against the effective config: JSDoc is a warning on `function` declarations only, not "required for public APIs"; `no-console` also covers Cypress files; each rule now gives its severity; template rules also reach inline templates, through the `flat/angular` preset of each Angular project.
 
 ---
 
@@ -178,6 +178,7 @@ ClickUp `123kjkdqzvb`. No blocker. The "Lint rules" section of `documentation/co
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 1.8 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-31 ✅ (PR #1587, `edc1c5cf`): `code-style.md` points to the `CLAUDE.md` rule list, now checked against the config; META-17 gains the 9 Angular class rules that never run. |
 | 1.7 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-29 ✅ (PR #1585, `483c622c`), with the selector fix, its scope (class fields only) and the `lint:profiles` check. |
 | 1.6 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-30 ✅ (PR #1583, `590ede94`), with its before/after checks; it went from 📋 to ✅ without an in-progress row, because #1582 held the previous version while it ran. |
 | 1.5 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-14 ✅ (PR #1581, `332d794f`), with the time the hook adds to a turn and the live trial; META-24 no longer lists META-14 among its blockers. |
