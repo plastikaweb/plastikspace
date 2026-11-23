@@ -14,5 +14,5 @@ import { SharedFormFeatureModule } from '@plastik/shared/form';
 })
 export class ProfileFeatureComponent {
   protected facade = inject(DETAIL_ITEM_VIEW_FACADE);
-  pendingChanges = signal(false);
+  readonly pendingChanges = signal(false);
 }

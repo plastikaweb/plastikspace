@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-23] - The Angular rules of `.claude/CLAUDE.md` are lint errors (META-17)
+
+### Added
+
+- **Angular rules at error in every project, specs included.** `@angular-eslint/prefer-signals`, `prefer-inject`, `prefer-output-emitter-ref` and `prefer-output-readonly` on TypeScript; `template/prefer-control-flow` and `template/button-has-type` on templates; `no-restricted-syntax` selectors for `standalone: true` in a decorator, `@HostBinding`/`@HostListener`, the `NgClass`/`NgStyle` import and `ngClass`/`ngStyle` in templates. Counted before the change: 207 signal properties without `readonly`, 1 `@Input`, 38 buttons without `type`, 21 `output()` without `readonly`, 5 `ngClass`/`ngStyle`; 0 for the others (META-17, ([#123kjkdqv36](https://app.clickup.com/t/123kjkdqv36))).
+- **NG1053 caught at lint time.** A `#` field set by `input()`, `model()`, `output()`, `outputFromObservable()` or a signal query, or a `private` one set by the first four, is a lint error; only `ng build` caught it before (META-17, ([#123kjkdqv36](https://app.clickup.com/t/123kjkdqv36))).
+
+### Changed
+
+- **The sweep, in the same commit:** `readonly` on 207 signal properties (ESLint's own fix, limited to that rule) and on 21 outputs, `type="button"` on 38 buttons (none sits in a `<form>`; the two submit buttons already had their type), `input.required()` for the last `@Input`, and `[style.x]` bindings for the 5 `ngStyle`. Type-checking all 1,361 TypeScript files of `apps/` and `libs/` finds no assignment to a property made `readonly`. llecoop is swept too (META-17, ([#123kjkdqv36](https://app.clickup.com/t/123kjkdqv36))).
+- **The private-fields rule skips fields set by Angular's initializer APIs**, where `#` does not compile; `yarn lint:profiles` checks that a `private` query is not reported (META-17, ([#123kjkdqv36](https://app.clickup.com/t/123kjkdqv36))).
+
+### Removed
+
+- **13 component-class rules from the root `*.html` block**, which had nothing to check in a template. `prefer-output-readonly` moved to TypeScript; 8 never ran anywhere (`no-input-prefix`, `component-max-inline-declarations`, the deprecated `no-conflicting-lifecycle`, `relative-url-prefix`, `use-component-selector`, `use-injectable-provided-in`, `no-queries-metadata-property`, `component-class-suffix`), and the other 5 still reach Angular projects through nx's `flat/angular` preset (META-17, ([#123kjkdqv36](https://app.clickup.com/t/123kjkdqv36))).
+
 ## [2026-11-23] - Every library carries a scope and a type tag (META-16)
 
 ### Added

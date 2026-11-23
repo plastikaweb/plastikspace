@@ -42,7 +42,7 @@ export default class EcoStoreProductsSidenavFeatureComponent {
     { initialValue: this.translateService.getCurrentLang() }
   );
 
-  groupedCategoriesWithNames = computed(() => {
+  readonly groupedCategoriesWithNames = computed(() => {
     const currentLang = this.lang() as keyof LocalizedFields;
 
     return this.groupedCategories().map(group => {

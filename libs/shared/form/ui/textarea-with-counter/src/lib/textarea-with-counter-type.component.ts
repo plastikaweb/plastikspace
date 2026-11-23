@@ -34,7 +34,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
 export class TextareaWithCounterTypeComponent extends FieldType<FieldTypeConfig> {
   readonly #injector = inject(Injector);
 
-  autosize = viewChild<CdkTextareaAutosize>('autosize');
+  readonly autosize = viewChild<CdkTextareaAutosize>('autosize');
 
   triggerResize() {
     afterNextRender(

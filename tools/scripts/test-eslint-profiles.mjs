@@ -14,8 +14,9 @@
  *   that asks for a TypeScript program; and in every folder with such a config, the config ESLint
  *   computes for a virtual .ts, .mts, .cts, .tsx and .spec.ts file has neither.
  * - The private-fields rule (META-29), in the fast profile: on a virtual file under libs/ it
- *   reports the line of a `private` field and nothing else, not a `#` field or a `private` method.
- *   A selector that matches no node fails silently otherwise, as `ClassProperty` did.
+ *   reports the line of a `private` field and nothing else, not a `#` field, a `private` signal
+ *   query (META-17) or a `private` method. A selector that matches no node fails silently
+ *   otherwise, as `ClassProperty` did.
  * - On CI (CI=true), ESLINT_TYPED must be 1, since the same step then lints the projects.
  *
  * Rules are told apart by their metadata (`requiresTypeChecking`). A rule that only uses type
@@ -44,13 +45,15 @@ const CONFIG_NAMES = ['js', 'mjs', 'cjs', 'ts', 'mts', 'cts'].map(
   extension => `*eslint.config.${extension}`
 );
 const MARKER = '@@eslint-profile@@';
-// META-29: the private-fields rule must report line 2 of this file, and only that line.
+// META-29: the private-fields rule must report line 2 of this file, and only that line. Line 4
+// (META-17): a signal query may be `private` and cannot be `#` (NG1053), so the rule skips it.
 const PRIVATE_FIELDS_PROBE = {
   file: 'libs/eslint-profile-probe/src/private-fields.ts',
   code: [
     'export class Probe {',
     '  private hidden = 1;',
     '  #kept = 2;',
+    "  private readonly query = viewChild<unknown>('q');",
     '  private sum(): number {',
     '    return this.hidden + this.#kept;',
     '  }',
@@ -364,7 +367,9 @@ function main() {
       `${fast.scan.blocks} blocks of the ESLint configs and for ${fast.sweep.probed} virtual ` +
       `files; no error`
   );
-  console.log('✓ private-fields rule: reports a `private` field, not a `#` field or a method');
+  console.log(
+    '✓ private-fields rule: reports a `private` field, not a `#` field, a `private` query or a method'
+  );
 }
 
 if (process.argv[2] === '--worker') {

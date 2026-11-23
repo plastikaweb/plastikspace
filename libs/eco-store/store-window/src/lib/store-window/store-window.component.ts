@@ -33,7 +33,7 @@ export class StoreWindowComponent {
 
   readonly #countdownText = this.#countdown.text;
 
-  protected statusConfig = computed(() => {
+  protected readonly statusConfig = computed(() => {
     const status = this.status();
     const is24h = this.is24h();
     const countdownText = this.#countdownText();

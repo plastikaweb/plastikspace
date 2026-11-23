@@ -1,15 +1,15 @@
-import { AfterViewInit, Directive, ElementRef, inject, Input } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, inject, input } from '@angular/core';
 
 @Directive({
   selector: '[plastikTableCellTitle]',
 })
 export class TableCellTitleDirective implements AfterViewInit {
-  @Input({ required: true }) plastikTableCellTitle = true;
+  readonly plastikTableCellTitle = input.required<boolean>();
 
   readonly #elementRefElement: HTMLTableCellElement = inject(ElementRef).nativeElement;
 
   ngAfterViewInit(): void {
-    if (this.#elementRefElement.children.length > 0 && this.plastikTableCellTitle) {
+    if (this.#elementRefElement.children.length > 0 && this.plastikTableCellTitle()) {
       const childElement = this.#elementRefElement.children[0];
 
       const titleText = this.#getTextContent(childElement);

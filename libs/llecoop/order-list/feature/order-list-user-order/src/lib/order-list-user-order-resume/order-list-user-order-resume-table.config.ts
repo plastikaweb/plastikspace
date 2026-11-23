@@ -24,7 +24,7 @@ export class OrderListUserOrderResumeTableConfig implements TableStructureConfig
   readonly #productUnitSuffixPipe = inject(LlecoopProductUnitSuffixPipe);
   readonly #productUnitStepPipe = inject(LlecoopProductUnitStepPipe);
 
-  cartIsEditable = signal(false);
+  readonly cartIsEditable = signal(false);
 
   readonly #name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'name',

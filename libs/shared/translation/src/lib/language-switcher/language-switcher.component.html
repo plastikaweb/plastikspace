@@ -1,4 +1,5 @@
 <button
+  type="button"
   matIconButton
   aria-haspopup="menu"
   [matMenuTriggerFor]="menu"
@@ -9,7 +10,7 @@
 
 <mat-menu #menu="matMenu">
   @for (lang of languages(); track lang) {
-    <button mat-menu-item (click)="onSelect(lang)">
+    <button type="button" mat-menu-item (click)="onSelect(lang)">
       @let selected = lang === current();
       <mat-icon
         matMenuItemIcon

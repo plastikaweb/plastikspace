@@ -16,7 +16,7 @@ export class OrderListUserOrderResumeFormConfig {
   readonly #store = inject(llecoopOrderListStore);
   readonly #tableColumnProperties = inject(OrderListUserOrderResumeTableConfig);
 
-  userOrderData = signal<LlecoopUserOrder | null>(null);
+  readonly userOrderData = signal<LlecoopUserOrder | null>(null);
 
   readonly #userOrderCartEditable = computed(() => {
     const orderListId = this.userOrderData()?.orderListId;

@@ -86,6 +86,13 @@ const TS_DEFAULT_PROJECT = [
 // Untyped in both profiles: Wrangler generates worker-configuration.d.ts, which starts with
 // `/* eslint-disable */`.
 const TS_UNTYPED = ['**/worker-configuration.d.ts'];
+// Angular's initializer APIs (META-17). The compiler rejects any of them on an ES private field,
+// and input(), model() and output() on a TypeScript `private` one too (NG1053); a query may be
+// `private`. `.required` variants are calls on input, model, viewChild and contentChild.
+const SIGNAL_IO = 'input|model|output|outputFromObservable';
+const SIGNAL_QUERIES = 'viewChild|viewChildren|contentChild|contentChildren';
+const initializedBy = names =>
+  `:matches([value.callee.name=/^(${names})$/], [value.callee.object.name=/^(${names})$/])`;
 
 /**
  * Applies preset blocks to `files` minus `ignores` only, as `extends` inside an eslintrc override did.
@@ -356,14 +363,46 @@ export default [
       'id-denylist': ['warn', 'data', 'info', 'temp', 'val', 'item', 'foo', 'bar', 'baz'],
       // Class fields only (META-29): private methods and constructor parameter properties keep
       // the modifier. typescript-eslint names the node PropertyDefinition; the former
-      // ClassProperty matched nothing. `yarn lint:profiles` checks that the rule still fires.
+      // ClassProperty matched nothing. Fields set by an Angular initializer API are left out
+      // (META-17): `#` would not compile there. The other selectors turn the Angular rules of
+      // .claude/CLAUDE.md into errors. `yarn lint:profiles` checks that the rules still fire.
       'no-restricted-syntax': [
         'error',
         {
-          selector: "PropertyDefinition[accessibility='private']",
+          selector: `PropertyDefinition[accessibility='private']:not(${initializedBy(`${SIGNAL_IO}|${SIGNAL_QUERIES}`)})`,
           message: 'Use ES6 private fields (#) instead of the private modifier.',
         },
+        {
+          selector: `PropertyDefinition[key.type='PrivateIdentifier']${initializedBy(`${SIGNAL_IO}|${SIGNAL_QUERIES}`)}`,
+          message:
+            'Angular cannot read an ES private (#) field set by input(), model(), output() or a signal query (NG1053). Drop the #; a query may be private.',
+        },
+        {
+          selector: `PropertyDefinition[accessibility='private']${initializedBy(SIGNAL_IO)}`,
+          message:
+            'input(), model() and output() cannot be private (NG1053): make the field protected or public.',
+        },
+        {
+          selector:
+            "Decorator[expression.callee.name=/^(Component|Directive|Pipe)$/] > CallExpression > ObjectExpression > Property[key.name='standalone'][value.value=true]",
+          message: 'standalone: true is the default; remove it (.claude/CLAUDE.md).',
+        },
+        {
+          selector: 'Decorator[expression.callee.name=/^Host(Binding|Listener)$/]',
+          message:
+            'Use the host object of @Component or @Directive instead of @HostBinding/@HostListener (.claude/CLAUDE.md).',
+        },
+        {
+          selector:
+            "ImportDeclaration[source.value='@angular/common'] > ImportSpecifier[imported.name=/^Ng(Class|Style)$/]",
+          message: 'Use class and style bindings instead of NgClass/NgStyle (.claude/CLAUDE.md).',
+        },
       ],
+      // META-17. prefer-inject is also in nx's flat/angular preset; here it covers every project.
+      '@angular-eslint/prefer-signals': 'error',
+      '@angular-eslint/prefer-inject': 'error',
+      '@angular-eslint/prefer-output-emitter-ref': 'error',
+      '@angular-eslint/prefer-output-readonly': 'error',
       '@typescript-eslint/member-ordering': [
         'error',
         {
@@ -423,28 +462,32 @@ export default [
       '@angular-eslint/template/valid-aria': 'error',
       '@angular-eslint/template/no-any': 'error',
       '@angular-eslint/template/no-duplicate-attributes': 'error',
-      '@angular-eslint/no-input-prefix': 'error',
-      '@angular-eslint/use-lifecycle-interface': 'error',
-      '@angular-eslint/prefer-output-readonly': 'error',
-      '@angular-eslint/component-max-inline-declarations': 'error',
       '@angular-eslint/template/use-track-by-function': 'error',
-      '@angular-eslint/use-pipe-transform-interface': 'error',
-      '@angular-eslint/no-conflicting-lifecycle': 'error',
-      '@angular-eslint/relative-url-prefix': 'error',
-      '@angular-eslint/use-component-selector': 'error',
       '@angular-eslint/template/conditional-complexity': 'error',
-      '@angular-eslint/use-injectable-provided-in': 'error',
-      '@angular-eslint/no-inputs-metadata-property': 'error',
-      '@angular-eslint/no-outputs-metadata-property': 'error',
-      '@angular-eslint/no-queries-metadata-property': 'error',
       '@angular-eslint/template/no-distracting-elements': 'error',
-      '@angular-eslint/component-class-suffix': 'error',
-      '@angular-eslint/no-empty-lifecycle-method': 'error',
       '@angular-eslint/template/attributes-order': 'error',
       '@angular-eslint/template/banana-in-box': 'error',
       '@angular-eslint/template/eqeqeq': 'error',
       '@angular-eslint/template/no-interpolation-in-attributes': 'error',
       '@angular-eslint/template/no-negated-async': 'error',
+      // META-17: the Angular template rules of .claude/CLAUDE.md. This block used to list 14
+      // component-class rules too, which have nothing to check in a template: prefer-output-readonly
+      // moved to the TypeScript block, and the 13 others went (5 of them reach Angular projects'
+      // TypeScript through nx's flat/angular preset anyway).
+      '@angular-eslint/template/prefer-control-flow': 'error',
+      '@angular-eslint/template/button-has-type': 'error',
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'BoundAttribute[name=/^ng(Class|Style)$/]',
+          message:
+            'Use [class.x] or [style.x] bindings instead of ngClass/ngStyle (.claude/CLAUDE.md).',
+        },
+        {
+          selector: 'TextAttribute[name=/^ng(Class|Style)$/]',
+          message: 'Use class or style attributes instead of ngClass/ngStyle (.claude/CLAUDE.md).',
+        },
+      ],
     },
   },
   {

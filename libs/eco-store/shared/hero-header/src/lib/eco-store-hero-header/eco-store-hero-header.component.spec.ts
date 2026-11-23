@@ -137,7 +137,7 @@ describe('EcoStoreHeroHeaderComponent', () => {
       imports: [EcoStoreHeroHeaderComponent],
       template: `
         <eco-store-hero-header title="Title with action">
-          <button heroAction data-testId="action">Action</button>
+          <button type="button" heroAction data-testId="action">Action</button>
         </eco-store-hero-header>
       `,
     })

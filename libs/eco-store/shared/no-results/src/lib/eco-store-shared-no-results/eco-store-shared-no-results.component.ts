@@ -18,5 +18,5 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 })
 export class EcoStoreSharedNoResultsComponent {
   /** The descriptive text for the empty state illustration. Should be specific to the image content. */
-  imgTitle = input.required<string>();
+  readonly imgTitle = input.required<string>();
 }

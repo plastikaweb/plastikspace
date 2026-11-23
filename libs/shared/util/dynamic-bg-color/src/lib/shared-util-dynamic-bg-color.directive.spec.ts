@@ -11,7 +11,7 @@ import { SharedUtilDynamicBgColorDirective } from './shared-util-dynamic-bg-colo
 })
 class TestComponent {
   title = 'Test';
-  color = signal('orange');
+  readonly color = signal('orange');
 }
 
 describe('SharedUtilDynamicBgColorDirective', () => {

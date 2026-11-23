@@ -93,6 +93,7 @@
 
     @if (mode() === 'detail') {
       <button
+        type="button"
         matButton="filled"
         class="add-button detail-button flex grow items-center justify-center gap-1 tracking-wide uppercase"
         [disabled]="!isQuantityModified()"

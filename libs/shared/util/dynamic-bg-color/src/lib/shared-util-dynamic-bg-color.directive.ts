@@ -16,7 +16,7 @@ export class SharedUtilDynamicBgColorDirective {
   /**
    * The background color to apply on hover.
    */
-  color = input('');
+  readonly color = input('');
 
   /**
    * Handles the mouseenter event to apply the background color.

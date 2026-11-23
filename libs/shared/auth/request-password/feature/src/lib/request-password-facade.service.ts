@@ -8,7 +8,7 @@ import { AUTH_SERVICE, AuthFormFacade, RequestPasswordData } from '@plastik/auth
 export class RequestPasswordFacadeService implements AuthFormFacade<RequestPasswordData> {
   authService = inject(AUTH_SERVICE);
   formConfig = requestPasswordFormConfig();
-  extraLinks = signal([{ label: "Torna a la pàgina d'entrada", route: '/login' }]);
+  readonly extraLinks = signal([{ label: "Torna a la pàgina d'entrada", route: '/login' }]);
 
   onSubmit({ email }: RequestPasswordData): void {
     this.authService.requestPassword(email);

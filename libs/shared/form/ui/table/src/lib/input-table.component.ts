@@ -37,25 +37,25 @@ const INPUT_TABLE_ACCESSOR = {
 export class InputTableComponent<T extends BaseEntity> implements ControlValueAccessor {
   protected readonly cdr = inject(ChangeDetectorRef);
 
-  value = signal<T[]>([]);
-  disabled = signal<boolean>(false);
-  tablePaginationVisibility = signal<TablePaginationVisibility>({
+  readonly value = signal<T[]>([]);
+  readonly disabled = signal<boolean>(false);
+  readonly tablePaginationVisibility = signal<TablePaginationVisibility>({
     hideRangeLabel: true,
     hideRangeButtons: true,
   });
 
-  tableData = input<T[]>([]);
-  tableCaption = input<string>('');
-  tableColumnProperties = input<TableColumnFormatting<T, FormattingTypes>[]>([]);
-  tableDataLength = input<number>();
-  tableSorting = input<TableSortingConfig>();
-  tableActions = input<TableControlAction<T>>();
-  tableExtraRowStyles = input<(element: T) => string>();
-  tableRowValueConditionFn = input<(element: T) => boolean>();
-  tableNoPagination = input<boolean>(false);
-  label = input<string>('');
+  readonly tableData = input<T[]>([]);
+  readonly tableCaption = input<string>('');
+  readonly tableColumnProperties = input<TableColumnFormatting<T, FormattingTypes>[]>([]);
+  readonly tableDataLength = input<number>();
+  readonly tableSorting = input<TableSortingConfig>();
+  readonly tableActions = input<TableControlAction<T>>();
+  readonly tableExtraRowStyles = input<(element: T) => string>();
+  readonly tableRowValueConditionFn = input<(element: T) => boolean>();
+  readonly tableNoPagination = input<boolean>(false);
+  readonly label = input<string>('');
 
-  computedTableData = computed(() => {
+  readonly computedTableData = computed(() => {
     if (!this.tableData() || this.tableData().length === 0) {
       return this.value();
     }

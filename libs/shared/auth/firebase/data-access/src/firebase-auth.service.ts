@@ -31,13 +31,13 @@ export class FirebaseAuthService implements AuthFacade {
   readonly #activityStore = inject(activityStore);
   readonly #liveAnnouncer = inject(LiveAnnouncer);
 
-  currentUser = signal<User | null>(null);
-  currentUserEmail = computed(() => this.currentUser()?.email ?? '');
-  loggedIn = computed(() => !!this.currentUser());
-  verified = computed(() => !!this.currentUser()?.emailVerified);
-  isAdmin = signal<boolean>(false);
+  readonly currentUser = signal<User | null>(null);
+  readonly currentUserEmail = computed(() => this.currentUser()?.email ?? '');
+  readonly loggedIn = computed(() => !!this.currentUser());
+  readonly verified = computed(() => !!this.currentUser()?.emailVerified);
+  readonly isAdmin = signal<boolean>(false);
 
-  firstLoginAfterRegister = signal(true);
+  readonly firstLoginAfterRegister = signal(true);
 
   constructor() {
     this.#auth.onAuthStateChanged(user => this.handleAuthStateChanged(user));
