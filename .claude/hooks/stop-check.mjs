@@ -172,6 +172,8 @@ const SUPPRESSION =
 /** Added lines that silence a check: lines added since HEAD, or any line of an untracked file. */
 const findSuppressions = (root, files, known) => {
   const found = [];
+  // With no paths, `git ls-files --` and `git diff HEAD --` would read the whole repo.
+  if (files.length === 0) return found;
   const add = (file, line, text) => {
     if (SUPPRESSION.test(text) && !(known[file] ?? []).includes(text.trim()))
       found.push({ file, line, text: text.trim() });
