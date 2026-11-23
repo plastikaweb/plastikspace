@@ -242,7 +242,7 @@ Beyond architectural boundaries, the following code quality rules are enforced:
 - **Private fields**: Must use ES6 private fields (`#fieldName`) instead of TypeScript `private` modifier
 - **Member ordering**: Enforced order - signature, field, constructor, method
 - **JSDoc**: Required for public APIs; must start with capital letter and end with period
-- **Deprecation warnings** (`@typescript-eslint/no-deprecated`): warns on deprecated API usage in TypeScript files other than `*.spec.*`, `jest.config.cts` and `worker-configuration.d.ts` (test setup files and Cypress `*.cy.ts` included), in CI only (see the last item)
+- **Deprecation warnings** (`@typescript-eslint/no-deprecated`): warns on deprecated API usage in TypeScript files other than `*.spec.*` and `worker-configuration.d.ts` (test setup files and Cypress `*.cy.ts` included), in CI only (see the last item)
 - **NgRx** (`@ngrx/eslint-plugin`): `select-style` and `no-effects-in-providers` are errors; the other 23 rules kept from the former `eslint-plugin-ngrx` recommended set warn
 - **Accessibility**: Comprehensive a11y rules for templates (no-positive-tabindex, alt-text, label-has-associated-control, etc.)
 - **Naming** (warnings, not errors): `id-length` 2-40 chars (short loop/callback names like `i`, `e`, `id` are whitelisted), `id-denylist` rejects vague names (`data`, `info`, `temp`, `val`, `item`), and `@typescript-eslint/naming-convention` enforces camelCase members, PascalCase types, and `is`/`has`/`can`/`should`/`will` prefixes on boolean variables. The boolean selector needs type information, so it runs in CI only (see the last item), and never on `*.spec.ts`

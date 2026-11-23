@@ -83,10 +83,9 @@ const TS_DEFAULT_PROJECT = [
   'apps/eco-store/scripts/*.ts',
   'libs/eco-store/product-categories/data-access/src/eco-store-product-categories.store.mock.ts',
 ];
-// Untyped in both profiles. The 18 jest.config.cts files are dead (Jest is not installed) and
-// cannot all go in the list above: the tsconfig.json of libs/eco-store/core/layout takes in its
-// own. Wrangler generates worker-configuration.d.ts, which starts with `/* eslint-disable */`.
-const TS_UNTYPED = ['**/jest.config.cts', '**/worker-configuration.d.ts'];
+// Untyped in both profiles: Wrangler generates worker-configuration.d.ts, which starts with
+// `/* eslint-disable */`.
+const TS_UNTYPED = ['**/worker-configuration.d.ts'];
 
 /**
  * Applies preset blocks to `files` minus `ignores` only, as `extends` inside an eslintrc override did.
