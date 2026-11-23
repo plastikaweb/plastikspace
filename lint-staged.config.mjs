@@ -6,7 +6,8 @@
  * stages what the fixers change.
  *
  * CI keeps `nx affected --target=lint`, which also sees files that are not staged
- * (an orphan import in an unstaged file only shows up there).
+ * (an orphan import in an unstaged file only shows up there), and runs the rules that
+ * need type information, which the hooks skip (ESLINT_TYPED=1, META-13).
  */
 import path from 'node:path';
 
@@ -40,8 +41,8 @@ export default {
     // jsdoc/require-jsdoc an empty block, which then fails jsdoc/match-description (the
     // commit stops on a comment the fixer wrote), and jsdoc/require-param a bare
     // `@param name` line, while CI (no --fix) only warns about the missing JSDoc. The
-    // price: an error whose fix is a suggestion (prefer-const, prefer-readonly) stops
-    // the commit and is fixed by hand, as before META-12.
+    // price: an error whose fix is a suggestion (prefer-const) stops the commit and is
+    // fixed by hand, as before META-12.
     if (eslintFiles.length > 0)
       commands.push(`eslint --fix --fix-type problem,layout ${quote(eslintFiles)}`);
     // --no-globs: without it the `globs` of .markdownlint-cli2.yaml (**/*.md) are

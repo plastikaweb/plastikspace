@@ -146,6 +146,8 @@ Checks the **staged** content only; nothing unstaged enters the commit. Runs in 
 `tasks:check` and i18n:validate run on a copy of the index, so they read the content being committed.
 Untracked files are never added: the hook lists them after the commit, and the pre-push warns about them.
 Markdown-only commits skip the export and i18n. The affected lint over whole projects runs in CI, not in the hooks; pre-push keeps format check, affected test, build and a11y.
+ESLint in the hooks builds no TypeScript program, so the rules that need one (`no-deprecated`, `prefer-readonly`, the boolean `naming-convention` selector) only report in CI (META-13).
+`cypress/unsafe-to-chain-command` also flags chains that start at a helper function in CI only.
 A worktree on a branch older than META-12 has neither lint-staged nor `lint-staged.config.mjs`; the hook then uses those of the main checkout.
 
 While a commit runs, lint-staged keeps a `lint-staged automatic backup` entry on the stash, which every worktree shares.
@@ -159,6 +161,7 @@ Apply an entry by its SHA (`git stash apply <sha>`), never with `pop`: the `stas
 - **PR:** `nx affected --target=test` (fast feedback)
 - **Push to develop:** `nx run-many --target=test --all` (full validation + coverage badge)
 - **Format check** runs first, then lint → test → build (in that order)
+- **Lint** runs with `ESLINT_TYPED=1`, the profile with the rules that need type information, after `yarn lint:profiles` checks both ESLint profiles on a fixture (META-13)
 - **llecoop-firebase** excluded from lint/test/build (handled separately)
 - Nx Cloud for caching; CI falls back to local cache if unavailable
 - Coverage badge updates from `coverage/**/coverage-summary.json` on push to develop

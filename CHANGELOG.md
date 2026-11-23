@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-23] - ESLint without type information in the hooks (META-13)
+
+### Changed
+
+- **ESLint builds no TypeScript program by default.** The root `eslint.config.mjs` gave every file `parserOptions.project`, so each lint task and each ESLint call of the pre-commit built one program of the whole monorepo from `tsconfig.base.json` (1593 files). Hooks, editors and local runs now lint without one: a lint task takes 2.0–2.9 s instead of 6.8–8.2 s (10 projects, one at a time), all 190 tasks with 3 in parallel 178 s instead of 685 s, and the pre-commit's ESLint call on one staged file about 2 s instead of 7 s (META-13, [#123kjkdqv32](https://app.clickup.com/t/123kjkdqv32)).
+- **The three rules that need type information run in CI only:** `@typescript-eslint/no-deprecated`, `@typescript-eslint/prefer-readonly` and the boolean selector of `@typescript-eslint/naming-convention`. They run with `ESLINT_TYPED=1`, which CI's «Lint Affected» step and `yarn lint:ci` set. That profile types each file with its own project's tsconfig through typescript-eslint's project service: a lint task takes 4.1–7.7 s, and all 190 tasks 516 s. Both profiles report what the old config did across the 190 tasks: the typed one the same 675 warnings, the fast one the same minus the 19 of those three rules. Without a program, `cypress/unsafe-to-chain-command` also leaves chains that start at a helper function to CI; none exists today (META-13, [#123kjkdqv32](https://app.clickup.com/t/123kjkdqv32)).
+- **Files the project service cannot place** would stop the typed lint with a parse error: it only looks in the nearest `tsconfig.json` and the tsconfigs that one references. The typed profile types them with the options of `tsconfig.base.json` (`TS_DEFAULT_PROJECT`): the e2e Vite and Vitest configs, which sit in an unreferenced `tsconfig.spec.json`; the eco-store scripts, in no tsconfig; and the test-only mock store of `product-categories/data-access`, which its `tsconfig.lib.json` excludes. The 18 dead `jest.config.cts` files and Wrangler's `worker-configuration.d.ts` lint without types in both profiles; the three rules found nothing in them (META-13, [#123kjkdqv32](https://app.clickup.com/t/123kjkdqv32)).
+- **The Nx lint cache also hashes `ESLINT_TYPED` and the ESLint plugin packages**, through a `targetDefaults` entry for the `@nx/eslint/plugin` targets that keeps their inferred inputs (`"..."`). A CI run with `ESLINT_TYPED=1` thus never reuses a fast result, and upgrading `typescript-eslint`, `angular-eslint` or `typescript` invalidates the lint results. Until now a lint task hashed `eslint` and the packages its own project imports (`@nx/eslint-plugin` in 188 of 190), but not `typescript` or the plugins only the root config loads (META-13, [#123kjkdqv32](https://app.clickup.com/t/123kjkdqv32)).
+- **`CLAUDE.md`, `AGENTS.md`, `documentation/code-style.md` and `lint-staged.config.mjs`** say that those rules report in CI only (META-13, [#123kjkdqv32](https://app.clickup.com/t/123kjkdqv32)).
+
+### Added
+
+- **`yarn lint:profiles`** (`tools/scripts/test-eslint-profiles.mjs`) lints a fixture with both profiles. The typed one must report exactly the three findings the fixture marks; the fast one none, without throwing. In the fast profile it also probes a virtual file of each TypeScript extension in the 190 project folders with an ESLint config: none may get a rule that needs types or ask for a TypeScript program. CI runs it in the lint step, where it also fails if `ESLINT_TYPED` is not `1` (META-13, [#123kjkdqv32](https://app.clickup.com/t/123kjkdqv32)).
+
+### Removed
+
+- **`tsconfig.eslint.json`**: only the old `parserOptions.project` read it (META-13, [#123kjkdqv32](https://app.clickup.com/t/123kjkdqv32)).
+
 ## [2026-11-22] - Explicit tsconfig for Analog in the Vite configs (META-26)
 
 ### Fixed

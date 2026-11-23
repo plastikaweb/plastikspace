@@ -3,6 +3,12 @@
 // did. The blocks keep the order of the overrides of the former .eslintrc.json, so a later block
 // wins where a later override did. META-25 converted it; the comments say where flat config needs
 // something eslintrc did on its own.
+//
+// Two profiles (META-13). By default no rule needs type information, so ESLint builds no
+// TypeScript program: hooks, editors and local runs. ESLINT_TYPED=1 (CI's lint step and
+// `yarn lint:ci`) adds the three rules that need it, in the last but one block. Without a program,
+// cypress/unsafe-to-chain-command (e2e configs) also skips chains that start at a helper function.
+// `yarn lint:profiles` checks both profiles.
 import nx from '@nx/eslint-plugin';
 import ngrxConfigs from '@ngrx/eslint-plugin/v9';
 import angular from 'angular-eslint';
@@ -15,6 +21,71 @@ const TS = ['**/*.ts', '**/*.tsx', '**/*.mts', '**/*.cts'];
 const TS_SPECS = ['**/*.spec.ts', '**/*.spec.tsx', '**/*.spec.mts', '**/*.spec.cts'];
 const JS = ['**/*.js', '**/*.jsx'];
 const ngrx = ngrxConfigs.configs.store[0].plugins['@ngrx'];
+const isTyped = process.env.ESLINT_TYPED === '1';
+
+// naming-convention selectors that work without type information.
+const NAMING = [
+  {
+    selector: 'default',
+    format: ['camelCase'],
+    leadingUnderscore: 'allow',
+    trailingUnderscore: 'allow',
+  },
+  {
+    selector: 'variable',
+    format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
+    leadingUnderscore: 'allow',
+    trailingUnderscore: 'allow',
+  },
+  {
+    selector: 'import',
+    format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
+  },
+  {
+    selector: 'typeLike',
+    format: ['PascalCase'],
+  },
+  {
+    selector: 'enumMember',
+    format: ['PascalCase', 'UPPER_CASE'],
+  },
+  {
+    selector: 'property',
+    format: null,
+  },
+  {
+    selector: 'parameter',
+    format: ['camelCase'],
+    leadingUnderscore: 'allow',
+  },
+];
+// The one that needs it, typed profile only: a boolean variable needs a prefix. The rule tries
+// selectors with `types` first, wherever they sit in the list.
+const BOOLEAN_NAMING = {
+  selector: 'variable',
+  types: ['boolean'],
+  format: ['PascalCase'],
+  prefix: ['is', 'has', 'can', 'should', 'will'],
+};
+// TypeScript files the project service cannot place. It only looks in the nearest tsconfig.json
+// and the tsconfigs that one references: the e2e Vite and Vitest configs are in a
+// tsconfig.spec.json that the e2e tsconfig.json does not reference, the eco-store scripts are in no
+// tsconfig, and the product-categories mock store is excluded by its tsconfig.lib.json. Unlisted,
+// each stops the typed lint with a parse error ("was not found by the project service"); listed,
+// it gets the options of tsconfig.base.json, as every non-spec file did before META-13. A listed
+// file that one of those tsconfigs later takes in is a parse error too ("was included by
+// allowDefaultProject but also was found in the project service"): take it off the list. The
+// globs may not contain `**`, and at most 8 files of one lint task may match them.
+const TS_DEFAULT_PROJECT = [
+  'apps/*-e2e/vite.config.mts',
+  'apps/*-e2e/vitest.config.mts',
+  'apps/eco-store/scripts/*.ts',
+  'libs/eco-store/product-categories/data-access/src/eco-store-product-categories.store.mock.ts',
+];
+// Untyped in both profiles. The 18 jest.config.cts files are dead (Jest is not installed) and
+// cannot all go in the list above: the tsconfig.json of libs/eco-store/core/layout takes in its
+// own. Wrangler generates worker-configuration.d.ts, which starts with `/* eslint-disable */`.
+const TS_UNTYPED = ['**/jest.config.cts', '**/worker-configuration.d.ts'];
 
 /**
  * Applies preset blocks to `files` minus `ignores` only, as `extends` inside an eslintrc override did.
@@ -82,14 +153,6 @@ export default [
     plugins: {
       jsdoc,
       '@angular-eslint': angular.tsPlugin,
-    },
-  },
-  {
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.base.json', './tsconfig.eslint.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
     },
   },
   {
@@ -190,10 +253,9 @@ export default [
       ],
     },
   },
-  // Specs lint without a TS program. eslintrc merged arrays index by index, so the
-  // `project: []` of plugin:@nx/angular took the root paths back and Angular specs had one.
-  // The globals are those of the override's `env: { jest: true }`. The `globals` package has since
-  // dropped fdescribe, pit and require from its Jest set, so those three are listed by name.
+  // The globals of the former spec override's `env: { jest: true }`. The `globals` package has since
+  // dropped fdescribe, pit and require from its Jest set, so those three are listed by name. Specs
+  // get no type information in either profile: the typed block leaves them out.
   {
     files: [
       '**/*.spec.ts',
@@ -210,12 +272,6 @@ export default [
         pit: 'readonly',
         require: 'readonly',
       },
-      parserOptions: {
-        project: null,
-      },
-    },
-    rules: {
-      '@typescript-eslint/no-deprecated': 'off',
     },
   },
   ...scoped(nx.configs['flat/typescript'], TS, TS_SPECS),
@@ -224,7 +280,6 @@ export default [
     ignores: TS_SPECS,
     rules: {
       'no-console': 'error',
-      '@typescript-eslint/prefer-readonly': 'error',
       'no-extra-semi': 'off',
     },
   },
@@ -283,13 +338,6 @@ export default [
   },
   {
     files: TS,
-    ignores: TS_SPECS,
-    rules: {
-      '@typescript-eslint/no-deprecated': 'warn',
-    },
-  },
-  {
-    files: TS,
     languageOptions: {
       parser: tseslint.parser,
     },
@@ -319,48 +367,7 @@ export default [
           default: ['signature', 'field', 'constructor', 'method'],
         },
       ],
-      '@typescript-eslint/naming-convention': [
-        'warn',
-        {
-          selector: 'default',
-          format: ['camelCase'],
-          leadingUnderscore: 'allow',
-          trailingUnderscore: 'allow',
-        },
-        {
-          selector: 'variable',
-          format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
-          leadingUnderscore: 'allow',
-          trailingUnderscore: 'allow',
-        },
-        {
-          selector: 'import',
-          format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
-        },
-        {
-          selector: 'variable',
-          types: ['boolean'],
-          format: ['PascalCase'],
-          prefix: ['is', 'has', 'can', 'should', 'will'],
-        },
-        {
-          selector: 'typeLike',
-          format: ['PascalCase'],
-        },
-        {
-          selector: 'enumMember',
-          format: ['PascalCase', 'UPPER_CASE'],
-        },
-        {
-          selector: 'property',
-          format: null,
-        },
-        {
-          selector: 'parameter',
-          format: ['camelCase'],
-          leadingUnderscore: 'allow',
-        },
-      ],
+      '@typescript-eslint/naming-convention': ['warn', ...NAMING],
       'padding-line-between-statements': [
         'warn',
         {
@@ -443,47 +450,33 @@ export default [
       parser: jsoncParser,
     },
   },
-  {
-    files: TS_SPECS,
-    rules: {
-      '@typescript-eslint/naming-convention': [
-        'warn',
+  // The typed profile (ESLINT_TYPED=1): the three rules that need type information, on TypeScript
+  // files that are not specs. The project service types each file with the program of its own
+  // project, found from its nearest tsconfig.json and the tsconfigs that one references. Before
+  // META-13 every lint task, hooks included, built one program of the whole monorepo from
+  // tsconfig.base.json.
+  ...(isTyped
+    ? [
         {
-          selector: 'default',
-          format: ['camelCase'],
-          leadingUnderscore: 'allow',
-          trailingUnderscore: 'allow',
+          files: TS,
+          ignores: [...TS_SPECS, ...TS_UNTYPED],
+          languageOptions: {
+            parserOptions: {
+              projectService: {
+                allowDefaultProject: TS_DEFAULT_PROJECT,
+                defaultProject: 'tsconfig.base.json',
+              },
+              tsconfigRootDir: import.meta.dirname,
+            },
+          },
+          rules: {
+            '@typescript-eslint/prefer-readonly': 'error',
+            '@typescript-eslint/no-deprecated': 'warn',
+            '@typescript-eslint/naming-convention': ['warn', ...NAMING, BOOLEAN_NAMING],
+          },
         },
-        {
-          selector: 'variable',
-          format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
-          leadingUnderscore: 'allow',
-          trailingUnderscore: 'allow',
-        },
-        {
-          selector: 'import',
-          format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
-        },
-        {
-          selector: 'typeLike',
-          format: ['PascalCase'],
-        },
-        {
-          selector: 'enumMember',
-          format: ['PascalCase', 'UPPER_CASE'],
-        },
-        {
-          selector: 'property',
-          format: null,
-        },
-        {
-          selector: 'parameter',
-          format: ['camelCase'],
-          leadingUnderscore: 'allow',
-        },
-      ],
-    },
-  },
+      ]
+    : []),
   // flat/typescript sets tsconfigRootDir from @nx/devkit's workspaceRoot, which follows
   // NX_WORKSPACE_ROOT_PATH when it is set (it can point at another checkout).
   {
