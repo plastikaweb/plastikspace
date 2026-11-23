@@ -13,6 +13,9 @@
  *   .cts), whatever files it targets, turns on no rule that needs types and sets no parser option
  *   that asks for a TypeScript program; and in every folder with such a config, the config ESLint
  *   computes for a virtual .ts, .mts, .cts, .tsx and .spec.ts file has neither.
+ * - The private-fields rule (META-29), in the fast profile: on a virtual file under libs/ it
+ *   reports the line of a `private` field and nothing else, not a `#` field or a `private` method.
+ *   A selector that matches no node fails silently otherwise, as `ClassProperty` did.
  * - On CI (CI=true), ESLINT_TYPED must be 1, since the same step then lints the projects.
  *
  * Rules are told apart by their metadata (`requiresTypeChecking`). A rule that only uses type
@@ -41,6 +44,21 @@ const CONFIG_NAMES = ['js', 'mjs', 'cjs', 'ts', 'mts', 'cts'].map(
   extension => `*eslint.config.${extension}`
 );
 const MARKER = '@@eslint-profile@@';
+// META-29: the private-fields rule must report line 2 of this file, and only that line.
+const PRIVATE_FIELDS_PROBE = {
+  file: 'libs/eslint-profile-probe/src/private-fields.ts',
+  code: [
+    'export class Probe {',
+    '  private hidden = 1;',
+    '  #kept = 2;',
+    '  private sum(): number {',
+    '    return this.hidden + this.#kept;',
+    '  }',
+    '}',
+    '',
+  ].join('\n'),
+  lines: [2],
+};
 const SEVERITIES = { 1: 'warn', 2: 'error' };
 
 /**
@@ -193,6 +211,7 @@ async function lintFixture() {
       })),
       scan: isFast ? await scanBlocks(configFiles) : null,
       sweep: isFast ? await sweepConfigs(ESLint, configFiles) : null,
+      privateFields: isFast ? await probePrivateFields(eslint) : null,
     };
   } catch (error) {
     result = { thrown: String(error?.message ?? error) };
@@ -200,6 +219,22 @@ async function lintFixture() {
   // After a marker: @nx/enforce-module-boundaries prints a warning on stdout when no cached
   // project graph exists.
   process.stdout.write(`\n${MARKER}${JSON.stringify(result)}\n`);
+}
+
+/**
+ * Lints PRIVATE_FIELDS_PROBE as a virtual file and returns the lines the private-fields rule
+ * reports on it.
+ * @param {import('eslint').ESLint} eslint The worker's ESLint instance.
+ * @returns {Promise<number[]>} The reported lines.
+ */
+async function probePrivateFields(eslint) {
+  const [report] = await eslint.lintText(PRIVATE_FIELDS_PROBE.code, {
+    filePath: path.join(ROOT, PRIVATE_FIELDS_PROBE.file),
+  });
+
+  return report.messages
+    .filter(({ ruleId }) => ruleId === 'no-restricted-syntax')
+    .map(({ line }) => line);
 }
 
 /**
@@ -301,6 +336,12 @@ function main() {
       result.scan.offenders.forEach(offender => failures.push(`${name}: ${offender}`));
       if (result.sweep.probed === 0) failures.push(`${name}: the config sweep probed no file`);
       result.sweep.offenders.forEach(offender => failures.push(`${name}: ${offender}`));
+      if (result.privateFields.join() !== PRIVATE_FIELDS_PROBE.lines.join()) {
+        failures.push(
+          `${name}: the private-fields rule reported lines [${result.privateFields.join(', ')}] of ` +
+            `the probe, not [${PRIVATE_FIELDS_PROBE.lines.join(', ')}] (its \`private\` field)`
+        );
+      }
     }
   };
 
@@ -323,6 +364,7 @@ function main() {
       `${fast.scan.blocks} blocks of the ESLint configs and for ${fast.sweep.probed} virtual ` +
       `files; no error`
   );
+  console.log('✓ private-fields rule: reports a `private` field, not a `#` field or a method');
 }
 
 if (process.argv[2] === '--worker') {

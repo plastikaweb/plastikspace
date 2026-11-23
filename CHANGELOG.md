@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-23] - The private-fields ESLint rule fires (META-29)
+
+### Fixed
+
+- **The rule against the `private` modifier on class fields never fired.** Its `no-restricted-syntax` selector in the root `eslint.config.mjs` named `ClassProperty`, a node that typescript-eslint v8 calls `PropertyDefinition`, so it matched nothing while `CLAUDE.md` presented it as enforced. It now selects `PropertyDefinition[accessibility='private']`. It stays limited to fields, as `CLAUDE.md` now spells out: private methods and constructor parameter properties keep the modifier (19 and 3 today). No class field uses `private`: the 191 lint tasks pass with no finding from the rule, and the fast profile still reports 0 errors and 656 warnings (META-29, ([#123kjkdqzv8](https://app.clickup.com/t/123kjkdqzv8))).
+
+### Added
+
+- **`yarn lint:profiles` checks that the rule fires.** In the fast profile it lints a virtual file under `libs/` and expects the rule to report the line of its `private` field and nothing else: not its `#` field, not its `private` method. With the selector put back to `ClassProperty`, the script fails (META-29, ([#123kjkdqzv8](https://app.clickup.com/t/123kjkdqzv8))).
+
 ## [2026-11-23] - Dead Jest configs removed (META-30)
 
 ### Removed
