@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 1.1 · **Last updated:** 2026-11-22
+**Document version:** 1.2 · **Last updated:** 2026-11-23
 
 ---
 
@@ -41,8 +41,8 @@
 | **META-10** ✅ | `task.cjs`: single-task reader for the eco task docs | Low | `123kjkdqcmy` |
 | **META-11** ✅ | `tasks:check`: lint and consistency gate for the task docs | Low | `123kjkdqcqu` |
 | **META-12** ✅ | Fast git hooks: lint-staged in pre-commit, no duplicate lint in pre-push | Normal | `123kjkdqv31` |
-| **META-13** 🔄 | ESLint: keep the type-aware rules out of the hooks | Normal | `123kjkdqv32` |
-| **META-14** ⛔ | Claude Code Stop hook: feedback loop before the agent says "done" | Low | `123kjkdqv33` |
+| **META-13** ✅ | ESLint: keep the type-aware rules out of the hooks | Normal | `123kjkdqv32` |
+| **META-14** 📋 | Claude Code Stop hook: feedback loop before the agent says "done" | Low | `123kjkdqv33` |
 | **META-15** 📋 | `check-eco-conventions.cjs`: template and style rules for eco | Low | `123kjkdqv34` |
 | **META-16** 📋 | `check-nx-tags`: every lib carries a `scope:*` and a `type:*` tag | Low | `123kjkdqv35` |
 | **META-17** 📋 | ESLint: Angular rules that `.claude/CLAUDE.md` asks for in prose become errors | Low | `123kjkdqv36` |
@@ -94,11 +94,11 @@ ClickUp `123kjkdqv31`. Merged 2026-11-21 (PR #1568, `2ab4b20b`). Wall time of `g
 
 ### META-13 — ESLint without types in the hooks
 
-ClickUp `123kjkdqv32`. In progress since 2026-11-22, the day META-26 merged: lint is now the inferred `eslint .` task, and one lint task averages 11.8 s instead of 19.0 s (all 191 projects, no cache). Measured on 2026-11-20, the root `eslint.config.mjs` built a TypeScript program of the whole monorepo for every lint task (about 13 of its 20 s). Three rules need it: `@typescript-eslint/no-deprecated` (`deprecation/deprecation` before META-25), the boolean `naming-convention` selector and `prefer-readonly`; they move to the CI profile.
+ClickUp `123kjkdqv32`. Merged 2026-11-23 (PR #1578, `6d06d675`). By default ESLint builds no TypeScript program: one lint task takes 2.0–2.9 s instead of 6.8–8.2 s (10 projects, one at a time), all 190 tasks 178 s instead of 685 s (3 in parallel), and the pre-commit's ESLint call on one file about 2 s instead of 7 s. `ESLINT_TYPED=1` (CI's lint step, `yarn lint:ci`) adds `no-deprecated`, `prefer-readonly` and the boolean `naming-convention` selector, typed per project through typescript-eslint's project service: the same 675 findings as before, 516 s for the 190 tasks. `yarn lint:profiles` checks both profiles in CI. Left for later: the 18 dead `jest.config.cts` files, and the `ClassProperty` selector of the private-fields rule, which never fires under typescript-eslint v8.
 
 ### META-14 — Claude Code Stop hook
 
-ClickUp `123kjkdqv33`. Blocked by META-13. At the end of each turn: fast lint, Prettier, related tests and `tasks:check` on the changed files; exit 2 keeps the turn open until they pass.
+ClickUp `123kjkdqv33`. Its only blocker, META-13, is done. At the end of each turn: fast lint, Prettier, related tests and `tasks:check` on the changed files; exit 2 keeps the turn open until they pass.
 
 ### META-15 — `check-eco-conventions.cjs`
 
@@ -138,7 +138,7 @@ ClickUp `123kjkdqv3e`. Blocked by META-15, META-16 and META-18. Three lenses (co
 
 ### META-24 — Reusable Claude Code base
 
-ClickUp `123kjkdqv3f`. Blocked by META-13, META-14, META-19 and META-23. A private plugin (hooks, skills, CLAUDE.md skeleton) plus a template repo (Husky, lint-staged, ESLint profiles, CI).
+ClickUp `123kjkdqv3f`. Blocked by META-14, META-19 and META-23. A private plugin (hooks, skills, CLAUDE.md skeleton) plus a template repo (Husky, lint-staged, ESLint profiles, CI).
 
 ### META-25 — ESLint 10 with flat config
 
@@ -162,6 +162,7 @@ ClickUp `123kjkdqwrm`. Merged 2026-11-22 (PR #1571, `d6f42b64`); CI then collect
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 1.2 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-13 ✅ (PR #1578, `6d06d675`), with its before/after lint times; META-14 📋, its only blocker done; META-24 no longer lists META-13 among its blockers. |
 | 1.1 | 2026-11-22 | **META-13** (`123kjkdqv32`) — META-13 🔄: work started on `chore/123kjkdqv32-meta-13-eslint-without-types-in-hooks`. |
 | 1.0 | 2026-11-22 | **META-08** (`123kjkdpqjr`) — META-26 ✅ (PR #1574, `2f2306b1`, and PR #1575, `6a8a5019`); META-13 📋, its last blocker done, with the lint task time after Nx 24. |
 | 0.9 | 2026-11-22 | **META-26** (`123kjkdqv9g`) — META-26 🔄: work started on `chore/123kjkdqv9g-meta-26-nx-23`, the branch of its first PR (Nx 23). |
