@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 1.5 · **Last updated:** 2026-11-23
+**Document version:** 1.6 · **Last updated:** 2026-11-23
 
 ---
 
@@ -58,7 +58,7 @@
 | **META-27** ✅ | Remove Verdaccio: the root `local-registry` target, its config and the dependency | Low | `123kjkdqwqp` |
 | **META-28** ✅ | Root the Vite cache and coverage paths of the three eco-store orders feature libs | Normal | `123kjkdqwrm` |
 | **META-29** 📋 | ESLint: make the private-fields rule fire (`ClassProperty` → `PropertyDefinition`) | Low | `123kjkdqzv8` |
-| **META-30** 📋 | Delete the 18 dead `jest.config.cts` files | Low | `123kjkdqzv9` |
+| **META-30** ✅ | Delete the 18 dead `jest.config.cts` files | Low | `123kjkdqzv9` |
 | **META-31** 📋 | `documentation/code-style.md`: match the ESLint rule list to `eslint.config.mjs` | Low | `123kjkdqzvb` |
 
 ### Order and dependencies
@@ -166,7 +166,7 @@ ClickUp `123kjkdqzv8`. No blocker. The root `no-restricted-syntax` rule against 
 
 ### META-30 — Dead `jest.config.cts` files
 
-ClickUp `123kjkdqzv9`. No blocker. Jest is not installed, and the `jest.preset.js` the 18 files point to does not exist. The ticket deletes them and drops `**/jest.config.cts` from `TS_UNTYPED` in the root `eslint.config.mjs`. The `jest.config.*` excludes in the tsconfigs and in `nx.json` stay: they match nothing, and editing them makes most projects affected.
+ClickUp `123kjkdqzv9`. Merged 2026-11-23 (PR #1583, `590ede94`). The 18 `jest.config.cts` files are gone (Jest is not installed, and the `jest.preset.js` they pointed to did not exist), and so is their `**/jest.config.cts` entry in `TS_UNTYPED` of the root `eslint.config.mjs`. Before and after: the same 197 Nx projects, the same targets for the 18, and the same ESLint findings on them in both profiles (104 warnings fast, 107 typed, no error). The `jest.config.*` excludes in the tsconfigs and in `nx.json` stay: they match nothing, and editing them makes most projects affected.
 
 ### META-31 — ESLint rule list in `code-style.md`
 
@@ -178,6 +178,7 @@ ClickUp `123kjkdqzvb`. No blocker. The "Lint rules" section of `documentation/co
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 1.6 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-30 ✅ (PR #1583, `590ede94`), with its before/after checks; it went from 📋 to ✅ without an in-progress row, because #1582 held the previous version while it ran. |
 | 1.5 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-14 ✅ (PR #1581, `332d794f`), with the time the hook adds to a turn and the live trial; META-24 no longer lists META-14 among its blockers. |
 | 1.4 | 2026-11-23 | **META-14** (`123kjkdqv33`) — META-14 🔄: work started on `chore/123kjkdqv33-meta-14-stop-hook`. |
 | 1.3 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-29 (private-fields rule selector), META-30 (dead `jest.config.cts` files) and META-31 (ESLint rule list in `code-style.md`) added as 📋, three cleanups META-13 found; the order table lists them as free of blockers. |
