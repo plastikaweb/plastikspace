@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-23] - Dead Jest configs removed (META-30)
+
+### Removed
+
+- **The 18 `jest.config.cts` files** of nine eco-store and nine shared libraries. Jest is not installed, the `jest.preset.js` they point to does not exist, and those projects test with Vitest. Their `**/jest.config.cts` entry in `TS_UNTYPED` of the root `eslint.config.mjs` goes with them, and so does its mention in `CLAUDE.md`. Before and after: Nx lists the same 197 projects and the same `lint` and `test` targets for the 18, and ESLint reports the same findings on them, 104 warnings in the fast profile and 107 in the typed one, no error. The `jest.config.*` entries of the tsconfig `exclude` lists and of the `production` named input in `nx.json` stay: they match nothing, and editing them would make most projects affected (META-30, ([#123kjkdqzv9](https://app.clickup.com/t/123kjkdqzv9))).
+
 ## [2026-11-23] - Claude Code checks its own changes before ending a turn (META-14)
 
 ### Added
