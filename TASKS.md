@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 1.2 · **Last updated:** 2026-11-23
+**Document version:** 1.3 · **Last updated:** 2026-11-23
 
 ---
 
@@ -57,6 +57,9 @@
 | **META-26** ✅ | Nx 22.7 → 23 → 24.0.x with `nx migrate`, plus the legacy `nx.json` cleanup | Normal | `123kjkdqv9g` |
 | **META-27** ✅ | Remove Verdaccio: the root `local-registry` target, its config and the dependency | Low | `123kjkdqwqp` |
 | **META-28** ✅ | Root the Vite cache and coverage paths of the three eco-store orders feature libs | Normal | `123kjkdqwrm` |
+| **META-29** 📋 | ESLint: make the private-fields rule fire (`ClassProperty` → `PropertyDefinition`) | Low | `123kjkdqzv8` |
+| **META-30** 📋 | Delete the 18 dead `jest.config.cts` files | Low | `123kjkdqzv9` |
+| **META-31** 📋 | `documentation/code-style.md`: match the ESLint rule list to `eslint.config.mjs` | Low | `123kjkdqzvb` |
 
 ### Order and dependencies
 
@@ -73,6 +76,7 @@
 | 9 | META-24 | Packages what steps 1-8 proved |
 | Any | META-27 | No blocker, and it blocks none of the others |
 | First | META-28 | The test job of every CI run that tests all projects can fail without it, #1570's twice |
+| Any | META-29, META-30, META-31 | No blocker: three cleanups META-13 found. META-29 and META-31 both edit `documentation/code-style.md` |
 
 ---
 
@@ -94,7 +98,7 @@ ClickUp `123kjkdqv31`. Merged 2026-11-21 (PR #1568, `2ab4b20b`). Wall time of `g
 
 ### META-13 — ESLint without types in the hooks
 
-ClickUp `123kjkdqv32`. Merged 2026-11-23 (PR #1578, `6d06d675`). By default ESLint builds no TypeScript program: one lint task takes 2.0–2.9 s instead of 6.8–8.2 s (10 projects, one at a time), all 190 tasks 178 s instead of 685 s (3 in parallel), and the pre-commit's ESLint call on one file about 2 s instead of 7 s. `ESLINT_TYPED=1` (CI's lint step, `yarn lint:ci`) adds `no-deprecated`, `prefer-readonly` and the boolean `naming-convention` selector, typed per project through typescript-eslint's project service: the same 675 findings as before, 516 s for the 190 tasks. `yarn lint:profiles` checks both profiles in CI. Left for later: the 18 dead `jest.config.cts` files, and the `ClassProperty` selector of the private-fields rule, which never fires under typescript-eslint v8.
+ClickUp `123kjkdqv32`. Merged 2026-11-23 (PR #1578, `6d06d675`). By default ESLint builds no TypeScript program: one lint task takes 2.0–2.9 s instead of 6.8–8.2 s (10 projects, one at a time), all 190 tasks 178 s instead of 685 s (3 in parallel), and the pre-commit's ESLint call on one file about 2 s instead of 7 s. `ESLINT_TYPED=1` (CI's lint step, `yarn lint:ci`) adds `no-deprecated`, `prefer-readonly` and the boolean `naming-convention` selector, typed per project through typescript-eslint's project service: the same 675 findings as before, 516 s for the 190 tasks. `yarn lint:profiles` checks both profiles in CI. Left for later: the 18 dead `jest.config.cts` files (META-30), and the `ClassProperty` selector of the private-fields rule, which never fires under typescript-eslint v8 (META-29).
 
 ### META-14 — Claude Code Stop hook
 
@@ -156,12 +160,25 @@ ClickUp `123kjkdqwqp`. Merged 2026-11-22 (PR #1572, `e981d4c5`); `yarn.lock` los
 
 ClickUp `123kjkdqwrm`. Merged 2026-11-22 (PR #1571, `d6f42b64`); CI then collected the coverage of the three libs for the first time. The `vite.config.mts` of `libs/eco-store/orders/feature/{created,detail,list}` climbed four levels from projects five deep, and the coverage folder of `created` was the parent of those of `detail` and `list`. Vitest empties its coverage folder when it starts, so `created` running beside `detail` deleted the coverage files `detail` was writing, and CI on #1570 failed on `eco-store-orders-detail:test` twice in a row. The ticket points both paths at the root, in each project's own folder.
 
+### META-29 — Private-fields rule selector
+
+ClickUp `123kjkdqzv8`. No blocker. The root `no-restricted-syntax` rule against the `private` modifier selects `ClassProperty`, a node typescript-eslint v8 calls `PropertyDefinition`, so it has never fired; root `CLAUDE.md` presents it as enforced. Limited to fields it reports nothing today; widened to every private member it reports 19 methods and 3 constructor parameter properties in 16 files, and the owner picks which when the work starts. A check fails if the selector stops matching again.
+
+### META-30 — Dead `jest.config.cts` files
+
+ClickUp `123kjkdqzv9`. No blocker. Jest is not installed, and the `jest.preset.js` the 18 files point to does not exist. The ticket deletes them and drops `**/jest.config.cts` from `TS_UNTYPED` in the root `eslint.config.mjs`. The `jest.config.*` excludes in the tsconfigs and in `nx.json` stay: they match nothing, and editing them makes most projects affected.
+
+### META-31 — ESLint rule list in `code-style.md`
+
+ClickUp `123kjkdqzvb`. No blocker. The "Lint rules" section of `documentation/code-style.md` says `no-console` warns, where the root config makes it an error outside test files; it names five of the custom rules and credits `@angular-eslint/schematics`, which is not installed. Docs only: every entry checked against `eslint.config.mjs`, with one wording shared with root `CLAUDE.md`.
+
 ---
 
 ## 📝 Changelog
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 1.3 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-29 (private-fields rule selector), META-30 (dead `jest.config.cts` files) and META-31 (ESLint rule list in `code-style.md`) added as 📋, three cleanups META-13 found; the order table lists them as free of blockers. |
 | 1.2 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-13 ✅ (PR #1578, `6d06d675`), with its before/after lint times; META-14 📋, its only blocker done; META-24 no longer lists META-13 among its blockers. |
 | 1.1 | 2026-11-22 | **META-13** (`123kjkdqv32`) — META-13 🔄: work started on `chore/123kjkdqv32-meta-13-eslint-without-types-in-hooks`. |
 | 1.0 | 2026-11-22 | **META-08** (`123kjkdpqjr`) — META-26 ✅ (PR #1574, `2f2306b1`, and PR #1575, `6a8a5019`); META-13 📋, its last blocker done, with the lint task time after Nx 24. |
