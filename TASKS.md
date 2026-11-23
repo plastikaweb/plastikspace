@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 1.8 · **Last updated:** 2026-11-23
+**Document version:** 1.9 · **Last updated:** 2026-11-23
 
 ---
 
@@ -44,7 +44,7 @@
 | **META-13** ✅ | ESLint: keep the type-aware rules out of the hooks | Normal | `123kjkdqv32` |
 | **META-14** ✅ | Claude Code Stop hook: feedback loop before the agent says "done" | Low | `123kjkdqv33` |
 | **META-15** 📋 | `check-eco-conventions.cjs`: template and style rules for eco | Low | `123kjkdqv34` |
-| **META-16** 📋 | `check-nx-tags`: every lib carries a `scope:*` and a `type:*` tag | Low | `123kjkdqv35` |
+| **META-16** ✅ | `check-nx-tags`: every lib carries a `scope:*` and a `type:*` tag | Low | `123kjkdqv35` |
 | **META-17** 📋 | ESLint: Angular rules that `.claude/CLAUDE.md` asks for in prose become errors | Low | `123kjkdqv36` |
 | **META-18** 📋 | `lint-delta`: ESLint warnings may not grow on touched files | Low | `123kjkdqv37` |
 | **META-19** 📋 | eco-lib Nx generator: the shortest path is the correct one | Low | `123kjkdqv38` |
@@ -110,7 +110,7 @@ ClickUp `123kjkdqv34`. Bare form controls without `matInput`, hex colours outsid
 
 ### META-16 — `check-nx-tags`
 
-ClickUp `123kjkdqv35`. Four libs fail today: `core/styles/util/{material,tailwind-preset,tailwind4}` (no tags) and `core/util/cypress-commands` (empty tag).
+ClickUp `123kjkdqv35`. Merged 2026-11-23 (PR #1589, `a3eebc0b`). `yarn nx-tags:check` fails a `libs/**/project.json` without a `scope:*` that a `sourceTag` of the root `eslint.config.mjs` names or without a `type:*` tag (`missing-scope`, `missing-type`, `empty-tag`, `unknown-scope`); it reads the scopes from the config's text in 0.14 s, and `yarn nx-tags:test` checks that they match the imported config. First step of the pre-push and of CI's Lint Affected step; from a worktree the pre-push step runs only once the main checkout's `.husky` has it, CI runs both commands. The four libs that failed (8 errors in 4 of 183) now carry `scope:core` and `type:util`. Not covered: a `type:*` no rule names (`unknown-type`), and the apps without tags.
 
 ### META-17 — Angular ESLint rules to errors
 
@@ -178,6 +178,7 @@ ClickUp `123kjkdqzvb`. Merged 2026-11-23 (PR #1587, `edc1c5cf`). The "Lint rules
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 1.9 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-16 ✅ (PR #1589, `a3eebc0b`): `check-nx-tags` in the pre-push and CI, its tests, and the four libs that failed fixed; it went from 📋 to ✅ without an in-progress row. |
 | 1.8 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-31 ✅ (PR #1587, `edc1c5cf`): `code-style.md` points to the `CLAUDE.md` rule list, now checked against the config; META-17 gains the 9 Angular class rules that never run. |
 | 1.7 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-29 ✅ (PR #1585, `483c622c`), with the selector fix, its scope (class fields only) and the `lint:profiles` check. |
 | 1.6 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-30 ✅ (PR #1583, `590ede94`), with its before/after checks; it went from 📋 to ✅ without an in-progress row, because #1582 held the previous version while it ran. |
