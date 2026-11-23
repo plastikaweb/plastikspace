@@ -62,6 +62,10 @@ Add a line here each time a skill and the repo conflict again.
 
 `.claude/hooks/guard.sh` runs before every Edit, Write and Bash call (`.claude/settings.json`). It blocks edits to `apps/eco-store/pocketbase/pb_schema.json` and `yarn.lock`, blocks git commands that skip the Husky hooks (`--no-verify`, `commit -n`, `HUSKY=0`, `core.hooksPath`), and asks before killing, restarting or copying the local PocketBase on :8090. When it blocks, do what its message says; do not look for another way around it.
 
+## Stop check
+
+`.claude/hooks/stop-check.mjs` runs when a turn ends (`Stop` in `.claude/settings.json`, META-14). On the files changed since the session started it runs ESLint (fast profile, errors only), markdownlint, `prettier --check`, `vitest related` for at most two projects, and `yarn tasks:check` when a task doc changed; it also reports each new `eslint-disable`, `@ts-ignore`, `prettier-ignore`, `.skip` or `.only` in `apps/` and `libs/`. When something fails, the turn stays open with the findings: fix the cause rather than silencing it, or tell the user why it stays. The same failure blocks once; after that the turn ends and the user is told. A session runs the copy of the checkout it started in and checks the checkout it works in (a worktree, say), with that checkout's `node_modules`.
+
 <claude-mem-context>
 
 # Recent Activity
