@@ -92,6 +92,7 @@ yarn <app-name>:e2e:local            # E2E with watch mode
 yarn <app-name>:lint                 # Lint specific app
 yarn lint:all                        # Lint all projects
 yarn affected:lint                   # Lint affected projects
+yarn lint:ci                         # Lint affected projects with the type-aware rules, as CI does
 
 # Accessibility Testing
 yarn <app-name>:a11y                 # Run Pa11y accessibility tests
@@ -241,11 +242,12 @@ Beyond architectural boundaries, the following code quality rules are enforced:
 - **Private fields**: Must use ES6 private fields (`#fieldName`) instead of TypeScript `private` modifier
 - **Member ordering**: Enforced order - signature, field, constructor, method
 - **JSDoc**: Required for public APIs; must start with capital letter and end with period
-- **Deprecation warnings** (`@typescript-eslint/no-deprecated`): Enabled for non-test files to catch deprecated API usage
+- **Deprecation warnings** (`@typescript-eslint/no-deprecated`): warns on deprecated API usage in TypeScript files other than `*.spec.*`, `jest.config.cts` and `worker-configuration.d.ts` (test setup files and Cypress `*.cy.ts` included), in CI only (see the last item)
 - **NgRx** (`@ngrx/eslint-plugin`): `select-style` and `no-effects-in-providers` are errors; the other 23 rules kept from the former `eslint-plugin-ngrx` recommended set warn
 - **Accessibility**: Comprehensive a11y rules for templates (no-positive-tabindex, alt-text, label-has-associated-control, etc.)
-- **Naming** (warnings, not errors): `id-length` 2-40 chars (short loop/callback names like `i`, `e`, `id` are whitelisted), `id-denylist` rejects vague names (`data`, `info`, `temp`, `val`, `item`), and `@typescript-eslint/naming-convention` enforces camelCase members, PascalCase types, and `is`/`has`/`can`/`should`/`will` prefixes on boolean variables. The boolean selector is the only type-aware part and is switched off for `*.spec.ts`, which lint without a TS program (`"project": null`) — leaving it on there crashes ESLint instead of reporting
+- **Naming** (warnings, not errors): `id-length` 2-40 chars (short loop/callback names like `i`, `e`, `id` are whitelisted), `id-denylist` rejects vague names (`data`, `info`, `temp`, `val`, `item`), and `@typescript-eslint/naming-convention` enforces camelCase members, PascalCase types, and `is`/`has`/`can`/`should`/`will` prefixes on boolean variables. The boolean selector needs type information, so it runs in CI only (see the last item), and never on `*.spec.ts`
 - **Statement padding**: `padding-line-between-statements` requires a blank line before every `return` and after a block of variable declarations
+- **Rules that need type information run in CI only** (META-13): `no-deprecated`, `prefer-readonly` and the boolean `naming-convention` selector; `cypress/unsafe-to-chain-command` also flags chains that start at a helper function only there. They need `ESLINT_TYPED=1`, which CI's lint step and `yarn lint:ci` set. ESLint in hooks, editors and `nx lint` builds no TypeScript program and skips them; `yarn lint:profiles` checks both profiles. With `ESLINT_TYPED=1`, the project service types each file from its nearest `tsconfig.json`, the tsconfigs that one references or a `tsconfig.json` further up (the repo has none), never from `tsconfig.base.json`. A TypeScript file it cannot place fails the CI lint with "was not found by the project service": include it in one of those tsconfigs, or list it in `TS_DEFAULT_PROJECT` in the root `eslint.config.mjs`. A listed file that a tsconfig later takes in fails with "was included by allowDefaultProject but also was found in the project service": take it off the list
 
 ## Testing
 

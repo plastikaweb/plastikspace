@@ -28,6 +28,35 @@
           "passWithNoTests": true
         }
       }
+    ],
+    "lint": [
+      {
+        "filter": {
+          "plugin": "@nx/eslint/plugin"
+        },
+        "inputs": [
+          "...",
+          {
+            "env": "ESLINT_TYPED"
+          },
+          {
+            "externalDependencies": [
+              "typescript",
+              "typescript-eslint",
+              "angular-eslint",
+              "@nx/eslint-plugin",
+              "@ngrx/eslint-plugin",
+              "eslint-plugin-jsdoc",
+              "eslint-plugin-cypress",
+              "eslint-config-prettier",
+              "@eslint/js",
+              "globals",
+              "jsonc-eslint-parser",
+              "espree"
+            ]
+          }
+        ]
+      }
     ]
   },
   "namedInputs": {

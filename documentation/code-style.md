@@ -52,6 +52,8 @@ These are the manually added rules in the root `eslint.config.mjs`:
 - [no-console](https://eslint.org/docs/latest/rules/no-console): warns about any console related methods in the code.
 - [@typescript-eslint/prefer-readonly](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-readonly.md):
   require private members to be marked as `readonly` if they're never modified outside of the constructor.
+  It needs type information, so it only runs with `ESLINT_TYPED=1`: in CI, or locally with `yarn lint:ci`. The same
+  goes for `@typescript-eslint/no-deprecated` and the boolean selector of `@typescript-eslint/naming-convention` (META-13).
 - [eslint-plugin-jsdoc](https://github.com/gajus/eslint-plugin-jsdoc):
   - adds the recommended linting rules for `JSDoc`.
   - adds a regex match for description text in order to begin it in Uppercase and always end with a ".".
