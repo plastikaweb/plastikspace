@@ -239,7 +239,7 @@ Every library must carry **both** a `scope:*` and a `type:*` tag. The rules are 
 Beyond architectural boundaries, the following code quality rules are enforced:
 
 - `no-console` is an error (except in test files) - use proper logging or remove debug statements
-- **Private fields**: Must use ES6 private fields (`#fieldName`) instead of TypeScript `private` modifier
+- **Private fields**: a class field must be an ES6 private field (`#fieldName`), not a TypeScript `private` one: an error (`no-restricted-syntax`). Private methods and constructor parameter properties keep the `private` modifier; `yarn lint:profiles` checks that the rule still fires
 - **Member ordering**: Enforced order - signature, field, constructor, method
 - **JSDoc**: Required for public APIs; must start with capital letter and end with period
 - **Deprecation warnings** (`@typescript-eslint/no-deprecated`): warns on deprecated API usage in TypeScript files other than `*.spec.*` and `worker-configuration.d.ts` (test setup files and Cypress `*.cy.ts` included), in CI only (see the last item)

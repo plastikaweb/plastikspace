@@ -354,10 +354,13 @@ export default [
         },
       ],
       'id-denylist': ['warn', 'data', 'info', 'temp', 'val', 'item', 'foo', 'bar', 'baz'],
+      // Class fields only (META-29): private methods and constructor parameter properties keep
+      // the modifier. typescript-eslint names the node PropertyDefinition; the former
+      // ClassProperty matched nothing. `yarn lint:profiles` checks that the rule still fires.
       'no-restricted-syntax': [
         'error',
         {
-          selector: "ClassProperty[accessibility='private']",
+          selector: "PropertyDefinition[accessibility='private']",
           message: 'Use ES6 private fields (#) instead of the private modifier.',
         },
       ],
