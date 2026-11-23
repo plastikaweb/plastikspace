@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-23] - Claude Code checks its own changes before ending a turn (META-14)
+
+### Added
+
+- **`.claude/hooks/stop-check.mjs`, a Claude Code `Stop` hook.** When Claude ends a turn, the hook checks the files changed since the session started, untracked ones included: ESLint with the fast profile (errors only) on the files lint-staged lints, markdownlint on the Markdown files, `prettier --check` on all of them, `vitest related` in each project with changed TypeScript for at most two projects (an HTML template counts as its component), and `yarn tasks:check` when a task doc changed. A failure exits 2, so Claude Code keeps the turn open and hands Claude the findings. If they are still there at the next stop, the turn ends, the user gets a one-line message, and those files are not checked again until they change. Above 60 changed files, or two projects with tests, it skips those checks and says which command to run instead (META-14, ([#123kjkdqv33](https://app.clickup.com/t/123kjkdqv33))).
+- **A `SessionStart` hook** (the same script) records the files already modified when a session starts, with their content hash, so work in progress from before the session is never checked as if Claude had written it. Each check remembers the content hash of the files it passed. Measured on a worktree: a turn without new changes adds 0.4 s; a lint error in one eco-store library is reported in 27 s, its fix checked in 20 s (ESLint and `vitest related` in parallel); a Markdown or task-doc change takes 2.5 s (META-14, ([#123kjkdqv33](https://app.clickup.com/t/123kjkdqv33))).
+
+### Changed
+
+- **`lint-staged.config.mjs` exports `ESLINT_FILES` and `MARKDOWN_FILES`**, so the Stop hook lints the same files as the pre-commit. `.claude/CLAUDE.md` says what the hook checks (META-14, ([#123kjkdqv33](https://app.clickup.com/t/123kjkdqv33))).
+
 ## [2026-11-23] - ESLint without type information in the hooks (META-13)
 
 ### Changed

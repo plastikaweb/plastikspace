@@ -13,8 +13,9 @@ import path from 'node:path';
 
 // apps/eco-store/scripts is left out as the former root .eslintignore left it out: ESLint 10
 // lints a file with its nearest config, and that folder has one, for its own lint target.
-const ESLINT_FILES = /^(apps|libs)\/(?!eco-store\/scripts\/).+\.(ts|html)$/;
-const MARKDOWN_FILES = /\.md$/;
+// Exported for .claude/hooks/stop-check.mjs (META-14), which lints the same files.
+export const ESLINT_FILES = /^(apps|libs)\/(?!eco-store\/scripts\/).+\.(ts|html)$/;
+export const MARKDOWN_FILES = /\.md$/;
 
 // lint-staged splits each command with string-argv, which knows quotes but no
 // escapes: a path with a double quote (the tracked .agent/skills/"playwright"/ folder)
