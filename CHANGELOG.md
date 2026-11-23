@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-23] - Every library carries a scope and a type tag (META-16)
+
+### Added
+
+- **`tools/scripts/check-nx-tags.cjs` (`yarn nx-tags:check`).** Each `libs/**/project.json` that git lists (tracked or untracked, ignores applied) needs a `scope:*` tag that a `sourceTag` of the root `eslint.config.mjs` names and a `type:*` tag, or no app can import the library. Errors: `missing-scope`, `missing-type`, `empty-tag`, `unknown-scope`; `--json`; exit 0, 1 or 2. It reads the scopes from the text of the config, in 0.14 s for 183 libraries, where importing the config takes about 3 s. It is the first step of the pre-push and of CI's Lint Affected step (META-16, ([#123kjkdqv35](https://app.clickup.com/t/123kjkdqv35))).
+- **`yarn nx-tags:test`**, run in CI: 14 cases on fixture workspaces in temporary git repos, each error code and exit 2 included, plus the real tree, and a check that the scopes read from the text are those of the imported config. Two deliberate bugs in the check (no `unknown-scope`, single quotes only) each fail it (META-16, ([#123kjkdqv35](https://app.clickup.com/t/123kjkdqv35))).
+
+### Fixed
+
+- **Four libraries had no valid tags:** `core/styles/util/{material,tailwind-preset,tailwind4}` had none, and `core/util/cypress-commands` had `scope:core` and an empty string. All four now carry `scope:core` and `type:util`. Before: 8 errors in 4 of 183 libraries; after: none (META-16, ([#123kjkdqv35](https://app.clickup.com/t/123kjkdqv35))).
+
 ## [2026-11-23] - One list of the ESLint rules (META-31)
 
 ### Fixed

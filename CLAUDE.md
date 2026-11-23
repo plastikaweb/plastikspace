@@ -232,7 +232,7 @@ The following dependency rules are enforced by `@nx/enforce-module-boundaries` i
 
 **No circular dependencies allowed**. These rules prevent architectural drift.
 
-Every library must carry **both** a `scope:*` and a `type:*` tag. The rules are ANDed, and the `type:app` rule lists no app scope — a library tagged with a scope alone cannot be imported by any app.
+Every library must carry **both** a `scope:*` and a `type:*` tag. The rules are ANDed, and the `type:app` rule lists no app scope — a library tagged with a scope alone cannot be imported by any app. `yarn nx-tags:check` enforces it on every `libs/**/project.json`, with a `scope:*` that a `sourceTag` of the root `eslint.config.mjs` names; it is the first step of the pre-push and of CI's Lint Affected step.
 
 ### Code Quality Rules (ESLint)
 

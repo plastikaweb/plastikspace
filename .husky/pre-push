@@ -64,6 +64,15 @@ fi
 # -z: git C-quotes paths with a double quote otherwise.
 CHANGED_FILES=$(git diff --name-only -z "$MERGE_BASE" HEAD | tr '\0' '\n')
 
+# --- NX TAGS (runs for EVERY push, META-16) ---
+# Every library needs a scope:* tag the boundary rules name and a type:* tag, or no app
+# can import it. It reads the project.json files on disk in a fraction of a second.
+echo "🏷️  Checking Nx library tags..."
+if ! node tools/scripts/check-nx-tags.cjs; then
+  echo "❌ The Nx tags check failed (its output is above). Push aborted."
+  exit 1
+fi
+
 # --- FORMAT GATE (runs for EVERY push) ---
 # Commits that git writes itself (a rebase, a merge, a cherry-pick or revert without a
 # conflict) do NOT fire the pre-commit hook, so Prettier never ran on them. pre-push is

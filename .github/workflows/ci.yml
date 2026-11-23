@@ -59,6 +59,8 @@ jobs:
         env:
           ESLINT_TYPED: '1'
         run: |
+          yarn nx-tags:check
+          yarn nx-tags:test
           yarn i18n:validate
           yarn tasks:test
           yarn tasks:check
