@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 1.18 · **Last updated:** 2026-11-24
+**Document version:** 1.19 · **Last updated:** 2026-11-24
 
 ---
 
@@ -62,8 +62,8 @@
 | **META-31** ✅ | `documentation/code-style.md`: match the ESLint rule list to `eslint.config.mjs` | Low | `123kjkdqzvb` |
 | **META-32** 📋 | `guard.sh`: commit message limits, temp paths, piped git and quoted PocketBase words checked before they bite | Low | `123kjkdr15p` |
 | **META-33** 📋 | Claude Code settings: the Nx env for worktrees and a sandbox exclusion list | Low | `123kjkdr15q` |
-| **META-34** 🔄 | Worktree bootstrap and per-worktree hooks | Low | `123kjkdr15t` |
-| **META-35** 📋 | Long runs survive: SSH keepalive, no idle sleep, no forwarded `--cache` in pre-push | Low | `123kjkdr15u` |
+| **META-34** ✅ | Worktree bootstrap and per-worktree hooks | Low | `123kjkdr15t` |
+| **META-35** 🔄 | Long runs survive: SSH keepalive, no idle sleep, no forwarded `--cache` in pre-push | Low | `123kjkdr15u` |
 | **META-36** 📋 | `eco-admin:watch-scss`: the dev server picks up changed SCSS partials | Low | `123kjkdr15v` |
 | **META-37** ✅ | `eco-store:pb:sync` refuses to run without `POCKETBASE_ENV` | Normal | `123kjkdr15w` |
 | **META-38** ✅ | Trim root and eco-store `CLAUDE.md`: reference detail moves to the docs it belongs to | Low | `123kjkdr15x` |
@@ -192,11 +192,11 @@ ClickUp `123kjkdr15q`. From the META-21 inventory. `NX_WORKSPACE_ROOT_PATH=""` a
 
 ### META-34 — Worktree bootstrap and per-worktree hooks
 
-ClickUp `123kjkdr15t`. In progress since 2026-11-24 (PR #1611). From the META-21 inventory. One setup step links `node_modules`, `apps/eco-store/.env` and the PocketBase files into a new worktree, and each worktree runs its own `.husky`, not the main checkout's; a checkout without `.husky/_` must fail loudly, not skip every hook.
+ClickUp `123kjkdr15t`. Done 2026-11-24 (PR #1611, `72d34a3b`; follow-up PR #1613, `f44ac365`). Every checkout runs its own `.husky` through a dispatcher that `tools/scripts/worktree-setup.cjs` writes into the shared git folder, and a checkout without `.husky` cannot commit. In a new worktree, `node tools/scripts/worktree-setup.cjs --branch <type>/<task-id>-<words>` also links the ignored PocketBase files, renames the branch and installs packages (with `node`: Yarn runs no script before an install, which the first real run found). On this repository a fresh worktree was ready in 67 s, its first non-Markdown commit took 12 s, and a line only it had in its pre-commit stopped its commit. Two departures from the ticket: no relative `core.hooksPath` (no worktree has `.husky/_`, so git would have run no hook, silently), and `yarn install` instead of linking the main checkout's older `node_modules`.
 
 ### META-35 — Long runs survive
 
-ClickUp `123kjkdr15u`. From the META-21 inventory. A repo `core.sshCommand` with a keepalive, a macOS `caffeinate` while a session runs, and no forwarded `--cache` on the pre-push test step.
+ClickUp `123kjkdr15u`. In progress since 2026-11-24 (PR #1614). From the META-21 inventory. A repo `core.sshCommand` with a keepalive, a macOS `caffeinate` while a session runs, and no forwarded `--cache` on the pre-push test step.
 
 ### META-36 — `eco-admin:watch-scss`
 
@@ -220,6 +220,7 @@ ClickUp `123kjkdr177`. The owner set WCAG 2.2 AA for every app (PR #1603), but P
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 1.19 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-34 ✅ (PR #1611, `72d34a3b`, and PR #1613, `f44ac365`): every checkout runs its own git hooks, and a new worktree is ready to commit with one command. META-35 🔄 (PR #1614). |
 | 1.18 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-23 ✅ (PR #1610, `4176c74a`): the `task-audit` skill, which found three of the five issues of the PR #1558 replay. META-24 goes from ⛔ to 📋, its last blocker merged. META-34 🔄 (PR #1611). |
 | 1.17 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-22 ✅ (PR #1608, `38b05d14`): a commit-msg check for the ClickUp ID, the task ID and the CHANGELOG bullet, and a form-field eval that passed 5/5 on a case it cannot fail. META-23 🔄. |
 | 1.16 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-37 ✅ (PR #1605, `45932c0e`): `pb:sync` needs `POCKETBASE_ENV`. META-38 ✅ (PR #1606, `01e83b2d`): the two `CLAUDE.md` files trimmed. META-22 🔄, unblocked. |
