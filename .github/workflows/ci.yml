@@ -69,6 +69,7 @@ jobs:
           yarn eco-test-user:test
           yarn pb-sync:test
           yarn commit-refs:test
+          yarn worktree-setup:test
           yarn lint:delta:test
           yarn i18n:validate
           yarn tasks:test
