@@ -64,6 +64,8 @@ jobs:
           yarn eco-conventions:check
           yarn eco-conventions:test
           yarn eco-lib:test
+          yarn feature-map:check
+          yarn feature-map:test
           yarn lint:delta:test
           yarn i18n:validate
           yarn tasks:test

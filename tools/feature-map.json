@@ -1,0 +1,535 @@
+{
+  "generatedBy": "tools/scripts/feature-map.cjs (yarn feature-map). Do not edit by hand: yarn feature-map:check fails on any difference.",
+  "apps": {
+    "eco-store": {
+      "devUrl": "http://el-llevat.test:4200",
+      "serve": "yarn eco-store:local",
+      "routes": "apps/eco-store/src/app/app.routes.ts",
+      "pages": [
+        {
+          "path": "/accedir",
+          "title": "auth.login.title",
+          "access": "anonymous",
+          "needs": [],
+          "guards": ["pocketBaseIsNotLoggedGuard"],
+          "project": "eco-store-auth-feature-login",
+          "component": "EcoStoreAuthLoginComponent",
+          "file": "libs/eco-store/auth/feature/login/src/lib/login/eco-store-auth-login.component.ts",
+          "specs": [
+            "libs/eco-store/auth/feature/login/src/lib/login/eco-store-auth-login.component.spec.ts",
+            "libs/eco-store/auth/feature/login/src/lib/login/eco-store-auth-login-facade.service.spec.ts"
+          ],
+          "routes": "libs/eco-store/auth/feature/login/src/lib/eco-store-auth-feature-login.routes.ts",
+          "layout": [],
+          "outlets": {}
+        },
+        {
+          "path": "/recuperar-contrasenya",
+          "title": "auth.forgotPassword.title",
+          "access": "anonymous",
+          "needs": [],
+          "guards": ["pocketBaseIsNotLoggedGuard"],
+          "project": "eco-store-auth-feature-forgot-password",
+          "component": "EcoStoreAuthForgotPasswordComponent",
+          "file": "libs/eco-store/auth/feature/forgot-password/src/lib/forgot-password/eco-store-auth-forgot-password.component.ts",
+          "specs": [
+            "libs/eco-store/auth/feature/forgot-password/src/lib/forgot-password/eco-store-auth-forgot-password.component.spec.ts",
+            "libs/eco-store/auth/feature/forgot-password/src/lib/forgot-password/eco-store-auth-forgot-password-facade.service.spec.ts"
+          ],
+          "routes": "libs/eco-store/auth/feature/forgot-password/src/lib/eco-store-auth-forgot-password.routes.ts",
+          "layout": [],
+          "outlets": {}
+        },
+        {
+          "path": "/recuperar-contrasenya-enviada",
+          "title": "auth.forgotPasswordSent.title",
+          "access": "public",
+          "needs": [],
+          "guards": [],
+          "project": "eco-store-auth-feature-forgot-password-sent",
+          "component": "EcoStoreAuthFeatureForgotPasswordSentComponent",
+          "file": "libs/eco-store/auth/feature/forgot-password-sent/src/lib/eco-store-auth-feature-forgot-password-sent/eco-store-auth-feature-forgot-password-sent.component.ts",
+          "specs": [
+            "libs/eco-store/auth/feature/forgot-password-sent/src/lib/eco-store-auth-feature-forgot-password-sent/eco-store-auth-feature-forgot-password-sent.component.spec.ts"
+          ],
+          "routes": "libs/eco-store/auth/feature/forgot-password-sent/src/lib/eco-store-auth-feature-forgot-password-sent.routes.ts",
+          "layout": [],
+          "outlets": {}
+        },
+        {
+          "path": "/restablir-contrasenya",
+          "title": "auth.resetPassword.title",
+          "access": "anonymous",
+          "needs": [],
+          "guards": ["pocketBaseIsNotLoggedGuard"],
+          "project": "eco-store-auth-feature-reset-password",
+          "component": "EcoStoreAuthResetPasswordComponent",
+          "file": "libs/eco-store/auth/feature/reset-password/src/lib/reset-password/eco-store-auth-reset-password.component.ts",
+          "specs": [
+            "libs/eco-store/auth/feature/reset-password/src/lib/reset-password/eco-store-auth-reset-password.component.spec.ts",
+            "libs/eco-store/auth/feature/reset-password/src/lib/reset-password/eco-store-auth-reset-password-facade.service.spec.ts"
+          ],
+          "routes": "libs/eco-store/auth/feature/reset-password/src/lib/eco-store-auth-feature-reset-password.routes.ts",
+          "layout": [],
+          "outlets": {}
+        },
+        {
+          "path": "/confirmar-correu",
+          "title": "auth.confirmEmailChange.title",
+          "access": "public",
+          "needs": [],
+          "guards": [],
+          "project": "eco-store-auth-feature-confirm-email-change",
+          "component": "EcoStoreAuthConfirmEmailChangeComponent",
+          "file": "libs/eco-store/auth/feature/confirm-email-change/src/lib/confirm-email-change/eco-store-auth-confirm-email-change.component.ts",
+          "specs": [
+            "libs/eco-store/auth/feature/confirm-email-change/src/lib/confirm-email-change/eco-store-auth-confirm-email-change-facade.service.spec.ts"
+          ],
+          "routes": "libs/eco-store/auth/feature/confirm-email-change/src/lib/eco-store-auth-feature-confirm-email-change.routes.ts",
+          "layout": [],
+          "outlets": {}
+        },
+        {
+          "path": "/comandes/nova/:id",
+          "title": "cart.finish.title",
+          "access": "signed-in",
+          "needs": [],
+          "guards": ["ecoStoreAuthGuard"],
+          "project": "eco-store-order-created",
+          "component": "OrderConfirmationComponent",
+          "file": "libs/eco-store/orders/feature/created/src/lib/order-confirmation/order-confirmation.component.ts",
+          "specs": [
+            "libs/eco-store/orders/feature/created/src/lib/order-confirmation/order-confirmation.component.spec.ts"
+          ],
+          "routes": "libs/eco-store/orders/feature/created/src/lib/order-confirmation/eco-store-order-confirmation.routes.ts",
+          "layout": ["EcoLayoutComponent"],
+          "outlets": {}
+        },
+        {
+          "path": "/comandes/:id",
+          "title": "(dynamic)",
+          "access": "signed-in",
+          "needs": [],
+          "guards": ["ecoStoreAuthGuard"],
+          "project": "eco-store-orders-detail",
+          "component": "EcoStoreOrdersDetailComponent",
+          "file": "libs/eco-store/orders/feature/detail/src/lib/eco-store-orders-detail.component.ts",
+          "specs": [
+            "libs/eco-store/orders/feature/detail/src/lib/eco-store-orders-detail.component.spec.ts"
+          ],
+          "routes": "libs/eco-store/orders/feature/detail/src/lib/eco-store-orders-detail.routes.ts",
+          "layout": ["EcoLayoutComponent"],
+          "outlets": {}
+        },
+        {
+          "path": "/comandes",
+          "title": "orders.list.title",
+          "access": "signed-in",
+          "needs": [],
+          "guards": ["ecoStoreAuthGuard"],
+          "project": "eco-store-orders-list",
+          "component": "EcoStoreOrdersListComponent",
+          "file": "libs/eco-store/orders/feature/list/src/lib/eco-store-orders-list.component.ts",
+          "specs": [
+            "libs/eco-store/orders/feature/list/src/lib/eco-store-orders-list.component.spec.ts"
+          ],
+          "routes": "libs/eco-store/orders/feature/list/src/lib/eco-store-orders-list.routes.ts",
+          "layout": ["EcoLayoutComponent"],
+          "outlets": {}
+        },
+        {
+          "path": "/cistella/resum",
+          "title": "cart.summary.headTitle",
+          "access": "public",
+          "needs": ["a cart with products (else /botiga)"],
+          "guards": ["emptyCartGuard"],
+          "project": "eco-store-cart",
+          "component": "CartSummaryComponent",
+          "file": "libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/summary/cart-summary.component.ts",
+          "specs": [
+            "libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/summary/cart-summary.component.spec.ts"
+          ],
+          "routes": "libs/eco-store/cart/feature/src/lib/eco-store-cart.routes.ts",
+          "layout": ["EcoLayoutComponent", "EcoStoreCartComponent"],
+          "outlets": {}
+        },
+        {
+          "path": "/cistella/enviament",
+          "title": "cart.shipping.headTitle",
+          "access": "signed-in",
+          "needs": [
+            "a cart with products (else /botiga)",
+            "a tenant that ships (else /cistella/pendent)",
+            "the store open for orders now (else /cistella/resum)",
+            "a trial that has not expired (else a dialog, then /perfil or /botiga)"
+          ],
+          "guards": [
+            "emptyCartGuard",
+            "ecoStoreNotLoggedShippingGuard",
+            "shippingAvailableGuard",
+            "isStoreOpenGuard",
+            "ecoStoreTrialExpiredGuard"
+          ],
+          "project": "eco-store-cart",
+          "component": "CartShippingComponent",
+          "file": "libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/shipping/cart-shipping.component.ts",
+          "specs": [
+            "libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/shipping/cart-shipping.component.spec.ts"
+          ],
+          "routes": "libs/eco-store/cart/feature/src/lib/eco-store-cart.routes.ts",
+          "layout": ["EcoLayoutComponent", "EcoStoreCartComponent"],
+          "outlets": {}
+        },
+        {
+          "path": "/cistella/confirmacio",
+          "title": "cart.confirmation.headTitle",
+          "access": "signed-in",
+          "needs": [
+            "a cart with products (else /botiga)",
+            "a tenant that ships (else /cistella/pendent)",
+            "the store open for orders now (else /cistella/resum)",
+            "the shipping step filled in (else /cistella/enviament)",
+            "a trial that has not expired (else a dialog, then /perfil or /botiga)"
+          ],
+          "guards": [
+            "emptyCartGuard",
+            "ecoStoreNotLoggedShippingGuard",
+            "shippingAvailableGuard",
+            "isStoreOpenGuard",
+            "shippingInfoGuard",
+            "ecoStoreTrialExpiredGuard"
+          ],
+          "project": "eco-store-cart",
+          "component": "CartConfirmationComponent",
+          "file": "libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/confirmation/cart-confirmation.component.ts",
+          "specs": [
+            "libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/confirmation/cart-confirmation.component.spec.ts"
+          ],
+          "routes": "libs/eco-store/cart/feature/src/lib/eco-store-cart.routes.ts",
+          "layout": ["EcoLayoutComponent", "EcoStoreCartComponent"],
+          "outlets": {}
+        },
+        {
+          "path": "/cistella/pendent",
+          "title": "cart.shipping.unavailable.headTitle",
+          "access": "public",
+          "needs": [
+            "a cart with products (else /botiga)",
+            "a tenant that does not ship (else /cistella/resum)"
+          ],
+          "guards": ["emptyCartGuard", "shippingUnavailableGuard"],
+          "project": "eco-store-cart",
+          "component": "ShippingUnavailableComponent",
+          "file": "libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/shipping/shipping-unavailable/shipping-unavailable.component.ts",
+          "specs": [
+            "libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/shipping/shipping-unavailable/shipping-unavailable.component.spec.ts"
+          ],
+          "routes": "libs/eco-store/cart/feature/src/lib/eco-store-cart.routes.ts",
+          "layout": ["EcoLayoutComponent", "EcoStoreCartComponent"],
+          "outlets": {}
+        },
+        {
+          "path": "/botiga/:category/:slug",
+          "title": "(dynamic)",
+          "access": "public",
+          "needs": [],
+          "guards": ["ecoStoreProductCanDeactivateGuard"],
+          "project": "eco-store-product-feature",
+          "component": "EcoStoreProductFeatureComponent",
+          "file": "libs/eco-store/products/feature/detail/src/lib/eco-store-product-feature.component.ts",
+          "specs": [
+            "libs/eco-store/products/feature/detail/src/lib/eco-store-product-feature.component.spec.ts",
+            "libs/eco-store/products/feature/detail/src/lib/eco-store-product-can-deactivate.guard.spec.ts"
+          ],
+          "routes": "libs/eco-store/products/feature/detail/src/lib/eco-store-product-feature.routes.ts",
+          "layout": ["EcoLayoutComponent"],
+          "outlets": {}
+        },
+        {
+          "path": "/botiga/:category",
+          "title": "(dynamic)",
+          "access": "public",
+          "needs": [],
+          "guards": [],
+          "project": "eco-store-products-feature",
+          "component": "EcoStoreProductsFeatureComponent",
+          "file": "libs/eco-store/products/feature/list/src/lib/eco-store-products-feature.component.ts",
+          "specs": [
+            "libs/eco-store/products/feature/list/src/lib/eco-store-products-feature.component.spec.ts",
+            "libs/eco-store/products/feature/list/src/lib/eco-store-products-sidenav-feature.component.spec.ts"
+          ],
+          "routes": "libs/eco-store/products/feature/list/src/lib/eco-store-products-feature.routes.ts",
+          "layout": ["EcoLayoutComponent"],
+          "outlets": {
+            "sidenav": "EcoStoreProductsSidenavFeatureComponent"
+          }
+        },
+        {
+          "path": "/botiga",
+          "title": "products.all",
+          "access": "public",
+          "needs": [],
+          "guards": [],
+          "project": "eco-store-products-feature",
+          "component": "EcoStoreProductsFeatureComponent",
+          "file": "libs/eco-store/products/feature/list/src/lib/eco-store-products-feature.component.ts",
+          "specs": [
+            "libs/eco-store/products/feature/list/src/lib/eco-store-products-feature.component.spec.ts",
+            "libs/eco-store/products/feature/list/src/lib/eco-store-products-sidenav-feature.component.spec.ts"
+          ],
+          "routes": "libs/eco-store/products/feature/list/src/lib/eco-store-products-feature.routes.ts",
+          "layout": ["EcoLayoutComponent"],
+          "outlets": {
+            "sidenav": "EcoStoreProductsSidenavFeatureComponent"
+          }
+        },
+        {
+          "path": "/perfil/dades-personals",
+          "title": "profile.personalData.title",
+          "access": "signed-in",
+          "needs": [],
+          "guards": ["ecoStoreAuthGuard"],
+          "project": "eco-store-profile-basic-feature",
+          "component": "EcoStoreProfileBasicFeatureComponent",
+          "file": "libs/eco-store/profile/basic/src/lib/eco-store-profile-basic-feature/eco-store-profile-basic-feature.component.ts",
+          "specs": [
+            "libs/eco-store/profile/basic/src/lib/eco-store-profile-basic-feature/eco-store-profile-basic-feature.component.spec.ts"
+          ],
+          "routes": "libs/eco-store/profile/basic/src/lib/eco-store-profile-basic-feature.routes.ts",
+          "layout": ["EcoLayoutComponent", "EcoStoreProfileFeatureComponent"],
+          "outlets": {
+            "sidenav": "EcoStoreProfileSidenavFeatureComponent"
+          }
+        },
+        {
+          "path": "/perfil/avatar",
+          "title": "profile.avatar.title",
+          "access": "signed-in",
+          "needs": [],
+          "guards": ["ecoStoreAuthGuard"],
+          "project": "eco-store-profile-avatar-feature",
+          "component": "EcoStoreProfileAvatarFeatureComponent",
+          "file": "libs/eco-store/profile/avatar/src/lib/eco-store-profile-avatar-feature/eco-store-profile-avatar-feature.component.ts",
+          "specs": [
+            "libs/eco-store/profile/avatar/src/lib/eco-store-profile-avatar-feature/eco-store-profile-avatar-feature.component.spec.ts"
+          ],
+          "routes": "libs/eco-store/profile/avatar/src/lib/eco-store-profile-avatar-feature.routes.ts",
+          "layout": ["EcoLayoutComponent", "EcoStoreProfileFeatureComponent"],
+          "outlets": {
+            "sidenav": "EcoStoreProfileSidenavFeatureComponent"
+          }
+        },
+        {
+          "path": "/perfil/adreces",
+          "title": "profile.addresses.title",
+          "access": "signed-in",
+          "needs": [],
+          "guards": ["ecoStoreAuthGuard"],
+          "project": "eco-store-profile-addresses-feature",
+          "component": "EcoStoreProfileAddressesFeatureComponent",
+          "file": "libs/eco-store/profile/addresses/src/lib/eco-store-profile-addresses-feature/eco-store-profile-addresses-feature.component.ts",
+          "specs": [
+            "libs/eco-store/profile/addresses/src/lib/eco-store-profile-addresses-feature/eco-store-profile-addresses-feature.component.spec.ts"
+          ],
+          "routes": "libs/eco-store/profile/addresses/src/lib/eco-store-profile-addresses-feature.routes.ts",
+          "layout": ["EcoLayoutComponent", "EcoStoreProfileFeatureComponent"],
+          "outlets": {
+            "sidenav": "EcoStoreProfileSidenavFeatureComponent"
+          }
+        },
+        {
+          "path": "/perfil/adreces/nova",
+          "title": "profile.addresses.title",
+          "access": "signed-in",
+          "needs": [],
+          "guards": ["ecoStoreAuthGuard", "ecoStoreProfileAddressesCanDeactivateGuard"],
+          "project": "eco-store-profile-addresses-feature",
+          "component": "EcoStoreProfileAddressesFeatureComponent",
+          "file": "libs/eco-store/profile/addresses/src/lib/eco-store-profile-addresses-feature/eco-store-profile-addresses-feature.component.ts",
+          "specs": [
+            "libs/eco-store/profile/addresses/src/lib/eco-store-profile-addresses-feature/eco-store-profile-addresses-feature.component.spec.ts"
+          ],
+          "routes": "libs/eco-store/profile/addresses/src/lib/eco-store-profile-addresses-feature.routes.ts",
+          "layout": ["EcoLayoutComponent", "EcoStoreProfileFeatureComponent"],
+          "outlets": {
+            "sidenav": "EcoStoreProfileSidenavFeatureComponent"
+          }
+        },
+        {
+          "path": "/perfil/adreces/:id",
+          "title": "profile.addresses.title",
+          "access": "signed-in",
+          "needs": [],
+          "guards": ["ecoStoreAuthGuard", "ecoStoreProfileAddressesCanDeactivateGuard"],
+          "project": "eco-store-profile-addresses-feature",
+          "component": "EcoStoreProfileAddressesFeatureComponent",
+          "file": "libs/eco-store/profile/addresses/src/lib/eco-store-profile-addresses-feature/eco-store-profile-addresses-feature.component.ts",
+          "specs": [
+            "libs/eco-store/profile/addresses/src/lib/eco-store-profile-addresses-feature/eco-store-profile-addresses-feature.component.spec.ts"
+          ],
+          "routes": "libs/eco-store/profile/addresses/src/lib/eco-store-profile-addresses-feature.routes.ts",
+          "layout": ["EcoLayoutComponent", "EcoStoreProfileFeatureComponent"],
+          "outlets": {
+            "sidenav": "EcoStoreProfileSidenavFeatureComponent"
+          }
+        },
+        {
+          "path": "/perfil/access-i-seguretat",
+          "title": "profile.accessSecurity.title",
+          "access": "signed-in",
+          "needs": [],
+          "guards": ["ecoStoreAuthGuard"],
+          "project": "eco-store-profile-access-security-feature",
+          "component": "EcoStoreProfileAccessSecurityFeatureComponent",
+          "file": "libs/eco-store/profile/access-security/src/lib/eco-store-profile-access-security-feature/eco-store-profile-access-security-feature.component.ts",
+          "specs": [
+            "libs/eco-store/profile/access-security/src/lib/eco-store-profile-access-security-feature/eco-store-profile-access-security-feature.component.spec.ts"
+          ],
+          "routes": "libs/eco-store/profile/access-security/src/lib/eco-store-profile-access-security-feature.routes.ts",
+          "layout": ["EcoLayoutComponent", "EcoStoreProfileFeatureComponent"],
+          "outlets": {
+            "sidenav": "EcoStoreProfileSidenavFeatureComponent"
+          }
+        },
+        {
+          "path": "/perfil/dades-fiscals",
+          "title": "profile.fiscalData.title",
+          "access": "signed-in",
+          "needs": [
+            "a tenant with fiscal data enabled (else the URL does not match: /perfil/dades-personals)"
+          ],
+          "guards": ["ecoStoreAuthGuard", "ecoStoreFiscalDataCanMatchGuard"],
+          "project": "eco-store-profile-fiscal-data-feature",
+          "component": "EcoStoreProfileFiscalDataFeatureComponent",
+          "file": "libs/eco-store/profile/fiscal-data/src/lib/eco-store-profile-fiscal-data-feature/eco-store-profile-fiscal-data-feature.component.ts",
+          "specs": [
+            "libs/eco-store/profile/fiscal-data/src/lib/eco-store-profile-fiscal-data-feature/eco-store-profile-fiscal-data-feature.component.spec.ts"
+          ],
+          "routes": "libs/eco-store/profile/fiscal-data/src/lib/eco-store-profile-fiscal-data-feature.routes.ts",
+          "layout": ["EcoLayoutComponent", "EcoStoreProfileFeatureComponent"],
+          "outlets": {
+            "sidenav": "EcoStoreProfileSidenavFeatureComponent"
+          }
+        }
+      ],
+      "redirects": [
+        {
+          "path": "/cistella",
+          "to": "/cistella/resum"
+        },
+        {
+          "path": "/perfil/**",
+          "to": "/perfil/dades-personals"
+        },
+        {
+          "path": "/**",
+          "to": "/botiga"
+        }
+      ]
+    },
+    "eco-admin": {
+      "devUrl": "http://localhost:4204",
+      "serve": "yarn eco-admin:serve",
+      "routes": "apps/eco-admin/src/app/app.routes.ts",
+      "pages": [
+        {
+          "path": "/accedir",
+          "title": "auth.login.title",
+          "access": "anonymous",
+          "needs": [],
+          "guards": ["ecoAdminAnonymousGuard"],
+          "project": "eco-admin-auth-login",
+          "component": "EcoAdminAuthLoginComponent",
+          "file": "libs/eco-admin/auth/feature/login/src/eco-admin-auth-login.component.ts",
+          "specs": [
+            "libs/eco-admin/auth/feature/login/src/eco-admin-auth-login.component.spec.ts",
+            "libs/eco-admin/auth/feature/login/src/eco-admin-auth-login-facade.service.spec.ts"
+          ],
+          "routes": "libs/eco-admin/auth/feature/login/src/eco-admin-auth-login.routes.ts",
+          "layout": [],
+          "outlets": {}
+        },
+        {
+          "path": "/recuperar-contrasenya",
+          "title": "auth.forgotPassword.title",
+          "access": "anonymous",
+          "needs": [],
+          "guards": ["ecoAdminAnonymousGuard"],
+          "project": "eco-admin-auth-recovery",
+          "component": "EcoAdminAuthForgotPasswordComponent",
+          "file": "libs/eco-admin/auth/feature/recovery/src/eco-admin-auth-forgot-password.component.ts",
+          "specs": [
+            "libs/eco-admin/auth/feature/recovery/src/eco-admin-auth-forgot-password.component.spec.ts",
+            "libs/eco-admin/auth/feature/recovery/src/eco-admin-auth-forgot-password-sent.component.spec.ts",
+            "libs/eco-admin/auth/feature/recovery/src/eco-admin-auth-recovery.routes.spec.ts",
+            "libs/eco-admin/auth/feature/recovery/src/eco-admin-auth-reset-password.component.spec.ts"
+          ],
+          "routes": "libs/eco-admin/auth/feature/recovery/src/eco-admin-auth-recovery.routes.ts",
+          "layout": [],
+          "outlets": {}
+        },
+        {
+          "path": "/recuperar-contrasenya-enviada",
+          "title": "auth.forgotPasswordSent.title",
+          "access": "anonymous",
+          "needs": [],
+          "guards": ["ecoAdminAnonymousGuard"],
+          "project": "eco-admin-auth-recovery",
+          "component": "EcoAdminAuthForgotPasswordSentComponent",
+          "file": "libs/eco-admin/auth/feature/recovery/src/eco-admin-auth-forgot-password-sent.component.ts",
+          "specs": [
+            "libs/eco-admin/auth/feature/recovery/src/eco-admin-auth-forgot-password-sent.component.spec.ts",
+            "libs/eco-admin/auth/feature/recovery/src/eco-admin-auth-forgot-password.component.spec.ts",
+            "libs/eco-admin/auth/feature/recovery/src/eco-admin-auth-recovery.routes.spec.ts",
+            "libs/eco-admin/auth/feature/recovery/src/eco-admin-auth-reset-password.component.spec.ts"
+          ],
+          "routes": "libs/eco-admin/auth/feature/recovery/src/eco-admin-auth-recovery.routes.ts",
+          "layout": [],
+          "outlets": {}
+        },
+        {
+          "path": "/restablir-contrasenya",
+          "title": "auth.resetPassword.title",
+          "access": "anonymous",
+          "needs": [],
+          "guards": ["ecoAdminAnonymousGuard"],
+          "project": "eco-admin-auth-recovery",
+          "component": "EcoAdminAuthResetPasswordComponent",
+          "file": "libs/eco-admin/auth/feature/recovery/src/eco-admin-auth-reset-password.component.ts",
+          "specs": [
+            "libs/eco-admin/auth/feature/recovery/src/eco-admin-auth-reset-password.component.spec.ts",
+            "libs/eco-admin/auth/feature/recovery/src/eco-admin-auth-forgot-password-sent.component.spec.ts",
+            "libs/eco-admin/auth/feature/recovery/src/eco-admin-auth-forgot-password.component.spec.ts",
+            "libs/eco-admin/auth/feature/recovery/src/eco-admin-auth-recovery.routes.spec.ts"
+          ],
+          "routes": "libs/eco-admin/auth/feature/recovery/src/eco-admin-auth-recovery.routes.ts",
+          "layout": [],
+          "outlets": {}
+        },
+        {
+          "path": "/",
+          "title": "shell.placeholder.title",
+          "access": "signed-in",
+          "roles": ["TENANT_ADMIN", "GLOBAL_ADMIN"],
+          "needs": [],
+          "guards": ["ecoAdminSessionGuard", "ecoAdminTenantContextGuard"],
+          "project": "eco-admin",
+          "component": "EcoAdminProvisionalViewComponent",
+          "file": "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.ts",
+          "specs": [
+            "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.spec.ts"
+          ],
+          "routes": "apps/eco-admin/src/app/app.routes.ts",
+          "layout": [],
+          "outlets": {}
+        }
+      ],
+      "redirects": [
+        {
+          "path": "/**",
+          "to": "/"
+        }
+      ]
+    }
+  }
+}
