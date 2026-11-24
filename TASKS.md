@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 1.12 · **Last updated:** 2026-11-24
+**Document version:** 1.13 · **Last updated:** 2026-11-24
 
 ---
 
@@ -47,7 +47,7 @@
 | **META-16** ✅ | `check-nx-tags`: every lib carries a `scope:*` and a `type:*` tag | Low | `123kjkdqv35` |
 | **META-17** ✅ | ESLint: Angular rules that `.claude/CLAUDE.md` asks for in prose become errors | Low | `123kjkdqv36` |
 | **META-18** ✅ | `lint-delta`: ESLint warnings may not grow on touched files | Low | `123kjkdqv37` |
-| **META-19** 📋 | eco-lib Nx generator: the shortest path is the correct one | Low | `123kjkdqv38` |
+| **META-19** ✅ | eco-lib Nx generator: the shortest path is the correct one | Low | `123kjkdqv38` |
 | **META-20** 📋 | Feature map for the eco apps + skill to open the app signed in | Low | `123kjkdqv3a` |
 | **META-21** 📋 | Prune Claude memory: workarounds become fixes, stale entries go | Low | `123kjkdqv3b` |
 | **META-22** ⛔ | Skill evals: measure that the daily skills are actually followed | Low | `123kjkdqv3d` |
@@ -122,7 +122,7 @@ ClickUp `123kjkdqv37`. Merged 2026-11-24 (PR #1593, `2aca478a`). `yarn lint:delt
 
 ### META-19 — eco-lib Nx generator
 
-ClickUp `123kjkdqv38`. Replaces the prose rules for new libs (tags, test target, file names, README, alias) with one generator, and removes that prose from the root CLAUDE.md.
+ClickUp `123kjkdqv38`. Merged 2026-11-24 (PR #1597, `ef076441`). `yarn eco-lib` (`tools/generators/eco-lib`, run by path, so no alias, dependency or Nx project) asks for app, domain, type and name and wraps `@nx/angular:library`. It writes eco-admin's names (the owner's choice: `libs/<app>/<domain>/<type>[/<name>]`, `core` and `libs/eco` flat; existing libraries keep theirs), both tags, the alias, the configs of the other eco libraries, flat `src/` files and a README stub, and puts back the root `eslint.config.mjs`, `.gitignore` and `nx.json` that the stock generator edits. Five libraries made with it, one per type, passed lint in both profiles, test, `tsc`, `nx-tags:check`, `eco-conventions:check` and `lint:delta` with no manual edit; `yarn eco-lib:test` (27 checks, 17 s) runs in CI. The ticket's `@nx/vitest:test` target was out of date since META-26: the targets are inferred. The root `CLAUDE.md` naming prose became a pointer, 30,439 → 30,129 bytes. Not exercised: the interactive prompts.
 
 ### META-20 — Feature map and signed-in app skill
 
@@ -142,7 +142,7 @@ ClickUp `123kjkdqv3e`. Its blockers, META-15, META-16 and META-18, merged by 202
 
 ### META-24 — Reusable Claude Code base
 
-ClickUp `123kjkdqv3f`. Blocked by META-19 and META-23. A private plugin (hooks, skills, CLAUDE.md skeleton) plus a template repo (Husky, lint-staged, ESLint profiles, CI).
+ClickUp `123kjkdqv3f`. Blocked by META-23; META-19 merged 2026-11-24. A private plugin (hooks, skills, CLAUDE.md skeleton) plus a template repo (Husky, lint-staged, ESLint profiles, CI).
 
 ### META-25 — ESLint 10 with flat config
 
@@ -178,6 +178,7 @@ ClickUp `123kjkdqzvb`. Merged 2026-11-23 (PR #1587, `edc1c5cf`). The "Lint rules
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 1.13 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-19 ✅ (PR #1597, `ef076441`): the `eco-lib` generator with the eco-admin naming scheme, its acceptance run and tests; META-24 stays ⛔, now on META-23 alone. |
 | 1.12 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-15 ✅ (PR #1595, `8ab386de`): `check-eco-conventions` in the pre-commit and as a failing CI check, with its tests, and allow markers on the four eco-admin hex; META-23 goes from ⛔ to 📋, its three blockers merged. |
 | 1.11 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-18 ✅ (PR #1593, `2aca478a`): `lint-delta` in the pre-push and as a failing CI check, with its tests and measurements. |
 | 1.10 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-17 ✅ (PR #1591, `86654500`): the Angular rules at error with their sweep, NG1053 at lint time, the `*.html` block without class rules; META-18 records the owner's choice to keep the naming warnings as warnings. |
