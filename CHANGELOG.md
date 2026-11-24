@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-24] - Fix what the Claude docs got wrong (META-21)
+
+### Fixed
+
+- **`apps/eco-store/CLAUDE.md` said `orders.createRule` pins the tenant.** It does not: only `carts.createRule` has `tenant = @request.auth.tenant`, so a member can still create an order for another tenant until SEC-09 lands. It also no longer calls eco-admin «not yet built» (META-21, ([#123kjkdqv3b](https://app.clickup.com/t/123kjkdqv3b))).
+- **Root `CLAUDE.md`:** plastikaweb is Angular, not Astro, and has no `plastikaweb:preview`; `yarn eco-store:pb:sync` pushes to staging unless `POCKETBASE_ENV=development`; the CI/CD section now lists every workflow, says `ci.yml` also runs on pull requests and that Nx Cloud is often out of credits; Tech Stack points to `package.json` instead of listing stale versions; the commit skill's name is spelled right and a stray `[text](CLAUDE.md)` is gone. Cypress gets one line: no hook or CI runs it and it is no acceptance check (META-21, ([#123kjkdqv3b](https://app.clickup.com/t/123kjkdqv3b))).
+- **`commitizen-git-flow`** no longer tells agents to `git add . && git commit --amend` after a failed hook (that rewrites the previous commit) or to suggest `--no-verify`. It states the 500-character body limit, where the CHANGELOG and task docs go, the real CHANGELOG format, and the `eco-admin` scope (META-21, ([#123kjkdqv3b](https://app.clickup.com/t/123kjkdqv3b))).
+- **`apps/eco-store/POCKETBASE.md`** links the real `single_default_address.pb.js` hook (META-21, ([#123kjkdqv3b](https://app.clickup.com/t/123kjkdqv3b))).
+
+### Added
+
+- **`.claude/CLAUDE.md` lists nine more places where a generic skill disagrees with this repo:** `private` fields, rxjs, `ng generate` and `yarn eco-lib`, the Vitest setup, Tailwind palette colours, injection tokens, i18n libraries, fonts and the WCAG version. The empty `<claude-mem-context>` block is gone (META-21, ([#123kjkdqv3b](https://app.clickup.com/t/123kjkdqv3b))).
+- **`apps/eco-store/SSR.md`:** asset responses carry the same security headers as the worker's, through the `_headers` file, so check with `wrangler dev` on a `build-cf` artifact (META-21, ([#123kjkdqv3b](https://app.clickup.com/t/123kjkdqv3b))).
+
 ## [2026-11-24] - Reproduce a failing eco page in the browser (META-20)
 
 ### Added

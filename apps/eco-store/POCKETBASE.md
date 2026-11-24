@@ -127,7 +127,7 @@ Server-side logic is implemented as standard PocketBase JavaScript hooks.
   One file for both frontends: the link opens the admin panel (`eco-admin`) when the request came from the panel's origin and the account is an administrator's,
   and the storefront of the user's cooperative otherwise.
 - **[on_email_change.pb.js](./pocketbase/pb_hooks/on_email_change.pb.js)**: Localized email-change confirmation email pointing at the app's `/confirmar-correu` page (overrides the native mailer).
-- **[single_default_address.js](./pocketbase/pb_hooks/single_default_address.js)**: Ensures unique default user addresses.
+- **[single_default_address.pb.js](./pocketbase/pb_hooks/single_default_address.pb.js)**: Ensures unique default user addresses.
 
 Both mail hooks localize via the optional `users.language` field (`ca|es|en`, fallback `ca`), which the eco-store app keeps in sync with the `eco-lang` preference on login and on language switch.
 

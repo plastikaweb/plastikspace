@@ -10,7 +10,7 @@ This file **complements** — it does not duplicate — the root `/CLAUDE.md` (w
 
 **Eco Store** is a multi-tenant SaaS e-commerce frontend for ecological consumer cooperatives. Each cooperative ("tenant") gets a branded storefront over a shared PocketBase backend. First production tenant: **Associació El Llevat**.
 
-- **Public storefront only** here. Internal admin (Tenant Admin, Superadmin) is a separate app (`eco-admin`, not yet built).
+- **Public storefront only** here. Internal admin (Tenant Admin, Superadmin) is a separate app, `eco-admin` (`apps/eco-admin/`, described in the root `CLAUDE.md`).
 - **Stack:** Angular 21, NgRx Signal Store, Angular Material 3, Tailwind CSS 4, ngx-translate, PocketBase 0.36.7 (SQLite, self-hosted).
 - **User-facing copy is in Catalan by default.** Spanish translations co-exist; English is in schema but no production tenant uses it yet.
 - **Accessibility target:** WCAG 2.1 Level AA — fully conformant.
@@ -205,7 +205,7 @@ For collections where data is tenant-scoped, the read/list rule is typically:
 @request.auth.id != "" && tenant = @request.auth.tenant
 ```
 
-For collections with membership gates (carts, orders):
+For collections with membership gates (carts, orders), the target rule is:
 
 ```
 user = @request.auth.id
@@ -215,7 +215,7 @@ user = @request.auth.id
           && @request.auth.trialEndsAt > @now))
 ```
 
-This is already in place on `carts.createRule` and `orders.createRule` — it implements TRL-05 server-side. Trust this enforcement; the frontend block (TRL-04) is for UX only.
+`carts.createRule` has all of it. `orders.createRule` has the user and membership checks but **not** `tenant = @request.auth.tenant`: a member can create an order for another tenant until SEC-09 lands (`TASKS.md`). The membership part implements TRL-05 server-side on both; the frontend block (TRL-04) is for UX only. Read the live rules in `pocketbase/pb_schema.json`, not here.
 
 The `membershipStatus` enum has exactly **4 values**: `TRIAL`, `ACTIVE`, `INACTIVE`, `SUSPENDED`. Trial expiry is gated by `trialEndsAt > @now`; status stays as `TRIAL` until manually converted.
 
