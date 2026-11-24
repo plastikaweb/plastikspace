@@ -567,6 +567,22 @@ test('wrong arguments exit 2 without touching the repository', () => {
   );
 });
 
+test('the docs give the node command for a new worktree, which Yarn cannot run before an install', () => {
+  for (const doc of ['AGENTS.md', 'CLAUDE.md']) {
+    const text = fs.readFileSync(path.join(ROOT, doc), 'utf8');
+
+    expect(
+      text.includes('node tools/scripts/worktree-setup.cjs --branch'),
+      `${doc} lacks the node command`
+    );
+    expect(!/^yarn worktree:setup --branch/m.test(text), `${doc} tells a new worktree to use yarn`);
+    expect(
+      !/run `yarn worktree:setup --branch/.test(text),
+      `${doc} tells a new worktree to use yarn`
+    );
+  }
+});
+
 test('package.json runs the setup from husky-install and worktree:setup, and has this test', () => {
   const scripts = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).scripts;
 
