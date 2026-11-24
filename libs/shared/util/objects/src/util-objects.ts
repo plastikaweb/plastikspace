@@ -190,7 +190,10 @@ export function areObjectEntriesEqual(prev: object, curr: object): boolean {
   for (const key in prev) {
     if (Object.prototype.hasOwnProperty.call(prev, key)) {
       prevCount++;
-      if ((prev as Record<string, unknown>)[key] !== (curr as Record<string, unknown>)[key]) {
+      if (
+        !Object.prototype.hasOwnProperty.call(curr, key) ||
+        (prev as Record<string, unknown>)[key] !== (curr as Record<string, unknown>)[key]
+      ) {
         return false;
       }
     }
