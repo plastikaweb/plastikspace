@@ -27,7 +27,7 @@ When working here, these are authoritative — consult them before assuming:
 - **PocketBase** (`apps/eco-store/POCKETBASE.md`): schema, hooks, cron, scripts
 - **Email and SMTP** (`apps/eco-store/MAILTRAP.md`): transactional email and the Mailtrap SMTP setup (dev, staging)
 - **Loading strategies** (`apps/eco-store/LOADING_STRATEGIES.md`) and **SSR** (`apps/eco-store/SSR.md`)
-- **Accessibility statement**: published Feb 22, 2025, WCAG 2.1 AA; a 2.2 statement waits for the audit (META-39)
+- **Accessibility statement**: the published one (Feb 22, 2025) claims full WCAG 2.1 AA conformance, which the META-39 audit disproves. A draft of 2026-11-24, partially conformant with WCAG 2.2 AA, waits for the owner to publish it (kept outside the repo); its known limitations follow the open A11Y tasks
 
 Read one task with `yarn task <ID>` (`tools/scripts/task.cjs`: task ID, ClickUp ID, or a row label with `--home`), never the whole TASKS.md or BACKLOG.md. It prints the definition plus every other line that names the ID, so a status that differs between places shows up. Exit 2 means no definition was found.
 
