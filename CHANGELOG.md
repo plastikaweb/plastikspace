@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-24] - Reproduce a failing eco page in the browser (META-20)
+
+### Added
+
+- **The `eco-page-check` skill (`.claude/skills/eco-page-check`).** From «the X page fails» to the failure in a browser. It finds the page with `yarn feature-map:find`. It asks the user before it touches the local PocketBase, and never stops one it did not start. It serves the checkout, on another port when the usual one belongs to someone else. It signs in through the page's form as a throwaway user, meets the page's `needs`, and reads the snapshot, the console, the network calls and a screenshot. Then it deletes the user. It also records what the first run taught: an error Angular catches goes to `ErrorHandlerService`'s notification, not to the console (META-20, ([#123kjkdqv3a](https://app.clickup.com/t/123kjkdqv3a))).
+- **A `playwright` server in `.mcp.json`:** `@playwright/mcp@0.0.84` through `npx`, so `yarn.lock` is untouched. It runs a headless Chrome whose profile lives in memory, so it never touches the user's own Chrome or its sessions. Screenshots go to `.playwright-mcp/`, which git ignores (META-20, ([#123kjkdqv3a](https://app.clickup.com/t/123kjkdqv3a))).
+- **`tools/scripts/eco-test-user.cjs`:** `create` makes a verified, `ACTIVE` user of El Llevat (`--role` for eco-admin). `delete` removes its carts and orders, which would block the delete, and then the user. It signs in as the local superuser from `apps/eco-store/.env` without printing those credentials. It talks only to `127.0.0.1`, and deletes only `page-check-` users. **`yarn eco-test-user:test`**, in CI, runs it against a fake PocketBase: each of 8 deliberate bugs fails it (META-20, ([#123kjkdqv3a](https://app.clickup.com/t/123kjkdqv3a))).
+- **`yarn feature-map:find <words>`:** the pages whose app, path, title, component, project or file contain every word, with their full URL, from the routes as they are now (META-20, ([#123kjkdqv3a](https://app.clickup.com/t/123kjkdqv3a))).
+
+### Changed
+
+- **The map serves eco-store with `yarn eco-store:serve`, not `yarn eco-store:local`,** which stops any PocketBase and whatever holds port 4200 (META-20, ([#123kjkdqv3a](https://app.clickup.com/t/123kjkdqv3a))).
+
 ## [2026-11-24] - A map of the eco pages (META-20)
 
 ### Added

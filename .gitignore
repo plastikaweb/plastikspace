@@ -116,6 +116,9 @@ vitest.config.*.timestamp*
 .claude/worktrees/
 .claude/worktrees
 
+# Screenshots and logs of the playwright MCP server (eco-page-check skill)
+.playwright-mcp/
+
 # macOS screenshots dropped in the repo root, kept out of `git add -A`
 Captura de pantalla*.png
 

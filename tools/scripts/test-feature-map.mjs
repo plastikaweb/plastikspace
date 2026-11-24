@@ -9,7 +9,7 @@
  *   absolute redirects. The whole map is compared with the expected one.
  * - What must stop it (exit 2): a guard in neither table, an alias or a file it cannot resolve,
  *   an unknown argument. What `--check` reports (exit 1): a missing map, a changed route, an
- *   added and a removed page.
+ *   added and a removed page. What `--find` prints: the pages matching every word, or the list.
  * - The real tree: every page points at a file that declares its component, inside a project,
  *   with specs that exist, one page per path, and the pages the skill relies on.
  *
@@ -312,7 +312,8 @@ try {
     'eco-admin: the session guard gives the roles; the app gives its dev URL and serve command',
     JSON.stringify(admin.pages[0].roles) === JSON.stringify(['TENANT_ADMIN', 'GLOBAL_ADMIN']) &&
       admin.devUrl === 'http://localhost:4204' &&
-      admin.serve === 'yarn eco-admin:serve',
+      admin.serve === 'yarn eco-admin:serve' &&
+      map.apps['eco-store'].serve === 'yarn eco-store:serve',
     JSON.stringify(admin)
   );
   const store = map.apps['eco-store'].pages;
@@ -326,6 +327,39 @@ try {
   );
   const clean = run(base, ['--check']);
   check('--check on a fresh map: exit 0', clean.status === 0, clean.out);
+
+  const find = run(base, ['--find', 'BOTIGA', 'detail']);
+  let found = [];
+  try {
+    found = JSON.parse(find.out);
+  } catch {
+    found = [];
+  }
+  check(
+    '--find: every word must match, any case; the page comes with its app, full URL and serve command',
+    find.status === 0 &&
+      found.length === 1 &&
+      found[0].app === 'eco-store' &&
+      found[0].url === 'http://el-llevat.test:4200/botiga/:slug' &&
+      found[0].serve === 'yarn eco-store:serve' &&
+      found[0].component === 'DetailComponent',
+    find.out
+  );
+  const none = run(base, ['--find', 'botiga', 'nowhere']);
+  check(
+    '--find with no match: exit 1, lists the pages',
+    none.status === 1 &&
+      /no page matches "botiga nowhere"/.test(none.out) &&
+      none.out.includes('eco-admin / (HomeComponent)'),
+    `${none.status} ${none.out}`
+  );
+  const empty = run(base, ['--find']);
+  const both = run(base, ['--check', '--find', 'botiga']);
+  check(
+    '--find without words, or with --check: exit 2',
+    empty.status === 2 && /needs at least one word/.test(empty.out) && both.status === 2,
+    `${empty.status} ${empty.out} ${both.status} ${both.out}`
+  );
 
   fs.writeFileSync(
     path.join(base, 'apps/eco-store/src/app/app.routes.ts'),
