@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 1.11 · **Last updated:** 2026-11-24
+**Document version:** 1.12 · **Last updated:** 2026-11-24
 
 ---
 
@@ -43,7 +43,7 @@
 | **META-12** ✅ | Fast git hooks: lint-staged in pre-commit, no duplicate lint in pre-push | Normal | `123kjkdqv31` |
 | **META-13** ✅ | ESLint: keep the type-aware rules out of the hooks | Normal | `123kjkdqv32` |
 | **META-14** ✅ | Claude Code Stop hook: feedback loop before the agent says "done" | Low | `123kjkdqv33` |
-| **META-15** 📋 | `check-eco-conventions.cjs`: template and style rules for eco | Low | `123kjkdqv34` |
+| **META-15** ✅ | `check-eco-conventions.cjs`: template and style rules for eco | Low | `123kjkdqv34` |
 | **META-16** ✅ | `check-nx-tags`: every lib carries a `scope:*` and a `type:*` tag | Low | `123kjkdqv35` |
 | **META-17** ✅ | ESLint: Angular rules that `.claude/CLAUDE.md` asks for in prose become errors | Low | `123kjkdqv36` |
 | **META-18** ✅ | `lint-delta`: ESLint warnings may not grow on touched files | Low | `123kjkdqv37` |
@@ -51,7 +51,7 @@
 | **META-20** 📋 | Feature map for the eco apps + skill to open the app signed in | Low | `123kjkdqv3a` |
 | **META-21** 📋 | Prune Claude memory: workarounds become fixes, stale entries go | Low | `123kjkdqv3b` |
 | **META-22** ⛔ | Skill evals: measure that the daily skills are actually followed | Low | `123kjkdqv3d` |
-| **META-23** ⛔ | `task-audit` skill: pre-PR review of feature-sized branches | Low | `123kjkdqv3e` |
+| **META-23** 📋 | `task-audit` skill: pre-PR review of feature-sized branches | Low | `123kjkdqv3e` |
 | **META-24** ⛔ | Reusable Claude Code base: private plugin + template repo | Low | `123kjkdqv3f` |
 | **META-25** ✅ | ESLint 10 with flat config, on the current Nx 22.7 | Normal | `123kjkdqv9f` |
 | **META-26** ✅ | Nx 22.7 → 23 → 24.0.x with `nx migrate`, plus the legacy `nx.json` cleanup | Normal | `123kjkdqv9g` |
@@ -106,7 +106,7 @@ ClickUp `123kjkdqv33`. Merged 2026-11-23 (PR #1581, `332d794f`). When Claude end
 
 ### META-15 — `check-eco-conventions.cjs`
 
-ClickUp `123kjkdqv34`. Bare form controls without `matInput`, hex colours outside `libs/core/styles`, `--mat-sys-*` redefinitions. Fixture tests, since it runs in pre-commit.
+ClickUp `123kjkdqv34`. Merged 2026-11-24 (PR #1595, `8ab386de`). `yarn eco-conventions:check` reads the templates and styles of `libs/eco*` and `apps/eco-*` (specs left out) and fails on an `<input>`, `<select>` or `<textarea>` without `matInput` or `matNativeControl`, and on a hex colour or a `--mat-sys-*` declaration outside the token sources (`_eco_tokens.css` and the eco-store `*-theme.css` files); each `::ng-deep` is listed as info. Comments are blanked first; `/* eco:check allow <rule>: <reason> */` on the line before is an exception, never without a reason. In the pre-commit on the staged eco files (from worktrees once the main checkout's `.husky` has it) and as a failing CI check. Before → after: 4 → 0 errors, all four the hex of `apps/eco-admin/src/styles/_base.scss`, which no Material role matches and which carry allow markers by the owner's choice; 435 files in 0.4 s; 12 test cases, and 18 deliberate bugs in the script each fail them. Not covered: inline `styles:` of components (none in eco), and hex in TypeScript or `index.html` (the pre-paint theme colours).
 
 ### META-16 — `check-nx-tags`
 
@@ -138,7 +138,7 @@ ClickUp `123kjkdqv3d`. Blocked by META-21. Evals for `commitizen-git-flow`, eco 
 
 ### META-23 — `task-audit` skill
 
-ClickUp `123kjkdqv3e`. Blocked by META-15, META-16 and META-18. Three lenses (code, a11y, PocketBase and tenants); proven on the PR #1558 branch before adoption.
+ClickUp `123kjkdqv3e`. Its blockers, META-15, META-16 and META-18, merged by 2026-11-24. Three lenses (code, a11y, PocketBase and tenants); proven on the PR #1558 branch before adoption.
 
 ### META-24 — Reusable Claude Code base
 
@@ -178,6 +178,7 @@ ClickUp `123kjkdqzvb`. Merged 2026-11-23 (PR #1587, `edc1c5cf`). The "Lint rules
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 1.12 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-15 ✅ (PR #1595, `8ab386de`): `check-eco-conventions` in the pre-commit and as a failing CI check, with its tests, and allow markers on the four eco-admin hex; META-23 goes from ⛔ to 📋, its three blockers merged. |
 | 1.11 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-18 ✅ (PR #1593, `2aca478a`): `lint-delta` in the pre-push and as a failing CI check, with its tests and measurements. |
 | 1.10 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-17 ✅ (PR #1591, `86654500`): the Angular rules at error with their sweep, NG1053 at lint time, the `*.html` block without class rules; META-18 records the owner's choice to keep the naming warnings as warnings. |
 | 1.9 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-16 ✅ (PR #1589, `a3eebc0b`): `check-nx-tags` in the pre-push and CI, its tests, and the four libs that failed fixed; it went from 📋 to ✅ without an in-progress row. |
