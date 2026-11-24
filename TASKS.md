@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 1.10 · **Last updated:** 2026-11-24
+**Document version:** 1.11 · **Last updated:** 2026-11-24
 
 ---
 
@@ -46,7 +46,7 @@
 | **META-15** 📋 | `check-eco-conventions.cjs`: template and style rules for eco | Low | `123kjkdqv34` |
 | **META-16** ✅ | `check-nx-tags`: every lib carries a `scope:*` and a `type:*` tag | Low | `123kjkdqv35` |
 | **META-17** ✅ | ESLint: Angular rules that `.claude/CLAUDE.md` asks for in prose become errors | Low | `123kjkdqv36` |
-| **META-18** 📋 | `lint-delta`: ESLint warnings may not grow on touched files | Low | `123kjkdqv37` |
+| **META-18** ✅ | `lint-delta`: ESLint warnings may not grow on touched files | Low | `123kjkdqv37` |
 | **META-19** 📋 | eco-lib Nx generator: the shortest path is the correct one | Low | `123kjkdqv38` |
 | **META-20** 📋 | Feature map for the eco apps + skill to open the app signed in | Low | `123kjkdqv3a` |
 | **META-21** 📋 | Prune Claude memory: workarounds become fixes, stale entries go | Low | `123kjkdqv3b` |
@@ -118,7 +118,7 @@ ClickUp `123kjkdqv36`. Merged 2026-11-24 (PR #1591, `86654500`). Errors in every
 
 ### META-18 — `lint-delta`
 
-ClickUp `123kjkdqv37`. Per touched file, warnings at HEAD may not exceed warnings at the merge-base with `origin/develop`. Runs in pre-push. The owner's choice (2026-11-23) for the 621 `id-denylist`/`id-length` warnings: they stay warnings, and this task keeps them from growing.
+ClickUp `123kjkdqv37`. Merged 2026-11-24 (PR #1593, `2aca478a`). `yarn lint:delta` lints each touched file on disk and at the merge base with `origin/develop` (or `--base <ref>`), same config, fast profile, and fails when the file has more warnings; the ones it had may stay, and the report lists only the new warning texts. In the pre-push (non-Markdown pushes) and, by the owner's choice, as a failing CI check, since from worktrees the pre-push step waits for the main checkout's `.husky`. `--scope-only` classifies the touched files for META-23. On META-17's 99 files: 110 → 110 warnings in 24 s. The owner's choice (2026-11-23) for the 621 `id-denylist`/`id-length` warnings: they stay warnings, and this keeps them from growing.
 
 ### META-19 — eco-lib Nx generator
 
@@ -178,6 +178,7 @@ ClickUp `123kjkdqzvb`. Merged 2026-11-23 (PR #1587, `edc1c5cf`). The "Lint rules
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 1.11 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-18 ✅ (PR #1593, `2aca478a`): `lint-delta` in the pre-push and as a failing CI check, with its tests and measurements. |
 | 1.10 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-17 ✅ (PR #1591, `86654500`): the Angular rules at error with their sweep, NG1053 at lint time, the `*.html` block without class rules; META-18 records the owner's choice to keep the naming warnings as warnings. |
 | 1.9 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-16 ✅ (PR #1589, `a3eebc0b`): `check-nx-tags` in the pre-push and CI, its tests, and the four libs that failed fixed; it went from 📋 to ✅ without an in-progress row. |
 | 1.8 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-31 ✅ (PR #1587, `edc1c5cf`): `code-style.md` points to the `CLAUDE.md` rule list, now checked against the config; META-17 gains the 9 Angular class rules that never run. |
