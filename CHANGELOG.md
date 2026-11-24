@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-24] - The avatar cropper works without dragging, and its controls have names (A11Y-016, A11Y-024)
+
+### Fixed
+
+- **Four buttons (left, up, down, right) move the image under the avatar crop area: the single-pointer alternative to dragging that WCAG 2.5.7 asks for.** Before, only a drag or the arrow keys on the crop frame moved it. Each press moves the image a twentieth of its zoomed size and stops where its edge meets the crop area's edge, so the crop never has an empty side; the button then turns `aria-disabled` and keeps focus. Measured in Chrome with a 600 × 400 test image at 1280 px: 5 presses bring the image's left edge onto the crop area's (53 px), and the cropper's output starts with the image's red left band; at zoom 2 the up and down buttons open and stop on the image's bottom and top edges. Same at 360 px ([#123kjkdr25x](https://app.clickup.com/t/123kjkdr25x)).
+- **A dragged image follows the pointer and keeps its place when zoomed.** The transform is now in pixels and bound both ways, as ngx-image-cropper asks for with `allowMoveImage`: a 30 px drag moved the image 95.6 px before (the library adds pixels to a `%` offset) and 30 px after, and zooming no longer recentres a dragged image ([#123kjkdr25x](https://app.clickup.com/t/123kjkdr25x)).
+- **Every icon-only control of the cropper has a name and a matching tooltip** (zoom out, zoom in, the four pan buttons, closing an error), and so do the zoom slider and the pan group, in ca, es and en (WCAG 4.1.2). The zoom buttons stop at the slider's range, 1 to 4 in steps of 0.1; before, they went below 1. The avatar button's hard-coded Catalan name «Canviar foto de perfil» left out the text it shows on hover; its name now starts with that text in each language («Puja una imatge per al teu perfil», WCAG 2.5.3), and the text also shows on keyboard focus. axe on the crop step: 0 violations ([#123kjkdgyjf](https://app.clickup.com/t/123kjkdgyjf)).
+
 ## [2026-11-24] - A focused control no longer hides under the fixed header or the mobile bar (A11Y-023)
 
 ### Fixed

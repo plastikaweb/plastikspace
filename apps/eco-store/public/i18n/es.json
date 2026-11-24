@@ -102,7 +102,15 @@
     },
     "image": {
       "crop": {
-        "title": "Edita tu imagen"
+        "title": "Edita tu imagen",
+        "zoom": "Zoom de la imagen",
+        "zoomIn": "Acercar la imagen",
+        "zoomOut": "Alejar la imagen",
+        "move": "Mover la imagen",
+        "moveUp": "Mover la imagen hacia arriba",
+        "moveDown": "Mover la imagen hacia abajo",
+        "moveLeft": "Mover la imagen a la izquierda",
+        "moveRight": "Mover la imagen a la derecha"
       },
       "upload": {
         "title": "Sube una imagen",
@@ -706,7 +714,8 @@
     "avatar": {
       "title": "Avatar",
       "description": "Personaliza tu perfil con una imagen de avatar.",
-      "recommended": "Formato cuadrado, mínimo 200x200px, máximo 2.5 MB, formatos JPG, WEBP o PNG."
+      "recommended": "Formato cuadrado, mínimo 200x200px, máximo 2.5 MB, formatos JPG, WEBP o PNG.",
+      "upload": "Sube una imagen para tu perfil"
     },
     "addresses": {
       "title": "Mis direcciones",
