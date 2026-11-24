@@ -49,9 +49,12 @@
       </mat-sidenav>
     }
 
+    <!-- The page scrolls here, under the fixed header and, below md, the fixed bottom bar: the scroll
+         padding matches main's mt-28 and the footer's mb-24, so a focused control is never scrolled
+         behind either bar (A11Y-023, WCAG 2.4.11). -->
     <mat-sidenav-content
       #sidenavContent
-      class="flex flex-col overflow-hidden!"
+      class="flex scroll-pt-28 flex-col overflow-hidden! max-md:scroll-pb-24"
       tabindex="-1"
       [class.overflow-y-auto!]="!activityStore.isActive()">
       @if (isMobile() && isSidenavOpen()) {

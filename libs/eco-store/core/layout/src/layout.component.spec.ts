@@ -86,4 +86,11 @@ describe('LayoutComponent', () => {
 
     expect(results).toHaveNoViolations();
   }, 30000);
+
+  it('should keep focused controls clear of the fixed bars with scroll padding on the scroller', () => {
+    const scroller: HTMLElement = fixture.nativeElement.querySelector('mat-sidenav-content');
+
+    expect(scroller.classList).toContain('scroll-pt-28');
+    expect(scroller.classList).toContain('max-md:scroll-pb-24');
+  });
 });
