@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-24] - eco-admin's end-to-end suite moves from Cypress to Playwright (META-40)
+
+### Changed
+
+- **`apps/eco-admin-e2e` runs on Playwright, and no eco app uses Cypress any more.** `yarn eco-admin:e2e` starts `eco-admin:serve` on port 4204 and runs the suite in the system Chrome; `yarn eco-admin:e2e:local` opens Playwright's UI mode. The target is not cached, since the suite will read and write the local PocketBase ([#123kjkdr20r](https://app.clickup.com/t/123kjkdr20r)).
+- **`cy.loginAs(role)` became the `signedInAs` option (`test.use({ signedInAs: 'TENANT_ADMIN' })`).** It still signs in only to `http://127.0.0.1:8090`; the credentials move from `CYPRESS_ECO_ADMIN_<ROLE>_*` to `ECO_ADMIN_<ROLE>_EMAIL` and `_PASSWORD`, read from the shell or from `apps/eco-admin-e2e/.env`, which git ignores. The sign-in request goes through Node's `fetch`, so Playwright's trace and report never hold them ([#123kjkdr20r](https://app.clickup.com/t/123kjkdr20r)).
+
+### Fixed
+
+- **The suite's only spec looked for the login fields by ids the Material rebuild of AP-0 0.7b removed**, so it had failed since then without anyone noticing: no hook or CI job runs it. It now finds them by their accessible names, and passes ([#123kjkdr20r](https://app.clickup.com/t/123kjkdr20r)).
+
 ## [2026-11-24] - The Playwright suite replaces Pa11y in eco-store and eco-admin (META-40)
 
 ### Changed

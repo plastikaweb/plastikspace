@@ -129,25 +129,29 @@ yarn eco-admin:e2e          # headless
 yarn eco-admin:e2e:local    # interactive
 ```
 
-Cypress starts `eco-admin:serve` (development configuration, local PocketBase) on port 4204.
+A Playwright suite (`apps/eco-admin-e2e`) for the flows that need the real local PocketBase, such as AMBR-07 and AORD-03 (REQUIREMENTS §6).
+Nx starts `eco-admin:serve` (development configuration, local PocketBase) on port 4204, or uses the one already running, and the suite runs in the system Chrome.
+The local mode opens Playwright's UI. No hook or CI job runs it, and Nx never caches it.
 
-`cy.loginAs(role)` opens a session without going through the login screen. Call it before `cy.visit()`:
+The `signedInAs` option starts a test with a session, without going through the login screen:
 
 ```ts
-cy.loginAs('TENANT_ADMIN');
-cy.visit('/');
+import { expect, test } from './support/test';
+
+test.use({ signedInAs: 'TENANT_ADMIN' });
 ```
 
-It reads the credentials of a test user from the environment and never writes them to the command log:
+It reads the credentials of a test user from the environment:
 
-| Role           | Variables                                                                         |
-| :------------- | :-------------------------------------------------------------------------------- |
-| `TENANT_ADMIN` | `CYPRESS_ECO_ADMIN_TENANT_ADMIN_EMAIL`, `CYPRESS_ECO_ADMIN_TENANT_ADMIN_PASSWORD` |
-| `GLOBAL_ADMIN` | `CYPRESS_ECO_ADMIN_GLOBAL_ADMIN_EMAIL`, `CYPRESS_ECO_ADMIN_GLOBAL_ADMIN_PASSWORD` |
-| `PARTNER`      | `CYPRESS_ECO_ADMIN_PARTNER_EMAIL`, `CYPRESS_ECO_ADMIN_PARTNER_PASSWORD`           |
+| Role           | Variables                                                         |
+| :------------- | :---------------------------------------------------------------- |
+| `TENANT_ADMIN` | `ECO_ADMIN_TENANT_ADMIN_EMAIL`, `ECO_ADMIN_TENANT_ADMIN_PASSWORD` |
+| `GLOBAL_ADMIN` | `ECO_ADMIN_GLOBAL_ADMIN_EMAIL`, `ECO_ADMIN_GLOBAL_ADMIN_PASSWORD` |
+| `PARTNER`      | `ECO_ADMIN_PARTNER_EMAIL`, `ECO_ADMIN_PARTNER_PASSWORD`           |
 
-The command signs in against `http://127.0.0.1:8090` and nothing else. The address is a constant on purpose: no variable can point a test login at a hosted instance.
-A `cypress.env.json` file is ignored by git; keep test credentials there or in the shell, never in a committed file.
+It signs in against `http://127.0.0.1:8090` and nothing else. The address is a constant on purpose: no variable can point a test login at a hosted instance.
+The request goes through Node's `fetch`, so Playwright's trace and report never hold the credentials.
+Keep them in the shell or in `apps/eco-admin-e2e/.env`, which git ignores and the config loads; never in a committed file.
 
 ## Documentation
 

@@ -6,5 +6,10 @@
   "tags": [],
   "implicitDependencies": ["eco-admin"],
   "// targets": "to see all targets run: nx show project eco-admin-e2e --web",
-  "targets": {}
+  "// e2e": "Not cached: the tests read and write the local PocketBase, whose state Nx cannot hash.",
+  "targets": {
+    "e2e": {
+      "cache": false
+    }
+  }
 }
