@@ -54,6 +54,7 @@
      `eco_tokens`, so they are admin-owned. The theme control reads the browser bar color
      (`theme-color`) from this background; only the pre-paint script in index.html repeats the
      pair, for the moment before the stylesheet exists. Change both together. */
+  /* eco:check allow raw-hex: admin mock colour with no Material role in eco_tokens (see above) */
   --eco-admin-page-background: light-dark(#f2f5ea, #11140e);
 
   /* What a card is painted with over that page. No single Material surface role stands out in both
@@ -67,6 +68,7 @@
   /* The card of the auth screens takes the panel's card colour (`eco_auth_card`, `libs/eco/styles`). */
   --eco-auth-card-background: var(--eco-admin-card-background);
 
+  /* eco:check allow raw-hex: admin mock colour with no Material role in eco_tokens (as the page background above) */
   --eco-admin-on-surface-muted: light-dark(#5a614f, #aab29d);
 
   /* Touch-sized field height of the admin design system. */

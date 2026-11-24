@@ -407,6 +407,7 @@ State transformations must be pure and predictable.
 - **SCSS** preprocessor for custom styles
 - Custom theme system in `libs/core/styles`
 - PostCSS configuration in `.postcssrc.json`
+- **Eco conventions** (META-15): `yarn eco-conventions:check` reads the templates and styles of `libs/eco*` and `apps/eco-*` (specs left out). Errors: an `<input>`, `<select>` or `<textarea>` without `matInput` or `matNativeControl`, in a template or a `template:` literal; a hex colour or a `--mat-sys-*` declaration in a `.scss` or `.css` file other than the token sources (`libs/eco/styles/src/_eco_tokens.css` and the eco-store `*-theme.css` files). Each `::ng-deep` is listed as info. A justified exception is `/* eco:check allow <rule>: <reason> */` (`<!-- ... -->` in a template) on the line before; no reason, no exception. It runs in the pre-commit on the staged eco files and in CI's Lint Affected step
 
 See `documentation/css-styles.md` for detailed styling conventions.
 

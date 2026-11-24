@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-24] - Eco template and style conventions as a check (META-15)
+
+### Added
+
+- **`tools/scripts/check-eco-conventions.cjs` (`yarn eco-conventions:check`).** Over the templates and styles of `libs/eco*` and `apps/eco-*`, it fails on an `<input>`, `<select>` or `<textarea>` without `matInput` or `matNativeControl`, and on a hex colour or a `--mat-sys-*` declaration outside the token sources (`_eco_tokens.css` and the eco-store `*-theme.css` files). Each `::ng-deep` is listed as info. Comments are blanked first; `/* eco:check allow <rule>: <reason> */` on the line before is a justified exception (META-15, ([#123kjkdqv34](https://app.clickup.com/t/123kjkdqv34))).
+- **Where it runs:** in the pre-commit, on the staged eco files read from the copy of the index, and as a failing check in CI's Lint Affected step, which is the gate while worktrees run the main checkout's hooks. On the real tree it reads 435 files in 0.4 s (META-15, ([#123kjkdqv34](https://app.clickup.com/t/123kjkdqv34))).
+- **`yarn eco-conventions:test`**, run in CI: a clean fixture full of near misses, one fixture per rule, the markers, `--files` routing and the fatal cases. Each of 18 deliberate bugs in the script fails it (META-15, ([#123kjkdqv34](https://app.clickup.com/t/123kjkdqv34))).
+
+### Changed
+
+- **The four hex colours of `apps/eco-admin/src/styles/_base.scss`** (the admin page background and muted text, which have no Material role in `eco_tokens`) carry an allow marker with that reason; the owner chose the marker over moving them or replacing them with other colours (META-15, ([#123kjkdqv34](https://app.clickup.com/t/123kjkdqv34))).
+
 ## [2026-11-24] - ESLint warnings may not grow on touched files (META-18)
 
 ### Added
