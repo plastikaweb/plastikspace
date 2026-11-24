@@ -37,7 +37,7 @@ Plastikspace is a personal Nx monorepo: Angular 21 apps over Firebase, PocketBas
 
 - Nx config and cache: `nx.json`, cache in `tmp/my-cache`
 - Path aliases (200+): `tsconfig.base.json`. Import across libraries only through them (`@plastik/core/util/api-http`), never by relative path; each library exports through its `index.ts`
-- ESLint: the root `eslint.config.mjs` holds the boundary rules and every code rule; each project's `eslint.config.mjs` spreads it (the five Cypress e2e configs after `cypress.configs.recommended`)
+- ESLint: the root `eslint.config.mjs` holds the boundary rules and every code rule; each project's `eslint.config.mjs` spreads it (the four Cypress e2e configs after `cypress.configs.recommended`)
 - Workspace scripts and their tests: `tools/scripts/` (task docs, i18n, feature map, PocketBase helpers, local setup); `decorate-angular-cli.cjs` runs on `postinstall`
 - Eco page map (URL → lib, access): `tools/feature-map.json`, generated from the routes (`yarn feature-map`); CI fails when it is stale
 - Branch-name rules: `branchNameLint.json`. Commit scopes: `.cz-config.cjs`, loaded from `tsconfig.base.json`
@@ -55,7 +55,7 @@ yarn nx test <project> --testNamePattern="<pattern>"     # tests by name
 yarn affected:test                    # affected projects vs develop
 yarn nx lint <project>                # fast lint profile, as hooks and editors run it
 yarn lint:ci                          # affected projects with the type-aware rules, as CI runs them
-yarn <app>:a11y                       # build, serve and run Pa11y
+yarn <app>:a11y                       # build, serve and run Pa11y (not the eco apps)
 yarn eco-a11y:e2e                     # build eco-store and eco-admin, run their Playwright + axe suite
 yarn i18n:validate                    # translation keys consistent across languages (pre-commit and CI)
 yarn format:check
@@ -126,15 +126,15 @@ ESLint reports each rule at its line (lint-staged in the pre-commit, the Stop ho
 
 ### Cypress (E2E Tests)
 
-`yarn <app-name>:e2e` runs an app's Cypress suite (every app but the Firebase ones has an `-e2e` project). No hook or CI job runs them and they are no acceptance check, so do not run them to verify a change. New e2e tests will use Playwright.
+`yarn <app-name>:e2e` runs an app's Cypress suite (every app but the Firebase ones and eco-store has an `-e2e` project). No hook or CI job runs them and they are no acceptance check, so do not run them to verify a change. New e2e tests will use Playwright.
 
 ### Pa11y (Accessibility Tests)
 
-`yarn <app-name>:a11y` builds the app, serves it and runs Pa11y with the app's `.pa11yci.json`. Every app targets **WCAG 2.2 AA** (owner, 2026-11-24). Pa11y checks less: its `WCAG2AA` standard means 2.1 AA at most in both its runners, and axe-core's only 2.2 rule is `target-size`. Check what 2.2 adds by hand: 2.4.11 focus not obscured, 2.5.7 dragging, 2.5.8 target size, 3.2.6 consistent help, 3.3.7 redundant entry, 3.3.8 accessible authentication.
+`yarn <app-name>:a11y` builds the app, serves it and runs Pa11y with the app's `.pa11yci.json`; eco-store and eco-admin use the Playwright suite below instead. Every app targets **WCAG 2.2 AA** (owner, 2026-11-24). Pa11y checks less: its `WCAG2AA` standard means 2.1 AA at most in both its runners, and axe-core's only 2.2 rule is `target-size`. Check what 2.2 adds by hand: 2.4.11 focus not obscured, 2.5.7 dragging, 2.5.8 target size, 3.2.6 consistent help, 3.3.7 redundant entry, 3.3.8 accessible authentication.
 
 ### Playwright accessibility suite (eco apps)
 
-`apps/eco-a11y-e2e` (META-40) checks eco-store and eco-admin screen by screen, in the state a user sees them (a product loaded, a cart with products, signed in), at 320 px light, 320 px dark and 1280 px: axe with every WCAG 2.2 AA rule, plus 2.4.11 (a walk with Tab), 3.3.7 and 3.3.8. `yarn eco-a11y:e2e` builds both apps and runs it in the system Chrome; PocketBase is answered from `src/support/records.ts`, so it needs no PocketBase. A failure the suite already knows is listed by rule and node in the spec, with the task that fixes it. It runs next to Pa11y for now: no hook or CI job runs it yet. Details in `documentation/accessibility.md`.
+`apps/eco-a11y-e2e` (META-40) checks eco-store and eco-admin screen by screen, in the state a user sees them (a product loaded, a cart with products, signed in), at 320 px light, 320 px dark and 1280 px: axe with every WCAG 2.2 AA rule, plus 2.4.11 (a walk with Tab), 3.3.7 and 3.3.8. `yarn eco-a11y:e2e` builds both apps and runs it in the system Chrome; PocketBase is answered from `src/support/records.ts`, so it needs no PocketBase. A failure the suite already knows is listed by rule and node in the spec, with the task that fixes it. The pre-push runs it when Nx finds it affected, and `eco-a11y.yml` after each CI run on `develop`; it replaced Pa11y in both apps. Details in `documentation/accessibility.md`.
 
 ## Angular & TypeScript Conventions
 
@@ -176,7 +176,7 @@ GitHub Actions workflows in `.github/workflows/`:
 - `ci.yml` runs on every pull request and on push to `develop`: format check, the repo checks of its "Lint Affected" step (`yarn tasks:check`, `yarn feature-map:check`…), then lint, test and build on affected projects (AGENTS.md "CI Strategy").
 - Nx Cloud runs out of credits most months; `ci.yml` then sets `NX_NO_CLOUD=true` and runs with the local cache only. Its 401 is harmless.
 - `pb-schema-guard.yml` (PRs that change `pb_schema.json`) and `pocketbase-schema.yml` (push to `develop`: syncs the schema to staging): `apps/eco-store/CLAUDE.md`.
-- Pa11y: `eco-store-pa11y.yml`, `eco-admin-pa11y.yml` and `nasa-images-pa11y.yml`, after each CI run on `develop`.
+- Accessibility, after each CI run on `develop`: `eco-a11y.yml` (the Playwright suite of eco-store and eco-admin) and `nasa-images-pa11y.yml` (Pa11y).
 - Deploys: `eco-store-deploy-staging.yml`, `nasa-images-deploy-dev.yml`, `llecoop-deploy-{staging,prod}.yml`.
 - `claude.yml`, `claude-code-review.yml` and `jules-analysis.yml` run the review bots.
 

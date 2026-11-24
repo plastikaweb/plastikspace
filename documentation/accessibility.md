@@ -34,15 +34,11 @@
 ## Analysis
 
 Every app targets **WCAG 2.2 AA** (since 2026-11-24).
-The automated checks cover less: Pa11y's `WCAG2AA` standard means 2.1 AA at most, and axe-core has one 2.2 rule (`target-size`).
-The `.pa11yci.json` of eco-store and eco-admin (META-39) check every page twice: with HTML_CodeSniffer, Pa11y's default runner, and again as `<url>#axe` with axe and `"rules": ["target-size"]`.
-The two runners cannot share one entry: HTML_CodeSniffer throws on `target-size` («not a valid WCAG 2.1 rule»), and the `#axe` fragment keeps pa11y-ci from filing both results under one URL.
-The axe entries ignore the rules that failed on develop on 2026-11-24, until their tasks are fixed.
-In both apps that is `color-contrast`, which HTML_CodeSniffer still checks; in eco-store also `aria-dialog-name`, `aria-hidden-focus` and `aria-required-children`.
-Axe runs on a fresh browser, where the PWA install sheet covers the page, and most of those failures are that sheet's.
-Pa11y covers 2.5.8 Target Size only.
-In eco-store and eco-admin the [Playwright suite](#playwright-and-axe-eco-apps) also checks 2.4.11, 3.3.7 and 3.3.8 on the screens it opens.
-Anywhere else, review the other five AA criteria 2.2 adds by hand:
+eco-store and eco-admin are checked by the [Playwright suite](#playwright-and-axe-eco-apps) (META-40), which replaced Pa11y there:
+axe with every WCAG 2.2 AA rule, of which only `target-size` is new in 2.2, plus 2.4.11, 3.3.7 and 3.3.8 on the screens it opens.
+The PWA install sheet failures that Pa11y's axe reported in eco-store (`aria-dialog-name`, `aria-hidden-focus`, `aria-required-children`) do not show there.
+The other apps use Pa11y, whose `WCAG2AA` standard means 2.1 AA at most.
+Wherever the suite does not reach, review the other five AA criteria 2.2 adds by hand:
 
 - 2.4.11 Focus Not Obscured (Minimum)
 - 2.5.7 Dragging Movements
@@ -340,7 +336,8 @@ For eco-store that is little: without products the product page never leaves its
   It takes about two minutes on four cores; Playwright's default of two workers was faster there than four.
   The HTML report, with each test's axe results, is in `dist/.playwright/apps/eco-a11y-e2e/playwright-report`.
 
-It runs next to Pa11y until it replaces it in the pre-push.
+The pre-push runs it when Nx finds `eco-a11y-e2e` affected, and `.github/workflows/eco-a11y.yml` after each CI run on `develop`,
+with the HTML report as an artifact when it fails.
 
 ### jest axe
 

@@ -321,7 +321,7 @@ try {
   }
   for (const file of [
     'apps/eco-store/src/main.ts',
-    'apps/eco-store-e2e/src/a.cy.ts',
+    'apps/eco-a11y-e2e/src/a.spec.ts',
     'apps/eco-admin/src/main.ts',
     'apps/eco-admin-e2e/src/a.cy.ts',
     'libs/eco/styles/a.scss',

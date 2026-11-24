@@ -138,12 +138,6 @@
     "eco-store:build-cf:staging": "nx run eco-store:build-cf:staging",
     "eco-store:build-cf:prod": "nx run eco-store:build-cf:production",
     "eco-store:test": "nx run eco-store:test",
-    "eco-store:e2e": "nx run eco-store-e2e:e2e",
-    "eco-store:e2e:local": "yarn nx run eco-store-e2e:e2e --browser=chrome --port='cypress-auto' --watch=true",
-    "eco-store:http-server": "angular-http-server --path ./dist/apps/eco-store/browser --port 8080 --rootFile index.csr.html",
-    "preeco-store:a11y": "yarn eco-store:build",
-    "eco-store:a11y": "npm-run-all --parallel --race eco-store:http-server eco-store:a11y:run",
-    "eco-store:a11y:run": "pa11y-ci --config ./apps/eco-store/.pa11yci.json",
     "eco-store:build:github": "nx run eco-store:build:prod",
     "eco-store:cf:dev": "wrangler dev -c apps/eco-store/wrangler.jsonc",
     "eco-store:cf:deploy": "wrangler deploy -c apps/eco-store/wrangler.jsonc",
@@ -156,11 +150,7 @@
     "eco-admin:test": "nx run eco-admin:test",
     "eco-admin:e2e": "nx run eco-admin-e2e:e2e",
     "eco-admin:e2e:local": "yarn nx run eco-admin-e2e:e2e --browser=chrome --port='cypress-auto' --watch=true",
-    "eco-a11y:e2e": "nx run eco-a11y-e2e:e2e",
-    "eco-admin:http-server": "angular-http-server --path ./dist/apps/eco-admin/browser --port 8080",
-    "preeco-admin:a11y": "yarn eco-admin:build",
-    "eco-admin:a11y": "npm-run-all --parallel --race eco-admin:http-server eco-admin:a11y:run",
-    "eco-admin:a11y:run": "pa11y-ci --config ./apps/eco-admin/.pa11yci.json"
+    "eco-a11y:e2e": "nx run eco-a11y-e2e:e2e"
   },
   "dependencies": {
     "@angular-architects/ngrx-toolkit": "21.0.1",

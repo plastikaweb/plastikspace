@@ -40,8 +40,7 @@ Built with **Angular 21** (Signals, Standalone, Control Flow) and **PocketBase**
 | **Build**            | `yarn eco-store:build` |
 | **Test**             | `yarn eco-store:test`  |
 | **Lint**             | `yarn eco-store:lint`  |
-| **E2E Tests**        | `yarn eco-store:e2e`   |
-| **Accessibility**    | `yarn eco-store:a11y`  |
+| **Accessibility**    | `yarn eco-a11y:e2e`    |
 
 ## Architecture & Libraries
 

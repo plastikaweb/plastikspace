@@ -1,4 +1,8 @@
-name: Eco Admin pa11y
+name: Eco a11y
+
+# The Playwright + axe suite of eco-store and eco-admin (apps/eco-a11y-e2e, META-40), which
+# replaced their Pa11y workflows. It builds both apps and answers PocketBase from fixtures, so it
+# needs no secrets. It runs in the Google Chrome of the runner image (`channel: 'chrome'`).
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -15,7 +19,7 @@ permissions:
   contents: read
 
 jobs:
-  pa11y:
+  eco-a11y:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
@@ -49,20 +53,13 @@ jobs:
             echo "Nx Cloud is active."
           fi
 
-      - name: Build
-        run: ${{ env.NX_CLOUD_RECORD }} yarn eco-admin:build ${{ env.NX_CLOUD_FLAGS }}
+      - name: Build both apps and run the suite
+        run: ${{ env.NX_CLOUD_RECORD }} yarn nx run eco-a11y-e2e:e2e ${{ env.NX_CLOUD_FLAGS }}
 
-      - name: Run pa11y-ci
-        run: yarn eco-admin:a11y
-
-      - name: Read pa11y_output file.
-        id: pa11y_output
-        uses: juliangruber/read-file-action@v1
+      - name: Upload the report
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v7
         with:
-          path: ./apps/eco-admin/.pa11y-report.json
-
-      - name: Check for pa11y failures.
-        if: contains(steps.pa11y_output.outputs.content, 'errno 2')
-        run: |
-          echo "::error::The site is failing accessibility tests. Please review the report for details."
-          exit 1
+          name: eco-a11y-report
+          path: dist/.playwright/apps/eco-a11y-e2e/playwright-report
+          retention-days: 14
