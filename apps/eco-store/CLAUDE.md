@@ -13,7 +13,7 @@ This file **complements** — it does not duplicate — the root `/CLAUDE.md` (w
 - **Public storefront only** here. Internal admin (Tenant Admin, Superadmin) is a separate app, `eco-admin` (`apps/eco-admin/`, described in the root `CLAUDE.md`).
 - **Stack:** Angular 21, NgRx Signal Store, Angular Material 3, Tailwind CSS 4, ngx-translate, PocketBase 0.36.7 (SQLite, self-hosted).
 - **User-facing copy is in Catalan by default.** Spanish translations co-exist; English is in schema but no production tenant uses it yet.
-- **Accessibility target:** WCAG 2.1 Level AA — fully conformant.
+- **Accessibility target:** WCAG 2.2 Level AA (owner, 2026-11-24; it was 2.1 AA). Not yet audited against what 2.2 adds (root `CLAUDE.md`, Pa11y).
 
 ---
 
@@ -30,7 +30,7 @@ When working here, these are authoritative — consult them before assuming:
 | **Email / SMTP (Mailtrap)** | `apps/eco-store/MAILTRAP.md`                                                                                        | Transactional email + Mailtrap SMTP config (dev/staging)  |
 | **Loading strategies**      | `apps/eco-store/LOADING_STRATEGIES.md`                                                                              | Activity & loading patterns                               |
 | **SSR**                     | `apps/eco-store/SSR.md`                                                                                             | Server-side rendering config                              |
-| **Accessibility statement** | Published Feb 22, 2025 — WCAG 2.1 AA fully conformant                                                               |
+| **Accessibility statement** | Published Feb 22, 2025 — WCAG 2.1 AA; a 2.2 statement waits for the audit                                           |
 
 Read one task with `yarn task <ID>` (`tools/scripts/task.cjs`: task ID, ClickUp ID, or a row label with `--home`), never the whole TASKS.md or BACKLOG.md. It prints the definition plus every other line that names the ID, so a status that differs between places shows up. Exit 2 means no definition was found.
 
