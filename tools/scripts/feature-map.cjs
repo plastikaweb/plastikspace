@@ -25,9 +25,13 @@
  * Usage:
  *   node tools/scripts/feature-map.cjs            write tools/feature-map.json (yarn feature-map)
  *   node tools/scripts/feature-map.cjs --check    fail when it is out of date (yarn feature-map:check)
+ *   node tools/scripts/feature-map.cjs --find <words...>
+ *       print the pages whose app, path, title, component, project or file contain every word,
+ *       with their full URL, from the routes as they are now (yarn feature-map:find avatar)
  *   [--root <dir>]
  *
- * Exit codes: 0 written or up to date; 1 out of date (--check); 2 usage, IO or parse error.
+ * Exit codes: 0 written, up to date or found; 1 out of date (--check) or no page found (--find);
+ * 2 usage, IO or parse error.
  */
 
 const { execFileSync } = require('child_process');
@@ -42,7 +46,8 @@ const APPS = [
     name: 'eco-store',
     routes: 'apps/eco-store/src/app/app.routes.ts',
     devUrl: 'http://el-llevat.test:4200',
-    serve: 'yarn eco-store:local',
+    // Not eco-store:local, which stops any PocketBase and whatever holds port 4200.
+    serve: 'yarn eco-store:serve',
   },
   {
     name: 'eco-admin',
@@ -86,14 +91,19 @@ class FatalError extends Error {}
 /**
  * Parses the command line.
  * @param {string[]} argv Arguments after the script name.
- * @returns {{ check: boolean, root: string, help: boolean }} The options.
+ * @returns {{ check: boolean, find: string[] | null, root: string, help: boolean }} The options.
  */
 function parseArgs(argv) {
-  const opts = { check: false, root: REPO_ROOT, help: false };
+  const opts = { check: false, find: null, root: REPO_ROOT, help: false };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     if (arg === '--check') opts.check = true;
-    else if (arg === '--help' || arg === '-h') opts.help = true;
+    else if (arg === '--find') {
+      opts.find = [];
+      while (argv[i + 1] !== undefined && !argv[i + 1].startsWith('--'))
+        opts.find.push(...argv[++i].toLowerCase().split(/\s+/).filter(Boolean));
+      if (opts.find.length === 0) throw new FatalError('--find needs at least one word');
+    } else if (arg === '--help' || arg === '-h') opts.help = true;
     else if (arg === '--root') {
       const value = argv[++i];
       if (value === undefined || value.startsWith('--'))
@@ -698,6 +708,26 @@ function differences(before, after) {
 }
 
 /**
+ * Finds the pages that contain every word.
+ * @param {object} map The map.
+ * @param {string[]} words Lowercase words.
+ * @returns {object[]} The pages, each with its app and full URL first.
+ */
+function findPages(map, words) {
+  return Object.entries(map.apps).flatMap(([app, entry]) =>
+    entry.pages
+      .filter(page => {
+        const text = [app, page.path, page.title, page.component, page.project, page.file]
+          .join(' ')
+          .toLowerCase();
+
+        return words.every(word => text.includes(word));
+      })
+      .map(page => ({ app, url: `${entry.devUrl}${page.path}`, serve: entry.serve, ...page }))
+  );
+}
+
+/**
  * Runs the generator or the check.
  * @param {string[]} argv Arguments after the script name.
  * @returns {Promise<number>} The exit code.
@@ -706,11 +736,30 @@ async function main(argv) {
   try {
     const opts = parseArgs(argv);
     if (opts.help) {
-      process.stdout.write('Usage: node tools/scripts/feature-map.cjs [--check] [--root <dir>]\n');
+      process.stdout.write(
+        'Usage: node tools/scripts/feature-map.cjs [--check | --find <words...>] [--root <dir>]\n'
+      );
 
       return 0;
     }
+    if (opts.check && opts.find) throw new FatalError('--check and --find do not go together');
     const map = buildMap(opts.root);
+    if (opts.find) {
+      const found = findPages(map, opts.find);
+      if (found.length > 0) {
+        process.stdout.write(`${JSON.stringify(found, null, 2)}\n`);
+
+        return 0;
+      }
+      const all = Object.entries(map.apps).flatMap(([app, entry]) =>
+        entry.pages.map(page => `  ${app} ${page.path} (${page.component})`)
+      );
+      process.stdout.write(
+        `✗ feature-map: no page matches "${opts.find.join(' ')}". The pages:\n${all.join('\n')}\n`
+      );
+
+      return 1;
+    }
     const text = await render(opts.root, map);
     const file = path.join(opts.root, OUT);
     const pages = Object.values(map.apps).reduce((sum, app) => sum + app.pages.length, 0);

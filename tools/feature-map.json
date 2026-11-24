@@ -3,7 +3,7 @@
   "apps": {
     "eco-store": {
       "devUrl": "http://el-llevat.test:4200",
-      "serve": "yarn eco-store:local",
+      "serve": "yarn eco-store:serve",
       "routes": "apps/eco-store/src/app/app.routes.ts",
       "pages": [
         {
