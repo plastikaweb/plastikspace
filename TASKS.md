@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 1.13 · **Last updated:** 2026-11-24
+**Document version:** 1.14 · **Last updated:** 2026-11-24
 
 ---
 
@@ -48,7 +48,7 @@
 | **META-17** ✅ | ESLint: Angular rules that `.claude/CLAUDE.md` asks for in prose become errors | Low | `123kjkdqv36` |
 | **META-18** ✅ | `lint-delta`: ESLint warnings may not grow on touched files | Low | `123kjkdqv37` |
 | **META-19** ✅ | eco-lib Nx generator: the shortest path is the correct one | Low | `123kjkdqv38` |
-| **META-20** 📋 | Feature map for the eco apps + skill to open the app signed in | Low | `123kjkdqv3a` |
+| **META-20** ✅ | Feature map for the eco apps + skill to open the app signed in | Low | `123kjkdqv3a` |
 | **META-21** 📋 | Prune Claude memory: workarounds become fixes, stale entries go | Low | `123kjkdqv3b` |
 | **META-22** ⛔ | Skill evals: measure that the daily skills are actually followed | Low | `123kjkdqv3d` |
 | **META-23** 📋 | `task-audit` skill: pre-PR review of feature-sized branches | Low | `123kjkdqv3e` |
@@ -126,7 +126,7 @@ ClickUp `123kjkdqv38`. Merged 2026-11-24 (PR #1597, `ef076441`). `yarn eco-lib` 
 
 ### META-20 — Feature map and signed-in app skill
 
-ClickUp `123kjkdqv3a`. `feature-map.json` generated from the eco `app.routes.ts` files, with a check that it matches; a skill that starts the app and signs in with a throwaway PocketBase user, asking before it touches :8090.
+ClickUp `123kjkdqv3a`. Merged 2026-11-24 in two PRs. PR #1599 (`bfcb7fbc`): `yarn feature-map` (`tools/scripts/feature-map.cjs`) follows the eco-store and eco-admin routes with the TypeScript parser into `tools/feature-map.json`, 27 pages with access, roles, needs, guards, project, component, specs, layout and outlets, plus 4 redirects; a guard in neither of its tables, or a route shape it does not know, stops it, and `yarn feature-map:check` fails CI on drift (proven by renaming a route). PR #1600 (`9721cac1`): the `eco-page-check` skill (find the page with `yarn feature-map:find`, ask before PocketBase, serve, sign in as a throwaway user from `tools/scripts/eco-test-user.cjs`, read the page) and a headless `playwright` MCP server through `npx`, the owner's choice over the desktop built-in browser. A fresh Sonnet agent told only that the avatar page fails reproduced a planted fault and named its file and lines in 69 s. Not exercised in a browser: eco-admin pages and pages with `needs`.
 
 ### META-21 — Prune Claude memory
 
@@ -178,6 +178,7 @@ ClickUp `123kjkdqzvb`. Merged 2026-11-23 (PR #1587, `edc1c5cf`). The "Lint rules
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 1.14 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-20 ✅ (PR #1599, `bfcb7fbc`, and PR #1600, `9721cac1`): the generated feature map with its CI check, and the `eco-page-check` skill with headless Playwright and its acceptance run; META-22 stays ⛔ on META-21. |
 | 1.13 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-19 ✅ (PR #1597, `ef076441`): the `eco-lib` generator with the eco-admin naming scheme, its acceptance run and tests; META-24 stays ⛔, now on META-23 alone. |
 | 1.12 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-15 ✅ (PR #1595, `8ab386de`): `check-eco-conventions` in the pre-commit and as a failing CI check, with its tests, and allow markers on the four eco-admin hex; META-23 goes from ⛔ to 📋, its three blockers merged. |
 | 1.11 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-18 ✅ (PR #1593, `2aca478a`): `lint-delta` in the pre-push and as a failing CI check, with its tests and measurements. |
