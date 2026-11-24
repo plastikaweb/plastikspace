@@ -169,7 +169,7 @@ commitlint (`commitlint.config.cjs`: type, header up to 100 characters, body up 
 
 Merge, revert, `fixup!` and `squash!` messages, and commits made during a merge, cherry-pick, revert or rebase, are not checked. `yarn commit-refs:test` covers the script.
 
-## Worktrees (`yarn worktree:setup`)
+## Worktrees (`tools/scripts/worktree-setup.cjs`)
 
 Every checkout runs its own `.husky` hooks once `tools/scripts/worktree-setup.cjs` (META-34) has run in any of them, through `yarn worktree:setup` or `yarn husky-install`.
 It writes a dispatcher into the shared git folder (`.git/husky-dispatch`) and points `core.hooksPath`, a setting all worktrees share, at it.
@@ -178,10 +178,11 @@ A checkout without a `.husky` folder cannot commit, merge or push, and says why;
 Before, `core.hooksPath` named the main checkout's `.husky/_`, so every worktree ran the main checkout's hooks.
 `npx husky` sets it back to the relative `.husky/_`, which no worktree has (it is ignored), and worktrees then run no hook at all: run `yarn worktree:setup` again after it.
 
-In a new linked worktree, run once, outside the Bash sandbox (it writes the shared git config and installs packages):
+In a new linked worktree, run once, outside the Bash sandbox (it writes the shared git config and installs packages), with `node`:
+Yarn runs no script, `yarn worktree:setup` included, in a checkout that has not been installed.
 
 ```bash
-yarn worktree:setup --branch <type>/<task-id>-<words>
+node tools/scripts/worktree-setup.cjs --branch <type>/<task-id>-<words>
 ```
 
 Besides the hooks, it links `apps/eco-store/.env` and the PocketBase binary, `pb_data` and `pb_migrations` from the main checkout when the worktree has none of its own.

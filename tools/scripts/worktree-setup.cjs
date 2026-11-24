@@ -20,7 +20,9 @@
  *   - runs `yarn install --immutable` when node_modules is missing (--no-install skips it).
  *
  * Usage (outside the Bash sandbox: it writes the shared git config and installs packages):
- *   yarn worktree:setup [--branch <type>/<words>] [--no-install] [--hooks-only]
+ *   node tools/scripts/worktree-setup.cjs [--branch <type>/<words>] [--no-install] [--hooks-only]
+ * Call it with node in a new worktree: Yarn runs no script, `yarn worktree:setup` included,
+ * before that checkout is installed.
  * `yarn husky-install` runs it with --hooks-only. Running `npx husky` resets core.hooksPath to
  * `.husky/_`: run this again afterwards. Test: yarn worktree-setup:test.
  *
@@ -209,7 +211,7 @@ function main(argv) {
 
   if (stray.length || (branchAt !== -1 && !option(argv, '--branch')?.match(/^[^-]/))) {
     console.error(
-      'Usage: yarn worktree:setup [--branch <type>/<words>] [--no-install] [--hooks-only]'
+      'Usage: node tools/scripts/worktree-setup.cjs [--branch <type>/<words>] [--no-install] [--hooks-only]'
     );
 
     return 2;

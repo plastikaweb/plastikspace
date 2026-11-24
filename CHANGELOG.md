@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-24] - A new worktree runs the setup with node (META-34)
+
+### Fixed
+
+- **A new worktree runs `node tools/scripts/worktree-setup.cjs --branch <type>/<task-id>-<words>`, not `yarn worktree:setup`.** Yarn runs no script in a checkout that has not been installed, and installing is part of what the script does: in a fresh worktree `yarn worktree:setup` stopped with «Couldn't find the node_modules state file» before reaching it. AGENTS.md, the root CLAUDE.md and the script's usage line now give the `node` command, and `yarn worktree-setup:test` checks the two docs. Found by the first run on this repository: a fresh worktree off develop was ready in 67 s with that one command (`yarn install` included), its first non-Markdown commit went through develop's hooks in 12 s (the pre-commit started and stopped its own PocketBase), and a line added only to that worktree's `.husky/pre-commit` stopped its commit (META-34, ([#123kjkdr15t](https://app.clickup.com/t/123kjkdr15t))).
+
 ## [2026-11-24] - Every checkout runs its own git hooks; a worktree is ready in one command (META-34)
 
 ### Added
