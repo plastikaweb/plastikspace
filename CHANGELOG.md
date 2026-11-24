@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-24] - Long runs survive: SSH keepalive, no idle sleep, one Nx cache for tests (META-35)
+
+### Changed
+
+- **Git's SSH connections get keepalives.** `tools/scripts/worktree-setup.cjs` sets the shared `core.sshCommand` to `ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=6`, unless it already holds another command, so pushes no longer need `GIT_SSH_COMMAND`. Git opens the connection before the pre-push and sends the pack after it, and a long pre-push outlasted an idle connection (exit 141 after "All checks passed"). Measured against GitHub: a push connection left idle for 15 minutes was closed by GitHub without keepalives (exit 255) and ended normally with them (exit 0) (META-35, ([#123kjkdr15u](https://app.clickup.com/t/123kjkdr15u))).
+- **A `SessionStart` hook runs `caffeinate -i -w <session pid>` on macOS**, so idle sleep (about 30 minutes) no longer pauses a long hook, push or test run that a session started. Checked with headless sessions: a `caffeinate` bound to the session's process ran while it lived and was gone once it ended (META-35, ([#123kjkdr15u](https://app.clickup.com/t/123kjkdr15u))).
+- **`.husky/pre-push` no longer passes `--cache` to the affected tests.** Nx caches `test` on its own: a second run read from the cache with or without the flag, so a second push without changes already ran no test. The flag only reached vitest as an argument and gave the pre-push cache entries of its own, which a `yarn nx test` run by hand never reused. `affected:lint` keeps its `--cache`, which ESLint uses for its own per-project cache (META-35, ([#123kjkdr15u](https://app.clickup.com/t/123kjkdr15u))).
+
 ## [2026-11-24] - A new worktree runs the setup with node (META-34)
 
 ### Fixed

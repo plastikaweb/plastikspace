@@ -10,6 +10,8 @@
  * line to the file in $HOOK_LOG, so a case reads which checkout's hook ran. Git runs without
  * the user's global and system config, and any GIT_* variable of the caller is dropped.
  *
+ * META-35 adds core.sshCommand, which the setup writes to the same shared config.
+ *
  * Run: yarn worktree-setup:test (CI: the Lint Affected step of .github/workflows/ci.yml).
  * WORKTREE_SETUP_SCRIPT=<path> runs the cases against another copy of the script (mutation runs).
  */
@@ -23,6 +25,7 @@ const SCRIPT = path.resolve(
   process.env.WORKTREE_SETUP_SCRIPT ?? path.join(ROOT, 'tools/scripts/worktree-setup.cjs')
 );
 const HUSKY_RUNNER = path.join(ROOT, 'node_modules/husky/husky');
+const SSH_COMMAND = 'ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=6';
 const BASE_ENV = Object.fromEntries(
   Object.entries(process.env).filter(([key]) => !key.startsWith('GIT_'))
 );
@@ -519,10 +522,34 @@ test('the setup can run again', () => {
   expect(again.status === 0, `second run exited ${again.status}:\n${again.out}`);
   expect(again.out.includes('core.hooksPath already'), `output: ${again.out}`);
   expect(again.out.includes('Kept apps/eco-store/pocketbase/pocketbase'), `output: ${again.out}`);
+  expect(again.out.includes('core.sshCommand already'), `output: ${again.out}`);
   expect(
     commit(fx, fx.wt, 'feat: again').lines[0] === 'worktree pre-commit',
     'the hooks stopped working'
   );
+});
+
+test('the setup gives git ssh keepalives in the shared config (META-35)', () => {
+  const fx = readyFixture();
+
+  expect(
+    gitOk(fx.main, ['config', '--get', 'core.sshCommand']) === SSH_COMMAND,
+    `core.sshCommand: ${git(fx.main, ['config', '--get', 'core.sshCommand']).out}`
+  );
+  expect(fx.result.out.includes(`core.sshCommand (unset) → ${SSH_COMMAND}`), fx.result.out);
+});
+
+test('the setup keeps a core.sshCommand that holds another command', () => {
+  const fx = fixture();
+  const own = 'ssh -i ~/.ssh/other_key';
+
+  fakeInstall(fx.wt);
+  gitOk(fx.main, ['config', 'core.sshCommand', own]);
+  const result = setup(fx.wt, ['--branch', 'chore/abc-thing']);
+
+  expect(result.status === 0, `setup exited ${result.status}:\n${result.out}`);
+  expect(gitOk(fx.main, ['config', '--get', 'core.sshCommand']) === own, 'it was overwritten');
+  expect(result.out.includes('kept'), `output: ${result.out}`);
 });
 
 test('in the main checkout, the setup only installs the dispatcher', () => {
@@ -565,6 +592,7 @@ test('wrong arguments exit 2 without touching the repository', () => {
     gitOk(fx.main, ['config', '--get', 'core.hooksPath']) === path.join(fx.main, '.husky/_'),
     'core.hooksPath changed'
   );
+  expect(git(fx.main, ['config', '--get', 'core.sshCommand']).status === 1, 'core.sshCommand set');
 });
 
 test('the docs give the node command for a new worktree, which Yarn cannot run before an install', () => {

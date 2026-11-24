@@ -177,6 +177,8 @@ Git runs each hook from the top of the checkout that triggers it, and the dispat
 A checkout without a `.husky` folder cannot commit, merge or push, and says why; one that only lacks a hook skips it.
 Before, `core.hooksPath` named the main checkout's `.husky/_`, so every worktree ran the main checkout's hooks.
 `npx husky` sets it back to the relative `.husky/_`, which no worktree has (it is ignored), and worktrees then run no hook at all: run `yarn worktree:setup` again after it.
+It also sets the shared `core.sshCommand` to `ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=6` (META-35), unless it already holds another command; `GIT_SSH_COMMAND` still wins over it.
+Git opens the SSH connection before the pre-push and sends the pack after it, so a long pre-push used to outlast an idle connection.
 
 In a new linked worktree, run once, outside the Bash sandbox (it writes the shared git config and installs packages), with `node`:
 Yarn runs no script, `yarn worktree:setup` included, in a checkout that has not been installed.
