@@ -61,12 +61,15 @@ jobs:
         run: |
           yarn nx-tags:check
           yarn nx-tags:test
+          yarn lint:delta:test
           yarn i18n:validate
           yarn tasks:test
           yarn tasks:check
           yarn markdownlint
           yarn lint:profiles
           npx nx affected --target=lint --exclude=llecoop-firebase --parallel=3
+          # Last, so a failure still leaves the full lint output above (META-18).
+          yarn lint:delta
 
       - name: Test
         if: always()

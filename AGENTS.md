@@ -146,7 +146,8 @@ Checks the **staged** content only; nothing unstaged enters the commit. Runs in 
 `.husky/post-commit` only deletes the pre-commit's record of that export once the commit lands.
 `tasks:check` and i18n:validate run on a copy of the index, so they read the content being committed.
 Untracked files are never added: the hook lists them after the commit, and the pre-push warns about them.
-Markdown-only commits skip the export and i18n. The affected lint over whole projects runs in CI, not in the hooks; pre-push keeps the Nx tags check, format check, affected test, build and a11y.
+Markdown-only commits skip the export and i18n. The affected lint over whole projects runs in CI, not in the hooks; pre-push keeps the Nx tags check, format check,
+lint-delta (no new ESLint warnings in touched files), affected test, build and a11y.
 ESLint in the hooks builds no TypeScript program, so the rules that need one (`no-deprecated`, `prefer-readonly`, the boolean `naming-convention` selector) only report in CI or with `yarn lint:ci` (META-13).
 `cypress/unsafe-to-chain-command` also flags chains that start at a helper function only there.
 A worktree on a branch older than META-12 has neither lint-staged nor `lint-staged.config.mjs`; the hook then uses those of the main checkout.

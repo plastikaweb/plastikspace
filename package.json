@@ -15,6 +15,8 @@
     "lint:all": "nx run-many --all --target=lint --parallel --max-parallel=3",
     "lint:ci": "ESLINT_TYPED=1 nx affected --target=lint --base=remotes/origin/develop --head=HEAD --parallel",
     "lint:profiles": "node tools/scripts/test-eslint-profiles.mjs",
+    "lint:delta": "node tools/scripts/lint-delta.cjs",
+    "lint:delta:test": "node tools/scripts/test-lint-delta.mjs",
     "nx-tags:check": "node tools/scripts/check-nx-tags.cjs",
     "nx-tags:test": "node tools/scripts/test-nx-tags-check.mjs",
     "i18n:validate": "node tools/scripts/validate-i18n-keys.cjs",
