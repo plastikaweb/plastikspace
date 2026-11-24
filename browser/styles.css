@@ -2099,6 +2099,12 @@ html {
   .resize-none {
     resize: none;
   }
+  .scroll-pt-28 {
+    scroll-padding-top: calc(var(--spacing) * 28);
+  }
+  .scroll-pb-24 {
+    scroll-padding-bottom: calc(var(--spacing) * 24);
+  }
   .list-none {
     list-style-type: none;
   }
@@ -3836,6 +3842,9 @@ html {
       filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,) !important;
     }
   }
+  .group-focus-visible\:opacity-100:is(:where(.group):focus-visible *) {
+    opacity: 100%;
+  }
   .file\:border-0::file-selector-button {
     border-style: var(--tw-border-style);
     border-width: 0px;
@@ -4247,6 +4256,11 @@ html {
   @media (prefers-contrast: more) {
     .contrast-more\:text-red-100 {
       color: var(--color-red-100);
+    }
+  }
+  @media not (min-width: 48rem) {
+    .max-md\:scroll-pb-24 {
+      scroll-padding-bottom: calc(var(--spacing) * 24);
     }
   }
   @media (min-width: 40rem) {
