@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 1.16 · **Last updated:** 2026-11-24
+**Document version:** 1.17 · **Last updated:** 2026-11-24
 
 ---
 
@@ -50,8 +50,8 @@
 | **META-19** ✅ | eco-lib Nx generator: the shortest path is the correct one | Low | `123kjkdqv38` |
 | **META-20** ✅ | Feature map for the eco apps + skill to open the app signed in | Low | `123kjkdqv3a` |
 | **META-21** ✅ | Prune Claude memory: workarounds become fixes, stale entries go | Low | `123kjkdqv3b` |
-| **META-22** 🔄 | Skill evals: measure that the daily skills are actually followed | Low | `123kjkdqv3d` |
-| **META-23** 📋 | `task-audit` skill: pre-PR review of feature-sized branches | Low | `123kjkdqv3e` |
+| **META-22** ✅ | Skill evals: measure that the daily skills are actually followed | Low | `123kjkdqv3d` |
+| **META-23** 🔄 | `task-audit` skill: pre-PR review of feature-sized branches | Low | `123kjkdqv3e` |
 | **META-24** ⛔ | Reusable Claude Code base: private plugin + template repo | Low | `123kjkdqv3f` |
 | **META-25** ✅ | ESLint 10 with flat config, on the current Nx 22.7 | Normal | `123kjkdqv9f` |
 | **META-26** ✅ | Nx 22.7 → 23 → 24.0.x with `nx migrate`, plus the legacy `nx.json` cleanup | Normal | `123kjkdqv9g` |
@@ -144,11 +144,11 @@ ClickUp `123kjkdqv3b`. Done 2026-11-24. The memory, outside the repo, went from 
 
 ### META-22 — Skill evals
 
-ClickUp `123kjkdqv3d`. In progress since 2026-11-24, once META-21 and META-38 merged. Evals for `commitizen-git-flow`, eco form fields and the task docs only.
+ClickUp `123kjkdqv3d`. Done 2026-11-24 (PR #1608, `38b05d14`). The commit rules commitlint cannot see became a script, not an eval: `.husky/commit-msg` runs `tools/scripts/check-commit-refs.cjs` (the branch's ClickUp ID in the header, a task ID on eco code, a CHANGELOG bullet naming the task for a `feat`, `fix` or `perf` with code). Replayed over develop's last 150 PRs it would have refused 2 of the 98 commits since 2026-11-01. The form-field eval (`tools/evals/form-field/`, headless Sonnet, graded by a script) passed 5/5 on develop for 2.59 USD, but its task has a select next to the new one to copy, so it cannot fail; the second batch was not run. Rerun it with the first eco-admin form. The task-doc eval was dropped: `yarn tasks:check` already checks them on every commit and push.
 
 ### META-23 — `task-audit` skill
 
-ClickUp `123kjkdqv3e`. Its blockers, META-15, META-16 and META-18, merged by 2026-11-24. Three lenses (code, a11y, PocketBase and tenants); proven on the PR #1558 branch before adoption.
+ClickUp `123kjkdqv3e`. In progress since 2026-11-24; its blockers, META-15, META-16 and META-18, merged by then. Three lenses (code, a11y, PocketBase and tenants); proven on the PR #1558 branch before adoption.
 
 ### META-24 — Reusable Claude Code base
 
@@ -220,6 +220,7 @@ ClickUp `123kjkdr177`. The owner set WCAG 2.2 AA for every app (PR #1603), but P
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 1.17 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-22 ✅ (PR #1608, `38b05d14`): a commit-msg check for the ClickUp ID, the task ID and the CHANGELOG bullet, and a form-field eval that passed 5/5 on a case it cannot fail. META-23 🔄. |
 | 1.16 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-37 ✅ (PR #1605, `45932c0e`): `pb:sync` needs `POCKETBASE_ENV`. META-38 ✅ (PR #1606, `01e83b2d`): the two `CLAUDE.md` files trimmed. META-22 🔄, unblocked. |
 | 1.15 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-21 ✅ (PR #1602, `1d6e56b3`, and PR #1603, `04b9efc8`): memory pruned, the Claude docs' errors fixed, WCAG 2.2 AA as the target. Seven tickets from its inventory join as META-32…38 (A11Y-022 went to the eco-store docs), and META-39 makes Pa11y and an audit follow the 2.2 target. META-22 now waits on META-38, the `CLAUDE.md` trims. |
 | 1.14 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-20 ✅ (PR #1599, `bfcb7fbc`, and PR #1600, `9721cac1`): the generated feature map with its CI check, and the `eco-page-check` skill with headless Playwright and its acceptance run; META-22 stays ⛔ on META-21. |
