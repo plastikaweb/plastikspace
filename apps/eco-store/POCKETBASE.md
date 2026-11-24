@@ -122,12 +122,14 @@ Server-side logic is implemented as standard PocketBase JavaScript hooks.
 
 ### Hooks
 
-- **[on_create_order.pb.js](./pocketbase/pb_hooks/on_create_order.pb.js)**: Handles order cycle linking, duplicate prevention, cart cleanup, and confirmation emails.
-- **[on_password_reset.pb.js](./pocketbase/pb_hooks/on_password_reset.pb.js)**: Localized password-reset email (overrides the native mailer).
+- **[on_create_order.pb.js](./pocketbase/pb_hooks/on_create_order.pb.js)**: Handles order cycle linking, duplicate prevention, cart cleanup, and the NOT-01 confirmation email.
+- **[on_password_reset.pb.js](./pocketbase/pb_hooks/on_password_reset.pb.js)**: Localized password-reset email, PRV-03 (overrides the native mailer).
   One file for both frontends: the link opens the admin panel (`eco-admin`) when the request came from the panel's origin and the account is an administrator's,
   and the storefront of the user's cooperative otherwise.
-- **[on_email_change.pb.js](./pocketbase/pb_hooks/on_email_change.pb.js)**: Localized email-change confirmation email pointing at the app's `/confirmar-correu` page (overrides the native mailer).
-- **[single_default_address.pb.js](./pocketbase/pb_hooks/single_default_address.pb.js)**: Ensures unique default user addresses.
+- **[on_email_change.pb.js](./pocketbase/pb_hooks/on_email_change.pb.js)**: Localized email-change confirmation email pointing at the app's `/confirmar-correu` page, PRV-02b (overrides the native mailer).
+- **[single_default_address.pb.js](./pocketbase/pb_hooks/single_default_address.pb.js)**: Ensures unique default user addresses (PRV-04c).
+- **[normalize_user_name.pb.js](./pocketbase/pb_hooks/normalize_user_name.pb.js)**: Normalizes user names for search.
+- **[validate_fiscal_profile.pb.js](./pocketbase/pb_hooks/validate_fiscal_profile.pb.js)**: NIF/NIE/CIF checksum on `user_fiscal_profiles` create and update (PRV-04d).
 
 Both mail hooks localize via the optional `users.language` field (`ca|es|en`, fallback `ca`), which the eco-store app keeps in sync with the `eco-lang` preference on login and on language switch.
 

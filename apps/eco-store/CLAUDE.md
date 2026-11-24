@@ -2,7 +2,7 @@
 
 App-specific guidance for AI agents (Claude Code, Cursor, etc.) working in `apps/eco-store/` and `libs/eco-store/*`.
 
-This file **complements** — it does not duplicate — the root `/CLAUDE.md` (which covers Nx workspace, package manager, generic Angular/TypeScript conventions, scopes & module boundaries, commit conventions, etc.). Read the root file first.
+It complements the root `CLAUDE.md` (workspace, conventions, boundaries, commits) and does not repeat it: read that one first.
 
 ---
 
@@ -21,20 +21,17 @@ This file **complements** — it does not duplicate — the root `/CLAUDE.md` (w
 
 When working here, these are authoritative — consult them before assuming:
 
-| Document                    | Path                                                                                                                | Purpose                                                   |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
-| **PRD v1.8**                | `/Volumes/Feina/Projects-modeling/eco/eco-store/ecostoreprdv1_8ca.pdf` _(external to repo — binary, slow-changing)_ | Functional requirements — the master                      |
-| **TASKS**                   | `apps/eco-store/TASKS.md`                                                                                           | Live backlog with verified status per PRD ID              |
-| **BACKLOG**                 | `apps/eco-store/BACKLOG.md`                                                                                         | Phased / dependency-aware sprint plan with time estimates |
-| **PocketBase workflow**     | `apps/eco-store/POCKETBASE.md`                                                                                      | Schema management, hooks, cron, scripts                   |
-| **Email / SMTP (Mailtrap)** | `apps/eco-store/MAILTRAP.md`                                                                                        | Transactional email + Mailtrap SMTP config (dev/staging)  |
-| **Loading strategies**      | `apps/eco-store/LOADING_STRATEGIES.md`                                                                              | Activity & loading patterns                               |
-| **SSR**                     | `apps/eco-store/SSR.md`                                                                                             | Server-side rendering config                              |
-| **Accessibility statement** | Published Feb 22, 2025 — WCAG 2.1 AA; a 2.2 statement waits for the audit                                           |
+- **PRD v1.8**, the master for functional requirements: `/Volumes/Feina/Projects-modeling/eco/eco-store/ecostoreprdv1_8ca.pdf` (outside the repo, binary, slow-changing)
+- **TASKS** (`apps/eco-store/TASKS.md`): live backlog with verified status per PRD ID
+- **BACKLOG** (`apps/eco-store/BACKLOG.md`): phased, dependency-aware sprint plan with time estimates
+- **PocketBase** (`apps/eco-store/POCKETBASE.md`): schema, hooks, cron, scripts
+- **Email and SMTP** (`apps/eco-store/MAILTRAP.md`): transactional email and the Mailtrap SMTP setup (dev, staging)
+- **Loading strategies** (`apps/eco-store/LOADING_STRATEGIES.md`) and **SSR** (`apps/eco-store/SSR.md`)
+- **Accessibility statement**: published Feb 22, 2025, WCAG 2.1 AA; a 2.2 statement waits for the audit (META-39)
 
 Read one task with `yarn task <ID>` (`tools/scripts/task.cjs`: task ID, ClickUp ID, or a row label with `--home`), never the whole TASKS.md or BACKLOG.md. It prints the definition plus every other line that names the ID, so a status that differs between places shows up. Exit 2 means no definition was found.
 
-After editing a task doc, run `yarn tasks:check` (the pre-commit runs it whenever a TASKS, BACKLOG or REQUIREMENTS doc changes, and CI on every push). It fails on an unescaped `|` in a cell (write `\|`, even inside backticks), on a blank line between two rows of one table, on TASKS.md and BACKLOG.md declaring different `Document version`s, and on one task with two different statuses.
+After editing a task doc, run `yarn tasks:check`; the pre-commit runs it when a TASKS, BACKLOG or REQUIREMENTS doc changes, and CI on every push. Escape `|` in a cell as `\|`, even inside backticks, and keep TASKS.md and BACKLOG.md on the same `Document version`.
 
 ### Referencing task identifiers (MANDATORY)
 
@@ -53,62 +50,23 @@ If you can't find a matching ID in TASKS.md, **stop and ask** rather than invent
 
 ### Adding new tasks to `TASKS.md` / `BACKLOG.md` (MANDATORY)
 
-When you add a brand-new task entry to `apps/eco-store/TASKS.md` or `apps/eco-store/BACKLOG.md`, you **must also create the corresponding ClickUp ticket** via the ClickUp MCP in the same change. The TASKS.md row should then carry the new ClickUp ID. Don't leave entries with `—` or `_pending_` in the ClickUp column — that's how drift starts (see META-05 sync command and the 17 drift items it surfaced on first run).
+When you add a brand-new task entry to `apps/eco-store/TASKS.md` or `apps/eco-store/BACKLOG.md`, you **must also create the corresponding ClickUp ticket** via the ClickUp MCP in the same change. The TASKS.md row should then carry the new ClickUp ID. Don't leave entries with `—` or `_pending_` in the ClickUp column: that is how drift starts.
 
 Before creating the ClickUp task: inspect a same-family analog already in the board (e.g. another `BOT-` or `OPS-` task) to pick the right list, tags, and assignee defaults. The ClickUp ID is the bridge for status sync.
 
 ### Committing changes to `TASKS.md` / `BACKLOG.md` only
 
-`TASKS.md` and `BACKLOG.md` are living planning docs, not release artifacts. Treat them differently from code:
+They are planning docs, not release artifacts:
 
-- **Don't open standalone PRs for backlog-only edits.** Bundle them into a feature branch as a separate commit (one commit for the code change, one for the TASKS.md status flip) when the related work ships.
-- **No CHANGELOG entry** for backlog-only changes. Keep a Changelog is for release-impacting changes a reader cares about; planning metadata isn't that. When a feature commit includes a TASKS.md flip alongside the work, the CHANGELOG bullet describes the _work_ (with the PRD/CU ID), not the TASKS edit.
-- **For pure-grooming passes** with no associated code change (audits, ID corrections, version bumps, adding queued tasks): commit with `docs(eco-store):` scope. No standalone PR — fold them into the next feature branch instead, or push directly if branch protection allows.
-- The exception is _deleting an obsolete document_ (e.g. META-01) or other one-off cleanups where the change itself is the deliverable — those still get a CHANGELOG bullet and a PR.
+- They go in their own commit, never with code (the pre-commit rejects the mix). The code commit carries the CHANGELOG bullet, which describes the work with its PRD and ClickUp IDs; the task-doc commit gets none.
+- A grooming pass with no code (audits, ID corrections, version bumps, queued tasks) is a `docs(eco-store):` commit in the next feature branch, or in a META-08 docs PR.
+- Deleting an obsolete document (META-01) or a similar one-off cleanup is a deliverable: it gets a CHANGELOG bullet and a PR.
 
 ---
 
-## Library structure (`libs/eco-store/*`)
+## Libraries and routes
 
-Each domain has its own scope. Imports use the `@plastik/eco-store/*` path alias family.
-
-```
-libs/eco-store/
-├── auth/                      # Login, forgot-password, reset flows
-│   ├── login/
-│   ├── forgot-password/
-│   ├── forgot-password-sent/
-│   └── reset-password/
-├── cart/
-│   ├── data-access/           # ecoStoreCartStore + carts API service
-│   └── feature/               # 3-step checkout UI
-├── core/
-│   ├── api/                   # PocketBase API base wrappers
-│   ├── entities/              # Domain types (EcoStoreProduct, EcoStoreCart, …)
-│   ├── layout/                # Main shell, header, footer, menu, mobile-nav
-│   ├── router/                # Custom TitleStrategy, route-state helpers
-│   └── tenant/                # ecoStoreTenantStore (tenant resolution)
-├── orders/
-│   ├── data-access/
-│   ├── feature/list/
-│   ├── feature/detail/
-│   └── feature/created/       # Post-checkout confirmation
-├── product-categories/
-├── products/
-│   ├── data-access/
-│   ├── feature/list/
-│   └── feature/detail/
-├── profile/
-│   ├── addresses/             # PRV-04 full CRUD
-│   ├── avatar/                # PRV-02a avatar upload/crop/delete
-│   ├── basic/                 # PRV-02a/02b name, phone, email
-│   ├── feature/               # Routes + shell
-│   └── fiscal-data/           # PRV-04d fiscal/billing profile (tenant-gated)
-├── shared/                    # Eco-store-only shared UI (product-card, breadcrumbs, hero-header, price-summary, etc.)
-└── store-window/              # BOT-09 cycle banner + BOT-14 Qui Som
-```
-
-Cross-app reusable code goes in `libs/shared/*` or `libs/core/*` (see root CLAUDE.md for scope rules). Don't put eco-store-specific things there.
+Libraries live in `libs/eco-store/<domain>/<type>` behind `@plastik/eco-store/*` aliases (`yarn nx show projects` lists them); a new one comes from `yarn eco-lib`. Cross-app code goes in `libs/shared/*` or `libs/core/*` and code shared with eco-admin in `libs/eco/*` (scope rules in the root `CLAUDE.md`); nothing eco-store-specific goes there.
 
 ### App entry points
 
@@ -116,20 +74,9 @@ Cross-app reusable code goes in `libs/shared/*` or `libs/core/*` (see root CLAUD
 - `apps/eco-store/src/app/app.config.ts` — providers: PocketBase, translate, view transitions, service worker, image loader, tenant init
 - `libs/eco-store/core/layout/src/layout.routes.ts` — the in-shell route tree (`/cistella`, `/comandes`, `/botiga`, `/perfil`, etc.)
 
-### Current route map
+### Routes
 
-| Path                                                        | Purpose                                                    |
-| ----------------------------------------------------------- | ---------------------------------------------------------- |
-| `/accedir`                                                  | Login                                                      |
-| `/recuperar-contrasenya` + `-enviada`                       | Forgot password flow                                       |
-| `/restablir-contrasenya`                                    | Reset password                                             |
-| `/` → `/botiga`                                             | **No home (INI) yet** — `**` fallback redirects to catalog |
-| `/botiga` · `/botiga/:category` · `/botiga/:category/:slug` | Catalog + detail                                           |
-| `/cistella`                                                 | Checkout (3 steps)                                         |
-| `/comandes` · `/comandes/nova` · `/comandes/:id`            | Order history + new + detail                               |
-| `/perfil`                                                   | Profile area                                               |
-
-When you add the **INI** (home) module, mount it at `''` in `layout.routes.ts` before the `'botiga'` block, and remove or repurpose the `**` redirect.
+`tools/feature-map.json` maps every page to its library, access, guards and specs (`yarn feature-map:find <words>`). There is no home (INI) yet: the `**` fallback redirects to `/botiga`. When you add INI, mount it at `''` in `layout.routes.ts` before the `'botiga'` block, and remove or repurpose the `**` redirect.
 
 ---
 
@@ -151,19 +98,9 @@ apps/eco-store/pocketbase/
 └── backup-host/, data/        # Staging clone targets
 ```
 
-### Hooks workflow (PocketBase 0.36.7)
+### Hooks (PocketBase 0.36.7)
 
-This version **supports separate `.pb.js` files** — no need to bundle into a single `main.pb.js`. Current live hooks:
-
-| File                            | Purpose                                                                      |
-| ------------------------------- | ---------------------------------------------------------------------------- |
-| `on_create_order.pb.js`         | Cycle linking, duplicate prevention, cart cleanup, NOT-01 confirmation email |
-| `on_password_reset.pb.js`       | PRV-03 localized reset email; links to eco-admin when an admin asks from it  |
-| `on_email_change.pb.js`         | PRV-02b localized email-change confirmation → `/confirmar-correu`            |
-| `single_default_address.pb.js`  | Enforces single default on `user_addresses` (PRV-04c)                        |
-| `normalize_user_name.pb.js`     | Auto-normalizes user names for search                                        |
-| `cycle_cron.pb.js`              | Scheduled job: initialize weekly cycles and run status transitions           |
-| `validate_fiscal_profile.pb.js` | PRV-04d — NIF/NIE/CIF checksum on `user_fiscal_profiles` create/update       |
+Each `pb_hooks/*.pb.js` file loads on its own (no single `main.pb.js`). `POCKETBASE.md` "PocketBase Hooks & Cron Jobs" lists them with what each does.
 
 ### Schema workflow
 
@@ -184,7 +121,7 @@ yarn eco-store:pb:diff
 #    commit needs ALLOW_SCHEMA_ONLY=1 git commit ...
 ```
 
-A PR into develop that changes `pb_schema.json` without any eco code (Markdown does not count), or that removes a collection or field, fails `.github/workflows/pb-schema-guard.yml` unless it has the `pb-schema` label. The staging sync drops a removed field with its data and never deletes a collection; like the sync, the check finds a collection by id or else by name. The label covers the schema of the head it was added at, which the workflow records in a comment: any later run whose schema differs from that head's removes the label, even when the check passes, and it is added again once the new summary is reviewed. A record written before the label's latest addition (that run was dropped, or could not write) does not count. A re-run of an older run stops once the head has moved on, and otherwise takes the labels the pull request has now.
+A PR into develop that changes `pb_schema.json` without eco code (Markdown does not count), or that removes a collection or field, fails `.github/workflows/pb-schema-guard.yml` unless it has the `pb-schema` label. How the label and its record work: AGENTS.md "PocketBase Schema Workflow".
 
 Pushing to `develop` triggers `.github/workflows/pocketbase-schema.yml`, which syncs the schema to staging (PocketHost).
 
@@ -249,28 +186,21 @@ Tenant identification happens **at app init**, before any route activates:
 
 ## Design system — "Organic and Kind"
 
-The brand identity is the **Eco Vibrant** / **"Organic and Kind"** aesthetic. The root CLAUDE.md captures the design principles; this section adds the eco-store-specific details.
+The brand identity is the **Eco Vibrant** / **"Organic and Kind"** aesthetic, for the users and partners of local food cooperatives who browse proximity and ecological products, place orders and consult their history.
+
+- **Personality**: nature, lightness, proximity: organic connection, kindness, approachability. Soft, natural and welcoming; no harsh "tech" look, no clinical minimalism.
+- **Earthy elegance**: colours and spacing that feel natural, light and unforced.
+- **Gentle interactions**: smooth, subtle animations and micro-interactions, never jarring.
+- **Clear typographic hierarchy**: legible for a diverse user base; accessibility first, without losing the kind tone.
+- **Proximity**: less friction, so ordering local food feels intuitive and neighbourly.
 
 ### Theming
 
 - **Material 3** with CSS custom properties
 - **OKLCH-derived palettes** (not HSL) for perceptual uniformity across light/dark
 - Light + dark modes both fully supported via `MatThemeToggleComponent` in header
+- **Manrope** for all text (display, headlines, body, labels), loaded from Google Fonts; the M3 type scale is in `libs/eco/styles/src/_eco_tokens.css`
 - Tenant-customizable palette is on the roadmap (UI-03)
-
-### Typography
-
-**Manrope** for all text (display, headlines, body, labels). Loaded via Google Fonts.
-
-| M3 Token       | Size     | Weight | Use                  |
-| -------------- | -------- | ------ | -------------------- |
-| Display Large  | 3.562rem | 400    | Hero titles          |
-| Headline Large | 2rem     | 400    | Major section titles |
-| Title Large    | 1.375rem | 400    | Card / panel titles  |
-| Body Large     | 1rem     | 400    | Body text            |
-| Body Medium    | 0.875rem | 400    | Secondary text       |
-| Label Large    | 0.875rem | 500    | Button labels        |
-| Label Small    | 0.688rem | 500    | Badges, tags         |
 
 ### Shape
 
@@ -337,27 +267,24 @@ From `@plastik/auth/pocketbase/data-access`. Holds auth state + user record.
 - **localStorage key:** `eco-lang`
 - **Language switcher:** only renders if tenant has more than one active language (UI-02 — already implemented)
 - **`LOCALE_ID` is hardcoded to `'ca'`** in `app.config.ts`. Only Catalan locale data is registered for Angular pipes. If you need ES/EN-formatted dates or currencies, register `localeEs` / `localeEn`.
-- **Translation key validation:** `yarn i18n:validate` (also runs in pre-commit)
 - **All user-facing strings must be externalized** — no hardcoded copy in templates or TS files.
 
 ---
 
 ## Storage & client-side persistence
 
-| Key                                | Where        | Scope                    | Lifecycle                                               |
-| ---------------------------------- | ------------ | ------------------------ | ------------------------------------------------------- |
-| `${tenant.normalizedName}-cart-v1` | localStorage | Anonymous cart           | Cleared on login (after successful merge) and on logout |
-| `eco-lang`                         | localStorage | User language preference | Persists across sessions                                |
-| Material theme key                 | localStorage | Light/dark/system        | Persists across sessions                                |
-| PocketBase auth token              | localStorage | JWT token                | Managed by PocketBase SDK; 7-day expiry                 |
+All in `localStorage`:
+
+- `${tenant.normalizedName}-cart-v1`: the anonymous cart; cleared on login (after a successful merge) and on logout
+- `eco-lang`: the language preference, kept across sessions
+- the Material theme key: light, dark or system, kept across sessions
+- the PocketBase auth token (JWT): managed by the SDK, 7-day expiry
 
 **Never** store sensitive data (PII, payment info) in localStorage. The cart is the only feature-level use of it.
 
 ---
 
 ## Testing
-
-In addition to the root CLAUDE.md testing guidance:
 
 - **Pa11y CI** at `apps/eco-store/.pa11yci.json`. Run via `yarn eco-store:a11y`. Workflow at `.github/workflows/eco-store-pa11y.yml`.
 - **Cart store** has a mock at `libs/eco-store/cart/data-access/src/eco-store-cart.store.mock.ts` — use this in feature tests.
@@ -368,8 +295,7 @@ In addition to the root CLAUDE.md testing guidance:
 
 ## Naming conventions specific to eco-store
 
-- **Libraries:** `libs/eco-store/<domain>/<type>` (e.g. `libs/eco-store/products/feature/list`)
-- **Library project names:** `eco-store-<domain>-<type>` (e.g. `eco-store-products-feature-list`)
+- **Libraries:** names, paths and project names come from `yarn eco-lib` (`tools/generators/eco-lib/generator.cjs`); existing ones read `libs/eco-store/<domain>/<type>` and `eco-store-<domain>-<type>`
 - **Component selectors:** `eco-<name>` for app-internal, `plastik-<name>` for shared libs
 - **Path alias prefix:** `@plastik/eco-store/<domain>` (always; don't import via relative paths across libs)
 - **Entity names:** `EcoStore<Thing>` (e.g. `EcoStoreCart`, `EcoStoreProduct`, `EcoStoreTenant`)
@@ -379,20 +305,13 @@ In addition to the root CLAUDE.md testing guidance:
 ## Common gotchas
 
 1. **`onSameUrlNavigation: 'reload'` is set in router config.** Re-runs guards/resolvers on identical URLs — convenient but can cause double-fetches if you also subscribe to `queryParams` inside a component. Prefer one pattern per route.
-2. **`yarn eco-store:local` starts 3 processes** (PocketBase + Angular dev server + SCSS watcher). Stop them all when tearing down.
-3. **PocketBase pre-commit export.** Every worktree shares the PocketBase on :8090, so its schema can carry edits made for another branch. The hook exports on every commit that is not Markdown-only, but stages `pb_schema.json` only when the commit already stages eco code (Markdown does not count), after every other check has passed; otherwise it leaves the file as it was and warns. A `pb_schema.json` you staged yourself is kept; a merge (a squash merge too), cherry-pick, revert or rebase skips the export (a squash still needs eco code or `ALLOW_SCHEMA_ONLY=1` for a staged schema), and a commit that names its paths (`git commit <paths>`) only warns. When commitlint stops a commit after the hook, the export stays staged, or only on disk after `git commit -a`, until the next commit: a staged one is unstaged and decided again, or kept when nothing else is staged or `ALLOW_SCHEMA_ONLY=1` is set; one left only on disk is put back. If no PocketBase answers and the binary is missing, the hook fails — install via `yarn eco-store:pb:download`.
+2. **`yarn eco-store:local` first stops every PocketBase** (`pkill -f 'pocketbase serve'`, another worktree's or session's included) and whatever holds port 4200, then starts 3 processes (PocketBase + Angular dev server + SCSS watcher). With a PocketBase already up, use `yarn eco-store:serve`. Stop all three when tearing down.
+3. **PocketBase pre-commit export.** Every worktree shares the PocketBase on :8090, so its schema can carry edits made for another branch. The hook exports on every commit that is not Markdown-only and stages `pb_schema.json` only when the commit stages eco code; the full rules are in AGENTS.md "PocketBase Schema Workflow". If no PocketBase answers and the binary is missing, the hook fails: `yarn eco-store:pb:download`.
 4. **Trial badge in header uses `lg:flex` (hidden on mobile by default).** If product wants trial visibility on mobile too, change in `header.component.html`.
-5. **`membershipStatus` has 4 values**: `TRIAL`, `ACTIVE`, `INACTIVE`, `SUSPENDED`. Trial expiry is checked via `trialEndsAt > @now`; status doesn't change on expiry until manual conversion.
-6. **Cart merge uses `SharedConfirmDialogService`**, not `MatSnackBar`. Don't "fix" this back to snackbar unless product asks — the dialog allows a CTA to navigate to `/cistella`.
+5. **Cart merge uses `SharedConfirmDialogService`**, not `MatSnackBar`. Don't "fix" this back to snackbar unless product asks — the dialog allows a CTA to navigate to `/cistella`.
 
 ---
 
 ## When you're stuck
 
-1. **Read the PRD** for the feature ID you're working on (v1.8 PDF in the modeling folder)
-2. **Check TASKS.md** for the latest status and atomized spec for that ID (`yarn task <ID>`)
-3. **Check BACKLOG.md** for context on phase / dependencies / time budget
-4. **Look at a sibling feature** in the same domain (e.g. `profile/addresses` for `profile/basic` patterns)
-5. **Inspect the cart store** for non-trivial Signal Store patterns
-6. **Check `apps/eco-store/POCKETBASE.md`** for any backend-related work
-7. **Ask Carlos.** PR descriptions and commit subjects should reference the PRD ID.
+Read the PRD section and the task (`yarn task <ID>`), then BACKLOG for its phase and dependencies; look at a sibling feature in the same domain (`profile/addresses` for `profile/basic`), the cart store for Signal Store patterns, and `POCKETBASE.md` for backend work. Then ask Carlos.
