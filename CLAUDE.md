@@ -50,6 +50,7 @@ When working inside an app directory, read its CLAUDE.md alongside this one:
 | Path aliases (200+)               | `tsconfig.base.json`                                                                                          |
 | Architectural boundary rules      | `eslint.config.mjs` (`@nx/enforce-module-boundaries`)                                                         |
 | Workspace scripts                 | `tools/scripts/` (i18n validation, PocketBase helpers, local setup)                                           |
+| Eco page map (URL → lib, access)  | `tools/feature-map.json`, generated from the routes (`yarn feature-map`); CI fails when it is stale           |
 | Branch-name rules                 | `branchNameLint.json`                                                                                         |
 | Commitizen config                 | `.cz-config.cjs` (scopes auto-loaded from `tsconfig.base.json`)                                               |
 | Long-form docs                    | `documentation/` (nx-architecture, code-style, accessibility, css-styles, commit-conventions, git-flow, i18n) |
