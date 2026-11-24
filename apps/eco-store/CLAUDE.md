@@ -287,6 +287,7 @@ All in `localStorage`:
 ## Testing
 
 - **Pa11y CI** at `apps/eco-store/.pa11yci.json`. Run via `yarn eco-store:a11y`. Workflow at `.github/workflows/eco-store-pa11y.yml`.
+- **Playwright + axe** in `apps/eco-a11y-e2e` (META-40): the screens Pa11y cannot reach (a loaded product, a cart with products, signed in), with PocketBase answered from fixtures. Run via `yarn eco-a11y:e2e`; root `CLAUDE.md`, "Playwright accessibility suite".
 - **Cart store** has a mock at `libs/eco-store/cart/data-access/src/eco-store-cart.store.mock.ts` — use this in feature tests.
 - **Tenant store mocking:** provide a fake tenant in `TestBed` rather than waiting on real resolution.
 - **Always provide locale data in tests** that involve dates/currency, since `LOCALE_ID` is `ca` globally.

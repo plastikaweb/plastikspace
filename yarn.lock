@@ -1155,6 +1155,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@axe-core/playwright@npm:4.14.0":
+  version: 4.14.0
+  resolution: "@axe-core/playwright@npm:4.14.0"
+  dependencies:
+    axe-core: "npm:~4.14.0"
+  peerDependencies:
+    playwright-core: ">= 1.0.0"
+  checksum: 10c0/a42bca2305bbb80a374be9ff6642cac7b45f5f0aef1be9170ae42617c3423501ab1a33c8581641a71554a0c6a69f6ca512a5cc6e320ed197339a9ac4edfa713c
+  languageName: node
+  linkType: hard
+
 "@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.27.1, @babel/code-frame@npm:^7.28.6, @babel/code-frame@npm:^7.29.0":
   version: 7.29.0
   resolution: "@babel/code-frame@npm:7.29.0"
@@ -9244,6 +9255,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nx/playwright@npm:24.0.6":
+  version: 24.0.6
+  resolution: "@nx/playwright@npm:24.0.6"
+  dependencies:
+    "@nx/devkit": "npm:24.0.6"
+    "@nx/eslint": "npm:24.0.6"
+    "@nx/js": "npm:24.0.6"
+    https-proxy-agent: "npm:^7.0.6"
+    minimatch: "npm:10.2.5"
+    semver: "npm:^7.6.3"
+    tslib: "npm:^2.3.0"
+  peerDependencies:
+    "@playwright/test": ^1.36.0
+  peerDependenciesMeta:
+    "@playwright/test":
+      optional: true
+  checksum: 10c0/6156ba71b7526f9b9d448f7409e96065a8f356114086c899895ad9e9efbeed9144c9eb49da6d8719d73d368504628dcdf691cfc9df9dd898c5de0cb301288818
+  languageName: node
+  linkType: hard
+
 "@nx/vite@npm:24.0.6":
   version: 24.0.6
   resolution: "@nx/vite@npm:24.0.6"
@@ -10006,6 +10037,17 @@ __metadata:
   version: 0.2.9
   resolution: "@pkgr/core@npm:0.2.9"
   checksum: 10c0/ac8e4e8138b1a7a4ac6282873aef7389c352f1f8b577b4850778f5182e4a39a5241facbe48361fec817f56d02b51691b383010843fb08b34a8e8ea3614688fd5
+  languageName: node
+  linkType: hard
+
+"@playwright/test@npm:1.65.0":
+  version: 1.65.0
+  resolution: "@playwright/test@npm:1.65.0"
+  dependencies:
+    playwright: "npm:1.65.0"
+  bin:
+    playwright: cli.js
+  checksum: 10c0/137a641e1be8035686a165e69d86d242ee7ed5cbe71e5230f9195cb6e65be37a66ba697f16919b508d04c4d682fd4e167d1a755b64ceb545afac780de72b594b
   languageName: node
   linkType: hard
 
@@ -13769,6 +13811,13 @@ __metadata:
   version: 4.11.3
   resolution: "axe-core@npm:4.11.3"
   checksum: 10c0/bc757775ef41396faf6470752a12e96f3972d0d97cae4ec28e99cec7bca2c5aaa6d040b97e7f0278e8d1ea354fa0b0bf7fcaa51775a725d7ed0a0834e7ea13d7
+  languageName: node
+  linkType: hard
+
+"axe-core@npm:~4.14.0":
+  version: 4.14.1
+  resolution: "axe-core@npm:4.14.1"
+  checksum: 10c0/6b36ab43136ee603ff56f2f3d8a983b67a6d1e973d59ff61c62be4a3d855641f918595ce8b6d2a52c97dee9a80a3925a35d7a812f3ab3bd48d474fb6ad9080ca
   languageName: node
   linkType: hard
 
@@ -18067,6 +18116,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-playwright@npm:^1.6.2":
+  version: 1.8.3
+  resolution: "eslint-plugin-playwright@npm:1.8.3"
+  dependencies:
+    globals: "npm:^13.23.0"
+  peerDependencies:
+    eslint: ">=8.40.0"
+    eslint-plugin-jest: ">=25"
+  peerDependenciesMeta:
+    eslint-plugin-jest:
+      optional: true
+  checksum: 10c0/41c90ad82d7bfd336b11d88a7dd4aee3832878f3abc5df0c7e988124ac3d4e0ffc7de760f4e986a275bf088da2a360d177e8a48d6b3193dcb5f60b17138cf0fe
+  languageName: node
+  linkType: hard
+
 "eslint-scope@npm:5.1.1":
   version: 5.1.1
   resolution: "eslint-scope@npm:5.1.1"
@@ -19953,6 +20017,15 @@ __metadata:
     is-windows: "npm:^1.0.1"
     which: "npm:^1.2.14"
   checksum: 10c0/d8037e300f1dc04d5d410d16afa662e71bfad22dcceba6c9727bb55cc273b8988ca940b3402f62e5392fd261dd9924a9a73a865ef2000219461f31f3fc86be06
+  languageName: node
+  linkType: hard
+
+"globals@npm:^13.23.0":
+  version: 13.24.0
+  resolution: "globals@npm:13.24.0"
+  dependencies:
+    type-fest: "npm:^0.20.2"
+  checksum: 10c0/d3c11aeea898eb83d5ec7a99508600fbe8f83d2cf00cbb77f873dbf2bcb39428eff1b538e4915c993d8a3b3473fa71eeebfe22c9bb3a3003d1e26b1f2c8a42cd
   languageName: node
   linkType: hard
 
@@ -27422,6 +27495,7 @@ __metadata:
     "@angular/ssr": "npm:21.2.9"
     "@angular/upgrade": "npm:21.2.9"
     "@apollo/client": "npm:^3.13.6"
+    "@axe-core/playwright": "npm:4.14.0"
     "@babel/core": "npm:^7.29.0"
     "@babel/preset-env": "npm:^7.29.3"
     "@cloudflare/workers-types": "npm:^4.20260502.1"
@@ -27459,11 +27533,13 @@ __metadata:
     "@nx/eslint-plugin": "npm:24.0.6"
     "@nx/js": "npm:24.0.6"
     "@nx/node": "npm:24.0.6"
+    "@nx/playwright": "npm:24.0.6"
     "@nx/vite": "npm:24.0.6"
     "@nx/vitest": "npm:24.0.6"
     "@nx/web": "npm:24.0.6"
     "@nx/workspace": "npm:24.0.6"
     "@oxc-project/runtime": "npm:^0.115.0"
+    "@playwright/test": "npm:1.65.0"
     "@schematics/angular": "npm:21.2.9"
     "@simondotm/nx-firebase": "npm:^22.3.3"
     "@swc-node/register": "npm:1.11.1"
@@ -27499,6 +27575,7 @@ __metadata:
     eslint-config-prettier: "npm:^10.1.8"
     eslint-plugin-cypress: "npm:^7.1.0"
     eslint-plugin-jsdoc: "npm:^63.3.3"
+    eslint-plugin-playwright: "npm:^1.6.2"
     espree: "npm:^11.2.0"
     express: "npm:^4.21.2"
     firebase-admin: "npm:^12.6.0"
@@ -27543,6 +27620,26 @@ __metadata:
     zone.js: "npm:^0.16.1"
   languageName: unknown
   linkType: soft
+
+"playwright-core@npm:1.65.0":
+  version: 1.65.0
+  resolution: "playwright-core@npm:1.65.0"
+  bin:
+    playwright-core: cli.js
+  checksum: 10c0/ed905c6fc2457a725c3fdb3ad4500f43c7a1bb2c6e4e8c708e1e314930c7dce446a5756ad073425bf3c6e3ca975e5a35fb0221118e2d51ef7b4b6c6d13d0644c
+  languageName: node
+  linkType: hard
+
+"playwright@npm:1.65.0":
+  version: 1.65.0
+  resolution: "playwright@npm:1.65.0"
+  dependencies:
+    playwright-core: "npm:1.65.0"
+  bin:
+    playwright: cli.js
+  checksum: 10c0/a7d71f3ca5bcad0531b5f3c39ae1a9be0da8e74be6fee8510d99b9f5fc07fd5b3d889aa4ca487c70ca29aba8625f74e3c2c7473b4c8a784dc14fefff80474ac3
+  languageName: node
+  linkType: hard
 
 "pnp-webpack-plugin@npm:^1.7.0":
   version: 1.7.0
