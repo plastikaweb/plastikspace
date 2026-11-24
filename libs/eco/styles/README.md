@@ -36,6 +36,8 @@ While it lived inside an application, `eco-admin` could not use it without point
 - **`@custom-variant dark`**, which makes Tailwind's `dark:` follow the `.dark` class.
 
 The values are literal: nothing is computed at build time.
+This file and the eco-store `*-theme.css` files are the eco token sources: `yarn eco-conventions:check` (META-15) allows hex colours and `--mat-sys-*` declarations in them and nowhere else in eco.
+A new token source goes into `TOKEN_SOURCES` in `tools/scripts/check-eco-conventions.cjs`.
 The Tailwind aliases for these variables (`bg-primary-container`, `text-on-surface`…) live in
 [`core_tailwind_theme`](../../core/styles/util/tailwind4/README.md), not here.
 

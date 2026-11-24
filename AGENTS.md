@@ -139,12 +139,13 @@ Checks the **staged** content only; nothing unstaged enters the commit. Runs in 
 1. Task-docs guard, then `tasks:check` when a task doc is staged.
 2. PocketBase schema export (see above): reuses a PocketBase already on :8090, otherwise starts and stops its own.
 3. branch-lint and i18n:validate.
-4. `nx show projects` when TypeScript under `apps/` or `libs/` is staged: ESLint's module-boundaries rule reads the cached Nx graph and skips itself without one.
-5. `lint-staged` (`lint-staged.config.mjs`): ESLint `--fix` (problem and layout fixes only), markdownlint and Prettier on the staged files.
-6. Stages the exported `pb_schema.json` when step 2 decided to.
+4. `check-eco-conventions` (META-15) when an eco template, component or stylesheet is staged: no bare form control, no hex colour or `--mat-sys-*` declaration outside the token sources («Styling» in the root `CLAUDE.md`).
+5. `nx show projects` when TypeScript under `apps/` or `libs/` is staged: ESLint's module-boundaries rule reads the cached Nx graph and skips itself without one.
+6. `lint-staged` (`lint-staged.config.mjs`): ESLint `--fix` (problem and layout fixes only), markdownlint and Prettier on the staged files.
+7. Stages the exported `pb_schema.json` when step 2 decided to.
 
 `.husky/post-commit` only deletes the pre-commit's record of that export once the commit lands.
-`tasks:check` and i18n:validate run on a copy of the index, so they read the content being committed.
+`tasks:check`, i18n:validate and `check-eco-conventions` run on a copy of the index, so they read the content being committed.
 Untracked files are never added: the hook lists them after the commit, and the pre-push warns about them.
 Markdown-only commits skip the export and i18n. The affected lint over whole projects runs in CI, not in the hooks; pre-push keeps the Nx tags check, format check,
 lint-delta (no new ESLint warnings in touched files), affected test, build and a11y.

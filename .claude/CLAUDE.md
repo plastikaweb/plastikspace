@@ -56,7 +56,7 @@ ESLint turns most of the Angular rules below into errors (META-17): the Angular 
 
 The skills in `.claude/skills` are generic, written for any Angular project. This file and the root `CLAUDE.md` describe this repo. When a skill recommends something these files rule out, follow these files and do not mix the two approaches. Known conflicts:
 
-- **Forms.** `angular-forms` recommends Signal Forms. This repo builds forms with `@ngx-formly` and Angular Material: fields render inside `mat-form-field` with `matInput`, configured in a `*.config.ts` next to the component. Never write a bare `<input>`, `<select>` or `<textarea>` (PR #1558 shipped one and needed a follow-up fix).
+- **Forms.** `angular-forms` recommends Signal Forms. This repo builds forms with `@ngx-formly` and Angular Material: fields render inside `mat-form-field` with `matInput`, configured in a `*.config.ts` next to the component. Never write a bare `<input>`, `<select>` or `<textarea>` (PR #1558 shipped one and needed a follow-up fix). In eco code, `yarn eco-conventions:check` fails on one (META-15).
 
 Add a line here each time a skill and the repo conflict again.
 

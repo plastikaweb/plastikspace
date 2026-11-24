@@ -19,6 +19,8 @@
     "lint:delta:test": "node tools/scripts/test-lint-delta.mjs",
     "nx-tags:check": "node tools/scripts/check-nx-tags.cjs",
     "nx-tags:test": "node tools/scripts/test-nx-tags-check.mjs",
+    "eco-conventions:check": "node tools/scripts/check-eco-conventions.cjs",
+    "eco-conventions:test": "node tools/scripts/test-eco-conventions.mjs",
     "i18n:validate": "node tools/scripts/validate-i18n-keys.cjs",
     "i18n:test": "bash tools/scripts/test-i18n-validation.sh",
     "tasks:test": "bash tools/scripts/test-sync-tasks.sh",

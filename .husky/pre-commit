@@ -249,6 +249,24 @@ i18n_on_index() {
 }
 # --------------------------------
 
+# --- ECO CONVENTIONS (META-15) ---
+# The staged eco templates and styles: no bare <input>/<select>/<textarea>, no hex colour
+# and no --mat-sys-* declaration outside the token sources (::ng-deep is listed, not
+# failed). The script of the copy runs on the copy, so it reads the content being
+# committed; it routes the paths itself (eco scope, extension, specs left out). Under 0.5 s.
+eco_conventions_on_index() {
+  if git diff --cached --name-only --diff-filter=ACMR -- 'apps/eco-*' 'libs/eco*' | grep -qE '\.(html|ts|scss|css)$'; then
+    snapshot
+    if [ ! -f "$SNAPSHOT/tools/scripts/check-eco-conventions.cjs" ]; then
+      echo "ℹ️  This branch has no tools/scripts/check-eco-conventions.cjs (it predates META-15): eco conventions not checked; CI checks them."
+      return 0
+    fi
+    git diff --cached --name-only -z --diff-filter=ACMR -- 'apps/eco-*' 'libs/eco*' |
+      (cd "$SNAPSHOT" && xargs -0 node tools/scripts/check-eco-conventions.cjs --files)
+  fi
+}
+# --------------------------------
+
 # --- NX GRAPH FOR THE BOUNDARY RULE ---
 # @nx/enforce-module-boundaries reads the cached Nx project graph. With none (a fresh
 # worktree) it skips itself with a warning that lint-staged hides, and a boundary
@@ -480,6 +498,7 @@ stage_live_schema() {
 # files only. CI still runs the affected lint over whole projects.
 if npx yarn branch:lint \
   && i18n_on_index \
+  && eco_conventions_on_index \
   && refresh_nx_graph \
   && HOME="$ORIGINAL_HOME" "$LINT_STAGED" --config "$LINT_STAGED_CONFIG"; then
   stage_live_schema
