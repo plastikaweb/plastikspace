@@ -201,10 +201,12 @@ without one or whose upstream is gone from the remote; a push whose upstream sha
 - `check-nx-tags` (META-16) — runs first, for every push: each `libs/**/project.json` needs a `scope:*` tag that the root
   `eslint.config.mjs` names and a `type:*` tag. It takes a fraction of a second; `yarn nx-tags:check` runs it by hand.
 - `nx format:check` — runs for every push (including markdown-only ones, since Prettier also formats `.md`). On failure: run `yarn format:write`, amend/rebase the affected commit(s), then re-push.
+- `lint-delta` (META-18) — on non-markdown pushes, before the tests: each touched file may not have more ESLint warnings than at
+  its merge base with `origin/develop`. `yarn lint:delta` runs it by hand; CI runs it too.
 - `nx affected` `test` and production `build` — on non-markdown pushes; plus `eco-store`/`nasa-images` Pa11y when those apps are affected.
   They run on the files on disk, and the hook warns when tracked files differ from `HEAD` and lists untracked files.
 
-Markdown-only pushes skip the test/build/a11y steps (but still run the tags check and `format:check`).
+Markdown-only pushes skip the lint-delta/test/build/a11y steps (but still run the tags check and `format:check`).
 
 Lint is not part of the pre-push. The pre-commit lints the staged files (see the Pre-commit Hook section of `AGENTS.md`),
 and CI runs `nx affected --target=lint` on every pull request and every push to develop, rebased or amended commits included.

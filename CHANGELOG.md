@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-24] - ESLint warnings may not grow on touched files (META-18)
+
+### Added
+
+- **`tools/scripts/lint-delta.cjs` (`yarn lint:delta`).** For each file a branch touches (committed, uncommitted or untracked, renames followed), it lints the version on disk and the version at the merge base with `origin/develop` (or `--base <ref>`) with the same config, and fails when the file has more warnings than before. The warnings a file already had never block a change to it; the report lists the rules that grew and only the warning texts that are new. Always the fast profile. `--scope-only` classifies the touched files (ts, html, scss, i18n, docs, other) for the task-audit skill (META-23); `--json`; exit 0, 1 or 2 (META-18, ([#123kjkdqv37](https://app.clickup.com/t/123kjkdqv37))).
+- **Where it runs:** in the pre-push for non-Markdown pushes, before the tests, and as a failing check in CI's Lint Affected step. That was the owner's choice: pushes from worktrees run the main checkout's hooks, so until that checkout has this step, CI is the gate (META-18, ([#123kjkdqv37](https://app.clickup.com/t/123kjkdqv37))).
+- **`yarn lint:delta:test`**, run in CI. It has 15 cases on fixture repos, and three deliberate bugs each fail it: keeping `ESLINT_TYPED`, renames taken as new files, listing every warning of a grown rule. On the real repo, the 99 files META-17 touched give 110 → 110 warnings in 24 s. A file with 4 `id-denylist` warnings passes when edited and fails with a fifth, which is the only one listed (META-18, ([#123kjkdqv37](https://app.clickup.com/t/123kjkdqv37))).
+
 ## [2026-11-23] - The Angular rules of `.claude/CLAUDE.md` are lint errors (META-17)
 
 ### Added

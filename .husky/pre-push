@@ -119,6 +119,16 @@ if [ -n "$UNTRACKED" ]; then
   fi
 fi
 
+# --- LINT DELTA (META-18) ---
+# Warnings never fail a lint, so they pile up. Each touched file may not have more ESLint
+# warnings than at its merge base with origin/develop; the ones it had may stay. Fast
+# profile, on the files on disk. CI runs it too, as a failing check.
+echo "📉 Checking that touched files gain no ESLint warnings (lint-delta)..."
+if ! node tools/scripts/lint-delta.cjs; then
+  echo "❌ Touched files gained ESLint warnings (listed above). Push aborted."
+  exit 1
+fi
+
 echo "🏃 Running affected tests..."
 if ! yarn nx affected --target=test --base="$BASE" --head=HEAD --parallel --max-parallel=2 --cache; then
   echo "❌ Tests failed! Push aborted."
