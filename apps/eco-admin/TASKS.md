@@ -1,8 +1,8 @@
 # Eco Admin — TASKS
 
-> Live backlog for `apps/eco-admin`. Specs live in [`REQUIREMENTS.md`](./REQUIREMENTS.md) (v0.4.49) — rows here reference its IDs instead of duplicating them. Design deliverables tracked against [`DESIGN-BRIEF.md`](./DESIGN-BRIEF.md).
+> Live backlog for `apps/eco-admin`. Specs live in [`REQUIREMENTS.md`](./REQUIREMENTS.md) (v0.4.51) — rows here reference its IDs instead of duplicating them. Design deliverables tracked against [`DESIGN-BRIEF.md`](./DESIGN-BRIEF.md).
 
-**Document version:** 0.1.154 · 2026-11-20 · derived from REQUIREMENTS v0.4.49
+**Document version:** 0.1.155 · 2026-11-24 · derived from REQUIREMENTS v0.4.51
 
 > **ClickUp.** Every row in the AP phases, the design track, the deferred modules and the open decisions has its ticket in the [«Eco Admin» list](https://app.clickup.com/90152360642/v/li/901521507572), bulk-created 2026-11-01. Tags: `ap-0`…`ap-5` / `ap-deferred` per phase, `mod-*` per ID family, a type tag (`feat`, `refactor`, `schema`, `ci`), `design` for D rows, `decision` for AQ rows. New rows get their ticket when they are written.
 
@@ -39,7 +39,7 @@ Local development of AP-0 can proceed in parallel with G-02.
 
 | # | Task | MoSCoW | Est. | CU | Notes |
 | --- | --- | --- | --- | --- | --- |
-| 0.1 ✅ | Scaffold `apps/eco-admin` + `libs/eco/` + `libs/eco-admin/` skeleton, CI wiring | MUST | 1d | `123kjkdp4kk` | CSR SPA, port 4204, Cypress e2e. Only the 4 libs AP-0 consumes; the rest of §7.3 lands per phase. `ci.yml` needed no edit (`nx affected`); deploy deferred (G-01) → row 0.9, **OPS-04** (`123kjkdqv8e`) |
+| 0.1 ✅ | Scaffold `apps/eco-admin` + `libs/eco/` + `libs/eco-admin/` skeleton, CI wiring | MUST | 1d | `123kjkdp4kk` | CSR SPA, port 4204, Cypress e2e (Playwright since META-40). Only the 4 libs AP-0 consumes; the rest of §7.3 lands per phase. `ci.yml` needed no edit (`nx affected`); deploy deferred (G-01) → row 0.9, **OPS-04** (`123kjkdqv8e`) |
 | 0.2 ✅ | AREF-08 boundaries: `scope:eco` + `scope:eco-admin` ESLint constraints + housekeeping (notification tag, list-view `sourceRoot`) | MUST | 0.5d | `123kjkdp4km` | Shipped with 0.1 — the tags are unenforced until the rows exist. Verified by a negative lint test, not by `lint --all` (which passes vacuously while `libs/eco` is empty) |
 | 0.3 ✅ | AREF-01 entity promotion → `libs/eco/entities` (re-export shim in eco-store) | MUST | 1d | `123kjkdp4kn` | Five files (`cart`, `order`, `product`, `productCategory`, `tenant`) moved byte-identical. `@plastik/eco-store/entities` is now a re-export of `@plastik/eco/entities`, so the 43 eco-store importers are untouched. **The shim has no removal date**: no row rewrites those imports to the new alias. No order-cycle type was promoted because none exists (see 0.6c) |
 | 0.4 ⏸️ | AREF-02 breadcrumbs → `libs/shared/breadcrumbs/ui` | SHOULD | 0.5d | `123kjkdp4kp` | eco-store-side PR. **Deferred to 0.7 (Carlos, 2026-11-11):** the frozen top bar (`Top bar.dc.html`, round 32) asks for `title / crumb`, so the shell is the first admin consumer and decides the shape the promoted component needs. Promote it with 0.7, not ahead of it |
@@ -67,7 +67,7 @@ Target UI frozen at design round 4.1g (`DESIGN-REVIEWS.md` 0.2.7), re-opened at 
 | 1.3 | AMBR-03 membership transitions (TRL-07) + trial extension | MUST | 1d | `123kjkdp4m2` | Confirm + reason |
 | 1.4 | AMBR-04 allowlist CRUD (PRV-05a) | MUST | 1d | `123kjkdp4m3` |  |
 | 1.5 | AMBR-05 allowlist CSV import (PRV-05a) | MUST | 1d | `123kjkdp4m4` | Stepper per DESIGN-BRIEF §3.9 |
-| 1.6 | AMBR-07 + AREQ-04 account-deletion execution incl. blocked/409 flow (PRV-08) | MUST | 1d | `123kjkdp4m5` | Cypress e2e — irreversible flow; cancel+delete as one Batch API transaction (§5.6); DS §3.6 confirm |
+| 1.6 | AMBR-07 + AREQ-04 account-deletion execution incl. blocked/409 flow (PRV-08) | MUST | 1d | `123kjkdp4m5` | Playwright e2e — irreversible flow; cancel+delete as one Batch API transaction (§5.6); DS §3.6 confirm |
 | 1.7 | AREQ-05/06 signup→allowlist chain (idempotent approve, reactivation branch) + termination mark-only with note · AMBR-06 onboarding reset | SHOULD | 0.5d | `123kjkdp4m6` | Termination marks never touch `membershipStatus`; navigate to AMBR-03 |
 
 ## Phase AP-2 — Orders & cycles (~7d + AORD-09) 📋
@@ -77,7 +77,7 @@ Target UI frozen at design round 4.1g (`DESIGN-REVIEWS.md` 0.2.7), re-opened at 
 | # | Task | MoSCoW | Est. | CU | Notes |
 | --- | --- | --- | --- | --- | --- |
 | 2.1 | AORD-01/02 order list (cycle-scoped) + detail | MUST | 2d | `123kjkdp4m7` | Items/address from snapshot. **Round 11:** basket renders requested/final quantities + availability; VAT derived from lines; timeline gated on B-20; AQ-16 decides the preparation-edit scope |
-| 2.2 | AORD-03/04 status + payment transitions (graph enforced) | MUST | 1.5d | `123kjkdp4m8` | Fires NOT-02 when hook ships; Cypress e2e. **Round 11:** one confirm everywhere (row, bulk, detail); EXPIRED + legacy-PAID rendering defined; no stock copy until B-19 decides |
+| 2.2 | AORD-03/04 status + payment transitions (graph enforced) | MUST | 1.5d | `123kjkdp4m8` | Fires NOT-02 when hook ships; Playwright e2e. **Round 11:** one confirm everywhere (row, bulk, detail); EXPIRED + legacy-PAID rendering defined; no stock copy until B-19 decides |
 | 2.3 | AORD-05 bulk transitions | SHOULD | 0.5d | `123kjkdp4m9` |  |
 | 2.4 | AORD-06 picking list (cycle aggregates, printable) | SHOULD | 1d | `123kjkdp4ma` |  |
 | 2.5 | ACYC-01/02/03 cycle list + create + manual override | MUST | 1.5d | `123kjkdp4mb` | Consequences confirm (PST-04/NOT-04/05). **Round 14:** render `name` (puntual cycles), no filter bar, facturable Total, DRAFT-only edit; gates B-22 (state writers), B-23 (per-tenant unique code — **fuse: before a second tenant activates**), B-24 (order numbering) |
@@ -205,6 +205,7 @@ Full table in REQUIREMENTS §9; the decision sheet with plain-language questions
 
 | Version | Date | Changes |
 | --- | --- | --- |
+| 0.1.155 | 2026-11-24 | **Rows 1.6 and 2.2: Playwright e2e, not Cypress**, after REQUIREMENTS 0.4.51 (META-40, `123kjkdr20r`): `apps/eco-admin-e2e` runs on Playwright and `cy.loginAs` is now the `signedInAs` option. Row 0.1 notes the change. |
 | 0.1.154 | 2026-11-20 | **New row 0.9, OPS-04** (`123kjkdqv8e`): the eco-admin staging deploy, reserved on 2026-11-11 and created today at Carlos's request; row 0.1's deferred deploy points to it. **Current focus:** 0.7b is merged; G-02 gates AP-1, not the staging deploy (Carlos, 2026-11-20). |
 | 0.1.153 | 2026-11-20 | **Row 0.7b → ✅.** Merged in PR #1564 (`7452d070`); the storefront's reset mail checked on staging by Carlos, the panel's still unchecked (`admin.9botiga.top` not deployed). Row 0.7 stays 🔄 for parts 2 and 3. |
 | 0.1.152 | 2026-11-20 | **Row 0.7b: Carlos's rulings of 2026-11-20 applied on the branch.** Every auth form keeps its submit enabled and an invalid submit focuses the first invalid field; the panel loses its register block («Vista Login», AUTH-01) and the storefront its dead `/activar-compte` link, replaced by a `mailto:` to the tenant for non-members; 25 stays the password limit everywhere (eco-store BUG-016 re-scoped). The departures list loses the submit and the register block. **New row 0.7c** (`123kjkdqv0h`): «Va a la botiga →» in the member notice, blocked on where a storefront's address comes from. |

@@ -2,7 +2,7 @@
 
 > Analysis & requirements document for **eco-admin**, the internal administration app for the Eco Store multi-tenant SaaS. Companion documents: `DESIGN-BRIEF.md` (design-system extension prompt) and `TASKS.md` (live backlog) — both derive from this file.
 
-**Document version:** 0.4.50 · 2026-11-24 · **Status: RATIFIED by Carlos on 2026-11-01** — scope, role model, MoSCoW and phase order are the plan of record; the ten decisions in §9 stay open, each gated by its own row
+**Document version:** 0.4.51 · 2026-11-24 · **Status: RATIFIED by Carlos on 2026-11-01** — scope, role model, MoSCoW and phase order are the plan of record; the ten decisions in §9 stay open, each gated by its own row
 
 **Sources.** No admin PRD exists. This document is derived from: `apps/eco-store/pocketbase/pb_schema.json` (as of 2026-08-10), `apps/eco-store/TASKS.md` v0.42, `apps/eco-store/BACKLOG.md` v0.42, and `apps/eco-store/CLAUDE.md`. Line references (`TASKS:L###`) point at eco-store's TASKS.md v0.42.
 
@@ -393,7 +393,7 @@ The collection does not exist yet in `pb_schema.json` — no migration reference
 
 | Area | Requirement |
 | --- | --- |
-| Accessibility | **WCAG 2.2 AA**, same bar as eco-store (owner, 2026-11-24; it was 2.1 AA). Pa11y CI from the first routed page; Pa11y checks 2.1 AA at most, so the criteria 2.2 adds are reviewed by hand. Data tables and status chips need particular care (sort announcements, non-color-only states) |
+| Accessibility | **WCAG 2.2 AA**, same bar as eco-store (owner, 2026-11-24; it was 2.1 AA). The Playwright and axe suite `apps/eco-a11y-e2e` (META-40) audits the routed screens with every 2.2 AA rule axe has, plus 2.4.11 and 3.3.8; the other criteria 2.2 adds are reviewed by hand. Data tables and status chips need particular care (sort announcements, non-color-only states) |
 | i18n | ngx-translate; admin UI copy in **Catalan default + Spanish** (`ca`/`es`), keys validated by `yarn i18n:validate`. All tenant-content editors handle i18n JSON fields per tenant-active languages |
 | Rendering | **SPA, no SSR** (internal tool; no SEO). Keep bundle lean — no view-transitions/PWA requirements in v1 |
 | Security | API rules are the enforcement layer; client role guards are UX only. No `x-bypass-hooks` usage ever. Session: 7-day PocketBase token, `authRefresh()` after any self-affecting PATCH. A GLOBAL_ADMIN action on a tenant always names that tenant explicitly — the record opened from the Cooperatives list (AQ-04); there is no persisted «current tenant» and no implicit cross-tenant write |
@@ -401,7 +401,7 @@ The collection does not exist yet in `pb_schema.json` — no migration reference
 | Performance | Server-side pagination everywhere (PocketBase `page/perPage`); order aggregates computed per cycle on demand; no realtime subscriptions in v1 (poll/refresh actions) |
 | Responsive | Desktop-first layouts, functional down to tablet; mobile = read + urgent actions (open/close store, resolve request). The DS extension must define table→card degradation (see `DESIGN-BRIEF.md`) |
 | Theming | Material 3 light + dark from day 1, same OKLCH token system as eco-store |
-| Testing | Vitest unit coverage per lib; Cypress e2e for the two irreversible flows (AMBR-07 deletion, AORD-03 transitions); vitest-axe on shared admin UI components |
+| Testing | Vitest unit coverage per lib; Playwright e2e (`apps/eco-admin-e2e`, against the local PocketBase) for the two irreversible flows (AMBR-07 deletion, AORD-03 transitions); vitest-axe on shared admin UI components |
 
 ---
 
@@ -545,6 +545,7 @@ MoSCoW is embedded per requirement (§4). The phase order is ratified (2026-11-0
 
 | Version | Date | Changes |
 | --- | --- | --- |
+| 0.4.51 | 2026-11-24 | **E2e and accessibility tooling** (§6), the owner's decision of 2026-11-24 (META-40, `123kjkdr20r`): the e2e of AMBR-07 and AORD-03 is Playwright, not Cypress, and the Playwright and axe suite replaces Pa11y. Scope, MoSCoW and phase order are untouched, and the document stays ratified. |
 | 0.4.50 | 2026-11-24 | **Accessibility target WCAG 2.2 AA** (§6), the owner's decision of 2026-11-24 for every app (META-21, `123kjkdqv3b`). Scope, MoSCoW and phase order are untouched, and the document stays ratified. |
 | 0.4.49 | 2026-11-11 | **AREF-03 delivered (AP-0 0.6); the last «GA selector» wording removed.** Facts only — scope, MoSCoW and phase order are untouched, and the document stays ratified. §7.2 AREF-03 names what shipped (`ecoAdminTenantContextStore` in `libs/eco-admin/core/tenant-context`: the tenant of a TENANT_ADMIN from the user record and the role, the continuous / Cicles answers, a wait guard) and is marked AP-0 ✅ (0.6); §7.3 layout: `tenant-context` reads DONE. **Three sentences still described the selector AQ-04 struck at round 17.2:** the AREF-03 row («selector-driven (GA) store»), the §6 Security row («the explicit tenant-selector context») and the AQ-04 residual note. The Security row keeps its rule — no implicit cross-tenant write — and now states it without a selector: a GLOBAL_ADMIN action names the tenant, the record opened from the Cooperatives list. The AQ-04 residual reads closed. TASKS.md 0.1.148 cites this version |
 | 0.4.48 | 2026-11-11 | **AREF-09 delivered (AP-0 0.6b); AQ-22 corrected to «applied on 2026-11-11».** Facts only — scope, MoSCoW and phase order are untouched, and the document stays ratified. §7.2 AREF-09 names what shipped (`libs/eco/styles/src/_eco_tokens.css`, loaded by both apps through `includePaths` with an implicit Nx dependency) and is marked AP-0 ✅ (0.6b); §7.3 layout: `libs/eco/styles` reads DONE. **Correction to 0.4.42:** that entry and §9.1 AQ-22 said the reseed was applied at round 33. No commit on any branch carried it; the patched theme existed only as an unreferenced git object. §9.1 now records that the 26 `secondary` lines landed inside AREF-09, in their own commit, and that the storefront's secondary colour changes with it. TASKS.md 0.1.147 cites this version |
