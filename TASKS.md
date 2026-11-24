@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 1.9 · **Last updated:** 2026-11-23
+**Document version:** 1.10 · **Last updated:** 2026-11-24
 
 ---
 
@@ -45,7 +45,7 @@
 | **META-14** ✅ | Claude Code Stop hook: feedback loop before the agent says "done" | Low | `123kjkdqv33` |
 | **META-15** 📋 | `check-eco-conventions.cjs`: template and style rules for eco | Low | `123kjkdqv34` |
 | **META-16** ✅ | `check-nx-tags`: every lib carries a `scope:*` and a `type:*` tag | Low | `123kjkdqv35` |
-| **META-17** 📋 | ESLint: Angular rules that `.claude/CLAUDE.md` asks for in prose become errors | Low | `123kjkdqv36` |
+| **META-17** ✅ | ESLint: Angular rules that `.claude/CLAUDE.md` asks for in prose become errors | Low | `123kjkdqv36` |
 | **META-18** 📋 | `lint-delta`: ESLint warnings may not grow on touched files | Low | `123kjkdqv37` |
 | **META-19** 📋 | eco-lib Nx generator: the shortest path is the correct one | Low | `123kjkdqv38` |
 | **META-20** 📋 | Feature map for the eco apps + skill to open the app signed in | Low | `123kjkdqv3a` |
@@ -114,11 +114,11 @@ ClickUp `123kjkdqv35`. Merged 2026-11-23 (PR #1589, `a3eebc0b`). `yarn nx-tags:c
 
 ### META-17 — Angular ESLint rules to errors
 
-ClickUp `123kjkdqv36`. `prefer-signals`, `prefer-inject`, `prefer-output-emitter-ref`, `prefer-control-flow`, `button-has-type`, plus bans on `standalone: true`, `ngClass`/`ngStyle` and `@HostBinding`/`@HostListener`. Count, sweep, then `error`. META-31 found 9 component-class rules set only in the root config's `*.html` block, where they have nothing to check, and given to no TypeScript file, so they never run: `no-input-prefix`, `prefer-output-readonly`, `component-max-inline-declarations`, `no-conflicting-lifecycle`, `relative-url-prefix`, `use-component-selector`, `use-injectable-provided-in`, `no-queries-metadata-property`, `component-class-suffix`.
+ClickUp `123kjkdqv36`. Merged 2026-11-24 (PR #1591, `86654500`). Errors in every project, specs and llecoop included: `prefer-signals` (with `readonly` on signal properties), `prefer-inject`, `prefer-output-emitter-ref`, `prefer-output-readonly`, `template/prefer-control-flow`, `template/button-has-type`, and `no-restricted-syntax` against `standalone: true`, `@HostBinding`/`@HostListener` and `ngClass`/`ngStyle`. Swept in the same commit: 207 `readonly` signals, 21 outputs, 38 button types, 1 `@Input`, 5 `ngStyle`; `yarn lint:all` keeps its 656 warnings. NG1053 is caught at lint time, and the private-fields rule skips fields set by Angular's initializer APIs. The `*.html` block lost its 13 component-class rules (8 owner-approved; 5 that reach Angular TypeScript through `flat/angular` anyway). No rule for an `effect()` that writes a signal: 4 today, no angular-eslint rule, and a selector would also flag `Map.set()`.
 
 ### META-18 — `lint-delta`
 
-ClickUp `123kjkdqv37`. Per touched file, warnings at HEAD may not exceed warnings at the merge-base with `origin/develop`. Runs in pre-push.
+ClickUp `123kjkdqv37`. Per touched file, warnings at HEAD may not exceed warnings at the merge-base with `origin/develop`. Runs in pre-push. The owner's choice (2026-11-23) for the 621 `id-denylist`/`id-length` warnings: they stay warnings, and this task keeps them from growing.
 
 ### META-19 — eco-lib Nx generator
 
@@ -178,6 +178,7 @@ ClickUp `123kjkdqzvb`. Merged 2026-11-23 (PR #1587, `edc1c5cf`). The "Lint rules
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 1.10 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-17 ✅ (PR #1591, `86654500`): the Angular rules at error with their sweep, NG1053 at lint time, the `*.html` block without class rules; META-18 records the owner's choice to keep the naming warnings as warnings. |
 | 1.9 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-16 ✅ (PR #1589, `a3eebc0b`): `check-nx-tags` in the pre-push and CI, its tests, and the four libs that failed fixed; it went from 📋 to ✅ without an in-progress row. |
 | 1.8 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-31 ✅ (PR #1587, `edc1c5cf`): `code-style.md` points to the `CLAUDE.md` rule list, now checked against the config; META-17 gains the 9 Angular class rules that never run. |
 | 1.7 | 2026-11-23 | **META-08** (`123kjkdpqjr`) — META-29 ✅ (PR #1585, `483c622c`), with the selector fix, its scope (class fields only) and the `lint:profiles` check. |
