@@ -32,6 +32,7 @@ import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { EntityId } from '@ngrx/signals/entities';
 import { BaseEntity, SortConfig } from '@plastik/core/entities';
 import {
@@ -84,6 +85,7 @@ import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elem
     SharedUtilFormattersModule,
     OrderTableActionsElementsPipe,
     SafeFormattedPipe,
+    TranslatePipe,
   ],
   templateUrl: './shared-table-ui.component.html',
   styleUrl: './shared-table-ui.component.scss',
@@ -308,6 +310,10 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
     requestAnimationFrame(() => {
       this.expandedElement.set(this.expandedElement()?.id === element?.id ? null : element);
     });
+  }
+
+  protected resolveName(row: T): string {
+    return String(row['name'] || row['title'] || row.id || '');
   }
 
   #announceSortChange(sortState: Sort) {
