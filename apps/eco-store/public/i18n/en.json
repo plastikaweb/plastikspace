@@ -85,7 +85,8 @@
       "categoryIcon": "{category} icon",
       "closeSidenav": "Close side menu",
       "openSidenav": "Open side menu",
-      "ecoIcon": "Eco icon"
+      "ecoIcon": "Eco icon",
+      "breadcrumbsNavigation": "Breadcrumb navigation"
     },
     "paginator": {
       "firstPage": "First page",
