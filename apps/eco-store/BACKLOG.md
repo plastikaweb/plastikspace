@@ -4,7 +4,7 @@
 >
 > Companion to `TASKS.md` and PRD v1.8.
 
-**Document version:** 0.57 · **Last updated:** 2026-11-24
+**Document version:** 0.58 · **Last updated:** 2026-11-24
 
 ---
 
@@ -229,7 +229,7 @@
 | 7.51 | **A11Y-019** Product-detail thumbnails: `aria-current` + localized names | SHOULD | 0.25d | — | Active thumbnail is CSS-only and named in English, 0-based (`${name} thumbnail ${i}`, `eco-store-product-feature.component.html:87`). `[attr.aria-current]` (not `aria-pressed`) + `products.selectThumbnail` key counting from 1 (ca/es/en) + spec/axe. Harvest ref #1385 (swap `aria-pressed` → `aria-current`); dupes #1405/#1528 closed. CU `123kjkdp4wv` |
 | 7.52 | **A11Y-020** Breadcrumbs: nav name + `aria-current="page"` | COULD | 0.25d | — | The `<nav>` (`eco-store-breadcrumbs.component.html:1`) has no name and the last item lacks `aria-current="page"` in both branches (span `:42`, link `:26-29`). Key `common.a11y.breadcrumbsNavigation`. Harvest ref #1425 (check it covers the `routerLink` branch). CU `123kjkdp4ww` |
 | 7.53 | **A11Y-021** Mobile bottom nav: keyboard-reachable account menu + cart name | SHOULD | 0.5d | — | The account menu (`mobile-nav.component.html:42-46`) is not keyboard-reachable — `matMenuTriggerFor` on the host, inner `<a matButton>` with no `href`/`tabindex` (WCAG 2.1.1, level A) → render a `<button>` when there is no `routerLink`. The cart (`:23-29`) is announced twice ("Cistella Cistella") and its `matBadge` has no `matBadgeDescription`; the nav has no name (`common.a11y.mobileNavigation`, from closed #1457). Harvest ref #1509. CU `123kjkdp4wx` |
-| 7.54 | **A11Y-022** Closed store-window chip: `tertiary` icon contrast | SHOULD | 0.5d | — | Off-hours the store-window chip uses the `tertiary` variant of `plastik-shared-chip`, whose icon renders at 1.12:1; Pa11y on `/botiga` fails and the eco-store pre-push blocks every push while the store is closed. Fix the variant with Material colour roles; optionally pin the store state in the Pa11y run. Found by META-21. CU `123kjkdr15y` |
+| 7.54 | **A11Y-022** Closed store-window chip: icon contrast in dark mode ✅ | SHOULD | 0.5d | 2026-11-24 | Done 2026-11-24 — the 1.12:1 icon came from the OS dark mode (macOS turns dark at night, when the store is closed): its `light-dark()` colour followed `color-scheme` while the chip's `dark:` classes need `.dark`. The icon now inherits the text colour and `tertiary` uses Material roles; Pa11y dark mode 2/2 failing → 0/2. CU `123kjkdr15y` |
 | 7.55 | **A11Y-023** Focus not hidden under the fixed header and the mobile bottom bar | MUST | 0.5d | — | Shell pages scroll inside `.mat-sidenav-content`; the only `scroll-padding-top` sits on `html`, which never scrolls, so a control focused with Tab can stay entirely behind `eco-header` (1280 px) or, below `md`, the bottom bar (640 px). `scroll-padding` on the scroller sized from the bars; drop the `html` rule. Found by META-39. CU `123kjkdr25w` |
 | 7.56 | **A11Y-024** Avatar cropper: position the crop area without dragging | MUST | 0.5d | 7.46 | `[allowMoveImage]="true"` with `translateH`/`translateV` fixed at 0: only a drag or the arrow keys move the area (WCAG 2.5.7). Up/down/left/right buttons driving `transform()`, labels ca/es/en; same component as A11Y-016. Found by META-39. CU `123kjkdr25x` |
 | 7.57 | **A11Y-025** Profile name and phone: `autocomplete` `name` and `tel` | SHOULD | 0.25d | — | `autocomplete: 'off'` on the user's own name and phone (WCAG 1.3.5); the name's `minLength: 8` rejects short real names. Found by META-39. CU `123kjkdr261` |
@@ -392,6 +392,7 @@
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 0.58 | 2026-11-24 | Doc-only, in lockstep with TASKS.md 0.58. Row 7.54 **A11Y-022** (`123kjkdr15y`) done. |
 | 0.57 | 2026-11-24 | Doc-only, in lockstep with TASKS.md 0.57 (META-39 `123kjkdr177`). New tasks 7.55 **A11Y-023** (`123kjkdr25w`, 0.5d), 7.56 **A11Y-024** (`123kjkdr25x`, 0.5d, after 7.46 A11Y-016) and 7.57 **A11Y-025** (`123kjkdr261`, 0.25d): Phase 7 grows ~17.25 → ~18.5 d. The totals table still lags, untouched here. |
 | 0.56 | 2026-11-24 | Doc-only, in lockstep with TASKS.md 0.56 (META-21 `123kjkdqv3b`, via META-08 `123kjkdpqjr`). New task 7.54 **A11Y-022** (`123kjkdr15y`, 0.5d): Phase 7 grows ~16.75 → ~17.25 d. Task 7.35 **TECH-12** notes that META-12 did its first half. The totals table still reads Phase 7 = 10.5: it lags the rows added since round 6, untouched here. |
 | 0.55 | 2026-11-20 | Doc-only, in lockstep with TASKS.md 0.55 (eco-admin AP-0 0.7b, `123kjkdqcdc`). Rows 3.5 (**INI-02**) and 9.1 (**PRV-06**) gain their ClickUp IDs and where they lead: INI-02 → PRV-06 on `MEMBERSHIP` tenants, `/registre` only on `OPEN` ones; PRV-06 stays at normal priority, with the `mailto:` to the tenant under the store login as the interim. No estimate or phase changes |

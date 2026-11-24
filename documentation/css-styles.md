@@ -260,6 +260,13 @@ Try to overwrite them by using [CSS specificity](https://developer.mozilla.org/e
 
 ### Bad practices to avoid
 
+> **Do not mix Tailwind `dark:` variants with `light-dark()` colours in one component.**
+
+In the eco apps, `dark:` matches only the `.dark` class (`@custom-variant dark` in `libs/eco/styles/src/_eco_tokens.css`), which the theme toggle sets for an explicit choice.
+`light-dark()` follows `color-scheme`, which the default «system» theme takes from the OS.
+With the system in dark mode, a chip whose background and text used `dark:` stayed light while its `light-dark()` icon turned light too: 1.12:1 (A11Y-022).
+Use Material roles (`bg-sys-tertiary-container`, `text-sys-on-tertiary-container`), which switch with `color-scheme`, or let a child inherit `currentColor`.
+
 > **Do not break components CSS encapsulation!**
 
 Don't use deprecated `/deep/` pseudo-class to avoid unexpected behaviors while overwritten global styles from a component.
