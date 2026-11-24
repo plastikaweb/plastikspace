@@ -56,6 +56,7 @@ yarn affected:test                    # affected projects vs develop
 yarn nx lint <project>                # fast lint profile, as hooks and editors run it
 yarn lint:ci                          # affected projects with the type-aware rules, as CI runs them
 yarn <app>:a11y                       # build, serve and run Pa11y
+yarn eco-a11y:e2e                     # build eco-store and eco-admin, run their Playwright + axe suite
 yarn i18n:validate                    # translation keys consistent across languages (pre-commit and CI)
 yarn format:check
 yarn plastikaweb:codegen              # plastikaweb GraphQL types
@@ -130,6 +131,10 @@ ESLint reports each rule at its line (lint-staged in the pre-commit, the Stop ho
 ### Pa11y (Accessibility Tests)
 
 `yarn <app-name>:a11y` builds the app, serves it and runs Pa11y with the app's `.pa11yci.json`. Every app targets **WCAG 2.2 AA** (owner, 2026-11-24). Pa11y checks less: its `WCAG2AA` standard means 2.1 AA at most in both its runners, and axe-core's only 2.2 rule is `target-size`. Check what 2.2 adds by hand: 2.4.11 focus not obscured, 2.5.7 dragging, 2.5.8 target size, 3.2.6 consistent help, 3.3.7 redundant entry, 3.3.8 accessible authentication.
+
+### Playwright accessibility suite (eco apps)
+
+`apps/eco-a11y-e2e` (META-40) checks eco-store and eco-admin screen by screen, in the state a user sees them (a product loaded, a cart with products, signed in), at 320 px light, 320 px dark and 1280 px: axe with every WCAG 2.2 AA rule, plus 2.4.11 (a walk with Tab), 3.3.7 and 3.3.8. `yarn eco-a11y:e2e` builds both apps and runs it in the system Chrome; PocketBase is answered from `src/support/records.ts`, so it needs no PocketBase. A failure the suite already knows is listed by rule and node in the spec, with the task that fixes it. It runs next to Pa11y for now: no hook or CI job runs it yet. Details in `documentation/accessibility.md`.
 
 ## Angular & TypeScript Conventions
 

@@ -230,7 +230,8 @@ one calls `angular({ tsconfig: 'tsconfig.spec.json' })`: without it, Analog look
 config of a new library.
 
 Generator defaults (`nx.json`): components get `OnPush` change detection, SCSS styles and `displayBlock: true`; libraries and
-applications use Vitest (`vitest-analog`), applications Cypress for e2e and ESLint.
+applications use Vitest (`vitest-analog`), applications Cypress for e2e and ESLint. `@nx/playwright/plugin` infers the
+`e2e` target of `apps/eco-a11y-e2e`, the Playwright accessibility suite of the eco apps.
 
 ### Module Names
 

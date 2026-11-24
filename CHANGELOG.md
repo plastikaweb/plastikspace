@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-24] - eco-store and eco-admin screens audited in the state users see them (META-40)
+
+### Added
+
+- **`apps/eco-a11y-e2e`: a Playwright suite that audits 11 screens of eco-store and eco-admin with axe and every WCAG 2.2 AA rule, at 320 px light, 320 px dark and 1280 px (33 tests, about two minutes).** It reaches what Pa11y cannot: a loaded product page, a cart with a product, the delivery step and the profile signed in, eco-admin signed in, and the PWA install sheet. PocketBase is answered from fixtures, so it needs no PocketBase. It also checks 2.4.11 with a walk with Tab, 3.3.8 on both sign-in screens, 1.3.5 on the profile and 3.3.7 on the delivery step. Run it with `yarn eco-a11y:e2e`; it runs next to Pa11y, and no hook or CI job runs it yet ([#123kjkdr20r](https://app.clickup.com/t/123kjkdr20r)).
+- **Its first run found what Pa11y let through**, now listed in the specs as known violations, each limited to its nodes: in dark mode, text on a fixed palette shade at 1.2 to 1.4:1 (cart category, the «kg» unit, the avatar initials); the terms note at 3.8:1; the desktop header buttons and the rating link, whose names leave out their visible text (2.5.3); and the product chips, list items with no list (1.3.1) ([#123kjkdr20r](https://app.clickup.com/t/123kjkdr20r)).
+
 ## [2026-11-24] - The browser can fill in the profile name and phone (A11Y-025)
 
 ### Fixed

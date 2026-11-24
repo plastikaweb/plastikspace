@@ -27,6 +27,7 @@
     - [Lighthouse](#lighthouse)
     - [Angular ESLint](#angular-eslint)
     - [Pa11y CI Accessibility Test Runner](#pa11y-ci-accessibility-test-runner)
+    - [Playwright and axe (eco apps)](#playwright-and-axe-eco-apps)
     - [jest axe](#jest-axe)
   - [Useful links](#useful-links)
 
@@ -39,7 +40,9 @@ The two runners cannot share one entry: HTML_CodeSniffer throws on `target-size`
 The axe entries ignore the rules that failed on develop on 2026-11-24, until their tasks are fixed.
 In both apps that is `color-contrast`, which HTML_CodeSniffer still checks; in eco-store also `aria-dialog-name`, `aria-hidden-focus` and `aria-required-children`.
 Axe runs on a fresh browser, where the PWA install sheet covers the page, and most of those failures are that sheet's.
-The automated checks cover 2.5.8 Target Size only. Review the other five AA criteria 2.2 adds by hand:
+Pa11y covers 2.5.8 Target Size only.
+In eco-store and eco-admin the [Playwright suite](#playwright-and-axe-eco-apps) also checks 2.4.11, 3.3.7 and 3.3.8 on the screens it opens.
+Anywhere else, review the other five AA criteria 2.2 adds by hand:
 
 - 2.4.11 Focus Not Obscured (Minimum)
 - 2.5.7 Dragging Movements
@@ -309,6 +312,35 @@ In `package.json` you must add a script to run the test runner:
 ```
 
 This script (`my-app:a11y`) can be used with `husky hooks` and `github actions CI`. You can see an example in the [git-flow](./git-flow.md#pull-request-github-actions) section.
+
+### Playwright and axe (eco apps)
+
+Pa11y loads a URL and audits what is there.
+For eco-store that is little: without products the product page never leaves its loading screen, the cart pages redirect with an empty cart, and nothing is signed in.
+`apps/eco-a11y-e2e` (META-40) audits each screen in the state a user sees it instead:
+
+- **Screens.** eco-store: the catalogue, the catalogue sorted 75 a page, a product page, the cart summary with a product, the delivery step after signing in,
+  the sign-in and password recovery screens, the personal details form, and the catalogue with the PWA install sheet open.
+  eco-admin: the sign-in screen and the first screen after signing in.
+  Each one at 320 px light, 320 px dark and 1280 px.
+- **Data.** The production builds talk to the hosted PocketBase; the suite answers every request to it from `src/support/records.ts`
+  (a tenant open every day, one category, two products, a member and an administrator) and aborts anything else but Google Fonts.
+  Sign-in accepts any password and returns an unsigned token, which the PocketBase SDK takes as a session.
+  No PocketBase runs, local or remote.
+- **Checks.** axe with every WCAG 2.2 AA rule (`wcag2a` to `wcag22aa`), after Material Symbols loads:
+  until then an icon is the word of its ligature, and axe reads it as the button's text.
+  Then, in the light projects, 2.4.11: 40 presses of Tab, failing when a focused element is wholly covered by fixed or sticky content it is not part of.
+  The sign-in screens check 3.3.8 (`autocomplete` tokens, paste allowed), the personal details form 1.3.5,
+  and the delivery step 3.3.7 (home delivery offers the saved address).
+- **Known violations.** A failure found before its fix is listed in the spec as a `KnownViolation`: one rule, the nodes it hits, the criterion and the task.
+  It passes and shows in the report as `known violation`; once fixed, the report says `known violation not found`, and the entry goes.
+  A whole rule is never switched off.
+- **Running it.** `yarn eco-a11y:e2e` builds both apps (`dependsOn: ["^build"]`), serves them on 4300 (as `el-llevat.localhost`, the tenant's host) and 4304,
+  and runs in the system Chrome (`channel: 'chrome'`), with no browser download.
+  It takes about two minutes on four cores; Playwright's default of two workers was faster there than four.
+  The HTML report, with each test's axe results, is in `dist/.playwright/apps/eco-a11y-e2e/playwright-report`.
+
+It runs next to Pa11y until it replaces it in the pre-push.
 
 ### jest axe
 

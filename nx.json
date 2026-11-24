@@ -101,6 +101,12 @@
         "testTargetName": "test"
       },
       "exclude": ["apps/*-e2e/**/*"]
+    },
+    {
+      "plugin": "@nx/playwright/plugin",
+      "options": {
+        "targetName": "e2e"
+      }
     }
   ],
   "generators": {
