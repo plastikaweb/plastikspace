@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 1.15 · **Last updated:** 2026-11-24
+**Document version:** 1.16 · **Last updated:** 2026-11-24
 
 ---
 
@@ -50,7 +50,7 @@
 | **META-19** ✅ | eco-lib Nx generator: the shortest path is the correct one | Low | `123kjkdqv38` |
 | **META-20** ✅ | Feature map for the eco apps + skill to open the app signed in | Low | `123kjkdqv3a` |
 | **META-21** ✅ | Prune Claude memory: workarounds become fixes, stale entries go | Low | `123kjkdqv3b` |
-| **META-22** ⛔ | Skill evals: measure that the daily skills are actually followed | Low | `123kjkdqv3d` |
+| **META-22** 🔄 | Skill evals: measure that the daily skills are actually followed | Low | `123kjkdqv3d` |
 | **META-23** 📋 | `task-audit` skill: pre-PR review of feature-sized branches | Low | `123kjkdqv3e` |
 | **META-24** ⛔ | Reusable Claude Code base: private plugin + template repo | Low | `123kjkdqv3f` |
 | **META-25** ✅ | ESLint 10 with flat config, on the current Nx 22.7 | Normal | `123kjkdqv9f` |
@@ -65,8 +65,8 @@
 | **META-34** 📋 | Worktree bootstrap and per-worktree hooks | Low | `123kjkdr15t` |
 | **META-35** 📋 | Long runs survive: SSH keepalive, no idle sleep, no forwarded `--cache` in pre-push | Low | `123kjkdr15u` |
 | **META-36** 📋 | `eco-admin:watch-scss`: the dev server picks up changed SCSS partials | Low | `123kjkdr15v` |
-| **META-37** 📋 | `eco-store:pb:sync` refuses to run without `POCKETBASE_ENV` | Normal | `123kjkdr15w` |
-| **META-38** 📋 | Trim root and eco-store `CLAUDE.md`: reference detail moves to the docs it belongs to | Low | `123kjkdr15x` |
+| **META-37** ✅ | `eco-store:pb:sync` refuses to run without `POCKETBASE_ENV` | Normal | `123kjkdr15w` |
+| **META-38** ✅ | Trim root and eco-store `CLAUDE.md`: reference detail moves to the docs it belongs to | Low | `123kjkdr15x` |
 | **META-39** 📋 | WCAG 2.2 AA in practice: Pa11y checks `target-size`, audit of the new criteria, a new eco-store statement | Normal | `123kjkdr177` |
 
 ### Order and dependencies
@@ -144,7 +144,7 @@ ClickUp `123kjkdqv3b`. Done 2026-11-24. The memory, outside the repo, went from 
 
 ### META-22 — Skill evals
 
-ClickUp `123kjkdqv3d`. Blocked by META-38 (META-21 done 2026-11-24). Evals for `commitizen-git-flow`, eco form fields and the task docs only.
+ClickUp `123kjkdqv3d`. In progress since 2026-11-24, once META-21 and META-38 merged. Evals for `commitizen-git-flow`, eco form fields and the task docs only.
 
 ### META-23 — `task-audit` skill
 
@@ -204,11 +204,11 @@ ClickUp `123kjkdr15v`. From the META-21 inventory. The chokidar watcher eco-stor
 
 ### META-37 — `pb:sync` needs `POCKETBASE_ENV`
 
-ClickUp `123kjkdr15w`. From the META-21 inventory. `sync-pocketbase-schema.js` defaults to staging; without `POCKETBASE_ENV` it must exit before any network call. Root `CLAUDE.md` already warns (PR #1602).
+ClickUp `123kjkdr15w`. Merged 2026-11-24 (PR #1605, `45932c0e`). `sync-pocketbase-schema.js` no longer defaults to staging: it accepts only `development` or `staging`, read before `apps/eco-store/.env`, and exits 2 otherwise, before any network call. The deploy workflow now names `staging`; its run on the merge synced staging as before. `yarn pb-sync:test` in CI: 9 checks on a fixture copy, 7 of 7 mutations caught.
 
 ### META-38 — Trim the CLAUDE.md files
 
-ClickUp `123kjkdr15x`. From the META-21 inventory (section 2). Root `CLAUDE.md` to 17 KB or less and `apps/eco-store/CLAUDE.md` to 19 KB or less, each removed rule landing in the doc it points to. Before META-22, which measures what is left.
+ClickUp `123kjkdr15x`. Merged 2026-11-24 (PR #1606, `01e83b2d`). Root `CLAUDE.md` 30,821 → 16,068 B and `apps/eco-store/CLAUDE.md` 26,868 → 18,989 B. The ESLint list moved to `documentation/code-style.md`, the inferred targets to `documentation/nx-architecture.md`, the hooks to `POCKETBASE.md` (now all seven) and the Design Context to eco-store.
 
 ### META-39 — WCAG 2.2 AA in practice
 
@@ -220,6 +220,7 @@ ClickUp `123kjkdr177`. The owner set WCAG 2.2 AA for every app (PR #1603), but P
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 1.16 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-37 ✅ (PR #1605, `45932c0e`): `pb:sync` needs `POCKETBASE_ENV`. META-38 ✅ (PR #1606, `01e83b2d`): the two `CLAUDE.md` files trimmed. META-22 🔄, unblocked. |
 | 1.15 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-21 ✅ (PR #1602, `1d6e56b3`, and PR #1603, `04b9efc8`): memory pruned, the Claude docs' errors fixed, WCAG 2.2 AA as the target. Seven tickets from its inventory join as META-32…38 (A11Y-022 went to the eco-store docs), and META-39 makes Pa11y and an audit follow the 2.2 target. META-22 now waits on META-38, the `CLAUDE.md` trims. |
 | 1.14 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-20 ✅ (PR #1599, `bfcb7fbc`, and PR #1600, `9721cac1`): the generated feature map with its CI check, and the `eco-page-check` skill with headless Playwright and its acceptance run; META-22 stays ⛔ on META-21. |
 | 1.13 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-19 ✅ (PR #1597, `ef076441`): the `eco-lib` generator with the eco-admin naming scheme, its acceptance run and tests; META-24 stays ⛔, now on META-23 alone. |
