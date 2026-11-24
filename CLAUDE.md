@@ -294,6 +294,7 @@ yarn <app-name>:a11y                 # Run accessibility tests
 
 - Configuration per app in `.pa11yci.json`
 - Serves built app via HTTP server, runs Pa11y checks
+- Every app targets **WCAG 2.2 AA** (owner, 2026-11-24). Pa11y checks less: its `WCAG2AA` standard means 2.1 AA at most in both its runners, and axe-core's only 2.2 rule is `target-size`. Check what 2.2 adds by hand: 2.4.11 focus not obscured, 2.5.7 dragging, 2.5.8 target size, 3.2.6 consistent help, 3.3.7 redundant entry, 3.3.8 accessible authentication.
 
 ### i18n Validation
 
