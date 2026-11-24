@@ -234,7 +234,7 @@ var SharedButtonUiComponent = class _SharedButtonUiComponent {
   static \u0275fac = function SharedButtonUiComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SharedButtonUiComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedButtonUiComponent, selectors: [["plastik-shared-button"]], inputs: { buttonConfig: [1, "buttonConfig"] }, outputs: { sendAction: "sendAction" }, decls: 4, vars: 2, consts: [["content", ""], ["matButton", "", 3, "class", "disabled", "matTooltip"], ["target", "_blank", "rel", "noopener noreferrer", 1, "block", 3, "matTooltip", "href"], ["matButton", "", 3, "click", "disabled", "matTooltip"], [4, "ngTemplateOutlet"], [3, "src", "svgClass"]], template: function SharedButtonUiComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedButtonUiComponent, selectors: [["plastik-shared-button"]], inputs: { buttonConfig: [1, "buttonConfig"] }, outputs: { sendAction: "sendAction" }, decls: 4, vars: 2, consts: [["content", ""], ["type", "button", "matButton", "", 3, "class", "disabled", "matTooltip"], ["target", "_blank", "rel", "noopener noreferrer", 1, "block", 3, "matTooltip", "href"], ["type", "button", "matButton", "", 3, "click", "disabled", "matTooltip"], [4, "ngTemplateOutlet"], [3, "src", "svgClass"]], template: function SharedButtonUiComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275conditionalCreate(0, SharedButtonUiComponent_Conditional_0_Template, 2, 7, "button", 1);
       \u0275\u0275conditionalCreate(1, SharedButtonUiComponent_Conditional_1_Template, 2, 5, "a", 2);
@@ -269,6 +269,7 @@ var SharedButtonUiComponent = class _SharedButtonUiComponent {
       ReturnAsObservablePipe
     ], changeDetection: ChangeDetectionStrategy.OnPush, template: `@if (buttonConfig().type === 'button') {
   <button
+    type="button"
     matButton
     [class]="\`button--rounded \${buttonConfig().classes || ''}\`"
     [disabled]="buttonConfig().disabled"
@@ -314,4 +315,4 @@ var SharedButtonUiComponent = class _SharedButtonUiComponent {
 export {
   SharedButtonUiComponent
 };
-//# sourceMappingURL=src-JF5GAJGD.js.map
+//# sourceMappingURL=src-Q4TXQEHB.js.map

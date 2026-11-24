@@ -173,7 +173,6 @@ import {
   AsyncPipe,
   CommonModule,
   NgOptimizedImage,
-  NgStyle,
   NgTemplateOutlet
 } from "./chunk-PTTPPMFB.js";
 import {
@@ -5043,9 +5042,8 @@ function addonsExtension(field) {
 // libs/shared/form/util/src/addons-wrapper/formly-addons-wrapper.component.ts
 var _c02 = ["matPrefix"];
 var _c12 = ["matSuffix"];
-var _c22 = (a0) => ({ cursor: a0 });
-var _c3 = (a0, a1) => ({ $implicit: a0, direction: "left", clickHandler: a1 });
-var _c4 = (a0, a1) => ({ $implicit: a0, direction: "right", clickHandler: a1 });
+var _c22 = (a0, a1) => ({ $implicit: a0, direction: "left", clickHandler: a1 });
+var _c3 = (a0, a1) => ({ $implicit: a0, direction: "right", clickHandler: a1 });
 function FormlyAddonsWrapperComponent_ng_template_0_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
     const _r1 = \u0275\u0275getCurrentView();
@@ -5062,7 +5060,7 @@ function FormlyAddonsWrapperComponent_ng_template_0_Conditional_0_Template(rf, c
   if (rf & 2) {
     const addon_r3 = \u0275\u0275nextContext().$implicit;
     \u0275\u0275classMap(addon_r3.classes);
-    \u0275\u0275property("ngStyle", \u0275\u0275pureFunction1(6, _c22, addon_r3.onClick ? "pointer" : "inherit"));
+    \u0275\u0275styleProp("cursor", addon_r3.onClick ? "pointer" : "inherit");
     \u0275\u0275attribute("aria-label", addon_r3["aria"] || "")("tabindex", !addon_r3["onClick"] ? "-1" : "0");
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate(addon_r3.text);
@@ -5084,7 +5082,7 @@ function FormlyAddonsWrapperComponent_ng_template_0_Conditional_1_Template(rf, c
   if (rf & 2) {
     const addon_r3 = \u0275\u0275nextContext().$implicit;
     \u0275\u0275classMap(addon_r3.classes);
-    \u0275\u0275property("ngStyle", \u0275\u0275pureFunction1(6, _c22, addon_r3.onClick ? "pointer" : "inherit"));
+    \u0275\u0275styleProp("cursor", addon_r3.onClick ? "pointer" : "inherit");
     \u0275\u0275attribute("aria-label", addon_r3["aria"] || "")("tabindex", !addon_r3["onClick"] ? "-1" : "0");
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate(addon_r3.icon);
@@ -5124,8 +5122,8 @@ function FormlyAddonsWrapperComponent_ng_template_0_Conditional_3_Template(rf, c
 }
 function FormlyAddonsWrapperComponent_ng_template_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275conditionalCreate(0, FormlyAddonsWrapperComponent_ng_template_0_Conditional_0_Template, 3, 8, "button", 4);
-    \u0275\u0275conditionalCreate(1, FormlyAddonsWrapperComponent_ng_template_0_Conditional_1_Template, 3, 8, "button", 5);
+    \u0275\u0275conditionalCreate(0, FormlyAddonsWrapperComponent_ng_template_0_Conditional_0_Template, 3, 7, "button", 4);
+    \u0275\u0275conditionalCreate(1, FormlyAddonsWrapperComponent_ng_template_0_Conditional_1_Template, 3, 7, "button", 5);
     \u0275\u0275conditionalCreate(2, FormlyAddonsWrapperComponent_ng_template_0_Conditional_2_Template, 2, 3, "span", 6);
     \u0275\u0275conditionalCreate(3, FormlyAddonsWrapperComponent_ng_template_0_Conditional_3_Template, 2, 8, "mat-icon", 7);
   }
@@ -5152,7 +5150,7 @@ function FormlyAddonsWrapperComponent_ng_template_2_Conditional_0_Template(rf, c
   if (rf & 2) {
     const ctx_r6 = \u0275\u0275nextContext(2);
     const addonTemplate_r8 = \u0275\u0275reference(1);
-    \u0275\u0275property("ngTemplateOutlet", addonTemplate_r8)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c3, ctx_r6.props["addonLeft"], ctx_r6.addonLeftClick.bind(ctx_r6)));
+    \u0275\u0275property("ngTemplateOutlet", addonTemplate_r8)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c22, ctx_r6.props["addonLeft"], ctx_r6.addonLeftClick.bind(ctx_r6)));
   }
 }
 function FormlyAddonsWrapperComponent_ng_template_2_Template(rf, ctx) {
@@ -5176,7 +5174,7 @@ function FormlyAddonsWrapperComponent_ng_template_6_Conditional_0_Template(rf, c
   if (rf & 2) {
     const ctx_r6 = \u0275\u0275nextContext(2);
     const addonTemplate_r8 = \u0275\u0275reference(1);
-    \u0275\u0275property("ngTemplateOutlet", addonTemplate_r8)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c4, ctx_r6.props["addonRight"], ctx_r6.addonRightClick.bind(ctx_r6)));
+    \u0275\u0275property("ngTemplateOutlet", addonTemplate_r8)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c3, ctx_r6.props["addonRight"], ctx_r6.addonRightClick.bind(ctx_r6)));
   }
 }
 function FormlyAddonsWrapperComponent_ng_template_6_Template(rf, ctx) {
@@ -5232,18 +5230,18 @@ var FormlyAddonsWrapperComponent = class _FormlyAddonsWrapperComponent extends F
     if (rf & 2) {
       \u0275\u0275queryAdvance(2);
     }
-  }, features: [\u0275\u0275InheritDefinitionFeature], decls: 8, vars: 0, consts: [["addonTemplate", ""], ["matPrefix", ""], ["fieldComponent", ""], ["matSuffix", ""], ["matButton", "", "type", "button", 3, "class", "ngStyle"], ["matIconButton", "", "type", "button", 3, "class", "ngStyle"], [3, "class"], [3, "class", "ml-2", "mr-2"], ["matButton", "", "type", "button", 3, "click", "ngStyle"], ["matIconButton", "", "type", "button", 3, "click", "ngStyle"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"]], template: function FormlyAddonsWrapperComponent_Template(rf, ctx) {
+  }, features: [\u0275\u0275InheritDefinitionFeature], decls: 8, vars: 0, consts: [["addonTemplate", ""], ["matPrefix", ""], ["fieldComponent", ""], ["matSuffix", ""], ["matButton", "", "type", "button", 3, "class", "cursor"], ["matIconButton", "", "type", "button", 3, "class", "cursor"], [3, "class"], [3, "class", "ml-2", "mr-2"], ["matButton", "", "type", "button", 3, "click"], ["matIconButton", "", "type", "button", 3, "click"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"]], template: function FormlyAddonsWrapperComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275template(0, FormlyAddonsWrapperComponent_ng_template_0_Template, 4, 4, "ng-template", null, 0, \u0275\u0275templateRefExtractor)(2, FormlyAddonsWrapperComponent_ng_template_2_Template, 1, 1, "ng-template", null, 1, \u0275\u0275templateRefExtractor);
       \u0275\u0275elementContainer(4, null, 2);
       \u0275\u0275template(6, FormlyAddonsWrapperComponent_ng_template_6_Template, 1, 1, "ng-template", null, 3, \u0275\u0275templateRefExtractor);
     }
-  }, dependencies: [MatIconModule, MatIcon, MatButtonModule, MatButton, MatIconButton, NgStyle, NgTemplateOutlet], styles: ["/* libs/shared/form/util/src/addons-wrapper/formly-addons-wrapper.component.scss */\n.mat-mdc-form-field .mdc-notched-outline__notch {\n  border-right-width: 0;\n  border-right-color: transparent;\n}\n/*# sourceMappingURL=formly-addons-wrapper.component.css.map */\n"], encapsulation: 2, changeDetection: 0 });
+  }, dependencies: [MatIconModule, MatIcon, MatButtonModule, MatButton, MatIconButton, NgTemplateOutlet], styles: ["/* libs/shared/form/util/src/addons-wrapper/formly-addons-wrapper.component.scss */\n.mat-mdc-form-field .mdc-notched-outline__notch {\n  border-right-width: 0;\n  border-right-color: transparent;\n}\n/*# sourceMappingURL=formly-addons-wrapper.component.css.map */\n"], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(FormlyAddonsWrapperComponent, [{
     type: Component,
-    args: [{ selector: "plastik-formly-addons-wrapper", imports: [MatIconModule, MatButtonModule, NgStyle, NgTemplateOutlet], encapsulation: ViewEncapsulation.None, changeDetection: ChangeDetectionStrategy.OnPush, template: `<ng-template #addonTemplate let-addon let-clickHandler="clickHandler" let-direction>
+    args: [{ selector: "plastik-formly-addons-wrapper", imports: [MatIconModule, MatButtonModule, NgTemplateOutlet], encapsulation: ViewEncapsulation.None, changeDetection: ChangeDetectionStrategy.OnPush, template: `<ng-template #addonTemplate let-addon let-clickHandler="clickHandler" let-direction>
   @if (addon.type === 'button' && addon.text) {
     <!-- Text button -->
     <button
@@ -5252,7 +5250,7 @@ var FormlyAddonsWrapperComponent = class _FormlyAddonsWrapperComponent extends F
       [attr.aria-label]="addon['aria'] || ''"
       [attr.tabindex]="!addon['onClick'] ? '-1' : '0'"
       [class]="addon.classes"
-      [ngStyle]="{ cursor: addon.onClick ? 'pointer' : 'inherit' }"
+      [style.cursor]="addon.onClick ? 'pointer' : 'inherit'"
       (click)="clickHandler($event)">
       <span>{{ addon.text }}</span>
     </button>
@@ -5265,7 +5263,7 @@ var FormlyAddonsWrapperComponent = class _FormlyAddonsWrapperComponent extends F
       [attr.aria-label]="addon['aria'] || ''"
       [attr.tabindex]="!addon['onClick'] ? '-1' : '0'"
       [class]="addon.classes"
-      [ngStyle]="{ cursor: addon.onClick ? 'pointer' : 'inherit' }"
+      [style.cursor]="addon.onClick ? 'pointer' : 'inherit'"
       (click)="clickHandler($event)">
       <mat-icon>{{ addon.icon }}</mat-icon>
     </button>
@@ -5447,7 +5445,7 @@ function FormlyWrapperFormField_ng_template_12_Template(rf, ctx) {
 }
 var _c23 = ["matPrefix"];
 var _c32 = ["matTextPrefix"];
-var _c42 = ["matSuffix"];
+var _c4 = ["matSuffix"];
 var _c5 = ["matTextSuffix"];
 var _FormlyWrapperFormField = class _FormlyWrapperFormField extends FieldWrapper {
   constructor(renderer, elementRef, focusMonitor) {
@@ -5800,7 +5798,7 @@ _FieldType2.\u0275dir = /* @__PURE__ */ \u0275\u0275defineDirective({
   type: _FieldType2,
   viewQuery: function FieldType_Query(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275viewQuery(_c23, 5)(_c32, 5)(_c42, 5)(_c5, 5)(MatFormFieldControl, 5);
+      \u0275\u0275viewQuery(_c23, 5)(_c32, 5)(_c4, 5)(_c5, 5)(MatFormFieldControl, 5);
     }
     if (rf & 2) {
       let _t;
@@ -12065,7 +12063,7 @@ function MatDatepickerContent_ng_template_2_Template(rf, ctx) {
 }
 var _c24 = ["button"];
 var _c33 = [[["", "matDatepickerToggleIcon", ""]]];
-var _c43 = ["[matDatepickerToggleIcon]"];
+var _c42 = ["[matDatepickerToggleIcon]"];
 function MatDatepickerToggle_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275namespaceSVG();
@@ -16003,7 +16001,7 @@ var MatDatepickerToggle = class _MatDatepickerToggle {
     },
     exportAs: ["matDatepickerToggle"],
     features: [\u0275\u0275NgOnChangesFeature],
-    ngContentSelectors: _c43,
+    ngContentSelectors: _c42,
     decls: 4,
     vars: 7,
     consts: [["button", ""], ["matIconButton", "", "type", "button", 3, "tabIndex", "disabled", "disableRipple"], ["viewBox", "0 0 24 24", "width", "24px", "height", "24px", "fill", "currentColor", "focusable", "false", "aria-hidden", "true", 1, "mat-datepicker-toggle-default-icon"], ["d", "M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"]],
@@ -17911,7 +17909,7 @@ var NasaImagesSearchFeatureTableConfig = class {
 
 // libs/nasa-images/search/feature/src/lib/nasa-images-search-feature/nasa-images-search-feature.component.ts
 var NasaImagesSearchFeatureComponent_Defer_4_DepsFn = () => [SharedFormFeatureComponent, PushPipe];
-var NasaImagesSearchFeatureComponent_Defer_7_DepsFn = () => [LetDirective, import("./src-YJ5IPRMS.js").then((m) => m.SharedTableUiComponent), import("./src-KXVL7RYC.js").then((m) => m.NasaImagesSearchUiNoResultsComponent)];
+var NasaImagesSearchFeatureComponent_Defer_7_DepsFn = () => [LetDirective, import("./src-O5KEHNAH.js").then((m) => m.SharedTableUiComponent), import("./src-KXVL7RYC.js").then((m) => m.NasaImagesSearchUiNoResultsComponent)];
 var NasaImagesSearchFeatureComponent_Conditional_0_Defer_1_DepsFn = () => [MatIcon];
 var _c08 = () => [];
 var _c17 = () => ({});
@@ -18070,7 +18068,7 @@ var NasaImagesSearchFeatureComponent = class _NasaImagesSearchFeatureComponent {
   ], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(NasaImagesSearchFeatureComponent, () => [import("./src-YJ5IPRMS.js").then((m) => m.SharedTableUiComponent), import("./src-KXVL7RYC.js").then((m) => m.NasaImagesSearchUiNoResultsComponent)], (SharedTableUiComponent, NasaImagesSearchUiNoResultsComponent) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(NasaImagesSearchFeatureComponent, () => [import("./src-O5KEHNAH.js").then((m) => m.SharedTableUiComponent), import("./src-KXVL7RYC.js").then((m) => m.NasaImagesSearchUiNoResultsComponent)], (SharedTableUiComponent, NasaImagesSearchUiNoResultsComponent) => {
     setClassMetadata(NasaImagesSearchFeatureComponent, [{
       type: Component,
       args: [{ selector: "plastik-nasa-images-search", imports: [
@@ -18174,4 +18172,4 @@ export {
   NasaImagesSearchFeatureComponent,
   nasaImagesSearchFeatureRoutes
 };
-//# sourceMappingURL=src-2FCR555A.js.map
+//# sourceMappingURL=src-2RCSQEHT.js.map
