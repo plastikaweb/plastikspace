@@ -1,0 +1,9 @@
+{
+  "generators": {
+    "eco-lib": {
+      "factory": "./eco-lib/generator.cjs",
+      "schema": "./eco-lib/schema.json",
+      "description": "A new eco library (eco-store, eco-admin or eco) with the repo's names, tags, alias and configs (META-19)."
+    }
+  }
+}

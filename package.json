@@ -21,6 +21,8 @@
     "nx-tags:test": "node tools/scripts/test-nx-tags-check.mjs",
     "eco-conventions:check": "node tools/scripts/check-eco-conventions.cjs",
     "eco-conventions:test": "node tools/scripts/test-eco-conventions.mjs",
+    "eco-lib": "nx g ./tools/generators:eco-lib",
+    "eco-lib:test": "node tools/scripts/test-eco-lib-generator.mjs",
     "i18n:validate": "node tools/scripts/validate-i18n-keys.cjs",
     "i18n:test": "bash tools/scripts/test-i18n-validation.sh",
     "tasks:test": "bash tools/scripts/test-sync-tasks.sh",
