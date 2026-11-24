@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-24] - `task-audit` skill: review of a finished branch before its PR (META-23)
+
+### Added
+
+- **The `task-audit` skill (`.agents/skills/task-audit`, linked from `.claude/skills`) and its read-only `audit-lens` agent (`.claude/agents/audit-lens.md`, Sonnet, medium effort).** Ported from NewWebSite with three lenses instead of eight: code (forms on Formly and Material, shared code before new, signals, layering), accessibility (WCAG 2.2 AA beyond the lint and Pa11y) and PocketBase and tenants (API rules, tenant isolation, hooks). For branches with 10 or more code files: the repo's checks run first and their output reaches the lenses as facts, then the main thread re-verifies the findings and gives one report to triage before any fix (META-23, ([#123kjkdqv3e](https://app.clickup.com/t/123kjkdqv3e))).
+- **Measured on the PR #1558 branch** (70 files), replayed headless: of the five issues fixed after that merge it reported three (the hand-written inputs, the native buttons, the reactive form instead of Formly), folded the fourth (the screen's own stylesheet) into their fixes, and lost the fifth (`autocomplete="username"` on an email field) in its own triage, which now keeps a finding that applies a lens rule. It also flagged the raw hex that META-15 later marked, and the three of its other findings checked by hand hold. 3.05 USD (2.55 Opus, 0.50 Sonnet), about 5 minutes. The lenses state rules the repo learned from that PR, so this shows they apply them, not that they find what nobody knew (META-23, ([#123kjkdqv3e](https://app.clickup.com/t/123kjkdqv3e))).
+
 ## [2026-11-24] - Form-field eval (META-22)
 
 ### Added
