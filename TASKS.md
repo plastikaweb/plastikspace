@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 1.19 · **Last updated:** 2026-11-24
+**Document version:** 1.20 · **Last updated:** 2026-11-24
 
 ---
 
@@ -63,11 +63,12 @@
 | **META-32** 📋 | `guard.sh`: commit message limits, temp paths, piped git and quoted PocketBase words checked before they bite | Low | `123kjkdr15p` |
 | **META-33** 📋 | Claude Code settings: the Nx env for worktrees and a sandbox exclusion list | Low | `123kjkdr15q` |
 | **META-34** ✅ | Worktree bootstrap and per-worktree hooks | Low | `123kjkdr15t` |
-| **META-35** 🔄 | Long runs survive: SSH keepalive, no idle sleep, no forwarded `--cache` in pre-push | Low | `123kjkdr15u` |
+| **META-35** ✅ | Long runs survive: SSH keepalive, no idle sleep, no forwarded `--cache` in pre-push | Low | `123kjkdr15u` |
 | **META-36** 📋 | `eco-admin:watch-scss`: the dev server picks up changed SCSS partials | Low | `123kjkdr15v` |
 | **META-37** ✅ | `eco-store:pb:sync` refuses to run without `POCKETBASE_ENV` | Normal | `123kjkdr15w` |
 | **META-38** ✅ | Trim root and eco-store `CLAUDE.md`: reference detail moves to the docs it belongs to | Low | `123kjkdr15x` |
-| **META-39** 📋 | WCAG 2.2 AA in practice: Pa11y checks `target-size`, audit of the new criteria, a new eco-store statement | Normal | `123kjkdr177` |
+| **META-39** 🔄 | WCAG 2.2 AA in practice: Pa11y checks `target-size`, audit of the new criteria, a new eco-store statement | Normal | `123kjkdr177` |
+| **META-40** 📋 | Per-screen a11y suite in Playwright with axe (WCAG 2.2), replacing Pa11y in eco-store and eco-admin | Low | `123kjkdr20r` |
 
 ### Order and dependencies
 
@@ -86,6 +87,7 @@
 | First | META-28 | The test job of every CI run that tests all projects can fail without it, #1570's twice |
 | Any | META-32, META-33, META-34, META-35, META-36, META-37 | No blocker: each turns a workaround Claude keeps in memory into a fix, and its memory entries go once it merges. META-35's SSH setting can live in META-34's setup script |
 | Any | META-39 | No blocker. Measure the new Pa11y config before it reaches the eco-store pre-push, the only a11y gate |
+| After META-39 | META-40 | Its assertions encode what META-39's manual audit finds checkable; its prototype measures before Pa11y goes |
 | Any | META-29, META-30, META-31 | No blocker: three cleanups META-13 found. META-29 and META-31 both edit `documentation/code-style.md` |
 
 ---
@@ -196,7 +198,7 @@ ClickUp `123kjkdr15t`. Done 2026-11-24 (PR #1611, `72d34a3b`; follow-up PR #1613
 
 ### META-35 — Long runs survive
 
-ClickUp `123kjkdr15u`. In progress since 2026-11-24 (PR #1614). From the META-21 inventory. A repo `core.sshCommand` with a keepalive, a macOS `caffeinate` while a session runs, and no forwarded `--cache` on the pre-push test step.
+ClickUp `123kjkdr15u`. Done 2026-11-24 (PR #1614, `7c510653`). From the META-21 inventory. `worktree-setup.cjs` sets the shared `core.sshCommand` with a keepalive, a second `SessionStart` hook runs `caffeinate -i -w <session pid>` on macOS, and the pre-push test step no longer forwards `--cache`. Evidence: two GitHub push connections left idle 15 minutes, the one without keepalive closed by the remote (exit 255), the other exit 0. The `--cache` premise was half wrong: Nx cached the test either way, and the flag only reached vitest and changed the task hash, so a test run by hand never served the pre-push. Not waited out: the 40-minute idle session; shown instead that the session holds the idle-sleep assertion while it lives, and only sessions started in a checkout that has the hook get it.
 
 ### META-36 — `eco-admin:watch-scss`
 
@@ -212,7 +214,13 @@ ClickUp `123kjkdr15x`. Merged 2026-11-24 (PR #1606, `01e83b2d`). Root `CLAUDE.md
 
 ### META-39 — WCAG 2.2 AA in practice
 
-ClickUp `123kjkdr177`. The owner set WCAG 2.2 AA for every app (PR #1603), but Pa11y's `WCAG2AA` means 2.1 AA at most, and axe-core's only 2.2 rule is `target-size`. Add the axe runner with that rule to the eco Pa11y configs (measured first, so the pre-push does not start failing), audit the other five new AA criteria by hand on eco-store and eco-admin, file each failure as an A11Y task, and rewrite eco-store's statement, which still claims full 2.1 AA conformance with A11Y-001 open.
+ClickUp `123kjkdr177`. In progress since 2026-11-24. The owner set WCAG 2.2 AA for every app (PR #1603), but Pa11y's `WCAG2AA` means 2.1 AA at most, and axe-core's only 2.2 rule is `target-size`. Add the axe runner with that rule to the eco Pa11y configs (measured first, so the pre-push does not start failing), audit the other five new AA criteria by hand on eco-store and eco-admin, file each failure as an A11Y task, and rewrite eco-store's statement, which still claims full 2.1 AA conformance with A11Y-001 open.
+
+The Pa11y half merged (PR #1616, `64b27e76`): both eco configs list each page a second time, as `<url>#axe`, with the axe runner and `target-size` (HTML_CodeSniffer throws on that rule). No page fails it, and the eco-store gate ran 14 of 14 in 25 s. The runs also showed the gate checks only `/botiga`, `/accedir` and `/recuperar-contrasenya` for real: the cart pages redirect with an empty cart and the product page never leaves its loading screen. META-40 takes that on.
+
+### META-40 — Per-screen a11y suite in Playwright
+
+ClickUp `123kjkdr20r`. Proposed by the owner during META-39. Check each eco screen in the state a user sees it (cart with products, product loaded, signed in, PWA sheet closed) with `@axe-core/playwright` and the WCAG 2.2 tags, PocketBase answered by fixtures, and assertions for the criteria no rule covers. A prototype on three screens Pa11y cannot reach is measured against Pa11y first; if Playwright wins, it replaces Pa11y and the eco Cypress projects, which hold only the generated spec.
 
 ---
 
@@ -220,6 +228,7 @@ ClickUp `123kjkdr177`. The owner set WCAG 2.2 AA for every app (PR #1603), but P
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 1.20 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-35 ✅ (PR #1614, `7c510653`): SSH keepalive, `caffeinate` while a session runs, no forwarded `--cache` in the pre-push. META-39 🔄 (PR #1616, `64b27e76`): Pa11y checks `target-size`. META-40 📋 joins: a per-screen Playwright suite to replace Pa11y in the eco apps. |
 | 1.19 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-34 ✅ (PR #1611, `72d34a3b`, and PR #1613, `f44ac365`): every checkout runs its own git hooks, and a new worktree is ready to commit with one command. META-35 🔄 (PR #1614). |
 | 1.18 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-23 ✅ (PR #1610, `4176c74a`): the `task-audit` skill, which found three of the five issues of the PR #1558 replay. META-24 goes from ⛔ to 📋, its last blocker merged. META-34 🔄 (PR #1611). |
 | 1.17 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-22 ✅ (PR #1608, `38b05d14`): a commit-msg check for the ClickUp ID, the task ID and the CHANGELOG bullet, and a form-field eval that passed 5/5 on a case it cannot fail. META-23 🔄. |
