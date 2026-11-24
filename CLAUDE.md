@@ -17,7 +17,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Scaffolding & Generators
 
 - For scaffolding tasks (creating apps, libs, project structure, setup), ALWAYS invoke the `nx-generate` skill FIRST before exploring or calling MCP tools
-  [text](CLAUDE.md)
 
 ## When to use nx_docs
 
@@ -29,7 +28,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-Plastikspace is a personal Nx monorepo (the apps are listed under [Applications](#applications); `yarn nx show projects` gives the current project list), using Angular 21, Astro, and multiple backend systems (Firebase, PocketBase, HTTP APIs).
+Plastikspace is a personal Nx monorepo (the apps are listed under [Applications](#applications); `yarn nx show projects` gives the current project list), using Angular 21 and multiple backend systems (Firebase, PocketBase, HTTP APIs).
 The repository enforces strict architectural boundaries through ESLint module constraints.
 
 **Repository**: <https://github.com/plastikaweb/plastikspace>
@@ -124,14 +123,13 @@ yarn llecoop:functions              # Functions emulator only
 yarn eco-store:local                 # Start app + PocketBase + SCSS watcher
 yarn eco-store:pocketbase:run       # PocketBase only
 yarn eco-store:pb:export             # Export PocketBase schema
-yarn eco-store:pb:sync               # Sync PocketBase schema
+yarn eco-store:pb:sync               # Push the schema to STAGING unless POCKETBASE_ENV=development
 ```
 
-**Plastikaweb** (Astro):
+**Plastikaweb** (Angular):
 
 ```bash
-yarn plastikaweb:serve               # Dev server (Astro)
-yarn plastikaweb:preview             # Preview built site
+yarn plastikaweb:serve               # Dev server
 yarn plastikaweb:codegen             # Generate GraphQL types
 ```
 
@@ -149,7 +147,7 @@ yarn cz                              # Interactive commit with Commitizen
 - Automatically loads scopes from `tsconfig.base.json` path aliases
 - Commit format: `<type>(<scope>): <subject>` with optional issue number from branch name
 - Supports conventional commit types: feat, fix, docs, test, refactor, perf, style, build, ci, chore, revert
-- Use the SKILL `commitzen-git-flow` as the source of truth to create commits
+- Use the SKILL `commitizen-git-flow` as the source of truth to create commits
 
 ## Applications
 
@@ -163,7 +161,7 @@ yarn cz                              # Interactive commit with Commitizen
 | **eco-admin**        | Angular 21         | PocketBase | Admin panel for eco-store (scaffold, AP-0) |
 | **plastikaweb**      | Angular 21         | GraphQL    | Personal portfolio (static site)           |
 
-Each app has a corresponding `-e2e` project for Cypress testing.
+Each app except the Firebase ones has a Cypress `-e2e` project (see [Cypress](#cypress-e2e-tests)). llecoop stays only as Firebase reference code: keep it compiling and green, with no visual checks.
 
 `eco-admin` shares the eco-store PocketBase instance and its `users` auth collection; it is a CSR SPA (no SSR) served from its own origin, and its docs live in `apps/eco-admin/{REQUIREMENTS,TASKS,DESIGN-BRIEF,DESIGN-REVIEWS}.md`. Read one task from the eco task docs (eco-store, eco-admin TASKS and REQUIREMENTS, `libs/eco`) with `yarn task <ID>`, never the whole file: eco-admin TASKS is over 200 KB.
 
@@ -286,13 +284,7 @@ nx test <lib-name>
 
 ### Cypress (E2E Tests)
 
-```bash
-yarn <app-name>:e2e                  # Headless E2E
-yarn <app-name>:e2e:local           # Interactive with watch mode
-```
-
-- Custom commands in `libs/core/util/cypress-commands`
-- Component harness utilities via `@jscutlery/cypress-harness`
+`yarn <app-name>:e2e` runs an app's Cypress suite. No hook or CI job runs them and they are no acceptance check, so do not run them to verify a change. New e2e tests will use Playwright.
 
 ### Pa11y (Accessibility Tests)
 
@@ -410,23 +402,12 @@ See `documentation/css-styles.md` for detailed styling conventions.
 
 GitHub Actions workflows in `.github/workflows/`:
 
-**Main CI** (`ci.yml`):
-
-- Runs on push to `develop`
-- Format check, lint, test, build on affected projects
-- Uses NX Cloud for distribution
-- 3 parallel jobs max
-
-**Deployment**:
-
-- `llecoop-deploy-staging.yml` / `llecoop-deploy-prod.yml`
-- `eco-store-deploy-staging.yml`
-- `nasa-images-deploy-dev.yml`
-
-**Accessibility**:
-
-- `nasa-images-pa11y.yml`
-- `eco-store-pa11y.yml`
+- `ci.yml` runs on every pull request and on push to `develop`: format check, the repo checks of its "Lint Affected" step (`yarn tasks:check`, `yarn feature-map:check`…), then lint, test and build on affected projects (AGENTS.md "CI Strategy").
+- Nx Cloud runs out of credits most months; `ci.yml` then sets `NX_NO_CLOUD=true` and runs with the local cache only. Its 401 is harmless.
+- `pb-schema-guard.yml` (PRs that change `pb_schema.json`) and `pocketbase-schema.yml` (push to `develop`: syncs the schema to staging) — see `apps/eco-store/CLAUDE.md`.
+- Pa11y: `eco-store-pa11y.yml`, `eco-admin-pa11y.yml` and `nasa-images-pa11y.yml`, after each CI run on `develop`.
+- Deploys: `eco-store-deploy-staging.yml`, `nasa-images-deploy-dev.yml`, `llecoop-deploy-{staging,prod}.yml`.
+- `claude.yml`, `claude-code-review.yml` and `jules-analysis.yml` run the review bots.
 
 ## Git Workflow
 
@@ -466,47 +447,7 @@ Key documentation in `/documentation/`:
 
 ## Tech Stack
 
-**Core**:
-
-- Angular 21.0.6
-- TypeScript 5.9.3
-- Nx 24.0.6
-- RxJS 7.8
-- Astro 5.16.16
-
-**State**:
-
-- NgRx 21.0.0 (store, effects, signals)
-- @angular-architects/ngrx-toolkit
-
-**UI**:
-
-- Angular Material 21.0.5
-- TailwindCSS 4.0.0
-- Angular CDK 21.0.5
-
-**Data**:
-
-- Apollo Client 3.13.6
-- Firebase Admin SDK 12.6.0
-- PocketBase 0.36.7
-- graphql-request 7.4.0
-
-**Forms**:
-
-- @ngx-formly 7.0.1
-- Reactive Forms (Angular built-in)
-
-**Testing**:
-
-- Vitest 4.1.5 + @analogjs/vitest-angular 2.9.7
-- Cypress 15.8.1
-- Pa11y CI 4.0.1
-- vitest-axe 0.1.0
-
-**i18n**:
-
-- @ngx-translate/core 17.0.0
+Angular 21, Nx, NgRx Signal Store, Angular Material and Tailwind CSS 4, ngx-translate, @ngx-formly, PocketBase, Firebase, Apollo; Vitest for unit tests. Read versions in `package.json`, never from memory.
 
 ## Key Patterns
 

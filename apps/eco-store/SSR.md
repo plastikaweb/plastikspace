@@ -76,6 +76,17 @@ must be emitted by the worker, the only layer that sees the request `Host`:
 Pure helpers live in `src/tenant-branding.ts` (unit-tested); the Cloudflare glue
 lives in `src/server.ts`.
 
+Two traps when checking which layer answered:
+
+- A static asset carries the same security headers as a worker response: the
+  `_headers` file that `scripts/generate-cf-headers.cjs` writes during
+  `build-cf` stamps them on every path. Headers do not prove the worker ran.
+- Check with `wrangler dev` (`yarn eco-store:cf:dev`) on a `build-cf` artifact,
+  never on `build:production`, which writes no `_headers` and skips
+  `add-cfasync`. For the manifest, the worker answers
+  `application/manifest+json; charset=utf-8`; the static file answers with
+  wrangler's `max-age=0, must-revalidate`.
+
 ## Development Commands
 
 | Task               | Command                      | Description                                           |
