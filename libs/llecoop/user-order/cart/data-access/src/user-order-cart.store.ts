@@ -30,7 +30,8 @@ export const llecoopUserOrderCartStore = signalStore(
     getCartTotalPrice: computed(() =>
       cart().reduce((acc, item) => Number((acc + item.priceWithIva * item.quantity).toFixed(2)), 0)
     ),
-    getOrderedCartItems: computed(() => cart().sort((a, b) => a.name.localeCompare(b.name))),
+    // Shallow copy array to prevent in-place Signal state array mutation when sorting
+    getOrderedCartItems: computed(() => [...cart()].sort((a, b) => a.name.localeCompare(b.name))),
   })),
   withMethods(store => {
     return {
