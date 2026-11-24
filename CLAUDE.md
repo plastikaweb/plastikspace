@@ -37,7 +37,7 @@ Plastikspace is a personal Nx monorepo: Angular 21 apps over Firebase, PocketBas
 
 - Nx config and cache: `nx.json`, cache in `tmp/my-cache`
 - Path aliases (200+): `tsconfig.base.json`. Import across libraries only through them (`@plastik/core/util/api-http`), never by relative path; each library exports through its `index.ts`
-- ESLint: the root `eslint.config.mjs` holds the boundary rules and every code rule; each project's `eslint.config.mjs` spreads it (the four Cypress e2e configs after `cypress.configs.recommended`)
+- ESLint: the root `eslint.config.mjs` holds the boundary rules and every code rule; each project's `eslint.config.mjs` spreads it (the three Cypress e2e configs after `cypress.configs.recommended`, the two Playwright ones after `playwright.configs['flat/recommended']`)
 - Workspace scripts and their tests: `tools/scripts/` (task docs, i18n, feature map, PocketBase helpers, local setup); `decorate-angular-cli.cjs` runs on `postinstall`
 - Eco page map (URL → lib, access): `tools/feature-map.json`, generated from the routes (`yarn feature-map`); CI fails when it is stale
 - Branch-name rules: `branchNameLint.json`. Commit scopes: `.cz-config.cjs`, loaded from `tsconfig.base.json`
@@ -124,9 +124,9 @@ ESLint reports each rule at its line (lint-staged in the pre-commit, the Stop ho
 - **Vitest**: `vitest run`, inferred per project (`documentation/nx-architecture.md`, "Inferred `lint` and `test` targets"); setup in each project's `src/test-setup.ts`.
 - **i18n**: ngx-translate; `yarn i18n:validate` (`tools/scripts/validate-i18n-keys.cjs`) checks that every language file has the same keys.
 
-### Cypress (E2E Tests)
+### E2E tests
 
-`yarn <app-name>:e2e` runs an app's Cypress suite (every app but the Firebase ones and eco-store has an `-e2e` project). No hook or CI job runs them and they are no acceptance check, so do not run them to verify a change. New e2e tests will use Playwright.
+`yarn <app-name>:e2e` runs an app's e2e suite: Cypress in nasa-images, llecoop and plastikaweb, Playwright in eco-admin (`apps/eco-admin-e2e`, against the local PocketBase; its `signedInAs` option is in the app's README). No hook or CI job runs them and they are no acceptance check, so do not run them to verify a change. New e2e tests use Playwright.
 
 ### Pa11y (Accessibility Tests)
 

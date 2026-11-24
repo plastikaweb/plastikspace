@@ -231,7 +231,9 @@ config of a new library.
 
 Generator defaults (`nx.json`): components get `OnPush` change detection, SCSS styles and `displayBlock: true`; libraries and
 applications use Vitest (`vitest-analog`), applications Cypress for e2e and ESLint. `@nx/playwright/plugin` infers the
-`e2e` target of `apps/eco-a11y-e2e`, the Playwright accessibility suite of the eco apps.
+`e2e` target of the two Playwright projects: `apps/eco-a11y-e2e`, the accessibility suite of the eco apps, and
+`apps/eco-admin-e2e`, whose target waits for `eco-admin:serve` and is not cached (`project.json`), since it runs against
+the local PocketBase.
 
 ### Module Names
 

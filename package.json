@@ -149,7 +149,7 @@
     "eco-admin:build:prod": "nx run eco-admin:build:production",
     "eco-admin:test": "nx run eco-admin:test",
     "eco-admin:e2e": "nx run eco-admin-e2e:e2e",
-    "eco-admin:e2e:local": "yarn nx run eco-admin-e2e:e2e --browser=chrome --port='cypress-auto' --watch=true",
+    "eco-admin:e2e:local": "yarn nx run eco-admin-e2e:e2e --ui",
     "eco-a11y:e2e": "nx run eco-a11y-e2e:e2e"
   },
   "dependencies": {
