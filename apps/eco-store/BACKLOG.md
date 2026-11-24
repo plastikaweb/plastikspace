@@ -4,7 +4,7 @@
 >
 > Companion to `TASKS.md` and PRD v1.8.
 
-**Document version:** 0.56 · **Last updated:** 2026-11-24
+**Document version:** 0.57 · **Last updated:** 2026-11-24
 
 ---
 
@@ -172,7 +172,7 @@
 
 **Goal:** Ship-ready compliance + finally execute the a11y fixes from Phase 0 audit + production deploy.
 
-**Estimated effort:** ~17.25 dev-days
+**Estimated effort:** ~18.5 dev-days
 
 | # | Task | Priority | Est | Depends on | Notes |
 | --- | --- | --- | --- | --- | --- |
@@ -230,6 +230,9 @@
 | 7.52 | **A11Y-020** Breadcrumbs: nav name + `aria-current="page"` | COULD | 0.25d | — | The `<nav>` (`eco-store-breadcrumbs.component.html:1`) has no name and the last item lacks `aria-current="page"` in both branches (span `:42`, link `:26-29`). Key `common.a11y.breadcrumbsNavigation`. Harvest ref #1425 (check it covers the `routerLink` branch). CU `123kjkdp4ww` |
 | 7.53 | **A11Y-021** Mobile bottom nav: keyboard-reachable account menu + cart name | SHOULD | 0.5d | — | The account menu (`mobile-nav.component.html:42-46`) is not keyboard-reachable — `matMenuTriggerFor` on the host, inner `<a matButton>` with no `href`/`tabindex` (WCAG 2.1.1, level A) → render a `<button>` when there is no `routerLink`. The cart (`:23-29`) is announced twice ("Cistella Cistella") and its `matBadge` has no `matBadgeDescription`; the nav has no name (`common.a11y.mobileNavigation`, from closed #1457). Harvest ref #1509. CU `123kjkdp4wx` |
 | 7.54 | **A11Y-022** Closed store-window chip: `tertiary` icon contrast | SHOULD | 0.5d | — | Off-hours the store-window chip uses the `tertiary` variant of `plastik-shared-chip`, whose icon renders at 1.12:1; Pa11y on `/botiga` fails and the eco-store pre-push blocks every push while the store is closed. Fix the variant with Material colour roles; optionally pin the store state in the Pa11y run. Found by META-21. CU `123kjkdr15y` |
+| 7.55 | **A11Y-023** Focus not hidden under the fixed header and the mobile bottom bar | MUST | 0.5d | — | Shell pages scroll inside `.mat-sidenav-content`; the only `scroll-padding-top` sits on `html`, which never scrolls, so a control focused with Tab can stay entirely behind `eco-header` (1280 px) or, below `md`, the bottom bar (640 px). `scroll-padding` on the scroller sized from the bars; drop the `html` rule. Found by META-39. CU `123kjkdr25w` |
+| 7.56 | **A11Y-024** Avatar cropper: position the crop area without dragging | MUST | 0.5d | 7.46 | `[allowMoveImage]="true"` with `translateH`/`translateV` fixed at 0: only a drag or the arrow keys move the area (WCAG 2.5.7). Up/down/left/right buttons driving `transform()`, labels ca/es/en; same component as A11Y-016. Found by META-39. CU `123kjkdr25x` |
+| 7.57 | **A11Y-025** Profile name and phone: `autocomplete` `name` and `tel` | SHOULD | 0.25d | — | `autocomplete: 'off'` on the user's own name and phone (WCAG 1.3.5); the name's `minLength: 8` rejects short real names. Found by META-39. CU `123kjkdr261` |
 
 **Exit criteria:** Legally compliant (banner + pages), Pa11y CI passes, prod deploy works, footer present.
 
@@ -389,6 +392,7 @@
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 0.57 | 2026-11-24 | Doc-only, in lockstep with TASKS.md 0.57 (META-39 `123kjkdr177`). New tasks 7.55 **A11Y-023** (`123kjkdr25w`, 0.5d), 7.56 **A11Y-024** (`123kjkdr25x`, 0.5d, after 7.46 A11Y-016) and 7.57 **A11Y-025** (`123kjkdr261`, 0.25d): Phase 7 grows ~17.25 → ~18.5 d. The totals table still lags, untouched here. |
 | 0.56 | 2026-11-24 | Doc-only, in lockstep with TASKS.md 0.56 (META-21 `123kjkdqv3b`, via META-08 `123kjkdpqjr`). New task 7.54 **A11Y-022** (`123kjkdr15y`, 0.5d): Phase 7 grows ~16.75 → ~17.25 d. Task 7.35 **TECH-12** notes that META-12 did its first half. The totals table still reads Phase 7 = 10.5: it lags the rows added since round 6, untouched here. |
 | 0.55 | 2026-11-20 | Doc-only, in lockstep with TASKS.md 0.55 (eco-admin AP-0 0.7b, `123kjkdqcdc`). Rows 3.5 (**INI-02**) and 9.1 (**PRV-06**) gain their ClickUp IDs and where they lead: INI-02 → PRV-06 on `MEMBERSHIP` tenants, `/registre` only on `OPEN` ones; PRV-06 stays at normal priority, with the `mailto:` to the tenant under the store login as the interim. No estimate or phase changes |
 | 0.54 | 2026-11-07 | **META-08** (`123kjkdpqjr`) — doc-only maintenance in lockstep with TASKS.md 0.54. 18 stale ClickUp IDs re-pointed to the live re-created tickets: rows 1.5–1.7 (PRV-04d, PRV-09, PRV-08), 2.1–2.2 (BOT-02b/c), 6.5 (PST-04), 7.1, 7.2, 7.4, 7.6, 7.7, 7.18 (UI-04, LGL-01, LGL-02, SEO-01, OPS-01, BOT-16), 8.3 (PST-02; `86c9dpjmz` kept), 11.1 (EST-06) and four Out-of-scope rows (HLP-01, MKT-research-01, META-03, META-04). History rows keep the old IDs. No estimate or phase changes; the new SEC-09/10, BUG-011/012/015/016 and PRV-05b-C rows and the PRV-08/PRV-09/UI-04/VAL-01 status fixes live in TASKS.md. |
