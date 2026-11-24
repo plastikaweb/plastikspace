@@ -11,15 +11,27 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { TranslateModule } from '@ngx-translate/core';
 import { BytesToSizePipe } from '@plastik/shared/bytes-to-size';
 import {
+  CropperPosition,
+  Dimensions,
   ImageCroppedEvent,
   ImageCropperComponent,
   ImageTransform,
   LoadedImage,
 } from 'ngx-image-cropper';
+
+/** Way the image moves under the crop area when a pan button is pressed. */
+export type ImgCropperPanDirection = 'up' | 'down' | 'left' | 'right';
+
+const ZOOM_MIN = 1;
+const ZOOM_MAX = 4;
+const ZOOM_STEP = 0.1;
+/** Share of the image, at its current zoom, that one press of a pan button moves it. */
+const PAN_STEP_RATIO = 0.05;
 
 export interface ImgCropperConfig {
   /** Minimum width in pixels. Default: 200. */
@@ -44,6 +56,7 @@ export interface ImgCropperConfig {
     MatButtonModule,
     MatIconModule,
     MatSliderModule,
+    MatTooltipModule,
     ImageCropperComponent,
     TranslateModule,
     NgTemplateOutlet,
@@ -71,11 +84,31 @@ export class SharedImgCropperComponent {
     params?: Record<string, unknown>;
   } | null>(null);
   protected readonly isDragging = signal<boolean>(false);
-  protected readonly zoom = signal<number>(1);
+  protected readonly zoom = signal<number>(ZOOM_MIN);
+  protected readonly zoomMin = ZOOM_MIN;
+  protected readonly zoomMax = ZOOM_MAX;
+  protected readonly zoomStep = ZOOM_STEP;
+  protected readonly panButtons: readonly {
+    direction: ImgCropperPanDirection;
+    icon: string;
+    label: string;
+  }[] = [
+    { direction: 'left', icon: 'arrow_back', label: 'common.image.crop.moveLeft' },
+    { direction: 'up', icon: 'arrow_upward', label: 'common.image.crop.moveUp' },
+    { direction: 'down', icon: 'arrow_downward', label: 'common.image.crop.moveDown' },
+    { direction: 'right', icon: 'arrow_forward', label: 'common.image.crop.moveRight' },
+  ];
+  /** Image offset in displayed pixels, set by the pan buttons or by dragging the image. */
+  protected readonly translateH = signal<number>(0);
+  protected readonly translateV = signal<number>(0);
 
   readonly #originalFileName = signal<string>('avatar.png');
   readonly #croppedBlob = signal<Blob | null>(null);
   readonly #croppedPreview = signal<SafeUrl | null>(null);
+  /** Size of the image as displayed, from `cropperReady`. */
+  readonly #displayedSize = signal<Dimensions | null>(null);
+  /** Crop area in displayed pixels, from `cropperChange`. */
+  readonly #cropArea = signal<CropperPosition | null>(null);
 
   readonly minWidth = computed(() => this.config().minWidth ?? 200);
   readonly minHeight = computed(() => this.config().minHeight ?? 200);
@@ -93,11 +126,46 @@ export class SharedImgCropperComponent {
   protected readonly hasImage = computed(() => this.imageBase64() !== undefined);
   protected readonly hasCrop = computed(() => this.#croppedBlob() !== null);
 
+  // Pixels, not the default `%`: the library adds a drag's pixel distance to `translateH` and
+  // `translateV`, so with `%` a 30 px drag moved a 320 px wide image 96 px.
   protected readonly transform = computed<ImageTransform>(() => ({
     scale: this.zoom(),
-    translateH: 0,
-    translateV: 0,
+    translateH: this.translateH(),
+    translateV: this.translateV(),
+    translateUnit: 'px',
   }));
+
+  // How far the image can move each way and still cover the whole crop area. The image is scaled
+  // around its centre, so its left edge sits at `width * (1 - zoom) / 2 + translateH`, which must
+  // stay at or left of the crop area's `x1`; the same holds for each edge.
+  readonly #panLimits = computed(() => {
+    const size = this.#displayedSize();
+    const area = this.#cropArea();
+
+    if (!size || !area) return null;
+
+    const zoom = this.zoom();
+
+    return {
+      minH: area.x2 - (size.width * (1 + zoom)) / 2,
+      maxH: area.x1 + (size.width * (zoom - 1)) / 2,
+      minV: area.y2 - (size.height * (1 + zoom)) / 2,
+      maxV: area.y1 + (size.height * (zoom - 1)) / 2,
+      step: Math.min(size.width, size.height) * zoom * PAN_STEP_RATIO,
+    };
+  });
+
+  /** Whether the image can still move each way without uncovering the crop area. */
+  protected readonly canPan = computed<Record<ImgCropperPanDirection, boolean>>(() => {
+    const limits = this.#panLimits();
+
+    return {
+      up: !!limits && this.translateV() > limits.minV,
+      down: !!limits && this.translateV() < limits.maxV,
+      left: !!limits && this.translateH() > limits.minH,
+      right: !!limits && this.translateH() < limits.maxH,
+    };
+  });
 
   readonly #bytesToSize = inject(BytesToSizePipe);
 
@@ -159,7 +227,63 @@ export class SharedImgCropperComponent {
   }
 
   onZoomChange(value: number): void {
-    this.zoom.set(value);
+    const clamped = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, value));
+
+    // One decimal, as the slider's step: repeated `+ 0.1` would drift (1.2000000000000002).
+    this.zoom.set(Math.round(clamped * 10) / 10);
+  }
+
+  /**
+   * Moves the image one step under the crop area, without dragging (WCAG 2.5.7).
+   * It stops where the image would stop covering the crop area.
+   * @param {ImgCropperPanDirection} direction Way the image moves.
+   */
+  onPan(direction: ImgCropperPanDirection): void {
+    const limits = this.#panLimits();
+
+    if (!limits || !this.canPan()[direction]) return;
+
+    const { step } = limits;
+
+    switch (direction) {
+      case 'up':
+        this.translateV.update(offset => Math.max(limits.minV, offset - step));
+        break;
+      case 'down':
+        this.translateV.update(offset => Math.min(limits.maxV, offset + step));
+        break;
+      case 'left':
+        this.translateH.update(offset => Math.max(limits.minH, offset - step));
+        break;
+      case 'right':
+        this.translateH.update(offset => Math.min(limits.maxH, offset + step));
+        break;
+    }
+  }
+
+  /**
+   * Keeps the offset of a drag, so the next zoom or pan starts from where the image was left.
+   * @param {ImageTransform} transform Transform the cropper emits after a drag.
+   */
+  onTransformChange({ translateH, translateV }: ImageTransform): void {
+    this.translateH.set(translateH ?? 0);
+    this.translateV.set(translateV ?? 0);
+  }
+
+  /**
+   * Stores the displayed image size once the cropper has laid it out.
+   * @param {Dimensions} size Displayed size of the image.
+   */
+  onCropperReady(size: Dimensions): void {
+    this.#displayedSize.set(size);
+  }
+
+  /**
+   * Stores where the crop area is, which bounds the pan buttons.
+   * @param {CropperPosition} area Crop area in displayed pixels.
+   */
+  onCropperChange(area: CropperPosition): void {
+    this.#cropArea.set(area);
   }
 
   onBackToUpload(): void {
@@ -167,7 +291,7 @@ export class SharedImgCropperComponent {
     this.#croppedBlob.set(null);
     this.#croppedPreview.set(null);
     this.errorMessage.set(null);
-    this.zoom.set(1);
+    this.#resetTransform();
   }
 
   onConfirm(): void {
@@ -191,7 +315,7 @@ export class SharedImgCropperComponent {
     this.errorMessage.set(null);
     this.#croppedBlob.set(null);
     this.#croppedPreview.set(null);
-    this.zoom.set(1);
+    this.#resetTransform();
 
     if (!file) return;
 
@@ -232,6 +356,14 @@ export class SharedImgCropperComponent {
     this.#croppedBlob.set(null);
     this.#croppedPreview.set(null);
     this.errorMessage.set(null);
-    this.zoom.set(1);
+    this.#resetTransform();
+  }
+
+  #resetTransform(): void {
+    this.zoom.set(ZOOM_MIN);
+    this.translateH.set(0);
+    this.translateV.set(0);
+    this.#displayedSize.set(null);
+    this.#cropArea.set(null);
   }
 }

@@ -102,7 +102,15 @@
     },
     "image": {
       "crop": {
-        "title": "Edit your image"
+        "title": "Edit your image",
+        "zoom": "Image zoom",
+        "zoomIn": "Zoom in",
+        "zoomOut": "Zoom out",
+        "move": "Move the image",
+        "moveUp": "Move the image up",
+        "moveDown": "Move the image down",
+        "moveLeft": "Move the image left",
+        "moveRight": "Move the image right"
       },
       "upload": {
         "title": "Upload an image",
@@ -706,7 +714,8 @@
     "avatar": {
       "title": "Avatar",
       "description": "Personalize your profile with an avatar image.",
-      "recommended": "Square format, minimum 200x200px, maximum 2.5 MB, JPG, WEBP or PNG formats."
+      "recommended": "Square format, minimum 200x200px, maximum 2.5 MB, JPG, WEBP or PNG formats.",
+      "upload": "Upload an image for your profile"
     },
     "addresses": {
       "title": "My addresses",

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { of } from 'rxjs';
@@ -36,6 +36,25 @@ describe('EcoStoreProfileAvatarFeatureComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should name the avatar button in the current language, starting with its visible text', () => {
+    const translate = TestBed.inject(TranslateService);
+
+    translate.setTranslation('en', {
+      common: { image: { upload: { title: 'Upload an image' } } },
+      profile: { avatar: { upload: 'Upload an image for your profile' } },
+    });
+    translate.use('en');
+    fixture.detectChanges();
+
+    const avatarButton: HTMLButtonElement = fixture.nativeElement.querySelector('button.group');
+    const visibleText =
+      avatarButton.querySelector('span.absolute > span')?.textContent?.trim() ?? '';
+
+    expect(avatarButton.getAttribute('aria-label')).toBe('Upload an image for your profile');
+    expect(avatarButton.getAttribute('aria-label')?.startsWith(visibleText)).toBe(true);
+    expect(visibleText).toBe('Upload an image');
   });
 
   it('should start editing', () => {
