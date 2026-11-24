@@ -13,7 +13,7 @@ It complements the root `CLAUDE.md` (workspace, conventions, boundaries, commits
 - **Public storefront only** here. Internal admin (Tenant Admin, Superadmin) is a separate app, `eco-admin` (`apps/eco-admin/`, described in the root `CLAUDE.md`).
 - **Stack:** Angular 21, NgRx Signal Store, Angular Material 3, Tailwind CSS 4, ngx-translate, PocketBase 0.36.7 (SQLite, self-hosted).
 - **User-facing copy is in Catalan by default.** Spanish translations co-exist; English is in schema but no production tenant uses it yet.
-- **Accessibility target:** WCAG 2.2 Level AA (owner, 2026-11-24; it was 2.1 AA). Not yet audited against what 2.2 adds (root `CLAUDE.md`, Pa11y).
+- **Accessibility target:** WCAG 2.2 Level AA (owner, 2026-11-24; it was 2.1 AA). META-39 audited what 2.2 adds; its failures are fixed and its open points are in root `TASKS.md`. Pa11y covers only 2.5.8 of them (`documentation/accessibility.md`).
 
 ---
 

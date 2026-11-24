@@ -47,6 +47,14 @@ The automated checks cover 2.5.8 Target Size only. Review the other five AA crit
 - 3.3.7 Redundant Entry
 - 3.3.8 Accessible Authentication (Minimum)
 
+The first review (META-39, 2026-11-24) found three failures, all fixed since. Look for the same patterns:
+
+- 2.4.11: the eco-store shell scrolls inside `mat-sidenav-content`, so the scroll padding that keeps focus clear of the fixed bars belongs there, not on `html`.
+- 2.5.7: every drag needs a single-pointer alternative, as the image cropper's pan and zoom buttons.
+- 1.3.5: a field that collects the user's own data takes its `autocomplete` token (`name`, `tel`, `email`), not `off`.
+
+Its open points are in the META-39 section of the root `TASKS.md`.
+
 A todo list of accessibility actions and related information can be found in the [Accessibility](https://github.com/plastikaweb/plastikspace/wiki/Accessibility) wiki page.
 
 ## Review list

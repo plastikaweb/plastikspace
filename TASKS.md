@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 1.20 · **Last updated:** 2026-11-24
+**Document version:** 1.21 · **Last updated:** 2026-11-24
 
 ---
 
@@ -67,7 +67,7 @@
 | **META-36** 📋 | `eco-admin:watch-scss`: the dev server picks up changed SCSS partials | Low | `123kjkdr15v` |
 | **META-37** ✅ | `eco-store:pb:sync` refuses to run without `POCKETBASE_ENV` | Normal | `123kjkdr15w` |
 | **META-38** ✅ | Trim root and eco-store `CLAUDE.md`: reference detail moves to the docs it belongs to | Low | `123kjkdr15x` |
-| **META-39** 🔄 | WCAG 2.2 AA in practice: Pa11y checks `target-size`, audit of the new criteria, a new eco-store statement | Normal | `123kjkdr177` |
+| **META-39** ✅ | WCAG 2.2 AA in practice: Pa11y checks `target-size`, audit of the new criteria, a new eco-store statement | Normal | `123kjkdr177` |
 | **META-40** 📋 | Per-screen a11y suite in Playwright with axe (WCAG 2.2), replacing Pa11y in eco-store and eco-admin | Low | `123kjkdr20r` |
 
 ### Order and dependencies
@@ -214,9 +214,13 @@ ClickUp `123kjkdr15x`. Merged 2026-11-24 (PR #1606, `01e83b2d`). Root `CLAUDE.md
 
 ### META-39 — WCAG 2.2 AA in practice
 
-ClickUp `123kjkdr177`. In progress since 2026-11-24. The owner set WCAG 2.2 AA for every app (PR #1603), but Pa11y's `WCAG2AA` means 2.1 AA at most, and axe-core's only 2.2 rule is `target-size`. Add the axe runner with that rule to the eco Pa11y configs (measured first, so the pre-push does not start failing), audit the other five new AA criteria by hand on eco-store and eco-admin, file each failure as an A11Y task, and rewrite eco-store's statement, which still claims full 2.1 AA conformance with A11Y-001 open.
+ClickUp `123kjkdr177`. Done 2026-11-24. The owner set WCAG 2.2 AA for every app (PR #1603), but Pa11y's `WCAG2AA` means 2.1 AA at most, and axe-core's only 2.2 rule is `target-size`. Add the axe runner with that rule to the eco Pa11y configs (measured first, so the pre-push does not start failing), audit the other five new AA criteria by hand on eco-store and eco-admin, file each failure as an A11Y task, and rewrite eco-store's statement, which still claims full 2.1 AA conformance with A11Y-001 open.
 
 The Pa11y half merged (PR #1616, `64b27e76`): both eco configs list each page a second time, as `<url>#axe`, with the axe runner and `target-size` (HTML_CodeSniffer throws on that rule). No page fails it, and the eco-store gate ran 14 of 14 in 25 s. The runs also showed the gate checks only `/botiga`, `/accedir` and `/recuperar-contrasenya` for real: the cart pages redirect with an empty cart and the product page never leaves its loading screen. META-40 takes that on.
+
+The audit of the other five criteria, by code review and in Chrome at 320, 640 and 1280 px, found three failures, each filed and fixed the same day: 2.4.11, a focused control hidden under eco-store's fixed header and mobile bar (A11Y-023, PR #1620, `f3c8f5cb`); 2.5.7, the avatar cropper moved only by dragging (A11Y-024 with A11Y-016, PR #1621, `6a8de02c`); and, outside the five, 1.3.5 on the profile name and phone (A11Y-025, PR #1622, `4585aff6`). 2.5.8, 3.2.6, 3.3.7 and 3.3.8 pass. The new eco-store statement, partially conformant with WCAG 2.2 AA, is a draft outside the repo for the owner to publish; drop each limitation from it once its fix reaches production.
+
+Left open, for the owner or a later task: the hot-toast notifications against 2.4.11 (manual check); the 25-character password `maxLength` against PocketBase's 71 (3.3.8); the lone password field of `/confirmar-correu`; the new-email field's `autocomplete: 'off'`, possibly on purpose (1.3.5); the eco-admin login inputs that Pa11y's axe flags for contrast and axe run directly does not (META-40); the eco-admin shell, which needs 2.4.11 and 2.5.7 checked once `feat/123kjkdp4kw-admin-shell` merges; and `plastikaweb:a11y:run`, which points to a missing `.pa11yci.json` (META-41, ticket pending).
 
 ### META-40 — Per-screen a11y suite in Playwright
 
@@ -228,6 +232,7 @@ ClickUp `123kjkdr20r`. Proposed by the owner during META-39. Check each eco scre
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 1.21 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-39 ✅: the manual audit of WCAG 2.2's new AA criteria found three failures, fixed by A11Y-023 (PR #1620), A11Y-024 with A11Y-016 (PR #1621) and A11Y-025 (PR #1622); the points it left open are listed in its section. |
 | 1.20 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-35 ✅ (PR #1614, `7c510653`): SSH keepalive, `caffeinate` while a session runs, no forwarded `--cache` in the pre-push. META-39 🔄 (PR #1616, `64b27e76`): Pa11y checks `target-size`. META-40 📋 joins: a per-screen Playwright suite to replace Pa11y in the eco apps. |
 | 1.19 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-34 ✅ (PR #1611, `72d34a3b`, and PR #1613, `f44ac365`): every checkout runs its own git hooks, and a new worktree is ready to commit with one command. META-35 🔄 (PR #1614). |
 | 1.18 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-23 ✅ (PR #1610, `4176c74a`): the `task-audit` skill, which found three of the five issues of the PR #1558 replay. META-24 goes from ⛔ to 📋, its last blocker merged. META-34 🔄 (PR #1611). |
