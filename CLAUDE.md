@@ -350,35 +350,10 @@ import { AuthFeature } from '@plastik/shared/auth/feature';
 
 Use `index.ts` files for modularization. Export related classes together when possible.
 
-### Naming Conventions
+### Naming and Generating Libraries
 
-Library naming pattern: `{scope}/{type}/{name}`
-
-Examples:
-
-- `libs/core/util/api-http/` → Core utility for HTTP
-- `libs/shared/auth/feature/` → Shared auth feature
-- `libs/llecoop/data-access-orders/` → Llecoop-specific data access
-
-Main module/component files must contain the full path in the filename:
-
-- Library: `libs/booking/feature-destination`
-- Main file: `booking-feature-destination.component.ts`
-
-### Generating Libraries
-
-Generate new libraries following the naming conventions and tagging strategy:
-
-```bash
-# Generate a new library following conventions
-nx g @nx/angular:lib <name> --directory=<scope>/<type> --tags=scope:<scope>,type:<type>
-
-# Example: Generate a feature library for eco-store
-nx g @nx/angular:lib checkout --directory=eco-store/feature --tags=scope:eco-store,type:feature
-
-# Example: Generate a shared UI component
-nx g @nx/angular:lib button --directory=shared/ui --tags=scope:shared,type:ui
-```
+- **Eco libraries** (`libs/eco-store`, `libs/eco-admin`, `libs/eco`): `yarn eco-lib` (META-19) asks for app, domain, type and name, and writes the names, tags, alias and configs; its scheme is in `tools/generators/eco-lib/generator.cjs`. The alias edits `tsconfig.base.json`, which makes every project affected: one new library per small PR.
+- **Other libraries**: `yarn nx g @nx/angular:lib libs/<scope>/<type>/<name> --tags=scope:<scope>,type:<type>`, the main file named after the full path (`booking-feature-destination.component.ts`); then match `eslint.config.mjs` and `vite.config.mts` to a sibling library.
 
 **Default Generator Configuration** (from `nx.json`):
 

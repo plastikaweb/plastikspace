@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-24] - A generator for new eco libraries (META-19)
+
+### Added
+
+- **`yarn eco-lib` (`tools/generators/eco-lib`).** A local Nx generator, run by path so it needs no alias and no dependency. It asks for app (`eco-store`, `eco-admin` or `eco`), domain, type and name, runs `@nx/angular:library`, and writes the names of the eco-admin scheme (the owner's choice; existing libraries keep theirs), both tags, the alias, `eslint.config.mjs` and `vite.config.mts` as the other eco libraries have them, flat `src/` files (a component with an axe spec for feature and ui, routes for feature, a placeholder export for the rest) and a README stub (META-19, ([#123kjkdqv38](https://app.clickup.com/t/123kjkdqv38))).
+- **What it no longer leaves to fix by hand:** `@nx/angular:library` here edits `.gitignore`, the root `eslint.config.mjs` (which makes every project affected) and `nx.json`, writes the alias with a `./`, calls `angular()` without `tsconfig.spec.json`, leaves out the root `vitest-setup.ts` and the `json-summary` coverage CI reads, and doubles the selector prefix (`eco-admin-eco-admin-…`). The generator puts those three files back and writes the rest right (META-19, ([#123kjkdqv38](https://app.clickup.com/t/123kjkdqv38))).
+- **Acceptance:** five libraries made with it (the five types, the three apps, `core`, one without a name) pass lint in both profiles, test, `tsc` on both tsconfigs, Prettier, markdownlint, `nx-tags:check`, `eco-conventions:check` and `lint:delta` (0 warnings) with no manual edit, in 11–17 s each (META-19, ([#123kjkdqv38](https://app.clickup.com/t/123kjkdqv38))).
+- **`yarn eco-lib:test`**, run in CI (17 s): the names and the refused options, and the generator on the real workspace in memory (the files per type, the root files untouched, the alias, the collisions it stops on). Each of 11 deliberate bugs in the generator fails it (META-19, ([#123kjkdqv38](https://app.clickup.com/t/123kjkdqv38))).
+
+### Changed
+
+- **Root `CLAUDE.md`:** «Naming Conventions» and «Generating Libraries» become one shorter «Naming and Generating Libraries» that sends eco libraries to the generator; the `nx g` example for other libraries takes the folder as Nx 24's positional argument. 30,439 → 30,129 bytes (META-19, ([#123kjkdqv38](https://app.clickup.com/t/123kjkdqv38))).
+
 ## [2026-11-24] - Eco template and style conventions as a check (META-15)
 
 ### Added

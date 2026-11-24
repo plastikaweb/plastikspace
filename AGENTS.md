@@ -95,6 +95,7 @@ yarn plastikaweb:codegen                             # GraphQL types
 
 ## After Generating a Library
 
+An eco library comes from `yarn eco-lib` (root `CLAUDE.md`, «Naming and Generating Libraries»), which already writes what this section asks for.
 `lint` and `test` are inferred by `@nx/eslint/plugin` and `@nx/vitest` (Nx 24), so the generated `project.json` has `"targets": {}`.
 Do not add them by hand. Coverage goes to the `reportsDirectory` in the project's `vite.config.mts`.
 Check the resolved targets with `nx show project <name>`.

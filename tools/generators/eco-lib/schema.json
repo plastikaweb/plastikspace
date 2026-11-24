@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "$id": "EcoLib",
+  "title": "A new eco library",
+  "description": "Creates a library under libs/eco-store, libs/eco-admin or libs/eco with the names, tags, alias and configs of the eco-admin scheme (META-19).",
+  "type": "object",
+  "properties": {
+    "app": {
+      "type": "string",
+      "description": "The app the library belongs to; `eco` is the layer both apps share.",
+      "enum": ["eco-store", "eco-admin", "eco"],
+      "x-prompt": {
+        "message": "Which app does the library belong to?",
+        "type": "list",
+        "items": ["eco-store", "eco-admin", "eco"]
+      }
+    },
+    "domain": {
+      "type": "string",
+      "description": "The domain folder (auth, orders, core...), kebab-case. Required for eco-store and eco-admin, left out for eco. `core` holds the app's foundation libraries: libs/<app>/core/<name>.",
+      "x-prompt": "Domain folder (auth, orders, core...; leave empty for --app eco)"
+    },
+    "type": {
+      "type": "string",
+      "description": "The library type; it becomes the type:* tag.",
+      "enum": ["feature", "ui", "data-access", "util", "entity"],
+      "x-prompt": {
+        "message": "Which type of library?",
+        "type": "list",
+        "items": ["feature", "ui", "data-access", "util", "entity"]
+      }
+    },
+    "name": {
+      "type": "string",
+      "description": "The library name, kebab-case. Optional outside `core` and `eco`: a domain's only data-access library is libs/<app>/<domain>/data-access.",
+      "x-prompt": "Library name (kebab-case; may be empty for a domain's only library of that type)"
+    }
+  },
+  "required": ["app", "type"]
+}
