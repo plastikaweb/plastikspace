@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-24] - Form-field eval (META-22)
+
+### Added
+
+- **`tools/evals/form-field/`: an eval of the form rules.** `run.mjs` asks headless Claude Code, in five throwaway worktrees that load only the project settings and no MCP server, for a delivery-method filter on the eco-store orders list; `grade.mjs` grades what each run leaves with a script: the field in the Formly config, no hand-written control, translated labels in `ca`, `es` and `en`, `i18n:validate` and the orders tests. On develop (`67767793`, Sonnet) 5 of 5 runs passed, for 2.59 USD. The README says what that leaves unproven: the status filter next to the new field can be copied, so the case cannot fail; the second batch after an edit to the rules was not run (META-22, ([#123kjkdqv3d](https://app.clickup.com/t/123kjkdqv3d))).
+
 ## [2026-11-24] - Commit-msg check for the ClickUp ID, the task ID and the CHANGELOG bullet (META-22)
 
 ### Added
