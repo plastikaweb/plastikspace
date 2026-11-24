@@ -62,8 +62,10 @@ export class SharedChipComponent {
         'chip-error bg-error-50 text-error-800 border-error-400 dark:bg-error-700 dark:text-error-50 dark:border-error-600',
       neutral:
         'chip-neutral bg-surface-container text-on-surface border-outline bg-surface-variant dark:text-neutral-50 dark:border-neutral-600',
+      // Material roles switch with `color-scheme` (`light-dark()`), so the chip follows the system
+      // theme too, which the `dark:` variants above miss: they need the `.dark` class (A11Y-022).
       tertiary:
-        'chip-tertiary bg-tertiary-50 text-tertiary-800 border-tertiary-400 dark:bg-tertiary-700 dark:text-tertiary-50 dark:border-tertiary-600',
+        'chip-tertiary bg-sys-tertiary-container text-sys-on-tertiary-container border-sys-tertiary',
     };
 
     return `${baseClass} ${typeClasses[this.type()]} ${this.customClass()}`;

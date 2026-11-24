@@ -5,11 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-24] - The closed-store chip keeps its icon readable in dark mode (A11Y-022)
+
+### Fixed
+
+- **The icon of `plastik-shared-chip` takes the chip's text colour, and the `tertiary` type uses Material roles (`bg-sys-tertiary-container`, `text-sys-on-tertiary-container`).** The icon's own `light-dark()` colour follows `color-scheme`, which the default «system» theme takes from the OS, while the chip's `dark:` classes need the `.dark` class. With the OS in dark mode the closed-store chip kept its light background and its icon turned light: 1.12:1, the Pa11y failure that blocked eco-store pushes in the evening (macOS switches to dark at night, when the store is closed). Pa11y on `/botiga` in dark mode, store closed: 2 failures out of 2 before, 0 out of 2 after; light mode 0 out of 2. Contrast now 13.2:1 in light mode and 6.92:1 in dark ([#123kjkdr15y](https://app.clickup.com/t/123kjkdr15y)).
+
 ## [2026-11-24] - Pa11y checks WCAG 2.2 target size in eco-store and eco-admin (META-39)
 
 ### Changed
 
 - **The `.pa11yci.json` of eco-store and eco-admin check every page a second time, as `<url>#axe`, with axe and its one WCAG 2.2 rule, `target-size` (2.5.8).** Pa11y passes `"rules": ["target-size"]` through to axe: on a test page with two 10 px buttons axe reports both with the rule and none without it. HTML_CodeSniffer, the runner the pages kept, throws on that option («not a valid WCAG 2.1 rule»), so each runner gets its own entry, and the `#axe` fragment keeps pa11y-ci from filing both results under one URL. Measured on develop's production builds at 320 px: no `target-size` failure in either app, and HTML_CodeSniffer still at 0. The rest of axe found what HTML_CodeSniffer does not: `color-contrast` in both apps, and in eco-store `aria-dialog-name`, `aria-hidden-focus` and `aria-required-children`, most of them on the PWA install sheet that opens in a fresh browser. The axe entries ignore those four rules until their tasks are fixed, so the eco-store pre-push, the only a11y gate, passes: 14 of 14 pages twice, in 25 s instead of about 12 (META-39, ([#123kjkdr177](https://app.clickup.com/t/123kjkdr177))).
+
+## [2026-11-24] - Long runs survive: SSH keepalive, no idle sleep, one Nx cache for tests (META-35)
 
 ### Changed
 

@@ -42,6 +42,16 @@ describe('SharedChipComponent', () => {
     expect(element.className).toContain('bg-success-50');
   });
 
+  it('should colour the tertiary variant with Material roles only', () => {
+    fixture.componentRef.setInput('type', 'tertiary');
+    fixture.detectChanges();
+    const element: HTMLElement = fixture.nativeElement.querySelector('span');
+
+    expect(element.classList).toContain('bg-sys-tertiary-container');
+    expect(element.classList).toContain('text-sys-on-tertiary-container');
+    expect(element.className).not.toMatch(/tertiary-\d|dark:/);
+  });
+
   it('should display an icon when provided', () => {
     fixture.componentRef.setInput('icon', 'check');
     fixture.detectChanges();
