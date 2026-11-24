@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-24] - Shorter CLAUDE.md files (META-38)
+
+### Changed
+
+- **Root `CLAUDE.md`, loaded on every call: 30,821 → 16,068 bytes.** The full ESLint rule list moved to `documentation/code-style.md` "Lint rules", and the root keeps what to know before writing code. The inferred `lint` and `test` targets and the generator defaults moved to `documentation/nx-architecture.md`. Command lists that `package.json` and AGENTS.md already hold shrank to the commands agents get wrong. Tables became lists. The sections that repeated `.claude/CLAUDE.md` or another section are gone, and the Design Context moved to `apps/eco-store/CLAUDE.md` (META-38, ([#123kjkdr15x](https://app.clickup.com/t/123kjkdr15x))).
+- **`apps/eco-store/CLAUDE.md`: 26,868 → 18,989 bytes.** The library tree and the stale route map gave way to `yarn nx show projects` and `tools/feature-map.json`, and the hook table to `POCKETBASE.md`, which now lists all seven hooks with their task IDs. The schema-label rules and the pre-commit export point to AGENTS.md. The typography table points to the eco tokens, and the duplicated gotcha is gone. The task-doc commit rules no longer contradict the pre-commit, which rejects task docs committed with code (META-38, ([#123kjkdr15x](https://app.clickup.com/t/123kjkdr15x))).
+
+### Fixed
+
+- **Root `CLAUDE.md` module boundaries:** `scope:core` and `scope:shared` may also import any `type:util` or `type:entity` library, as `eslint.config.mjs` says. `.mcp.json` holds the pocketbase and playwright servers, not Nx's. **eco-store gotcha 2:** `yarn eco-store:local` first stops every PocketBase and whatever holds port 4200 (META-38, ([#123kjkdr15x](https://app.clickup.com/t/123kjkdr15x))).
+
 ## [2026-11-24] - `pb:sync` no longer defaults to staging (META-37)
 
 ### Changed

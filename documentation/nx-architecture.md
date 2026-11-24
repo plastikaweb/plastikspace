@@ -34,7 +34,8 @@
 - there should be a dedicated *.routes.ts file for each feature / scope as the entrypoint.
 - services that can be used globally should use `providedIn: ‘root’ while component-specific services should be provided directly in that component’s decorator metadata.
 
-> The Angular team recommends using this providers array with caution and favoring providedIn: 'root' instead. As already mentioned in a previous chapter, also providedIn: 'root' allows for lazy loading.
+> The Angular team recommends using this providers array with caution and favoring providedIn: 'root' instead. As
+already mentioned in a previous chapter, also providedIn: 'root' allows for lazy loading.
 > If you just use a service provided with providedIn: 'root' in lazy parts of your application, they will only be loaded together with them.
 
 ## Domains and naming
@@ -212,6 +213,24 @@ The following invariants should hold true:
   ]
 }
 ```
+
+### Inferred `lint` and `test` targets
+
+**`lint` and `test` are inferred, not declared.** Since Nx 24, `@nx/eslint/plugin` and `@nx/vitest` (both registered
+in `nx.json`) create them from each project's `eslint.config.mjs` and `vite.config.mts`, so a generated `project.json`
+has `"targets": {}`. Do not add `lint` or `test` targets by hand. An entry without an `executor` is merged into the
+inferred target, and its `args` are appended to `eslint .` / `vitest run`, so they cannot narrow what runs. An entry
+with an `executor` replaces the inferred target, and the old `@nx/eslint:lint` and `@nx/vitest:test` no longer exist.
+Coverage goes to the `reportsDirectory` in the project's `vite.config.mts` (`coverage/{projectRoot}`), which Nx also
+uses as the task's cached output. Run `nx show project <name>` to see the resolved targets. A `package.json` script
+with the same name also becomes a target and wins over the plugins; `llecoop-triggers` opts out with `"nx": {
+"includedScripts": [] }`. To infer the targets, `@nx/vitest` resolves every `vite.config.mts` outside Vitest, so each
+one calls `angular({ tsconfig: 'tsconfig.spec.json' })`: without it, Analog looks for `tsconfig.app.json` and prints
+«Unable to resolve tsconfig» for every library whenever the graph is built from scratch, as in CI. Keep it in the
+config of a new library.
+
+Generator defaults (`nx.json`): components get `OnPush` change detection, SCSS styles and `displayBlock: true`; libraries and
+applications use Vitest (`vitest-analog`), applications Cypress for e2e and ESLint.
 
 ### Module Names
 
