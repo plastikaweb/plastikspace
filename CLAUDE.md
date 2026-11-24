@@ -123,7 +123,7 @@ yarn llecoop:functions              # Functions emulator only
 yarn eco-store:local                 # Start app + PocketBase + SCSS watcher
 yarn eco-store:pocketbase:run       # PocketBase only
 yarn eco-store:pb:export             # Export PocketBase schema
-yarn eco-store:pb:sync               # Push the schema to STAGING unless POCKETBASE_ENV=development
+POCKETBASE_ENV=development yarn eco-store:pb:sync   # Push pb_schema.json to the local PocketBase (staging: POCKETBASE_ENV=staging; none: refused)
 ```
 
 **Plastikaweb** (Angular):

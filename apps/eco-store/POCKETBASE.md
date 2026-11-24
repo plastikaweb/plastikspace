@@ -92,14 +92,14 @@ The automation logic is located in `apps/eco-store/scripts/`.
 
 ### Core Scripts
 
-| Script                        | Command                      | Description                                                           |
-| :---------------------------- | :--------------------------- | :-------------------------------------------------------------------- |
-| `download-pocketbase.js`      | `yarn eco-store:pb:download` | Downloads the PocketBase binary for your OS.                          |
-| `sync-pocketbase-schema.js`   | `yarn eco-store:pb:sync`     | Pushes local `pb_schema.json` to a PB instance (defaults to staging). |
-| `export-pocketbase-schema.js` | `yarn eco-store:pb:export`   | Pulls schema, data (JSON), and files from local instance to the repo. |
-| `populate-pocketbase.js`      | `yarn eco-store:pb:populate` | Orchestrator for full local DB initialization.                        |
-| `import-pocketbase-data.js`   | `yarn eco-store:pb:import`   | Imports JSON data files from `pocketbase/data/` into local instance.  |
-| `load-environment.js`         | N/A                          | Shared helper for loading `.env` and Angular environments.            |
+| Script                        | Command                      | Description                                                                                                                   |
+| :---------------------------- | :--------------------------- | :---------------------------------------------------------------------------------------------------------------------------- |
+| `download-pocketbase.js`      | `yarn eco-store:pb:download` | Downloads the PocketBase binary for your OS.                                                                                  |
+| `sync-pocketbase-schema.js`   | `yarn eco-store:pb:sync`     | Pushes local `pb_schema.json` to the instance `POCKETBASE_ENV` names (`development` or `staging`); refuses to run without it. |
+| `export-pocketbase-schema.js` | `yarn eco-store:pb:export`   | Pulls schema, data (JSON), and files from local instance to the repo.                                                         |
+| `populate-pocketbase.js`      | `yarn eco-store:pb:populate` | Orchestrator for full local DB initialization.                                                                                |
+| `import-pocketbase-data.js`   | `yarn eco-store:pb:import`   | Imports JSON data files from `pocketbase/data/` into local instance.                                                          |
+| `load-environment.js`         | N/A                          | Shared helper for loading `.env` and Angular environments.                                                                    |
 
 ### Data Workflows
 
@@ -168,18 +168,18 @@ Run `yarn eco-store:pb:seed` to pull records and images from the staging environ
 
 ### Essential Commands
 
-| Task                     | Command                         | Description                                          |
-| :----------------------- | :------------------------------ | :--------------------------------------------------- |
-| **Start Backend**        | `yarn eco-store:pocketbase:run` | Runs local PocketBase on port 8090.                  |
-| **Export Schema & Data** | `yarn eco-store:pb:export`      | Exports local schema, data, and files to the repo.   |
-| **Sync Schema**          | `yarn eco-store:pb:sync`        | Pushes `pb_schema.json` to a PB instance.            |
-| **Clone Staging Data**   | `yarn eco-store:pb:seed`        | Pulls real records and images from staging to local. |
-| **Generate Fake Data**   | `yarn eco-store:pb:seed-gen`    | Generates dummy history for local testing.           |
-| **Push to Staging**      | `yarn eco-store:pb:push-gen`    | Pushes local records and files to staging.           |
-| **Download Binary**      | `yarn eco-store:pb:download`    | Downloads PocketBase for your OS.                    |
-| **Initial Populate**     | `yarn eco-store:pb:populate`    | Sets up superuser, schema, and initial data.         |
-| **View Diff**            | `yarn eco-store:pb:diff`        | Shows git diff for the schema file.                  |
-| **Full Local Env**       | `yarn eco-store:local`          | Starts PB + App + SCSS watcher.                      |
+| Task                     | Command                                             | Description                                                     |
+| :----------------------- | :-------------------------------------------------- | :-------------------------------------------------------------- |
+| **Start Backend**        | `yarn eco-store:pocketbase:run`                     | Runs local PocketBase on port 8090.                             |
+| **Export Schema & Data** | `yarn eco-store:pb:export`                          | Exports local schema, data, and files to the repo.              |
+| **Sync Schema**          | `POCKETBASE_ENV=development yarn eco-store:pb:sync` | Pushes `pb_schema.json` to the instance `POCKETBASE_ENV` names. |
+| **Clone Staging Data**   | `yarn eco-store:pb:seed`                            | Pulls real records and images from staging to local.            |
+| **Generate Fake Data**   | `yarn eco-store:pb:seed-gen`                        | Generates dummy history for local testing.                      |
+| **Push to Staging**      | `yarn eco-store:pb:push-gen`                        | Pushes local records and files to staging.                      |
+| **Download Binary**      | `yarn eco-store:pb:download`                        | Downloads PocketBase for your OS.                               |
+| **Initial Populate**     | `yarn eco-store:pb:populate`                        | Sets up superuser, schema, and initial data.                    |
+| **View Diff**            | `yarn eco-store:pb:diff`                            | Shows git diff for the schema file.                             |
+| **Full Local Env**       | `yarn eco-store:local`                              | Starts PB + App + SCSS watcher.                                 |
 
 ---
 

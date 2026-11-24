@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-24] - `pb:sync` no longer defaults to staging (META-37)
+
+### Changed
+
+- **`yarn eco-store:pb:sync` refuses to run without `POCKETBASE_ENV`.** It used to overwrite the staging schema when the variable was missing. Now only `development` (the local PocketBase) and `staging` are accepted; anything else, or nothing, exits with code 2 and names both, before any network call. The variable is read before `apps/eco-store/.env`, so a value in that file cannot choose the target (META-37, ([#123kjkdr15w](https://app.clickup.com/t/123kjkdr15w))).
+- **`pocketbase-schema.yml` sets `POCKETBASE_ENV: staging` on its sync step**, which relied on the old default. Root `CLAUDE.md` and `apps/eco-store/POCKETBASE.md` show the variable in the command (META-37, ([#123kjkdr15w](https://app.clickup.com/t/123kjkdr15w))).
+
+### Added
+
+- **`yarn pb-sync:test`** (`tools/scripts/test-pb-sync-env.mjs`), in CI's Lint Affected step: nine checks on a copy of the script that has no environment files, so even a broken gate cannot reach a server. It covers the refused values, a value set only in `.env`, the two accepted targets, and the two callers (the deploy workflow and `populate-pocketbase.js`). All seven planted mutations fail it (META-37, ([#123kjkdr15w](https://app.clickup.com/t/123kjkdr15w))).
+
 ## [2026-11-24] - Target WCAG 2.2 AA in every app (META-21)
 
 ### Changed
