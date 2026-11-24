@@ -43,8 +43,6 @@
     );
     --eco-auth-card-background: color-mix(in srgb, var(--eco-auth-card-surface) 80%, transparent);
 
-    scroll-padding-top: 120px;
-
     @media (prefers-reduced-motion: no-preference) {
       scroll-behavior: smooth;
     }

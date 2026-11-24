@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-24] - A focused control no longer hides under the fixed header or the mobile bar (A11Y-023)
+
+### Fixed
+
+- **The eco-store shell's scroller (`mat-sidenav-content`) gets `scroll-pt-28` and, below `md`, `scroll-pb-24`: the same room `main` (`mt-28`) and the footer (`mb-24`) already leave for the fixed header and the bottom bar.** The page scrolls there, not in the document, so the `scroll-padding-top: 120px` on `html` protected nothing; it is gone (the auth pages that scroll the document have no fixed bar). Before, a control focused with Tab 8 px under the scroller's top edge stayed entirely behind the header (1280 px), and one 60 px above the bottom edge behind the bar (640 and 320 px), because Chrome does not scroll a control it thinks is visible (WCAG 2.4.11). After, Chrome scrolls both clear in every case, at 1280, 640 and 320 px ([#123kjkdr25w](https://app.clickup.com/t/123kjkdr25w)).
+
 ## [2026-11-24] - The closed-store chip keeps its icon readable in dark mode (A11Y-022)
 
 ### Fixed
