@@ -67,6 +67,7 @@
 | **META-36** 📋 | `eco-admin:watch-scss`: the dev server picks up changed SCSS partials | Low | `123kjkdr15v` |
 | **META-37** 📋 | `eco-store:pb:sync` refuses to run without `POCKETBASE_ENV` | Normal | `123kjkdr15w` |
 | **META-38** 📋 | Trim root and eco-store `CLAUDE.md`: reference detail moves to the docs it belongs to | Low | `123kjkdr15x` |
+| **META-39** 📋 | WCAG 2.2 AA in practice: Pa11y checks `target-size`, audit of the new criteria, a new eco-store statement | Normal | `123kjkdr177` |
 
 ### Order and dependencies
 
@@ -84,6 +85,7 @@
 | Any | META-27 | No blocker, and it blocks none of the others |
 | First | META-28 | The test job of every CI run that tests all projects can fail without it, #1570's twice |
 | Any | META-32, META-33, META-34, META-35, META-36, META-37 | No blocker: each turns a workaround Claude keeps in memory into a fix, and its memory entries go once it merges. META-35's SSH setting can live in META-34's setup script |
+| Any | META-39 | No blocker. Measure the new Pa11y config before it reaches the eco-store pre-push, the only a11y gate |
 | Any | META-29, META-30, META-31 | No blocker: three cleanups META-13 found. META-29 and META-31 both edit `documentation/code-style.md` |
 
 ---
@@ -138,7 +140,7 @@ ClickUp `123kjkdqv3a`. Merged 2026-11-24 in two PRs. PR #1599 (`bfcb7fbc`): `yar
 
 ### META-21 — Prune Claude memory
 
-ClickUp `123kjkdqv3b`. Done 2026-11-24. The memory, outside the repo, went from 62 entries (301,119 B) to 26 (49,054 B), and `MEMORY.md`, loaded by every session, from 17,149 B to 4,872 B; each workaround left names its fix ticket, META-32…37 or A11Y-022 (eco-store). The inventory, attached to the ticket, also found errors in the Claude docs. PR #1602 (`1d6e56b3`) fixed them, among them the claim that `orders.createRule` pins the tenant (it does not: SEC-09), and the `commitizen-git-flow` advice to amend after a failed hook. PR #1603 sets WCAG 2.2 AA as every app's target, the owner's decision. The section trims went to META-38.
+ClickUp `123kjkdqv3b`. Done 2026-11-24. The memory, outside the repo, went from 62 entries (301,119 B) to 26 (49,054 B), and `MEMORY.md`, loaded by every session, from 17,149 B to 4,872 B; each workaround left names its fix ticket, META-32…37 or A11Y-022 (eco-store). The inventory, attached to the ticket, also found errors in the Claude docs. PR #1602 (`1d6e56b3`) fixed them, among them the claim that `orders.createRule` pins the tenant (it does not: SEC-09), and the `commitizen-git-flow` advice to amend after a failed hook. PR #1603 (`04b9efc8`) sets WCAG 2.2 AA as every app's target, and META-39 makes the checks follow, the owner's decision. The section trims went to META-38.
 
 ### META-22 — Skill evals
 
@@ -208,13 +210,17 @@ ClickUp `123kjkdr15w`. From the META-21 inventory. `sync-pocketbase-schema.js` d
 
 ClickUp `123kjkdr15x`. From the META-21 inventory (section 2). Root `CLAUDE.md` to 17 KB or less and `apps/eco-store/CLAUDE.md` to 19 KB or less, each removed rule landing in the doc it points to. Before META-22, which measures what is left.
 
+### META-39 — WCAG 2.2 AA in practice
+
+ClickUp `123kjkdr177`. The owner set WCAG 2.2 AA for every app (PR #1603), but Pa11y's `WCAG2AA` means 2.1 AA at most, and axe-core's only 2.2 rule is `target-size`. Add the axe runner with that rule to the eco Pa11y configs (measured first, so the pre-push does not start failing), audit the other five new AA criteria by hand on eco-store and eco-admin, file each failure as an A11Y task, and rewrite eco-store's statement, which still claims full 2.1 AA conformance with A11Y-001 open.
+
 ---
 
 ## 📝 Changelog
 
 | Version | Date | Notes |
 | --- | --- | --- |
-| 1.15 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-21 ✅ (PR #1602, `1d6e56b3`, and PR #1603): memory pruned, the Claude docs' errors fixed, WCAG 2.2 AA as the target. Seven tickets from its inventory join as META-32…38 (A11Y-022 went to the eco-store docs). META-22 now waits on META-38, the `CLAUDE.md` trims. |
+| 1.15 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-21 ✅ (PR #1602, `1d6e56b3`, and PR #1603, `04b9efc8`): memory pruned, the Claude docs' errors fixed, WCAG 2.2 AA as the target. Seven tickets from its inventory join as META-32…38 (A11Y-022 went to the eco-store docs), and META-39 makes Pa11y and an audit follow the 2.2 target. META-22 now waits on META-38, the `CLAUDE.md` trims. |
 | 1.14 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-20 ✅ (PR #1599, `bfcb7fbc`, and PR #1600, `9721cac1`): the generated feature map with its CI check, and the `eco-page-check` skill with headless Playwright and its acceptance run; META-22 stays ⛔ on META-21. |
 | 1.13 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-19 ✅ (PR #1597, `ef076441`): the `eco-lib` generator with the eco-admin naming scheme, its acceptance run and tests; META-24 stays ⛔, now on META-23 alone. |
 | 1.12 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-15 ✅ (PR #1595, `8ab386de`): `check-eco-conventions` in the pre-commit and as a failing CI check, with its tests, and allow markers on the four eco-admin hex; META-23 goes from ⛔ to 📋, its three blockers merged. |
