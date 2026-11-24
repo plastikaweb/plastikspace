@@ -34,10 +34,13 @@ import { NewPriceWarningComponent } from '../new-price-warning/new-price-warning
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartProductCardComponent {
-  item = input.required<EcoStoreCartItem>();
-  isLcpImage = input(false);
-  editable = input<boolean>();
-  showImage = input(true);
+  readonly item = input.required<EcoStoreCartItem>();
+  readonly isLcpImage = input(false);
+  readonly editable = input<boolean>();
+  readonly showImage = input(true);
 
-  quantityChange = output<{ quantity: number; product: EcoStoreProductWithCategoryName }>();
+  readonly quantityChange = output<{
+    quantity: number;
+    product: EcoStoreProductWithCategoryName;
+  }>();
 }

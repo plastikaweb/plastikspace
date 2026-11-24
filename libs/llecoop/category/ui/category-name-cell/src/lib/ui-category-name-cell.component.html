@@ -1,6 +1,6 @@
 @if (category(); as category) {
   <p class="gap-tiny grid grid-cols-[15px_1fr] items-center justify-center">
-    <span class="size-sub rounded-full" [ngStyle]="{ 'background-color': category.color }"></span>
+    <span class="size-sub rounded-full" [style.background-color]="category.color"></span>
     @if (withLink()) {
       <a [class]="nameStyle()" [routerLink]="[category['id']]">{{ category.name }}</a>
     } @else {

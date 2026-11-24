@@ -33,15 +33,15 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EcoStoreProductCardComponent {
-  product = input<EcoStoreProductWithCategoryName | null>(null);
-  isFirst = input<boolean>(false);
-  minimalVersion = input<boolean>(false);
-  quantity = input<number>(0);
-  isOpen = input<boolean>(true);
+  readonly product = input<EcoStoreProductWithCategoryName | null>(null);
+  readonly isFirst = input<boolean>(false);
+  readonly minimalVersion = input<boolean>(false);
+  readonly quantity = input<number>(0);
+  readonly isOpen = input<boolean>(true);
 
-  addToCart = output<{ product: EcoStoreProductWithCategoryName; quantity: number }>();
-  toggleFavorite = output<EcoStoreProductWithCategoryName['id']>();
-  getProduct = output<{
+  readonly addToCart = output<{ product: EcoStoreProductWithCategoryName; quantity: number }>();
+  readonly toggleFavorite = output<EcoStoreProductWithCategoryName['id']>();
+  readonly getProduct = output<{
     category: EcoStoreProductWithCategoryName['category'];
     id: EcoStoreProductWithCategoryName['id'];
   }>();

@@ -13,40 +13,40 @@ export class SharedChipComponent {
   /**
    * The text label to display inside the chip.
    */
-  label = input<string>();
+  readonly label = input<string>();
 
   /**
    * An optional icon name to display before the label.
    */
-  icon = input<string>();
+  readonly icon = input<string>();
 
   /**
    * The semantic type of the chip, which determines its color scheme.
    * Defaults to 'neutral'.
    */
-  type = input<SharedChipType>('neutral');
+  readonly type = input<SharedChipType>('neutral');
 
   /**
    * Additional custom CSS classes to apply to the chip.
    */
-  customClass = input<string>('');
+  readonly customClass = input<string>('');
 
   /**
    * The ARIA role for the chip. Defaults to 'status'.
    */
-  role = input<string>('status');
+  readonly role = input<string>('status');
 
   /**
    * An optional ARIA label for screen readers. If not provided, the label input is used.
    */
-  ariaLabel = input<string>();
+  readonly ariaLabel = input<string>();
 
   /**
    * Whether to render the chip label in uppercase. Defaults to true to keep
    * the historical chip look. Set to false on chips whose label is long
    * enough to read as body text (avoids the "all-caps body text" audit).
    */
-  uppercase = input<boolean>(true);
+  readonly uppercase = input<boolean>(true);
 
   protected readonly computedClass = computed(() => {
     const caseClass = this.uppercase() ? 'uppercase' : 'normal-case';

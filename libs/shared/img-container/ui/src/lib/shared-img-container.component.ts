@@ -25,16 +25,16 @@ export type ImageDimensions = { width: number; height: number } | undefined;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedImgContainerComponent {
-  src = input.required<string | null>();
-  title = input.required<string>();
-  dimensions = input<ImageDimensions>();
-  quality = input<number>(80);
-  lcpImage = input<boolean>(false);
-  imgClass = input<string>('object-cover');
-  sizes = input<string>(
+  readonly src = input.required<string | null>();
+  readonly title = input.required<string>();
+  readonly dimensions = input<ImageDimensions>();
+  readonly quality = input<number>(80);
+  readonly lcpImage = input<boolean>(false);
+  readonly imgClass = input<string>('object-cover');
+  readonly sizes = input<string>(
     '(max-width: 639px) 100vw, (max-width: 767px) 50vw, (max-width: 1023px) 33vw, (max-width: 1279px) 25vw, 250px'
   );
-  thumbSizes = input<number[]>([100, 300, 500, 750, 1600]);
+  readonly thumbSizes = input<number[]>([100, 300, 500, 750, 1600]);
 
   readonly aspectRatio = computed(() => {
     const dims = this.dimensions();

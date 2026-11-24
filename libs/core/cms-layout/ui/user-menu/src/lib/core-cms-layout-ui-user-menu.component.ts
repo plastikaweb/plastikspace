@@ -12,8 +12,8 @@ import { CoreCmsLayoutHeaderConfig } from '@plastik/core/cms-layout/entities';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoreCmsLayoutUiUserMenuComponent {
-  userMenuConfig = input.required<CoreCmsLayoutHeaderConfig['userMenuConfig']>();
-  sendAction = output<() => void>();
+  readonly userMenuConfig = input.required<CoreCmsLayoutHeaderConfig['userMenuConfig']>();
+  readonly sendAction = output<() => void>();
 
   onSendAction(action: () => void): void {
     this.sendAction.emit(action);

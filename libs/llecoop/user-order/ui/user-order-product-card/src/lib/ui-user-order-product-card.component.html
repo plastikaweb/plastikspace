@@ -34,6 +34,7 @@
   <mat-card-actions>
     @if (product().quantity === 0) {
       <button
+        type="button"
         mat-flat-button
         class="w-full"
         (click)="onQuantityChange('1'); $event.stopPropagation()">
@@ -56,7 +57,7 @@
           <mat-chip class="w-[200px] md:w-[140px]">
             Total: {{ totalPrice() | currency: 'EUR' }}
 
-            <button matChipRemove (click)="onQuantityChange('0')">
+            <button type="button" matChipRemove (click)="onQuantityChange('0')">
               <mat-icon>cancel</mat-icon>
             </button>
           </mat-chip>

@@ -14,11 +14,11 @@ export type FavoriteButtonAppearance = 'glass' | 'none';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EcoStoreSharedFavoriteButtonComponent {
-  isFavorite = input<boolean>(false);
-  ariaLabel = input<string>('');
-  size = input<FavoriteButtonSize>('sm');
-  appearance = input<FavoriteButtonAppearance>('glass');
-  toggleFavorite = output<Event>();
+  readonly isFavorite = input<boolean>(false);
+  readonly ariaLabel = input<string>('');
+  readonly size = input<FavoriteButtonSize>('sm');
+  readonly appearance = input<FavoriteButtonAppearance>('glass');
+  readonly toggleFavorite = output<Event>();
 
   /** Signal to trigger the heart-beat animation. */
   protected readonly isAnimating = signal(false);

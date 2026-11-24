@@ -35,5 +35,5 @@ import { LlecoopOrderListUserOrderFeatureListFacadeService } from './order-list-
 export class OrderListUserOrderFeatureListComponent implements CanDeactivateComponent {
   protected readonly facade = inject(LlecoopOrderListUserOrderFeatureListFacadeService);
   protected readonly userOrderUtilsService = inject(UserOrderUtilsService);
-  pendingChanges = signal(false);
+  readonly pendingChanges = signal(false);
 }

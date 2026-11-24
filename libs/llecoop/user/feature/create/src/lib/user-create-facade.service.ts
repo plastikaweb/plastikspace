@@ -14,7 +14,7 @@ export class LlecoopUserCreateFacadeService implements DetailItemViewFacade<Llec
   readonly #view = inject(VIEW_CONFIG)().filter(item => item.name === 'user')[0];
   readonly #storeNotificationService = inject(StoreNotificationService);
 
-  viewConfig = computed(() => ({
+  readonly viewConfig = computed(() => ({
     ...this.#view,
     title: 'Afegir usuari',
   }));

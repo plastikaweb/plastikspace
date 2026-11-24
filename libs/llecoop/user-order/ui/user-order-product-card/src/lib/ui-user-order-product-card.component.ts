@@ -38,13 +38,13 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UiUserOrderProductCardComponent {
-  product = input.required<LlecoopProductWithQuantity>();
-  lcpImage = input<boolean>(false);
+  readonly product = input.required<LlecoopProductWithQuantity>();
+  readonly lcpImage = input<boolean>(false);
 
-  totalPrice = computed(() => this.product()?.priceWithIva * this.product().quantity || 0);
+  readonly totalPrice = computed(() => this.product()?.priceWithIva * this.product().quantity || 0);
 
-  viewDetails = output<string>();
-  addToCart = output<LlecoopProductWithQuantity>();
+  readonly viewDetails = output<string>();
+  readonly addToCart = output<LlecoopProductWithQuantity>();
 
   onViewDetails(): void {
     this.viewDetails.emit(this.product()['id'] as string);

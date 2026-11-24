@@ -26,6 +26,6 @@ import { MatProgressBarModule, ProgressBarMode } from '@angular/material/progres
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedActivityUiLinearComponent {
-  active = input(false);
-  mode = input<ProgressBarMode>('indeterminate');
+  readonly active = input(false);
+  readonly mode = input<ProgressBarMode>('indeterminate');
 }

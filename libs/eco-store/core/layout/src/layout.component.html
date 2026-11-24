@@ -29,6 +29,7 @@
             @defer (on viewport) {
               @if (isTranslationReady()) {
                 <button
+                  type="button"
                   matIconButton
                   [attr.aria-label]="'common.a11y.closeSidenav' | translate"
                   [matTooltip]="'common.a11y.closeSidenav' | translate"

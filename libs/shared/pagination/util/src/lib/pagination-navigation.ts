@@ -10,7 +10,7 @@ export abstract class PaginationNavigationDirective<P extends object> {
    * How to handle existing query parameters when navigating.
    * Defaults to 'merge' to preserve existing params.
    */
-  queryParamsHandling = input<QueryParamsHandling>('merge');
+  readonly queryParamsHandling = input<QueryParamsHandling>('merge');
   protected readonly router = inject(Router);
   protected readonly paginator = inject(PaginationComponent, { host: true });
 

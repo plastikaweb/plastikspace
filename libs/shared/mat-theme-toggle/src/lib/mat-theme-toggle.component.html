@@ -1,4 +1,5 @@
 <button
+  type="button"
   matIconButton
   aria-haspopup="menu"
   [attr.aria-label]="'common.theme.toggleAriaLabel' | translate"
@@ -8,7 +9,7 @@
 </button>
 <mat-menu #themeToggle="matMenu">
   @for (theme of matThemeToggleService.getThemes(); track $index) {
-    <button mat-menu-item (click)="matThemeToggleService.setTheme(theme.id)">
+    <button type="button" mat-menu-item (click)="matThemeToggleService.setTheme(theme.id)">
       @let selected = theme.id === matThemeToggleService.selectedTheme().id;
       <mat-icon
         matMenuItemIcon

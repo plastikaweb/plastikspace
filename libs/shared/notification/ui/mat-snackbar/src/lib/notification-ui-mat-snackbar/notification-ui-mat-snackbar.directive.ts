@@ -16,14 +16,14 @@ import { NotificationUiMatSnackbarComponent } from './notification-ui-mat-snackb
   selector: '[plastikSnackbar]',
 })
 export class NotificationUiMatSnackbarDirective implements OnDestroy {
-  plastikSnackbar = input<Notification | null>(null);
-  sendDismiss = output<void>();
+  readonly plastikSnackbar = input<Notification | null>(null);
+  readonly sendDismiss = output<void>();
 
   readonly #snackBar = inject(MatSnackBar);
   readonly #defaultSnackBarConfig = inject(MAT_SNACK_BAR_DEFAULT_OPTIONS);
 
   #currentSnackBarRef?: MatSnackBarRef<NotificationUiMatSnackbarComponent>;
-  afterDismissed = toSignal(this.#currentSnackBarRef?.afterDismissed() || EMPTY);
+  readonly afterDismissed = toSignal(this.#currentSnackBarRef?.afterDismissed() || EMPTY);
 
   constructor() {
     effect(() => {

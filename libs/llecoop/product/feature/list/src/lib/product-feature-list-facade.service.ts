@@ -26,8 +26,8 @@ export class LlecoopProductListFacadeService implements TableWithFilteringFacade
   readonly #confirmService = inject(SharedConfirmDialogService);
   readonly #router = inject(Router);
 
-  viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'product')[0]);
-  routingToDetailPage = signal({ visible: true, label: 'Afegir producte' });
+  readonly viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'product')[0]);
+  readonly routingToDetailPage = signal({ visible: true, label: 'Afegir producte' });
   tableDefinition = this.#table.getTableDefinition();
   filterFormConfig = inject(LlecoopProductSearchFeatureFormConfig).getConfig();
   filterCriteria = this.#productStore.filter;

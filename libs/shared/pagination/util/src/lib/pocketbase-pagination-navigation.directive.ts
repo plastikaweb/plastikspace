@@ -9,13 +9,16 @@ import { QueryParamsHandling } from '@angular/router';
 })
 export class PocketbasePaginationNavigationDirective extends PaginationNavigationDirective<BasePocketBaseEntityPagination> {
   // Required inputs for calculation (if extra logic is needed)
-  pageSize = input.required<number>();
+  readonly pageSize = input.required<number>();
 
   // Optional input for queryParamsHandling with query-params-handling alias
-  override queryParamsHandling = input<QueryParamsHandling, QueryParamsHandling | ''>('merge', {
-    alias: 'plastikPocketbasePaginationNavigation',
-    transform: (value: QueryParamsHandling | '') => (value === '' ? 'merge' : value),
-  });
+  override readonly queryParamsHandling = input<QueryParamsHandling, QueryParamsHandling | ''>(
+    'merge',
+    {
+      alias: 'plastikPocketbasePaginationNavigation',
+      transform: (value: QueryParamsHandling | '') => (value === '' ? 'merge' : value),
+    }
+  );
 
   // Mandatory implementation.
   // TypeScript automatically verifies that the return is BasePocketBaseEntityPagination

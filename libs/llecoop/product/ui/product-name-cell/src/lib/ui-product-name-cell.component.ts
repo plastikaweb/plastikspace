@@ -10,6 +10,6 @@ import { LlecoopProduct } from '@plastik/llecoop/entities';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UiProductNameCellComponent {
-  product = input.required<LlecoopProduct>();
-  nameStyle = input('');
+  readonly product = input.required<LlecoopProduct>();
+  readonly nameStyle = input('');
 }

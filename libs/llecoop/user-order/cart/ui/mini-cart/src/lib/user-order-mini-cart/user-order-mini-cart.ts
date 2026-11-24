@@ -39,7 +39,7 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 export class UserOrderMiniCart {
   readonly cart = input<LlecoopProductWithQuantity[]>([]);
   readonly total = input<number>(0);
-  updateQuantity = output<LlecoopProductWithQuantity>();
+  readonly updateQuantity = output<LlecoopProductWithQuantity>();
 
   onQuantityChange(item: LlecoopProductWithQuantity, value: string): void {
     this.updateQuantity.emit({

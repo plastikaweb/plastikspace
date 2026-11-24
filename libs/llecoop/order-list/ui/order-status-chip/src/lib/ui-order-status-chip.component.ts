@@ -10,9 +10,9 @@ import { MatIconModule } from '@angular/material/icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UiOrderStatusChipComponent {
-  chipClass = input('my-sm');
-  iconClass = input('');
-  icon = input.required<string>();
-  label = input.required<string>();
-  labelClass = input('font-bold');
+  readonly chipClass = input('my-sm');
+  readonly iconClass = input('');
+  readonly icon = input.required<string>();
+  readonly label = input.required<string>();
+  readonly labelClass = input('font-bold');
 }

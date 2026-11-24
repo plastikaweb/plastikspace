@@ -11,8 +11,8 @@ import { LlecoopOrder, llecoopUserOrderStatus } from '@plastik/llecoop/entities'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UiOrderListOrdersStatusResumeComponent {
-  orderName = input.required<string>();
-  ordersStatus = input.required<LlecoopOrder['userOrdersStatus']>();
+  readonly orderName = input.required<string>();
+  readonly ordersStatus = input.required<LlecoopOrder['userOrdersStatus']>();
 
   protected getStatusLabel(key: string): string {
     return llecoopUserOrderStatus[key as keyof typeof llecoopUserOrderStatus]?.label;

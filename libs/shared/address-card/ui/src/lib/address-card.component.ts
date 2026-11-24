@@ -20,30 +20,30 @@ export class AddressCardComponent {
   /**
    * The address to display.
    */
-  address = input.required<UserContact>();
+  readonly address = input.required<UserContact>();
 
   /**
    * Whether the card is selected.
    */
-  selected = input<boolean>(false);
+  readonly selected = input<boolean>(false);
 
   /**
    * Whether the card is disabled.
    */
-  disabled = input<boolean>(false);
+  readonly disabled = input<boolean>(false);
 
   /**
    * Whether the card acts as an interactive selector with hover effects.
    */
-  interactive = input<boolean>(true);
+  readonly interactive = input<boolean>(true);
 
   /**
    * Event emitted when the card is clicked or activated.
    */
-  selectionChange = output<void>();
+  readonly selectionChange = output<void>();
 
   /** Computed aria-label with full address context for screen readers. */
-  protected fullAriaLabel = computed(() => {
+  protected readonly fullAriaLabel = computed(() => {
     const a = this.address();
 
     return [a.name, a.address, [a.zip, a.city].filter(Boolean).join(' ')]

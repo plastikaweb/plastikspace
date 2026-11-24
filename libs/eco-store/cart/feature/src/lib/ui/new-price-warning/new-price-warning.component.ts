@@ -11,8 +11,8 @@ import { SharedAlertUiComponent } from '@plastik/shared/alert/ui';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewPriceWarningComponent {
-  currentPrice = input.required<number>();
-  oldPrice = input.required<number>();
+  readonly currentPrice = input.required<number>();
+  readonly oldPrice = input.required<number>();
 
-  isPriceDrop = computed(() => this.currentPrice() < this.oldPrice());
+  readonly isPriceDrop = computed(() => this.currentPrice() < this.oldPrice());
 }

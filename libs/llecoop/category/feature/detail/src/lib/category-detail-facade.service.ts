@@ -14,7 +14,7 @@ export class LlecoopCategoryDetailFacadeService implements DetailItemViewFacade<
   readonly #view = inject(VIEW_CONFIG)().filter(item => item.name === 'category')[0];
   model = this.#store.selectedItem;
 
-  viewConfig = computed(() => ({
+  readonly viewConfig = computed(() => ({
     ...this.#view,
     title: this.model()?.name || 'Nova categoria',
   }));

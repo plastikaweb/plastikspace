@@ -13,11 +13,11 @@ import { LayoutPosition } from '@plastik/shared/entities';
 export class CoreCmsLayoutUiSidenavComponent {
   readonly #zone = inject(NgZone);
 
-  position = input<LayoutPosition>('start');
-  mode = input<MatDrawerMode>('over');
-  fixedInViewport = input(false);
-  sidenavOpened = input(true);
-  toggleSidenav = output<boolean | undefined>();
+  readonly position = input<LayoutPosition>('start');
+  readonly mode = input<MatDrawerMode>('over');
+  readonly fixedInViewport = input(false);
+  readonly sidenavOpened = input(true);
+  readonly toggleSidenav = output<boolean | undefined>();
 
   onToggleSidenav(opened?: boolean): void {
     this.#zone.run(() => {

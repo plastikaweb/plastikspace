@@ -12,11 +12,11 @@ import { EcoUserAvatarComponent } from './user-avatar.component';
 })
 /* eslint-enable @angular-eslint/component-selector */
 class MockSharedImgContainerComponent {
-  src = input<string | null>(null);
-  title = input<string>('');
-  dimensions = input<ImageDimensions>();
-  thumbSizes = input<number[]>([100, 300, 500, 750, 1600]);
-  lcpImage = input<boolean>(false);
+  readonly src = input<string | null>(null);
+  readonly title = input<string>('');
+  readonly dimensions = input<ImageDimensions>();
+  readonly thumbSizes = input<number[]>([100, 300, 500, 750, 1600]);
+  readonly lcpImage = input<boolean>(false);
 }
 
 describe('EcoUserAvatarComponent', () => {

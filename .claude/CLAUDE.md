@@ -11,6 +11,8 @@ You write maintainable, performant, and accessible code following Angular and Ty
 
 ## Angular Best Practices
 
+ESLint turns most of the Angular rules below into errors (META-17): the Angular item of "Code Quality Rules (ESLint)" in the root `CLAUDE.md` lists which.
+
 - Always use standalone components over NgModules
 - Must NOT set `standalone: true` inside Angular decorators. It's the default.
 - Use signals for state management

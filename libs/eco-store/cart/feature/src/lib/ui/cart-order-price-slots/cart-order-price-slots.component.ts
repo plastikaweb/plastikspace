@@ -13,38 +13,38 @@ import { EcoStoreTenantLogisticsDeliveryTier } from '@plastik/eco-store/entities
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartOrderPriceSlotsComponent {
-  tiers = input.required<EcoStoreTenantLogisticsDeliveryTier[]>();
-  cartTotal = input.required<number>();
+  readonly tiers = input.required<EcoStoreTenantLogisticsDeliveryTier[]>();
+  readonly cartTotal = input.required<number>();
 
-  sortedTiersAsc = computed(() =>
+  readonly sortedTiersAsc = computed(() =>
     this.tiers()
       .slice()
       .sort((a, b) => a.min - b.min)
   );
 
-  sortedTiersDesc = computed(() =>
+  readonly sortedTiersDesc = computed(() =>
     this.tiers()
       .slice()
       .sort((a, b) => b.min - a.min)
   );
 
-  currentTier = computed(() => {
+  readonly currentTier = computed(() => {
     const total = this.cartTotal();
 
     return this.sortedTiersDesc().find(tier => total >= tier.min);
   });
 
-  activeTierMin = computed(() => this.currentTier()?.min);
+  readonly activeTierMin = computed(() => this.currentTier()?.min);
 
-  isFree = computed(() => this.currentTier()?.cost === 0);
+  readonly isFree = computed(() => this.currentTier()?.cost === 0);
 
-  maxTier = computed(() => {
+  readonly maxTier = computed(() => {
     const tiers = this.sortedTiersAsc();
 
     return tiers.length > 0 ? tiers[tiers.length - 1] : null;
   });
 
-  remainingForFree = computed(() => {
+  readonly remainingForFree = computed(() => {
     const total = this.cartTotal();
     const tier = this.maxTier();
 
@@ -53,7 +53,7 @@ export class CartOrderPriceSlotsComponent {
     return tier.min - total;
   });
 
-  progress = computed(() => {
+  readonly progress = computed(() => {
     const total = this.cartTotal();
     const max = this.maxTier()?.min || 1;
     let progress = (total / max) * 100;

@@ -40,14 +40,14 @@ export class LlecoopOrderListFeatureListFacadeService implements TableWithFilter
   readonly #viewConfigSubRoute = this.#viewConfigMainRoute.children?.filter(
     item => item.name === 'order-list'
   )[0];
-  viewConfig = computed(() => {
+  readonly viewConfig = computed(() => {
     return {
       ...this.#viewConfigSubRoute,
       title: `${this.#viewConfigMainRoute.title}: ${this.#viewConfigSubRoute?.title}`,
     };
   });
-  routingToDetailPage = signal({ visible: false });
-  viewExtraActions = computed(() => [
+  readonly routingToDetailPage = signal({ visible: false });
+  readonly viewExtraActions = computed(() => [
     {
       label: 'Iniciar comanda setmanal',
       icon: 'add',

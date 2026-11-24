@@ -23,23 +23,23 @@ export type ProductCategoryLabelSize = 'sm' | 'md' | 'lg';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EcoStoreProductCategoryLabelComponent {
-  name = input.required<string | null | undefined>();
-  color = input<string | null | undefined>('#000');
-  size = input<ProductCategoryLabelSize>('sm');
+  readonly name = input.required<string | null | undefined>();
+  readonly color = input<string | null | undefined>('#000');
+  readonly size = input<ProductCategoryLabelSize>('sm');
 
-  containerClass = computed(() => {
+  readonly containerClass = computed(() => {
     const sizeGap = this.size() === 'lg' ? 'gap-4' : this.size() === 'md' ? 'gap-3' : 'gap-2';
 
     return `flex items-center ${sizeGap}`;
   });
 
-  dotClass = computed(() => {
+  readonly dotClass = computed(() => {
     const size = this.size() === 'lg' ? 'size-5' : this.size() === 'md' ? 'size-4' : 'size-3';
 
     return `rounded-full shrink-0 dark:border dark:border-outline-variant ${size}`;
   });
 
-  textClass = computed(() => {
+  readonly textClass = computed(() => {
     const sizeToken =
       this.size() === 'lg'
         ? 'text-label-large'

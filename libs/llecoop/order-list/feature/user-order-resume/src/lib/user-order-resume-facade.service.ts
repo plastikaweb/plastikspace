@@ -17,14 +17,14 @@ export class LlecoopUserOrderResumeFacadeService {
   tableDefinition = this.#table.getTableDefinition();
   userOrder = this.#userOrderStore.selectedItem;
 
-  viewConfig = computed(() => {
+  readonly viewConfig = computed(() => {
     return {
       ...this.#view,
       title: `Resum de la comanda`,
     };
   });
 
-  orderStatus = computed(() => {
+  readonly orderStatus = computed(() => {
     const status = this.userOrder()?.status as LlecoopUserOrder['status'];
 
     return llecoopUserOrderStatus[status] ?? null;
