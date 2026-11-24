@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 1.17 · **Last updated:** 2026-11-24
+**Document version:** 1.18 · **Last updated:** 2026-11-24
 
 ---
 
@@ -51,8 +51,8 @@
 | **META-20** ✅ | Feature map for the eco apps + skill to open the app signed in | Low | `123kjkdqv3a` |
 | **META-21** ✅ | Prune Claude memory: workarounds become fixes, stale entries go | Low | `123kjkdqv3b` |
 | **META-22** ✅ | Skill evals: measure that the daily skills are actually followed | Low | `123kjkdqv3d` |
-| **META-23** 🔄 | `task-audit` skill: pre-PR review of feature-sized branches | Low | `123kjkdqv3e` |
-| **META-24** ⛔ | Reusable Claude Code base: private plugin + template repo | Low | `123kjkdqv3f` |
+| **META-23** ✅ | `task-audit` skill: pre-PR review of feature-sized branches | Low | `123kjkdqv3e` |
+| **META-24** 📋 | Reusable Claude Code base: private plugin + template repo | Low | `123kjkdqv3f` |
 | **META-25** ✅ | ESLint 10 with flat config, on the current Nx 22.7 | Normal | `123kjkdqv9f` |
 | **META-26** ✅ | Nx 22.7 → 23 → 24.0.x with `nx migrate`, plus the legacy `nx.json` cleanup | Normal | `123kjkdqv9g` |
 | **META-27** ✅ | Remove Verdaccio: the root `local-registry` target, its config and the dependency | Low | `123kjkdqwqp` |
@@ -62,7 +62,7 @@
 | **META-31** ✅ | `documentation/code-style.md`: match the ESLint rule list to `eslint.config.mjs` | Low | `123kjkdqzvb` |
 | **META-32** 📋 | `guard.sh`: commit message limits, temp paths, piped git and quoted PocketBase words checked before they bite | Low | `123kjkdr15p` |
 | **META-33** 📋 | Claude Code settings: the Nx env for worktrees and a sandbox exclusion list | Low | `123kjkdr15q` |
-| **META-34** 📋 | Worktree bootstrap and per-worktree hooks | Low | `123kjkdr15t` |
+| **META-34** 🔄 | Worktree bootstrap and per-worktree hooks | Low | `123kjkdr15t` |
 | **META-35** 📋 | Long runs survive: SSH keepalive, no idle sleep, no forwarded `--cache` in pre-push | Low | `123kjkdr15u` |
 | **META-36** 📋 | `eco-admin:watch-scss`: the dev server picks up changed SCSS partials | Low | `123kjkdr15v` |
 | **META-37** ✅ | `eco-store:pb:sync` refuses to run without `POCKETBASE_ENV` | Normal | `123kjkdr15w` |
@@ -148,11 +148,11 @@ ClickUp `123kjkdqv3d`. Done 2026-11-24 (PR #1608, `38b05d14`). The commit rules 
 
 ### META-23 — `task-audit` skill
 
-ClickUp `123kjkdqv3e`. In progress since 2026-11-24; its blockers, META-15, META-16 and META-18, merged by then. Three lenses (code, a11y, PocketBase and tenants); proven on the PR #1558 branch before adoption.
+ClickUp `123kjkdqv3e`. Done 2026-11-24 (PR #1610, `4176c74a`). The `task-audit` skill (`.agents/skills/task-audit`) runs three read-only Sonnet lenses (code, a11y, PocketBase and tenants) on a finished branch and triages what they report. Replayed headless on the PR #1558 branch for 3.05 USD, it reported three of the five issues fixed after that merge, folded a fourth into another finding and lost the fifth in its own triage, which now keeps any finding a lens backs with a file and line. The lenses were written from #1558's lessons, so the replay flatters them; the first real branch is the test.
 
 ### META-24 — Reusable Claude Code base
 
-ClickUp `123kjkdqv3f`. Blocked by META-23; META-19 merged 2026-11-24. A private plugin (hooks, skills, CLAUDE.md skeleton) plus a template repo (Husky, lint-staged, ESLint profiles, CI).
+ClickUp `123kjkdqv3f`. Unblocked 2026-11-24: META-19 and META-23 merged. A private plugin (hooks, skills, CLAUDE.md skeleton) plus a template repo (Husky, lint-staged, ESLint profiles, CI).
 
 ### META-25 — ESLint 10 with flat config
 
@@ -192,7 +192,7 @@ ClickUp `123kjkdr15q`. From the META-21 inventory. `NX_WORKSPACE_ROOT_PATH=""` a
 
 ### META-34 — Worktree bootstrap and per-worktree hooks
 
-ClickUp `123kjkdr15t`. From the META-21 inventory. One setup step links `node_modules`, `apps/eco-store/.env` and the PocketBase files into a new worktree, and each worktree runs its own `.husky`, not the main checkout's; a checkout without `.husky/_` must fail loudly, not skip every hook.
+ClickUp `123kjkdr15t`. In progress since 2026-11-24 (PR #1611). From the META-21 inventory. One setup step links `node_modules`, `apps/eco-store/.env` and the PocketBase files into a new worktree, and each worktree runs its own `.husky`, not the main checkout's; a checkout without `.husky/_` must fail loudly, not skip every hook.
 
 ### META-35 — Long runs survive
 
@@ -220,6 +220,7 @@ ClickUp `123kjkdr177`. The owner set WCAG 2.2 AA for every app (PR #1603), but P
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 1.18 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-23 ✅ (PR #1610, `4176c74a`): the `task-audit` skill, which found three of the five issues of the PR #1558 replay. META-24 goes from ⛔ to 📋, its last blocker merged. META-34 🔄 (PR #1611). |
 | 1.17 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-22 ✅ (PR #1608, `38b05d14`): a commit-msg check for the ClickUp ID, the task ID and the CHANGELOG bullet, and a form-field eval that passed 5/5 on a case it cannot fail. META-23 🔄. |
 | 1.16 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-37 ✅ (PR #1605, `45932c0e`): `pb:sync` needs `POCKETBASE_ENV`. META-38 ✅ (PR #1606, `01e83b2d`): the two `CLAUDE.md` files trimmed. META-22 🔄, unblocked. |
 | 1.15 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-21 ✅ (PR #1602, `1d6e56b3`, and PR #1603, `04b9efc8`): memory pruned, the Claude docs' errors fixed, WCAG 2.2 AA as the target. Seven tickets from its inventory join as META-32…38 (A11Y-022 went to the eco-store docs), and META-39 makes Pa11y and an audit follow the 2.2 target. META-22 now waits on META-38, the `CLAUDE.md` trims. |
