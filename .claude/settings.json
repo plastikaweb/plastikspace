@@ -37,6 +37,10 @@
           {
             "type": "command",
             "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/stop-check.mjs"
+          },
+          {
+            "type": "command",
+            "command": "[ \"$(uname)\" = Darwin ] && command -v caffeinate >/dev/null 2>&1 && { nohup caffeinate -i -w \"$PPID\" >/dev/null 2>&1 & } ; exit 0"
           }
         ]
       }

@@ -75,3 +75,7 @@ Add a line here each time a skill and the repo conflict again.
 ## Stop check
 
 `.claude/hooks/stop-check.mjs` runs when a turn ends (`Stop` in `.claude/settings.json`, META-14). On the files changed since the session started it runs ESLint (fast profile, errors only), markdownlint, `prettier --check`, `vitest related` for at most two projects, and `yarn tasks:check` when a task doc changed; it also reports each new `eslint-disable`, `@ts-ignore`, `prettier-ignore`, `.skip` or `.only` in `apps/` and `libs/`. When something fails, the turn stays open with the findings: fix the cause rather than silencing it, or tell the user why it stays. The same failure blocks once; after that the turn ends and the user is told. A session runs the copy of the checkout it started in and checks the checkout it works in (a worktree, say), with that checkout's `node_modules`.
+
+## Keep awake
+
+A second `SessionStart` hook (META-35) runs `caffeinate -i -w <session pid>` on macOS: while a session lives, idle sleep cannot pause a long hook, push or test run it started, and the `caffeinate` ends with the session. Runs started outside a session still need `caffeinate -i` in front.

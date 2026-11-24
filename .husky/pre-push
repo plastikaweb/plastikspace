@@ -130,7 +130,9 @@ if ! node tools/scripts/lint-delta.cjs; then
 fi
 
 echo "🏃 Running affected tests..."
-if ! yarn nx affected --target=test --base="$BASE" --head=HEAD --parallel --max-parallel=2 --cache; then
+# No `--cache`: Nx caches `test` on its own, and the flag only reached vitest as an argument,
+# which made the pre-push's cache entries differ from those of `yarn nx test` (META-35).
+if ! yarn nx affected --target=test --base="$BASE" --head=HEAD --parallel --max-parallel=2; then
   echo "❌ Tests failed! Push aborted."
   exit 1
 fi

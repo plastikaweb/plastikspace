@@ -12,6 +12,11 @@
  * does (PATH with node_modules/.bin, `sh -e`, HUSKY=0, ~/.config/husky/init.sh). A checkout
  * with no `.husky` folder fails pre-commit, commit-msg and pre-push with a message.
  *
+ * SSH (META-35). The pre-push runs between git opening the SSH connection and sending the
+ * pack; a cold-cache one outlasted an idle connection (exit 141 after "All checks passed").
+ * The script sets the shared `core.sshCommand` to an ssh with keepalives, unless it already
+ * holds another command, which it keeps. GIT_SSH_COMMAND still wins over it.
+ *
  * Linked worktree only (not the main checkout):
  *   - links the gitignored files a commit needs from the main checkout, when the worktree
  *     has none: apps/eco-store/.env and the PocketBase binary, pb_data and pb_migrations;
@@ -50,6 +55,7 @@ const HOOKS = [
   'pre-auto-gc',
 ];
 const DISPATCH_DIR = 'husky-dispatch';
+const SSH_COMMAND = 'ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=6';
 const LINKS = [
   'apps/eco-store/.env',
   'apps/eco-store/pocketbase/pocketbase',
@@ -168,6 +174,26 @@ function installDispatcher(commonDir) {
 }
 
 /**
+ * Gives git's SSH connections keepalives, unless core.sshCommand holds another command.
+ */
+function installSshKeepalive() {
+  const before = git(['config', '--get', 'core.sshCommand']).out;
+
+  if (before === SSH_COMMAND) {
+    console.log(`✓ SSH: core.sshCommand already ${SSH_COMMAND}`);
+  } else if (before) {
+    console.log(
+      `ℹ️  SSH: core.sshCommand is \`${before}\`: kept. It needs keepalives for long pushes.`
+    );
+  } else {
+    const set = git(['config', 'core.sshCommand', SSH_COMMAND]);
+
+    if (!set.ok) throw new Error(`git config core.sshCommand failed: ${set.out}`);
+    console.log(`✓ SSH: core.sshCommand (unset) → ${SSH_COMMAND}`);
+  }
+}
+
+/**
  * Links the gitignored files a commit needs from the main checkout.
  * @param {string} top The worktree's top folder.
  * @param {string} main The main checkout's top folder.
@@ -240,6 +266,7 @@ function main(argv) {
 
   try {
     installDispatcher(commonDir);
+    installSshKeepalive();
   } catch (error) {
     console.error(`❌ ${error.message}`);
 
@@ -307,4 +334,4 @@ function main(argv) {
 
 if (require.main === module) process.exitCode = main(process.argv.slice(2));
 
-module.exports = { main, RUNNER, HOOKS, DISPATCH_DIR };
+module.exports = { main, RUNNER, HOOKS, DISPATCH_DIR, SSH_COMMAND };
