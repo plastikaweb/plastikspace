@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 1.21 · **Last updated:** 2026-11-24
+**Document version:** 1.22 · **Last updated:** 2026-11-24
 
 ---
 
@@ -68,7 +68,7 @@
 | **META-37** ✅ | `eco-store:pb:sync` refuses to run without `POCKETBASE_ENV` | Normal | `123kjkdr15w` |
 | **META-38** ✅ | Trim root and eco-store `CLAUDE.md`: reference detail moves to the docs it belongs to | Low | `123kjkdr15x` |
 | **META-39** ✅ | WCAG 2.2 AA in practice: Pa11y checks `target-size`, audit of the new criteria, a new eco-store statement | Normal | `123kjkdr177` |
-| **META-40** 📋 | Per-screen a11y suite in Playwright with axe (WCAG 2.2), replacing Pa11y in eco-store and eco-admin | Low | `123kjkdr20r` |
+| **META-40** 🔄 | Per-screen a11y suite in Playwright with axe (WCAG 2.2), replacing Pa11y in eco-store and eco-admin | Low | `123kjkdr20r` |
 
 ### Order and dependencies
 
@@ -226,12 +226,19 @@ Left open, for the owner or a later task: the hot-toast notifications against 2.
 
 ClickUp `123kjkdr20r`. Proposed by the owner during META-39. Check each eco screen in the state a user sees it (cart with products, product loaded, signed in, PWA sheet closed) with `@axe-core/playwright` and the WCAG 2.2 tags, PocketBase answered by fixtures, and assertions for the criteria no rule covers. A prototype on three screens Pa11y cannot reach is measured against Pa11y first; if Playwright wins, it replaces Pa11y and the eco Cypress projects, which hold only the generated spec.
 
+The prototype won: on a loaded product page, a cart with a product and eco-admin signed in, Pa11y saw a blank page, an empty cart or `/botiga`, and the login screen, with a different cart URL from run to run; Playwright reached all three, the same in 3 runs of 3, and found the product chips' `aria-required-parent`. The owner chose two PRs.
+
+PR 1 adds `apps/eco-a11y-e2e`, next to Pa11y and run by no hook or CI job: 11 screens (the Pa11y pages, a product with a cart, the delivery step and the profile signed in, eco-admin signed in, the PWA install sheet) at 320 px light, 320 px dark and 1280 px, 33 tests in about two minutes, green in 5 runs in a row once it waits for the icon font. Beyond axe with every 2.2 AA rule it checks 2.4.11 with Tab, 3.3.8 on both sign-in screens, 1.3.5 on the profile and 3.3.7 on the delivery step. Its first run found what Pa11y let through, listed in the specs as known violations until their tasks exist (owner to approve): dark-mode text on fixed palette shades at 1.2 to 1.4:1, the terms note at 3.8:1 (1.4.3); the desktop header buttons and the rating link (2.5.3); the product chips (1.3.1). It does not find the eco-admin login contrast that Pa11y's axe reported (META-39 open point), in light or dark.
+
+PR 2 had Cypress leave both eco apps, but `eco-admin-e2e` holds more than the generated spec: a real spec and `cy.loginAs` (AP-0 0.7), and eco-admin `REQUIREMENTS.md` §6 asks for Cypress for AMBR-07 and AORD-03. PR 2 moves the pre-push and the two Pa11y workflows to the suite and drops Pa11y and the generated `eco-store-e2e`; eco-admin's Cypress stays unless the owner changes §6.
+
 ---
 
 ## 📝 Changelog
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 1.22 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-40 🔄: PR 1 adds the Playwright and axe suite of the eco apps next to Pa11y; its findings and the change to PR 2 (eco-admin keeps Cypress) are in its section. |
 | 1.21 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-39 ✅: the manual audit of WCAG 2.2's new AA criteria found three failures, fixed by A11Y-023 (PR #1620), A11Y-024 with A11Y-016 (PR #1621) and A11Y-025 (PR #1622); the points it left open are listed in its section. |
 | 1.20 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-35 ✅ (PR #1614, `7c510653`): SSH keepalive, `caffeinate` while a session runs, no forwarded `--cache` in the pre-push. META-39 🔄 (PR #1616, `64b27e76`): Pa11y checks `target-size`. META-40 📋 joins: a per-screen Playwright suite to replace Pa11y in the eco apps. |
 | 1.19 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-34 ✅ (PR #1611, `72d34a3b`, and PR #1613, `f44ac365`): every checkout runs its own git hooks, and a new worktree is ready to commit with one command. META-35 🔄 (PR #1614). |
