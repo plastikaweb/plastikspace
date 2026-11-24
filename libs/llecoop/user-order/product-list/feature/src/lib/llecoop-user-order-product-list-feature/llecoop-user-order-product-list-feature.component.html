@@ -22,7 +22,7 @@
 
   @defer {
     <div class="gap-md flex max-w-fit flex-wrap items-center justify-center">
-      @for (product of facade.products() | withCartQuantity; track product['id']; let i = $index) {
+      @for (product of facade.productsWithQuantity(); track product.id; let i = $index) {
         <plastik-ui-user-order-product-card
           [product]="product"
           [lcpImage]="i < 6"
