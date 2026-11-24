@@ -104,7 +104,9 @@ If this commit completes the task, append:
 
 Unless explicitly told otherwise, **you must update `CHANGELOG.md`** for user-facing changes (`feat`, `fix`, `perf`, `docs`, `revert`). Ask the user for `refactor`, `chore`, `style`, or `build`.
 
-The CHANGELOG entry goes in the same commit as the code it describes, never in a commit of its own. Task docs (`TASKS.md`, `BACKLOG.md`, `REQUIREMENTS.md`) go the other way: always in their own commit, never with code (the pre-commit rejects the mix).
+The CHANGELOG entry goes in the same commit as the code it describes, never in a commit of its own. Later commits of the same branch reuse it (edit it when they change what it says).
+
+`.husky/commit-msg` refuses three omissions (`tools/scripts/check-commit-refs.cjs`): a header without the branch's `#<clickup-task>`, a header without a TASKS ID when eco code is staged, and a `feat`, `fix` or `perf` with code when no CHANGELOG line the branch adds names the ClickUp task. Task docs (`TASKS.md`, `BACKLOG.md`, `REQUIREMENTS.md`) go the other way: always in their own commit, never with code (the pre-commit rejects the mix).
 
 **Format to add at the top, under the file's preamble:**
 

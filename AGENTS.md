@@ -158,6 +158,17 @@ While a commit runs, lint-staged keeps a `lint-staged automatic backup` entry on
 Apply an entry by its SHA (`git stash apply <sha>`), never with `pop`: the `stash@{n}` numbers shift while any checkout is committing.
 `git stash drop` takes no SHA, so find the entry's current `stash@{n}` right before dropping it: `git stash list --format='%gd %H'`.
 
+## Commit-msg Hook (`.husky/commit-msg`)
+
+commitlint (`commitlint.config.cjs`: type, header up to 100 characters, body up to 500), then `tools/scripts/check-commit-refs.cjs` (META-22) for what commitlint cannot see:
+
+1. On a branch named `<type>/<clickup-id>-<words>`, the header names `#<clickup-id>`.
+2. A commit that stages eco code (Markdown does not count) names a task ID in its header: a family of `tools/scripts/task-homes.json` (`BOT-04`, `META-22`) or an eco-admin row (`AP-0 0.7`).
+3. A `feat`, `fix` or `perf` commit that stages anything but Markdown needs a CHANGELOG.md bullet that names the branch's ClickUp ID,
+   added on the branch since it left develop (this commit included); later commits of the branch reuse it.
+
+Merge, revert, `fixup!` and `squash!` messages, and commits made during a merge, cherry-pick, revert or rebase, are not checked. `yarn commit-refs:test` covers the script.
+
 **Do not bypass.** If the PocketBase binary isn't available, the hook may fail — install it via `yarn eco-store:pb:download`.
 
 ## CI Strategy
