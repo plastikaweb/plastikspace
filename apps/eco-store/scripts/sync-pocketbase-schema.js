@@ -7,11 +7,30 @@ import { getPocketBaseUrl, loadDotEnv } from './load-environment.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// The instance this script overwrites, and what each name points at (META-37).
+const TARGETS = {
+  development: 'the local PocketBase (environment.development.ts)',
+  staging: 'the staging PocketBase on PocketHost (environment.staging.ts)',
+};
+
+// Read before loadDotEnv(): a POCKETBASE_ENV in apps/eco-store/.env must not choose the
+// target for a bare `yarn eco-store:pb:sync`. No default: syncing a remote instance is never
+// what happens by omission.
+const ENV_NAME = process.env.POCKETBASE_ENV;
+
+if (!Object.hasOwn(TARGETS, ENV_NAME ?? '')) {
+  console.error(
+    `❌ POCKETBASE_ENV is ${ENV_NAME ? `"${ENV_NAME}"` : 'not set'}. Name the instance to overwrite:`
+  );
+  for (const [name, target] of Object.entries(TARGETS)) {
+    console.error(`   POCKETBASE_ENV=${name} yarn eco-store:pb:sync   → ${target}`);
+  }
+  process.exit(2);
+}
+
 // Load environment variables from .env if it exists
 loadDotEnv();
 
-// Read environment from arguments or use 'staging' by default
-const ENV_NAME = process.env.POCKETBASE_ENV || 'staging';
 const POCKETBASE_URL = getPocketBaseUrl(ENV_NAME);
 
 console.log(`🔧 Using environment: ${ENV_NAME}`);

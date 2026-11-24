@@ -67,6 +67,7 @@ jobs:
           yarn feature-map:check
           yarn feature-map:test
           yarn eco-test-user:test
+          yarn pb-sync:test
           yarn lint:delta:test
           yarn i18n:validate
           yarn tasks:test

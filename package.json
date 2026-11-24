@@ -28,6 +28,7 @@
     "feature-map:find": "node tools/scripts/feature-map.cjs --find",
     "feature-map:test": "node tools/scripts/test-feature-map.mjs",
     "eco-test-user:test": "node tools/scripts/test-eco-test-user.mjs",
+    "pb-sync:test": "node tools/scripts/test-pb-sync-env.mjs",
     "i18n:validate": "node tools/scripts/validate-i18n-keys.cjs",
     "i18n:test": "bash tools/scripts/test-i18n-validation.sh",
     "tasks:test": "bash tools/scripts/test-sync-tasks.sh",
