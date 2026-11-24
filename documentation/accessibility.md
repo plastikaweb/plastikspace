@@ -32,6 +32,17 @@
 
 ## Analysis
 
+Every app targets **WCAG 2.2 AA** (since 2026-11-24).
+The automated checks cover less: Pa11y's `WCAG2AA` standard means 2.1 AA at most, and axe-core has one 2.2 rule (`target-size`).
+Review the six AA criteria 2.2 adds by hand:
+
+- 2.4.11 Focus Not Obscured (Minimum)
+- 2.5.7 Dragging Movements
+- 2.5.8 Target Size (Minimum)
+- 3.2.6 Consistent Help
+- 3.3.7 Redundant Entry
+- 3.3.8 Accessible Authentication (Minimum)
+
 A todo list of accessibility actions and related information can be found in the [Accessibility](https://github.com/plastikaweb/plastikspace/wiki/Accessibility) wiki page.
 
 ## Review list

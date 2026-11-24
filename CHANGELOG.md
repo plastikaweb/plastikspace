@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-24] - Target WCAG 2.2 AA in every app (META-21)
+
+### Changed
+
+- **The accessibility target is WCAG 2.2 AA in every app, not 2.1 AA** (owner's decision): root `CLAUDE.md`, `documentation/accessibility.md`, `GEMINI.md`, `apps/eco-store/CLAUDE.md` and the eco-admin design brief (0.2.48, which already applied 2.5.8). The docs also say what the tools miss: Pa11y's `WCAG2AA` means 2.1 AA at most, and axe-core's only 2.2 rule is `target-size`, so the other criteria 2.2 adds are checked by hand. eco-store's published statement stays 2.1 AA until an audit (META-21, ([#123kjkdqv3b](https://app.clickup.com/t/123kjkdqv3b))).
+
 ## [2026-11-24] - Fix what the Claude docs got wrong (META-21)
 
 ### Fixed

@@ -65,7 +65,6 @@ The skills in `.claude/skills` are generic, written for any Angular project. Thi
 - **Injection tokens.** angular-di promotes an `InjectionToken` for each config value. Here a new token or provider needs a stated reason; reuse what exists first.
 - **i18n.** i18n-localization shows react-i18next and next-intl. This repo uses ngx-translate with `i18n/{lang}.json` files, checked by `yarn i18n:validate`.
 - **Fonts.** frontend-design asks for distinctive fonts. The eco apps use Manrope for all text.
-- **WCAG version.** accessibility targets WCAG 2.2; eco-store's stated target is 2.1 AA (`apps/eco-store/CLAUDE.md`). Check against 2.1 AA and report failures that only 2.2 adds as such.
 
 Add a line here each time a skill and the repo conflict again.
 
