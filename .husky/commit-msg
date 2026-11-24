@@ -3,8 +3,9 @@ npx --no -- commitlint --edit ${1}
 # --- COMMIT REFERENCES (META-22) ---
 # What commitlint cannot see: the branch's ClickUp ID in the header, a task ID when eco
 # code is staged, and a CHANGELOG.md bullet on the branch for a feat, fix or perf with code.
-# Hooks run from the main checkout's .husky, so a checkout on a branch that predates the
-# script commits without these three checks.
+# Each checkout runs its own .husky (META-34, `yarn worktree:setup`), so a branch older than
+# META-22 commits with its own commit-msg, without these lines. The else below only shows
+# where the hooks still come from another checkout.
 if [ -f tools/scripts/check-commit-refs.cjs ]; then
   node tools/scripts/check-commit-refs.cjs "$1"
 else

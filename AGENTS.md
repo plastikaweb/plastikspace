@@ -152,7 +152,7 @@ Markdown-only commits skip the export and i18n. The affected lint over whole pro
 lint-delta (no new ESLint warnings in touched files), affected test, build and a11y.
 ESLint in the hooks builds no TypeScript program, so the rules that need one (`no-deprecated`, `prefer-readonly`, the boolean `naming-convention` selector) only report in CI or with `yarn lint:ci` (META-13).
 `cypress/unsafe-to-chain-command` also flags chains that start at a helper function only there.
-A worktree on a branch older than META-12 has neither lint-staged nor `lint-staged.config.mjs`; the hook then uses those of the main checkout.
+Where a worktree still runs another checkout's hooks («Worktrees» below) on a branch older than META-12, which has neither lint-staged nor `lint-staged.config.mjs`, the hook uses those of the checkout it lives in.
 
 While a commit runs, lint-staged keeps a `lint-staged automatic backup` entry on the stash, which every worktree shares.
 Apply an entry by its SHA (`git stash apply <sha>`), never with `pop`: the `stash@{n}` numbers shift while any checkout is committing.
@@ -168,6 +168,26 @@ commitlint (`commitlint.config.cjs`: type, header up to 100 characters, body up 
    added on the branch since it left develop (this commit included); later commits of the branch reuse it.
 
 Merge, revert, `fixup!` and `squash!` messages, and commits made during a merge, cherry-pick, revert or rebase, are not checked. `yarn commit-refs:test` covers the script.
+
+## Worktrees (`yarn worktree:setup`)
+
+Every checkout runs its own `.husky` hooks once `tools/scripts/worktree-setup.cjs` (META-34) has run in any of them, through `yarn worktree:setup` or `yarn husky-install`.
+It writes a dispatcher into the shared git folder (`.git/husky-dispatch`) and points `core.hooksPath`, a setting all worktrees share, at it.
+Git runs each hook from the top of the checkout that triggers it, and the dispatcher runs that checkout's `.husky/<hook>` the way husky's runner does (`node_modules/.bin` on the PATH, `sh -e`, `HUSKY=0`).
+A checkout without a `.husky` folder cannot commit, merge or push, and says why; one that only lacks a hook skips it.
+Before, `core.hooksPath` named the main checkout's `.husky/_`, so every worktree ran the main checkout's hooks.
+`npx husky` sets it back to the relative `.husky/_`, which no worktree has (it is ignored), and worktrees then run no hook at all: run `yarn worktree:setup` again after it.
+
+In a new linked worktree, run once, outside the Bash sandbox (it writes the shared git config and installs packages):
+
+```bash
+yarn worktree:setup --branch <type>/<task-id>-<words>
+```
+
+Besides the hooks, it links `apps/eco-store/.env` and the PocketBase binary, `pb_data` and `pb_migrations` from the main checkout when the worktree has none of its own.
+It renames the branch to the `--branch` name, checked against `branchNameLint.json`; on a `worktree-*` branch (the name `EnterWorktree` gives), which the branch lint rejects, it will not finish without one.
+It runs `yarn install --immutable` when `node_modules` is missing (`--no-install` skips it). It can run again; `yarn worktree-setup:test` covers it.
+`.claude/hooks/guard.sh` still refuses any Bash command that names `core.hooksPath`: this script is the way to change it.
 
 **Do not bypass.** If the PocketBase binary isn't available, the hook may fail — install it via `yarn eco-store:pb:download`.
 

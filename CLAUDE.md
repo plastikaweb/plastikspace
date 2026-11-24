@@ -179,6 +179,7 @@ GitHub Actions workflows in `.github/workflows/`:
 
 - Branches: `<type>/<description>` or `<type>/<task-id>-<description>`, with a type from `branchNameLint.json` (`feat`, `fix`, `docs`, `test`, `refactor`, `perf`, `style`, `build`, `ci`, `chore`, `revert`, `prod`); `wip`, `master`, `main`, `develop` and `staging` are rejected.
 - Commits: the `commitizen-git-flow` skill is the source of truth (`<type>(<scope>): #<clickup-id> <description>`); `yarn cz` is the interactive form.
+- Worktrees: run `yarn worktree:setup --branch <type>/<task-id>-<words>` outside the Bash sandbox before the first commit, so the worktree runs its own hooks and has the main checkout's ignored PocketBase files (AGENTS.md "Worktrees").
 - Hooks: AGENTS.md "Pre-commit Hook" and "Commit-msg Hook" (the ClickUp ID, a task ID on eco code and the CHANGELOG bullet are checked there); the long form is in `documentation/git-flow.md` and `documentation/commit-conventions.md`.
 
 ## Key Patterns

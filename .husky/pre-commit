@@ -187,10 +187,11 @@ fi
 # --- LINT-STAGED (META-12) ---
 # Called from node_modules directly: npx would try to download it when a checkout has
 # not run `yarn install` since lint-staged was added, and fail without saying why.
-# Hooks run from the main checkout's .husky (absolute core.hooksPath), so a worktree
-# on a branch that predates META-12 runs this hook without lint-staged or a
-# lint-staged.config.mjs of its own (`yarn install` there cannot add it): it uses the
-# ones of the checkout this hook lives in. lint-staged still runs the worktree's tools.
+# Each checkout runs its own .husky once `yarn worktree:setup` has run (META-34). Where the
+# hooks still come from another checkout (core.hooksPath naming its .husky/_), a worktree
+# on a branch that predates META-12 has no lint-staged or lint-staged.config.mjs of its
+# own (`yarn install` there cannot add it): it uses the ones of the checkout this hook
+# lives in. lint-staged still runs the worktree's tools.
 HOOK_ROOT=$(cd "$(dirname "$0")/.." && pwd)
 LINT_STAGED=./node_modules/.bin/lint-staged
 if [ ! -x "$LINT_STAGED" ] && [ -x "$HOOK_ROOT/node_modules/.bin/lint-staged" ]; then

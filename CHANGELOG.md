@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-24] - Every checkout runs its own git hooks; a worktree is ready in one command (META-34)
+
+### Added
+
+- **`yarn worktree:setup` (`tools/scripts/worktree-setup.cjs`): every checkout runs its own `.husky` hooks.** Husky's `core.hooksPath`, a setting all worktrees share, named the main checkout's `.husky/_`, so a worktree committed and pushed through the main checkout's hooks, whatever its own branch held. The script writes a dispatcher into the shared git folder (`.git/husky-dispatch`) and points `core.hooksPath` at it. Git runs each hook from the top of the checkout that triggers it, and the dispatcher runs that checkout's `.husky/<hook>` the way husky's runner does (`node_modules/.bin` on the PATH, `sh -e`, `HUSKY=0`, husky's failure messages). A checkout without a `.husky` folder cannot commit, merge or push, and says why. The ticket asked for a relative `core.hooksPath` instead; `.husky/_` is ignored and no worktree has one, so git would have run no hook there and said nothing. In a linked worktree the same command links `apps/eco-store/.env` and the PocketBase binary, `pb_data` and `pb_migrations` from the main checkout, renames the branch with `--branch` (checked against `branchNameLint.json`; it will not finish on a `worktree-*` branch, the name `EnterWorktree` gives) and runs `yarn install --immutable` when `node_modules` is missing. `yarn husky-install`, and with it `yarn install:local`, runs it for the hooks only (META-34, ([#123kjkdr15t](https://app.clickup.com/t/123kjkdr15t))).
+- **`yarn worktree-setup:test`** (`tools/scripts/test-worktree-setup.mjs`), in CI's Lint Affected step: 22 cases on throwaway repositories with a main checkout on husky's absolute path, a worktree whose hooks differ from it and one without `.husky`, through real `git commit` and `git push`. The first case reproduces the old behaviour: the worktree's commit runs the main checkout's hooks. All 14 planted mutations fail it; a fifteenth survived because it changed a check of banned branch names that could never fire, which is now removed (META-34, ([#123kjkdr15t](https://app.clickup.com/t/123kjkdr15t))).
+
 ## [2026-11-24] - `task-audit` skill: review of a finished branch before its PR (META-23)
 
 ### Added
