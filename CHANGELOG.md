@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-24] - The browser can fill in the profile name and phone (A11Y-025)
+
+### Fixed
+
+- **The eco-store profile form marks the user's name `autocomplete="name"` and phone `autocomplete="tel"`, where both had `off`.** Browsers and assistive tools can now recognise and fill in the two fields (WCAG 1.3.5). The name's minimum drops from 8 characters to 2, as in the address form's recipient name: «Ana Gil» (7) was rejected before and is accepted now. The new specs fail on the old configuration and pass on the new one ([#123kjkdr261](https://app.clickup.com/t/123kjkdr261)).
+
 ## [2026-11-24] - The avatar cropper works without dragging, and its controls have names (A11Y-016, A11Y-024)
 
 ### Fixed

@@ -40,6 +40,27 @@ describe('EcoStoreProfileBasicFeatureComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  const input = (key: string): HTMLInputElement =>
+    fixture.nativeElement.querySelector(`input[id*="${key}"]`);
+
+  it('should let the browser fill in the name and the phone (WCAG 1.3.5)', () => {
+    fixture.detectChanges();
+
+    expect(input('name').getAttribute('autocomplete')).toBe('name');
+    expect(input('phone').getAttribute('autocomplete')).toBe('tel');
+  });
+
+  it('should accept a short real name', () => {
+    fixture.detectChanges();
+    const name = input('name');
+
+    name.value = 'Ana Gil';
+    name.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    expect(name.classList).toContain('ng-valid');
+  });
+
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
 

@@ -17,10 +17,12 @@ export function ecoStoreProfileFeatureFormConfig(): FormConfig<Partial<PocketBas
             placeholder: 'profile.name',
             required: true,
             translate: true,
-            minLength: 8,
+            // 2, as the address form's recipient name: 8 rejected short real names («Ana Gil»).
+            minLength: 2,
             maxLength: 25,
+            // The user's own name and phone: browsers may fill them in (WCAG 1.3.5, A11Y-025).
             attributes: {
-              autocomplete: 'off',
+              autocomplete: 'name',
             },
           },
         },
@@ -36,7 +38,7 @@ export function ecoStoreProfileFeatureFormConfig(): FormConfig<Partial<PocketBas
             maxLength: 15,
             type: 'tel',
             attributes: {
-              autocomplete: 'off',
+              autocomplete: 'tel',
             },
           },
           validators: {

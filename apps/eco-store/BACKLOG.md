@@ -4,7 +4,7 @@
 >
 > Companion to `TASKS.md` and PRD v1.8.
 
-**Document version:** 0.60 · **Last updated:** 2026-11-24
+**Document version:** 0.61 · **Last updated:** 2026-11-24
 
 ---
 
@@ -232,7 +232,7 @@
 | 7.54 | **A11Y-022** Closed store-window chip: icon contrast in dark mode ✅ | SHOULD | 0.5d | 2026-11-24 | Done 2026-11-24 — the 1.12:1 icon came from the OS dark mode (macOS turns dark at night, when the store is closed): its `light-dark()` colour followed `color-scheme` while the chip's `dark:` classes need `.dark`. The icon now inherits the text colour and `tertiary` uses Material roles; Pa11y dark mode 2/2 failing → 0/2. CU `123kjkdr15y` |
 | 7.55 | **A11Y-023** Focus not hidden under the fixed header and the mobile bottom bar ✅ | MUST | 0.5d | 2026-11-24 | Done 2026-11-24 — `scroll-pt-28` and, below `md`, `scroll-pb-24` on `mat-sidenav-content` (the room `main` and the footer already leave for the bars); the dead `html` rule removed. Focused controls under either bar now scroll clear at 1280, 640 and 320 px. CU `123kjkdr25w` |
 | 7.56 | **A11Y-024** Avatar cropper: position the crop area without dragging ✅ | MUST | 0.5d | 2026-11-24 | Done 2026-11-24 — four pan buttons stop where the image edge meets the crop area; px transform bound both ways, so a drag follows the pointer (30 px, not 95.6) and survives a zoom. CU `123kjkdr25x` |
-| 7.57 | **A11Y-025** Profile name and phone: `autocomplete` `name` and `tel` | SHOULD | 0.25d | — | `autocomplete: 'off'` on the user's own name and phone (WCAG 1.3.5); the name's `minLength: 8` rejects short real names. Found by META-39. CU `123kjkdr261` |
+| 7.57 | **A11Y-025** Profile name and phone: `autocomplete` `name` and `tel` ✅ | SHOULD | 0.25d | 2026-11-24 | Done 2026-11-24 — `autocomplete` `name` and `tel` instead of `off` (WCAG 1.3.5); the name's minimum is 2 characters, as the address form's. CU `123kjkdr261` |
 
 **Exit criteria:** Legally compliant (banner + pages), Pa11y CI passes, prod deploy works, footer present.
 
@@ -392,6 +392,7 @@
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 0.61 | 2026-11-24 | Doc-only, in lockstep with TASKS.md 0.61. Row 7.57 **A11Y-025** (`123kjkdr261`) done. |
 | 0.60 | 2026-11-24 | Doc-only, in lockstep with TASKS.md 0.60. Rows 7.46 **A11Y-016** (`123kjkdgyjf`) and 7.56 **A11Y-024** (`123kjkdr25x`) done. |
 | 0.59 | 2026-11-24 | Doc-only, in lockstep with TASKS.md 0.59. Row 7.55 **A11Y-023** (`123kjkdr25w`) done. |
 | 0.58 | 2026-11-24 | Doc-only, in lockstep with TASKS.md 0.58. Row 7.54 **A11Y-022** (`123kjkdr15y`) done. |
