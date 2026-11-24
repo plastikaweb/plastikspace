@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-24] - The Playwright suite replaces Pa11y in eco-store and eco-admin (META-40)
+
+### Changed
+
+- **The pre-push runs the eco a11y suite (`eco-a11y-e2e`) whenever Nx finds it affected, instead of Pa11y on eco-store changes only.** It now covers eco-admin too, and every lib either app uses; it reuses the production builds the hook just made and is cached when nothing changed. `.github/workflows/eco-a11y.yml` runs it after each CI run on `develop`, in place of `eco-store-pa11y.yml` and `eco-admin-pa11y.yml`, and uploads the HTML report when it fails ([#123kjkdr20r](https://app.clickup.com/t/123kjkdr20r)).
+
+### Removed
+
+- **Pa11y from eco-store and eco-admin:** both `.pa11yci.json`, both workflows and the `eco-store:a11y*`, `eco-admin:a11y*` and `*:http-server` scripts. nasa-images, llecoop and plastikaweb keep Pa11y ([#123kjkdr20r](https://app.clickup.com/t/123kjkdr20r)).
+- **`apps/eco-store-e2e`**, the Cypress project that held only the generator's spec, and its `eco-store:e2e` scripts. eco-admin keeps its Cypress project, which its REQUIREMENTS ask for ([#123kjkdr20r](https://app.clickup.com/t/123kjkdr20r)).
+
 ## [2026-11-24] - eco-store and eco-admin screens audited in the state users see them (META-40)
 
 ### Added

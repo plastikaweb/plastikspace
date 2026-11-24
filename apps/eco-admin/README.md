@@ -43,7 +43,7 @@ The application is being built row by row (`TASKS.md`, phase AP-0). Today it has
 | **Lint**               | `yarn eco-admin:lint`      |
 | **E2E Tests**          | `yarn eco-admin:e2e`       |
 | **E2E (interactive)**  | `yarn eco-admin:e2e:local` |
-| **Accessibility**      | `yarn eco-admin:a11y`      |
+| **Accessibility**      | `yarn eco-a11y:e2e`        |
 
 ## Backends
 
@@ -54,7 +54,7 @@ The configuration decides which PocketBase the application talks to. Check it be
 | `development` | `yarn eco-admin:serve` (the default of `serve`) | `http://127.0.0.1:8090/` (local)                         |
 | `production`  | `yarn eco-admin:build` (the default of `build`) | the hosted instance in `src/environments/environment.ts` |
 
-`yarn eco-admin:a11y` and the `serve-static` target serve the **production** build: never type test credentials into them.
+The accessibility suite and the `serve-static` target serve the **production** build: never type test credentials into them.
 
 ## Routes
 
@@ -115,11 +115,12 @@ cd apps/eco-admin && npx vitest run
 ### Accessibility
 
 ```bash
-yarn eco-admin:a11y
+yarn eco-a11y:e2e
 ```
 
-Builds the application (production configuration), serves `dist/apps/eco-admin/browser` on port 8080 and runs Pa11y (WCAG 2 AA, 320 px wide) over the URLs in `.pa11yci.json`.
-Both URLs render the login screen today: `/` redirects to `/accedir` when there is no session. The CI workflow is `.github/workflows/eco-admin-pa11y.yml`.
+Builds eco-admin and eco-store (production configuration) and runs the Playwright + axe suite of `apps/eco-a11y-e2e` (META-40), which replaced Pa11y here.
+For eco-admin it audits the login screen and the first screen after signing in, at 320 px light and dark and at 1280 px, with PocketBase answered from fixtures: it never signs in to a real instance.
+The CI workflow is `.github/workflows/eco-a11y.yml`.
 
 ### End to end
 

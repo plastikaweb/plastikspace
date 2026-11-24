@@ -203,7 +203,7 @@ without one or whose upstream is gone from the remote; a push whose upstream sha
 - `nx format:check` — runs for every push (including markdown-only ones, since Prettier also formats `.md`). On failure: run `yarn format:write`, amend/rebase the affected commit(s), then re-push.
 - `lint-delta` (META-18) — on non-markdown pushes, before the tests: each touched file may not have more ESLint warnings than at
   its merge base with `origin/develop`. `yarn lint:delta` runs it by hand; CI runs it too.
-- `nx affected` `test` and production `build` — on non-markdown pushes; plus `eco-store`/`nasa-images` Pa11y when those apps are affected.
+- `nx affected` `test` and production `build` — on non-markdown pushes; plus the eco a11y suite (`eco-a11y-e2e`, META-40) when Nx finds it affected, and `nasa-images` Pa11y when that app is affected.
   They run on the files on disk, and the hook warns when tracked files differ from `HEAD` and lists untracked files.
 
 Markdown-only pushes skip the lint-delta/test/build/a11y steps (but still run the tags check and `format:check`).

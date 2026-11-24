@@ -148,15 +148,22 @@ if ! yarn nx affected --target=build --configuration=production --base="$BASE" -
   exit 1
 fi
 
-if echo "$NON_MD_CHANGED" | grep -Eq '^(apps/eco-store/|libs/eco-store/)'; then
-  echo "🏁 Running eco-store:a11y (using existing build)..."
-  if ! yarn npm-run-all --parallel --race eco-store:http-server eco-store:a11y:run; then
-    echo "❌ eco-store:a11y failed! Push aborted."
+# --- ECO A11Y SUITE (META-40) ---
+# eco-store and eco-admin are checked by the Playwright + axe suite in apps/eco-a11y-e2e, which
+# replaced Pa11y there. Nx decides when it runs: the suite depends on both apps, so any change to
+# them, to a lib they use or to the lockfile makes it affected. Its `e2e` target reuses the
+# production builds above (`dependsOn: ["^build"]`) and is cached. Piped, `nx show projects`
+# prints a JSON array.
+if yarn nx show projects --affected --base="$BASE" --head=HEAD -p eco-a11y-e2e 2>/dev/null | grep -q '"eco-a11y-e2e"'; then
+  echo "🏁 Running the eco a11y suite (eco-a11y-e2e, about two minutes)..."
+  if ! yarn nx run eco-a11y-e2e:e2e; then
+    echo "❌ The eco a11y suite failed! Report: dist/.playwright/apps/eco-a11y-e2e/playwright-report. Push aborted."
     exit 1
   fi
 else
-  echo "ℹ️ Skipping eco-store:a11y (no eco-store changes)"
+  echo "ℹ️ Skipping the eco a11y suite (eco-store and eco-admin not affected)"
 fi
+# --------------------------------
 
 if echo "$NON_MD_CHANGED" | grep -Eq '^(apps/nasa-images/|libs/nasa-images/)'; then
   echo "🏁 Running nasa-images:a11y (using existing build)..."

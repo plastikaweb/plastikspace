@@ -5,7 +5,8 @@
  * 1. ClickUp: on a branch named <type>/<clickup-id>-<words>, the header names #<clickup-id>
  *    (commitizen-git-flow, step C). A branch with no ClickUp ID is not checked.
  * 2. Task ID: a commit that stages eco code (apps/eco-store, apps/eco-admin and their -e2e,
- *    libs/eco, libs/eco-store, libs/eco-admin; Markdown does not count, as in the pre-commit)
+ *    apps/eco-a11y-e2e, libs/eco, libs/eco-store, libs/eco-admin; Markdown does not count, as in
+ *    the pre-commit)
  *    names in its header a task ID of a family in tools/scripts/task-homes.json (BOT-04,
  *    META-22) or an eco-admin row (AP-0 0.7) (apps/eco-store/CLAUDE.md, «Referencing task
  *    identifiers»).
@@ -27,7 +28,8 @@ const { buildGrammar, loadConfig } = require('./sync-eco-store-tasks.cjs');
 // The ClickUp ID shapes of sync-eco-store-tasks.cjs (CU_ID_RE): 86 + 7, or 123 + 8, with a letter.
 const CLICKUP_ID = '(?:86(?=[a-z0-9]*[a-z])[a-z0-9]{7}|123(?=[a-z0-9]*[a-z])[a-z0-9]{8})';
 const BRANCH_CLICKUP_RE = new RegExp(`^[a-z]+/(${CLICKUP_ID})(?:-|$)`);
-const ECO_CODE_RE = /^(apps\/eco-(store|admin)(-e2e)?|libs\/eco(-store|-admin)?)\//;
+const ECO_CODE_RE =
+  /^(apps\/eco-(store|admin)(-e2e)?|apps\/eco-a11y-e2e|libs\/eco(-store|-admin)?)\//;
 const ECO_ADMIN_ROW_RE = /(?<![A-Za-z0-9_-])AP-\d+(?![A-Za-z0-9_])/;
 const IGNORED_RE =
   /^(Merge |Revert "|(fixup|squash|amend)! |Initial commit$|Automatic merge|Auto-merged )/;
