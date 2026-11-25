@@ -22,6 +22,7 @@ import { CountdownService } from '@plastik/shared/countdown/util';
 import { isEmpty, isNil } from '@plastik/shared/objects';
 import { lastValueFrom, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { injectIsBuildTimeRender } from './eco-store-build-time-render';
 import { EcoStoreTenantAddressService } from './eco-store-tenant-address.service';
 import { EcoStoreTenantBaseService } from './eco-store-tenant-base.service';
 import {
@@ -54,6 +55,7 @@ export const ecoStoreTenantStore = signalStore(
     _tenantService: inject(EcoStoreTenantBaseService),
     _translateService: inject(TranslateService),
     _countdownService: inject(CountdownService),
+    _isBuildTimeRender: injectIsBuildTimeRender(),
   })),
   withComputed(store => {
     const nowSignal = toSignal(timer(0, 1000).pipe(map(() => new Date())), {
@@ -208,6 +210,13 @@ export const ecoStoreTenantStore = signalStore(
   withMethods(store => ({
     async getTenant() {
       updateState(store, `[tenant] get tenant in process`, { loaded: false });
+
+      // At build time the host is `localhost`, no tenant: asking PocketBase tied every build to
+      // the hosted instance, and a slow answer timed the prerender out (TECH-18). The tenant stays
+      // unloaded, as when that request failed, and the browser loads it.
+      if (store._isBuildTimeRender) {
+        return;
+      }
 
       try {
         await store._tenantService.loadTenant();

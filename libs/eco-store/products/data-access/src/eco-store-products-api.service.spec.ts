@@ -36,6 +36,17 @@ describe('EcoStoreProductsApiService', () => {
     expect(service).toBeTruthy();
   });
 
+  it('lists no products and asks PocketBase nothing when the browser has no tenant', async () => {
+    const tenantSpy = vi.spyOn(mockEcoStoreTenantStore, 'tenant').mockReturnValue(null);
+
+    const result = await firstValueFrom(service.getList({ page: 1, perPage: 10 }));
+
+    expect(result.items).toEqual([]);
+    expect(result.totalItems).toBe(0);
+    expect(mockCrudService.getList).not.toHaveBeenCalled();
+    tenantSpy.mockRestore();
+  });
+
   it('should use getList with limit 1 instead of getFullList for performance when getting one by slug', async () => {
     const slug = 'test-slug';
 

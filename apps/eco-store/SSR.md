@@ -35,6 +35,9 @@ We use a **Hybrid Rendering Strategy** to balance speed and SEO:
    - Auth routes (`/accedir`, `/recuperar-contrasenya`, etc.).
    - Shop landing page (`/botiga`).
    - These pages are generated at build time for maximum performance.
+   - At build time the host is `localhost`, which names no tenant, so these pages hold no tenant data and the build asks PocketBase nothing (TECH-18):
+     `injectIsBuildTimeRender()` (`@plastik/eco-store/tenant`) is true on the server with no `REQUEST`, the tenant store then stays unloaded, and the product list stays loading.
+     The browser loads the tenant. Asking the hosted PocketBase from every build made the prerender time out when it answered slowly.
 2. **Server (SSR)**:
    - Dynamic product catalog (`/botiga/:category`, `/botiga/:category/:slug`).
    - User-specific pages (`/cistella`, `/comandes`, `/perfil`).
