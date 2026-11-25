@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Tailwind's `dark:` now applies when the OS is in dark mode and no theme is chosen, not only with the dark theme picked in the toggle.** With the default «system» theme, every `dark:` shade in eco-store and eco-admin (about 50 uses, from the store chips to the login screens) stayed light while the Material roles around it turned dark. In dark mode the cart summary's category label rises from 1.22:1 to about 6.3:1 and the «kg» unit of the quantity selector from 1.17:1 to 8.48:1 (WCAG 1.4.3) ([#123kjkdr4vu](https://app.clickup.com/t/123kjkdr4vu)).
 - **The avatar initials use Material's primary-container roles instead of fixed shades:** 1.36:1 before in dark mode, 6.68:1 now, and 13.25:1 in light. The eco a11y suite no longer lists the three nodes as known violations, and passes 33 of 33 ([#123kjkdr4vu](https://app.clickup.com/t/123kjkdr4vu)).
 
+## [2026-11-25] - The eco-store build no longer asks the hosted PocketBase anything (TECH-18)
+
+### Fixed
+
+- **The production build of eco-store made 7 requests to the production PocketBase, for a tenant named `localhost`, and timed out prerendering an auth route whenever PocketBase answered slowly** (`ci.yml` on 2026-11-23, `eco-a11y.yml` on 2026-11-24). At build time, on the server with no request, the tenant store no longer looks the tenant up and the product list asks for nothing; the browser loads both as before. Measured locally: 0 requests instead of 7, and the five prerendered pages come out with the same HTML ([#123kjkdr4w5](https://app.clickup.com/t/123kjkdr4w5)).
+
 ## [2026-11-24] - eco-admin's end-to-end suite moves from Cypress to Playwright (META-40)
 
 ### Changed
