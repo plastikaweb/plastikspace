@@ -9,7 +9,7 @@
 > - **`apps/eco-store/POCKETBASE.md`** — backend workflow & scripts
 > - **`apps/eco-store/CLAUDE.md`** — app-specific guidance for AI agents
 
-**Document version:** 0.61 · **Last updated:** 2026-11-24
+**Document version:** 0.62 · **Last updated:** 2026-11-25
 
 ---
 
@@ -502,7 +502,11 @@ All `COULD`, pending discovery.
 - **A11Y-023** ✅ — Focused control hidden under the fixed header and the mobile bottom bar (WCAG 2.4.11, AA): the shell scrolls inside `mat-sidenav-content`, which had no scroll padding, and the `scroll-padding-top: 120px` on `html` protected nothing. The scroller now has `scroll-pt-28` and, below `md`, `scroll-pb-24`, the room `main` and the footer already leave for the bars; the `html` rule is gone. A control placed under either bar and focused with Tab is scrolled clear at 1280, 640 and 320 px (it stayed covered before). Found by META-39 [MUST · ✅ 2026-11-24 · ClickUp `123kjkdr25w`]
 - **A11Y-024** ✅ — Avatar cropper positioned the crop area only by dragging (WCAG 2.5.7, AA). Left, up, down and right buttons move the image a twentieth of its zoomed size and stop, `aria-disabled` with focus kept, where its edge meets the crop area's edge. The transform is now in px and bound both ways (`transformChange`): a 30 px drag moved the image 95.6 px before and 30 px after, and a zoom no longer recentres a dragged image. Chrome, 600 × 400 image, 1280 and 360 px: bounds and the cropper's output match [MUST · ✅ 2026-11-24 · ClickUp `123kjkdr25x`]
 - **A11Y-025** ✅ — Profile name and phone turned autofill off (WCAG 1.3.5, AA). `eco-store-profile-feature-form.config.ts` now sets `autocomplete` `name` and `tel`, and the name's minimum drops from 8 to 2 characters, as the address form's recipient name («Ana Gil» was rejected). Specs fail on the old configuration and pass on the new one. Not covered: the new-email field of the email change form also has `autocomplete: 'off'`, possibly on purpose, left to the owner [SHOULD · ✅ 2026-11-24 · ClickUp `123kjkdr261`]
-- Pa11y CI: `yarn eco-store:a11y`
+- **A11Y-026** _(new)_ — In OS dark mode, text on fixed palette shades falls to 1.2 to 1.4:1 (WCAG 1.4.3): the cart summary's category label, the quantity unit «kg», the avatar initials. Use colour roles. Found by META-40's suite (`DARK_FIXED_SHADES`).
+- **A11Y-027** _(new)_ — The terms note under the sign-in forms is 3.8:1 light, 4.46:1 dark (WCAG 1.4.3) because of `opacity-70` (`auth-feature.component.html:144`). Found by META-40's suite (`LEGAL_NOTE`).
+- **A11Y-028** _(new)_ — Desktop header logo, cart and user buttons, and the rating link: their names leave out the visible text (WCAG 2.5.3). Found by META-40's suite (`HEADER_NAMES`, `RATING_LINK`).
+- **A11Y-029** _(new)_ — Product chips: `listitem` on an inner span, so no list item sits under the `list` (WCAG 1.3.1). Found by META-40's suite (`PRODUCT_CHIPS`).
+- Playwright and axe suite: `yarn eco-a11y:e2e` (`apps/eco-a11y-e2e`, META-40), run by the pre-push and `eco-a11y.yml`
 
 ### i18n
 
@@ -618,6 +622,7 @@ ClickUp `86c9uwmzf`. Internal tooling — first slice of a multi-phase workflow 
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 0.62 | 2026-11-25 | New **A11Y-026** (`123kjkdr4vu`), **A11Y-027** (`123kjkdr4vv`), **A11Y-028** (`123kjkdr4vw`) and **A11Y-029** (`123kjkdr4vx`), the failures META-40's Playwright suite found; the a11y check is now `yarn eco-a11y:e2e`, not Pa11y. |
 | 0.61 | 2026-11-24 | **A11Y-025** ✅ (`123kjkdr261`): the profile name and phone carry `autocomplete` `name` and `tel`; the name's minimum is 2 characters. |
 | 0.60 | 2026-11-24 | **A11Y-016** ✅ (`123kjkdgyjf`) and **A11Y-024** ✅ (`123kjkdr25x`): the image cropper's controls are named, and four pan buttons move the image without dragging. |
 | 0.59 | 2026-11-24 | **A11Y-023** ✅ (`123kjkdr25w`): scroll padding on the shell's scroller keeps a focused control clear of the fixed header and the mobile bottom bar. |
