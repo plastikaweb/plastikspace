@@ -4,7 +4,7 @@
 >
 > Companion to `TASKS.md` and PRD v1.8.
 
-**Document version:** 0.63 · **Last updated:** 2026-11-25
+**Document version:** 0.64 · **Last updated:** 2026-11-25
 
 ---
 
@@ -237,7 +237,7 @@
 | 7.59 | **A11Y-027** Terms note under the sign-in forms: 3.8:1 | SHOULD | 0.25d | — | `auth.termsPrivacy` is `text-on-surface-variant` with `opacity-70`: 3.79:1 light, 4.46:1 dark at 13 px (WCAG 1.4.3), `auth-feature.component.html:144`. Drop the opacity. Found by META-40's suite (`LEGAL_NOTE`). CU `123kjkdr4vv` |
 | 7.60 | **A11Y-028** Desktop header and rating link: names leave out the visible text | SHOULD | 0.5d | — | WCAG 2.5.3: the tenant logo (`tenant-link.component.ts:17`), the cart button with its total (`menu.component.html:92,101`), the user pill (`menu.component.html:54`) and the rating link. Each name starts with its visible text. Found by META-40's suite (`HEADER_NAMES`, `RATING_LINK`). CU `123kjkdr4vw` |
 | 7.61 | **A11Y-029** Product chips: list items with no list | SHOULD | 0.25d | — | The chips render `role="listitem"` on an inner span, so no `listitem` sits under the `list` (WCAG 1.3.1, axe `aria-required-parent`), `eco-store-product-feature.component.html:27`. The mock chips stay; only the structure changes. Found by META-40's suite (`PRODUCT_CHIPS`). CU `123kjkdr4vx` |
-| 7.62 | **TECH-18** Prerender timeouts on the auth routes in CI builds | SHOULD | 0.5d | — | `app.routes.server.ts` prerenders `accedir`, `recuperar-contrasenya` and the rest; on GitHub runners the build fails now and then with a prerender `TimeoutError` (twice on 2026-11-23/24), failing CI, the eco a11y suite and the pre-push. Find the call the render waits on; render without it or leave `Prerender`. CU `123kjkdr4w5` |
+| 7.62 | **TECH-18** Prerender timeouts on the auth routes in CI builds ✅ | SHOULD | 0.5d | 2026-11-25 | Done 2026-11-25 (PR #1629, `9815b625`) — each build asked the production PocketBase 7 times (6 tenant lookups for `localhost`, 1 product list for `tenant ="undefined"`), with no timeout. `injectIsBuildTimeRender()` keeps the tenant store unloaded and the product list loading at build time: 0 requests, same prerendered HTML. Was: `app.routes.server.ts` prerenders `accedir`, `recuperar-contrasenya` and the rest; on GitHub runners the build fails now and then with a prerender `TimeoutError` (twice on 2026-11-23/24), failing CI, the eco a11y suite and the pre-push. Find the call the render waits on; render without it or leave `Prerender`. CU `123kjkdr4w5` |
 
 **Exit criteria:** Legally compliant (banner + pages), Pa11y CI passes, prod deploy works, footer present.
 
@@ -397,6 +397,7 @@
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 0.64 | 2026-11-25 | Doc-only, in lockstep with TASKS.md 0.64. Row 7.62 **TECH-18** (`123kjkdr4w5`) done. |
 | 0.63 | 2026-11-25 | Doc-only, in lockstep with TASKS.md 0.63. Row 7.58 **A11Y-026** (`123kjkdr4vu`) done. |
 | 0.62 | 2026-11-25 | Doc-only, in lockstep with TASKS.md 0.62 (META-40 `123kjkdr20r`, via META-08 `123kjkdpqjr`). New tasks 7.58 **A11Y-026** (`123kjkdr4vu`, 0.5d), 7.59 **A11Y-027** (`123kjkdr4vv`, 0.25d), 7.60 **A11Y-028** (`123kjkdr4vw`, 0.5d) and 7.61 **A11Y-029** (`123kjkdr4vx`, 0.25d), found by the eco a11y suite, and 7.62 **TECH-18** (`123kjkdr4w5`, 0.5d), the prerender timeouts its first CI run hit: Phase 7 grows ~18.5 → ~20.5 d. The totals table still lags, untouched here. |
 | 0.61 | 2026-11-24 | Doc-only, in lockstep with TASKS.md 0.61. Row 7.57 **A11Y-025** (`123kjkdr261`) done. |
