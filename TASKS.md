@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 1.23 · **Last updated:** 2026-11-24
+**Document version:** 1.24 · **Last updated:** 2026-11-25
 
 ---
 
@@ -68,7 +68,8 @@
 | **META-37** ✅ | `eco-store:pb:sync` refuses to run without `POCKETBASE_ENV` | Normal | `123kjkdr15w` |
 | **META-38** ✅ | Trim root and eco-store `CLAUDE.md`: reference detail moves to the docs it belongs to | Low | `123kjkdr15x` |
 | **META-39** ✅ | WCAG 2.2 AA in practice: Pa11y checks `target-size`, audit of the new criteria, a new eco-store statement | Normal | `123kjkdr177` |
-| **META-40** 🔄 | Per-screen a11y suite in Playwright with axe (WCAG 2.2), replacing Pa11y in eco-store and eco-admin | Low | `123kjkdr20r` |
+| **META-40** ✅ | Per-screen a11y suite in Playwright with axe (WCAG 2.2), replacing Pa11y in eco-store and eco-admin | Low | `123kjkdr20r` |
+| **META-41** 📋 | `plastikaweb:a11y` points to a `.pa11yci.json` that does not exist | Low | `123kjkdr4vz` |
 
 ### Order and dependencies
 
@@ -88,6 +89,7 @@
 | Any | META-32, META-33, META-34, META-35, META-36, META-37 | No blocker: each turns a workaround Claude keeps in memory into a fix, and its memory entries go once it merges. META-35's SSH setting can live in META-34's setup script |
 | Any | META-39 | No blocker. Measure the new Pa11y config before it reaches the eco-store pre-push, the only a11y gate |
 | After META-39 | META-40 | Its assertions encode what META-39's manual audit finds checkable; its prototype measures before Pa11y goes |
+| Any | META-41 | No blocker: META-40 found it, and no hook or CI job runs the script |
 | Any | META-29, META-30, META-31 | No blocker: three cleanups META-13 found. META-29 and META-31 both edit `documentation/code-style.md` |
 
 ---
@@ -232,7 +234,13 @@ PR 1 (#1624, `c23c909d`) adds `apps/eco-a11y-e2e`, next to Pa11y and run by no h
 
 PR 2 had Cypress leave both eco apps, but `eco-admin-e2e` holds more than the generated spec: a real spec and `cy.loginAs` (AP-0 0.7), and eco-admin `REQUIREMENTS.md` §6 asks for Cypress for AMBR-07 and AORD-03. PR 2 moves the pre-push and the two Pa11y workflows to the suite and drops Pa11y and the generated `eco-store-e2e`; eco-admin's Cypress stays unless the owner changes §6. PR 2 merged (#1625, `a267bc51`).
 
-The owner then changed §6 (eco-admin REQUIREMENTS 0.4.51, TASKS 0.1.155). PR 3 moves `eco-admin-e2e` to Playwright: `cy.loginAs` becomes the `signedInAs` option, still bound to the local PocketBase, and the target is not cached. Its only spec had failed since AP-0 0.7b removed the login field ids it looked for; it now finds them by name. No eco app uses Cypress.
+The owner then changed §6 (eco-admin REQUIREMENTS 0.4.51, TASKS 0.1.155). PR 3 moves `eco-admin-e2e` to Playwright: `cy.loginAs` becomes the `signedInAs` option, still bound to the local PocketBase, and the target is not cached. Its only spec had failed since AP-0 0.7b removed the login field ids it looked for; it now finds them by name. No eco app uses Cypress. PR 3 merged (#1626, `0c263362`); META-40 done on 2026-11-24.
+
+Its findings are eco-store tasks A11Y-026 to A11Y-029 (BACKLOG 7.58 to 7.61), and each known violation in the spec names its task. The first `eco-a11y.yml` run failed before the suite started: the eco-store production build timed out prerendering `/recuperar-contrasenya`, as `ci.yml` had on `/accedir` the day before; the next run passed in 3m20s.
+
+### META-41 — `plastikaweb:a11y` has no config
+
+ClickUp `123kjkdr4vz`. Found during META-40: `yarn plastikaweb:a11y` runs Pa11y with `apps/plastikaweb/.pa11yci.json`, which does not exist, so it fails before checking anything. Write the config, move plastikaweb to a Playwright and axe check, or remove the script; the docs follow.
 
 ---
 
@@ -240,6 +248,7 @@ The owner then changed §6 (eco-admin REQUIREMENTS 0.4.51, TASKS 0.1.155). PR 3 
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 1.24 | 2026-11-25 | **META-08** (`123kjkdpqjr`) — META-40 ✅ (PRs #1624, #1625, #1626); its findings filed as eco-store A11Y-026 to A11Y-029. New **META-41** (`123kjkdr4vz`): `plastikaweb:a11y` has no config. |
 | 1.23 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-40 🔄: PRs 1 and 2 merged; PR 3 moves eco-admin's e2e from Cypress to Playwright after the owner changed eco-admin REQUIREMENTS §6. |
 | 1.22 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-40 🔄: PR 1 adds the Playwright and axe suite of the eco apps next to Pa11y; its findings and the change to PR 2 (eco-admin keeps Cypress) are in its section. |
 | 1.21 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-39 ✅: the manual audit of WCAG 2.2's new AA criteria found three failures, fixed by A11Y-023 (PR #1620), A11Y-024 with A11Y-016 (PR #1621) and A11Y-025 (PR #1622); the points it left open are listed in its section. |

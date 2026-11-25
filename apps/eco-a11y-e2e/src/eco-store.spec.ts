@@ -8,30 +8,31 @@ import { expect, startSession, STORE, test } from './support/test';
 const HEADER_NAMES: KnownViolation = {
   rule: 'label-content-name-mismatch',
   target: /aria-label="(Tornar a la botiga|Anar a la cistella)|user-pill/,
-  reason: '2.5.3: the desktop header logo, cart and user buttons are named apart from their text',
+  reason:
+    'A11Y-028, 2.5.3: the desktop header logo, cart and user buttons are named apart from their text',
 };
 const PRODUCT_CHIPS: KnownViolation = {
   rule: 'aria-required-parent',
   target: /role="listitem" aria-label="(ECO|NOVETAT|OFERTA)"/,
-  reason: '1.3.1: the product chips are list items whose list role never reaches them',
+  reason: 'A11Y-029, 1.3.1: the product chips are list items whose list role never reaches them',
 };
 const RATING_LINK: KnownViolation = {
   rule: 'label-content-name-mismatch',
   target: /aria-label="\(124 valoracions\)"/,
-  reason: '2.5.3: the rating link drops «4.8» from its name',
+  reason: 'A11Y-028, 2.5.3: the rating link drops «4.8» from its name',
 };
 const LEGAL_NOTE: KnownViolation = {
   rule: 'color-contrast',
   target: /En continuar, acceptes/,
   reason:
-    '1.4.3: the terms note under the form is 3.8:1 in light and 4.46:1 in dark (`opacity-70`)',
+    'A11Y-027, 1.4.3: the terms note under the form is 3.8:1 in light and 4.46:1 in dark (`opacity-70`)',
 };
 const DARK_FIXED_SHADES: KnownViolation = {
   rule: 'color-contrast',
   target:
     /text-tertiary-700 dark:text-tertiary-300|class="text-md">kg<|text-primary-700 text-xs"> MS </,
   reason:
-    '1.4.3: in dark mode, text on a fixed palette shade keeps its light colour (1.2 to 1.4:1)',
+    'A11Y-026, 1.4.3: in dark mode, text on a fixed palette shade keeps its light colour (1.2 to 1.4:1)',
 };
 const STORE_KNOWN = [HEADER_NAMES, DARK_FIXED_SHADES];
 
