@@ -18,7 +18,7 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
     } @else {
       <span
         [class]="
-          'text-primary-700 bg-primary-50 flex items-center justify-center rounded-full font-bold ' +
+          'bg-sys-primary-container text-sys-on-primary-container flex items-center justify-center rounded-full font-bold ' +
           initialsClass()
         ">
         {{ initials() }}
@@ -31,5 +31,5 @@ export class EcoUserAvatarComponent {
   readonly user = input.required<PocketBaseUser>();
   readonly initials = input<string | undefined>();
   readonly avatarClass = input<string>('size-6');
-  readonly initialsClass = input<string>('size-6 text-xs bg-surface');
+  readonly initialsClass = input<string>('size-6 text-xs');
 }

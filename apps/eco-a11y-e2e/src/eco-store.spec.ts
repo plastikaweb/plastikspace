@@ -21,14 +21,7 @@ const RATING_LINK: KnownViolation = {
   target: /aria-label="\(124 valoracions\)"/,
   reason: 'A11Y-028, 2.5.3: the rating link drops «4.8» from its name',
 };
-const DARK_FIXED_SHADES: KnownViolation = {
-  rule: 'color-contrast',
-  target:
-    /text-tertiary-700 dark:text-tertiary-300|class="text-md">kg<|text-primary-700 text-xs"> MS </,
-  reason:
-    'A11Y-026, 1.4.3: in dark mode, text on a fixed palette shade keeps its light colour (1.2 to 1.4:1)',
-};
-const STORE_KNOWN = [HEADER_NAMES, DARK_FIXED_SHADES];
+const STORE_KNOWN = [HEADER_NAMES];
 
 /**
  * Adds the first product of the catalogue to the cart of a visitor, through its button.
