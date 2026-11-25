@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-25] - The eco-store build no longer asks the hosted PocketBase anything (TECH-18)
+
+### Fixed
+
+- **The production build of eco-store made 7 requests to the production PocketBase, for a tenant named `localhost`, and timed out prerendering an auth route whenever PocketBase answered slowly** (`ci.yml` on 2026-11-23, `eco-a11y.yml` on 2026-11-24). At build time, on the server with no request, the tenant store no longer looks the tenant up and the product list asks for nothing; the browser loads both as before. Measured locally: 0 requests instead of 7, and the five prerendered pages come out with the same HTML ([#123kjkdr4w5](https://app.clickup.com/t/123kjkdr4w5)).
+
 ## [2026-11-24] - eco-admin's end-to-end suite moves from Cypress to Playwright (META-40)
 
 ### Changed
