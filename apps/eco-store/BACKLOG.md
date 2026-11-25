@@ -4,7 +4,7 @@
 >
 > Companion to `TASKS.md` and PRD v1.8.
 
-**Document version:** 0.62 · **Last updated:** 2026-11-25
+**Document version:** 0.63 · **Last updated:** 2026-11-25
 
 ---
 
@@ -233,7 +233,7 @@
 | 7.55 | **A11Y-023** Focus not hidden under the fixed header and the mobile bottom bar ✅ | MUST | 0.5d | 2026-11-24 | Done 2026-11-24 — `scroll-pt-28` and, below `md`, `scroll-pb-24` on `mat-sidenav-content` (the room `main` and the footer already leave for the bars); the dead `html` rule removed. Focused controls under either bar now scroll clear at 1280, 640 and 320 px. CU `123kjkdr25w` |
 | 7.56 | **A11Y-024** Avatar cropper: position the crop area without dragging ✅ | MUST | 0.5d | 2026-11-24 | Done 2026-11-24 — four pan buttons stop where the image edge meets the crop area; px transform bound both ways, so a drag follows the pointer (30 px, not 95.6) and survives a zoom. CU `123kjkdr25x` |
 | 7.57 | **A11Y-025** Profile name and phone: `autocomplete` `name` and `tel` ✅ | SHOULD | 0.25d | 2026-11-24 | Done 2026-11-24 — `autocomplete` `name` and `tel` instead of `off` (WCAG 1.3.5); the name's minimum is 2 characters, as the address form's. CU `123kjkdr261` |
-| 7.58 | **A11Y-026** Dark mode: text on fixed palette shades | MUST | 0.5d | — | 1.2 to 1.4:1 in OS dark mode (WCAG 1.4.3): the cart summary's category label (`cart-summary.component.html:44`, its `dark:` variant never applies), the quantity unit «kg» (`eco-store-product-quantity.component.html:75`), the avatar initials (`user-avatar.component.ts:21`). Use colour roles, then grep for other fixed shades on text. Found by META-40's suite (`DARK_FIXED_SHADES`). CU `123kjkdr4vu` |
+| 7.58 | **A11Y-026** Dark mode: text on fixed palette shades ✅ | MUST | 0.5d | 2026-11-25 | Done 2026-11-25 — the cause was the `dark:` variant, which matched only `html.dark`: it now also matches the OS dark mode without `.light`, as `light-dark()` does, so every `dark:` in both apps follows the system theme; the avatar initials use primary-container roles. Dark: 6.3, 8.48 and 6.68:1. Was: 1.2 to 1.4:1 in OS dark mode (WCAG 1.4.3): the cart summary's category label (`cart-summary.component.html:44`, its `dark:` variant never applies), the quantity unit «kg» (`eco-store-product-quantity.component.html:75`), the avatar initials (`user-avatar.component.ts:21`). Use colour roles, then grep for other fixed shades on text. Found by META-40's suite (`DARK_FIXED_SHADES`). CU `123kjkdr4vu` |
 | 7.59 | **A11Y-027** Terms note under the sign-in forms: 3.8:1 | SHOULD | 0.25d | — | `auth.termsPrivacy` is `text-on-surface-variant` with `opacity-70`: 3.79:1 light, 4.46:1 dark at 13 px (WCAG 1.4.3), `auth-feature.component.html:144`. Drop the opacity. Found by META-40's suite (`LEGAL_NOTE`). CU `123kjkdr4vv` |
 | 7.60 | **A11Y-028** Desktop header and rating link: names leave out the visible text | SHOULD | 0.5d | — | WCAG 2.5.3: the tenant logo (`tenant-link.component.ts:17`), the cart button with its total (`menu.component.html:92,101`), the user pill (`menu.component.html:54`) and the rating link. Each name starts with its visible text. Found by META-40's suite (`HEADER_NAMES`, `RATING_LINK`). CU `123kjkdr4vw` |
 | 7.61 | **A11Y-029** Product chips: list items with no list | SHOULD | 0.25d | — | The chips render `role="listitem"` on an inner span, so no `listitem` sits under the `list` (WCAG 1.3.1, axe `aria-required-parent`), `eco-store-product-feature.component.html:27`. The mock chips stay; only the structure changes. Found by META-40's suite (`PRODUCT_CHIPS`). CU `123kjkdr4vx` |
@@ -397,6 +397,7 @@
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 0.63 | 2026-11-25 | Doc-only, in lockstep with TASKS.md 0.63. Row 7.58 **A11Y-026** (`123kjkdr4vu`) done. |
 | 0.62 | 2026-11-25 | Doc-only, in lockstep with TASKS.md 0.62 (META-40 `123kjkdr20r`, via META-08 `123kjkdpqjr`). New tasks 7.58 **A11Y-026** (`123kjkdr4vu`, 0.5d), 7.59 **A11Y-027** (`123kjkdr4vv`, 0.25d), 7.60 **A11Y-028** (`123kjkdr4vw`, 0.5d) and 7.61 **A11Y-029** (`123kjkdr4vx`, 0.25d), found by the eco a11y suite, and 7.62 **TECH-18** (`123kjkdr4w5`, 0.5d), the prerender timeouts its first CI run hit: Phase 7 grows ~18.5 → ~20.5 d. The totals table still lags, untouched here. |
 | 0.61 | 2026-11-24 | Doc-only, in lockstep with TASKS.md 0.61. Row 7.57 **A11Y-025** (`123kjkdr261`) done. |
 | 0.60 | 2026-11-24 | Doc-only, in lockstep with TASKS.md 0.60. Rows 7.46 **A11Y-016** (`123kjkdgyjf`) and 7.56 **A11Y-024** (`123kjkdr25x`) done. |
