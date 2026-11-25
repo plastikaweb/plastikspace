@@ -27,14 +27,7 @@ const LEGAL_NOTE: KnownViolation = {
   reason:
     'A11Y-027, 1.4.3: the terms note under the form is 3.8:1 in light and 4.46:1 in dark (`opacity-70`)',
 };
-const DARK_FIXED_SHADES: KnownViolation = {
-  rule: 'color-contrast',
-  target:
-    /text-tertiary-700 dark:text-tertiary-300|class="text-md">kg<|text-primary-700 text-xs"> MS </,
-  reason:
-    'A11Y-026, 1.4.3: in dark mode, text on a fixed palette shade keeps its light colour (1.2 to 1.4:1)',
-};
-const STORE_KNOWN = [HEADER_NAMES, DARK_FIXED_SHADES];
+const STORE_KNOWN = [HEADER_NAMES];
 
 /**
  * Adds the first product of the catalogue to the cart of a visitor, through its button.

@@ -33,7 +33,7 @@ While it lived inside an application, `eco-admin` could not use it without point
 - **Material 3 system tokens** (`--mat-sys-*`): colour roles written with `light-dark()`, typescale, elevation, shape and state layers.
 - **High-contrast values** for the colour roles, inside `@media (prefers-contrast: more)`.
 - **Spacing scale** `--space-tiny` … `--space-xxl`.
-- **`@custom-variant dark`**, which makes Tailwind's `dark:` follow the `.dark` class.
+- **`@custom-variant dark`**, which makes Tailwind's `dark:` follow the same scheme as `light-dark()`: `html.dark`, or the OS in dark mode when `html` has no `.light` (A11Y-026).
 
 The values are literal: nothing is computed at build time.
 This file and the eco-store `*-theme.css` files are the eco token sources: `yarn eco-conventions:check` (META-15) allows hex colours and `--mat-sys-*` declarations in them and nowhere else in eco.

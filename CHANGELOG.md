@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-25] - Dark mode follows the system everywhere in the eco apps (A11Y-026)
+
+### Fixed
+
+- **Tailwind's `dark:` now applies when the OS is in dark mode and no theme is chosen, not only with the dark theme picked in the toggle.** With the default «system» theme, every `dark:` shade in eco-store and eco-admin (about 50 uses, from the store chips to the login screens) stayed light while the Material roles around it turned dark. In dark mode the cart summary's category label rises from 1.22:1 to about 6.3:1 and the «kg» unit of the quantity selector from 1.17:1 to 8.48:1 (WCAG 1.4.3) ([#123kjkdr4vu](https://app.clickup.com/t/123kjkdr4vu)).
+- **The avatar initials use Material's primary-container roles instead of fixed shades:** 1.36:1 before in dark mode, 6.68:1 now, and 13.25:1 in light. The eco a11y suite no longer lists the three nodes as known violations, and passes 33 of 33 ([#123kjkdr4vu](https://app.clickup.com/t/123kjkdr4vu)).
+
 ## [2026-11-25] - The eco-store build no longer asks the hosted PocketBase anything (TECH-18)
 
 ### Fixed
