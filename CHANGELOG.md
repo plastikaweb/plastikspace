@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-27] - The eco-admin dev server picks up changed SCSS partials (META-36)
+
+### Changed
+
+- **`yarn eco-admin:serve` runs a SCSS watcher next to the dev server.** The dev server rebuilt the global stylesheet only when `apps/eco-admin/src/styles/styles.scss` itself changed: an edit to a partial, the app's `_base.scss` or one from a library such as `_eco_auth_card.scss`, never reached the served `styles.css` (30 s, measured). `eco-admin:watch-scss` touches the entry when a partial changes, in the app or in the style include paths (`libs/eco/styles/src`, `libs/core/styles/util/{material,tailwind4}/src`, the hot-toast styles); the change now arrives in 4 to 6 s. The Nx target is `eco-admin:serve:app`, and `nx run eco-admin:serve`, which the e2e uses, starts the server alone (META-36, ([#123kjkdr15v](https://app.clickup.com/t/123kjkdr15v))).
+
 ## [2026-11-27] - The product chips are one list item each (A11Y-029)
 
 ### Fixed
