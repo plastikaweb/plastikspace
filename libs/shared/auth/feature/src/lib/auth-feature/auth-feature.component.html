@@ -140,15 +140,13 @@
 
     @if (footerText) {
       <mat-card-footer class="bg-surface-container-high/30 px-8 py-2 text-center backdrop-blur-sm">
-        <p
-          class="text-on-surface-variant text-sm leading-relaxed font-medium tracking-normal opacity-70">
+        <p class="text-on-surface-variant text-sm leading-relaxed font-medium tracking-normal">
           {{ footerText }}
         </p>
       </mat-card-footer>
     } @else if (name(); as ownerName) {
       <mat-card-footer class="bg-surface-container-high/30 px-8 py-2 text-center backdrop-blur-sm">
-        <p
-          class="text-on-surface-variant text-sm leading-relaxed font-medium tracking-normal opacity-70">
+        <p class="text-on-surface-variant text-sm leading-relaxed font-medium tracking-normal">
           @if (nameLink(); as ownerLink) {
             <a target="_self" [href]="ownerLink">{{ ownerName }}</a>
           } @else {

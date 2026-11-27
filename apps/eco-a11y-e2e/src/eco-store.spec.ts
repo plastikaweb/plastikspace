@@ -21,12 +21,6 @@ const RATING_LINK: KnownViolation = {
   target: /aria-label="\(124 valoracions\)"/,
   reason: 'A11Y-028, 2.5.3: the rating link drops «4.8» from its name',
 };
-const LEGAL_NOTE: KnownViolation = {
-  rule: 'color-contrast',
-  target: /En continuar, acceptes/,
-  reason:
-    'A11Y-027, 1.4.3: the terms note under the form is 3.8:1 in light and 4.46:1 in dark (`opacity-70`)',
-};
 const STORE_KNOWN = [HEADER_NAMES];
 
 /**
@@ -82,7 +76,7 @@ test.describe('eco-store, signed out', () => {
       page.getByRole('textbox', { name: /correu/i }),
       page.getByLabel(/contrasenya/i).first()
     );
-    await audit(page, testInfo, [LEGAL_NOTE]);
+    await audit(page, testInfo);
   });
 
   test('the password recovery screen', async ({ page }, testInfo) => {
@@ -93,7 +87,7 @@ test.describe('eco-store, signed out', () => {
       'email'
     );
 
-    await audit(page, testInfo, [LEGAL_NOTE]);
+    await audit(page, testInfo);
   });
 
   test('the delivery step, after signing in, offers the saved address', async ({
