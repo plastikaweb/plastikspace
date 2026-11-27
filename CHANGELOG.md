@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-27] - Claude Code sessions get the Nx env and a sandbox exclusion list (META-33)
+
+### Changed
+
+- **`.claude/settings.json` sets `NX_WORKSPACE_ROOT_PATH=""` and `NX_DEFAULT_OUTPUT_STYLE=static` for every session.** Sessions inherited the main checkout's path in `NX_WORKSPACE_ROOT_PATH`, so Nx in a worktree read the main checkout's branch, graph and cache until the variable was unset by hand; an empty value makes Nx use the working directory. Static output prints a failed task's log instead of hiding it (META-33, ([#123kjkdr15q](https://app.clickup.com/t/123kjkdr15q))).
+- **`sandbox.excludedCommands` runs `gh`, `git fetch`, `git pull`, `git push`, `git ls-remote`, `git worktree` and the Angular builds (`yarn nx run *:build*`, `yarn nx build *`, `yarn *:build*`) outside the sandbox.** Inside it `gh` and SSH git fail on the keychain, `git worktree` cannot write `.git/worktrees`, and the builds fail with no error. The commands still go through the permission prompts. A call is excluded only when every command in it matches, and one with `cd`, a redirect to a file or a heredoc stays sandboxed, so a push redirected to a log still needs the sandbox off. `.claude/CLAUDE.md` ("Session settings") says so (META-33, ([#123kjkdr15q](https://app.clickup.com/t/123kjkdr15q))).
+
 ## [2026-11-27] - The Claude Code guard checks pipes, commit messages and the PocketBase stop (META-32)
 
 ### Changed
