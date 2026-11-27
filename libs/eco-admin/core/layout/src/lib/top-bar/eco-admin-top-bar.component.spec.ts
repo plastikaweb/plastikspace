@@ -72,7 +72,8 @@ describe('EcoAdminTopBarComponent', () => {
     const account = host.querySelector('.top-bar-account');
 
     expect(account?.textContent?.trim()).toBe('MP');
-    expect(account?.getAttribute('aria-label')).toBe('shell.account.menuLabelNamed');
+    // The name starts with the visible initials (WCAG 2.5.3).
+    expect(account?.getAttribute('aria-label')).toBe('MP, shell.account.menuLabelNamed');
   });
 
   it('names the user, the role and the tenant in the account menu', async () => {

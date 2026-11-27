@@ -1,7 +1,9 @@
 @let name = userName();
+<!-- The name starts with the initials the button shows (WCAG 2.5.3); the dots drawn while the
+     name is unknown are left out. -->
 @let accountLabel =
   name
-    ? ('shell.account.menuLabelNamed' | translate: { name })
+    ? initials() + ', ' + ('shell.account.menuLabelNamed' | translate: { name })
     : ('shell.account.menuLabel' | translate);
 
 <header class="top-bar">

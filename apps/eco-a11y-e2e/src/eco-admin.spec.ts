@@ -24,7 +24,8 @@ test.describe('eco-admin', () => {
       .first()
       .fill('x'.repeat(12));
     await page.getByRole('button', { name: 'Iniciar sessió' }).click();
-    await expect(page).toHaveURL(`${ADMIN_APP}/`);
+    // A tenant administrator lands on the Tauler section of the shell (AP-0 0.7).
+    await expect(page).toHaveURL(`${ADMIN_APP}/tauler`);
     await expect(page.getByRole('heading').first()).toBeVisible();
 
     await audit(page, testInfo);

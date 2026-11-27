@@ -43,8 +43,10 @@
       </span>
       @if (!isRail) {
         <span class="nav-id">
-          <span class="nav-heading">{{ heading() }}</span>
-          <span class="nav-subheading">{{ subheading() }}</span>
+          <!-- &ngsp; keeps the space Angular strips between the two lines: without it the visible
+               text reads «El LlevatEco Admin», which the name does not contain (WCAG 2.5.3). -->
+          <span class="nav-heading">{{ heading() }}</span
+          >&ngsp;<span class="nav-subheading">{{ subheading() }}</span>
         </span>
         <mat-icon aria-hidden="true" class="nav-fold">left_panel_close</mat-icon>
       }

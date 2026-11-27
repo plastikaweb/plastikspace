@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`ECO_ADMIN_APP_NAME` and `ECO_ADMIN_PLATFORM_NAME`** in `@plastik/eco-admin/entities`, in place of its placeholder: the page title, the auth screens and the rail read the app's names from one place (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
 - **eco-admin translations** (`ca`, `es`): `shell.nav.*`, `shell.topBar.*`, `shell.account.*` and `shared.translation.selectLanguage` (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
 
+### Fixed
+
+- **eco-admin shell buttons named after what they show** (WCAG 2.5.3, found by the eco a11y suite): the account button's name starts with the user's initials, and the navigation header keeps the space between «El Llevat» and «Eco Admin» that Angular stripped. The suite's sign-in check now expects `/tauler` (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+
 ### Changed
 
 - **eco-admin provisional view**: it renders inside the shell, headed with the section's name, and loses its sign-out button to the account menu (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
