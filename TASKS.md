@@ -52,7 +52,7 @@
 | **META-21** ✅ | Prune Claude memory: workarounds become fixes, stale entries go | Low | `123kjkdqv3b` |
 | **META-22** ✅ | Skill evals: measure that the daily skills are actually followed | Low | `123kjkdqv3d` |
 | **META-23** ✅ | `task-audit` skill: pre-PR review of feature-sized branches | Low | `123kjkdqv3e` |
-| **META-24** 📋 | Portable setup playbook: config, security and automation, first applied to NewWebSite | Low | `123kjkdqv3f` |
+| **META-24** ✅ | Portable setup playbook: config, security and automation, first applied to NewWebSite | Low | `123kjkdqv3f` |
 | **META-25** ✅ | ESLint 10 with flat config, on the current Nx 22.7 | Normal | `123kjkdqv9f` |
 | **META-26** ✅ | Nx 22.7 → 23 → 24.0.x with `nx migrate`, plus the legacy `nx.json` cleanup | Normal | `123kjkdqv9g` |
 | **META-27** ✅ | Remove Verdaccio: the root `local-registry` target, its config and the dependency | Low | `123kjkdqwqp` |
@@ -156,7 +156,7 @@ ClickUp `123kjkdqv3e`. Done 2026-11-24 (PR #1610, `4176c74a`). The `task-audit` 
 
 ### META-24 — Reusable Claude Code base
 
-ClickUp `123kjkdqv3f`. Redefined by the owner 2026-11-27: not a plugin or a template repo, which would carry only the Claude Code part or tie each piece to Nx, but a playbook of what this repo applies (config, security, automation, performance), each piece with the failure it prevents, its cost and how portable it is (universal, Angular, Nx, this repo only). First target: NewWebSite, a standard Angular repo with no Nx. A kit of copyable files waits for a second repo that uses it; a plugin, for the Claude Code part only, if two repos ever share it.
+ClickUp `123kjkdqv3f`. Redefined by the owner 2026-11-27: not a plugin or a template repo, which would carry only the Claude Code part or tie each piece to Nx, but a playbook of what this repo applies (config, security, automation, performance), each piece with the failure it prevents, its cost and how portable it is (universal, Angular, Nx, this repo only). First target: NewWebSite, a standard Angular repo with no Nx. A kit of copyable files waits for a second repo that uses it; a plugin, for the Claude Code part only, if two repos ever share it. Done 2026-11-27: the playbook is `docs/setup-playbook.md` in NewWebSite (eight items, from security headers to sandbox exclusions); applying it is NewWebSite's work, not this repo's.
 
 ### META-25 — ESLint 10 with flat config
 
@@ -248,7 +248,7 @@ ClickUp `123kjkdr4vz`. Found during META-40: `yarn plastikaweb:a11y` runs Pa11y 
 
 | Version | Date | Notes |
 | --- | --- | --- |
-| 1.25 | 2026-11-27 | **META-08** (`123kjkdpqjr`) — META-32 ✅ (#1633), META-33 ✅ (#1635), META-36 ✅ (#1632), META-41 ✅ (#1634). META-24 redefined as a portable setup playbook, first for NewWebSite. META-06: Phase 2 table refreshed, two owner rulings. |
+| 1.25 | 2026-11-27 | **META-08** (`123kjkdpqjr`) — META-32 ✅ (#1633), META-33 ✅ (#1635), META-36 ✅ (#1632), META-41 ✅ (#1634). META-24 ✅ redefined as a portable setup playbook and delivered to NewWebSite. META-06: Phase 2 table refreshed, two owner rulings. |
 | 1.24 | 2026-11-25 | **META-08** (`123kjkdpqjr`) — META-40 ✅ (PRs #1624, #1625, #1626); its findings filed as eco-store A11Y-026 to A11Y-029. New **META-41** (`123kjkdr4vz`): `plastikaweb:a11y` has no config. |
 | 1.23 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-40 🔄: PRs 1 and 2 merged; PR 3 moves eco-admin's e2e from Cypress to Playwright after the owner changed eco-admin REQUIREMENTS §6. |
 | 1.22 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-40 🔄: PR 1 adds the Playwright and axe suite of the eco apps next to Pa11y; its findings and the change to PR 2 (eco-admin keeps Cypress) are in its section. |
