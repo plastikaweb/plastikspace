@@ -125,5 +125,44 @@
     "translation": {
       "selectLanguage": "Seleccionar idioma"
     }
+  },
+  "cycles": {
+    "status": {
+      "draft": "Borrador",
+      "open": "Abierto",
+      "processing": "En proceso",
+      "completed": "Completado",
+      "closed": "Cerrado"
+    }
+  },
+  "payments": {
+    "status": {
+      "unpaid": "No pagado",
+      "paid": "Pagado",
+      "refunded": "Reembolsado",
+      "failed": "Fallido"
+    }
+  },
+  "members": {
+    "status": {
+      "trial": "Prueba",
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "suspended": "Suspendido"
+    }
+  },
+  "requests": {
+    "status": {
+      "pending": "Pendiente",
+      "processed": "Procesada",
+      "dismissed": "Descartada"
+    }
+  },
+  "allowlist": {
+    "status": {
+      "pending": "Pendiente",
+      "consumed": "Usada",
+      "revoked": "Revocada"
+    }
   }
 }

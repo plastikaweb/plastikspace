@@ -125,5 +125,44 @@
     "translation": {
       "selectLanguage": "Seleccionar idioma"
     }
+  },
+  "cycles": {
+    "status": {
+      "draft": "Esborrany",
+      "open": "Obert",
+      "processing": "En procés",
+      "completed": "Completat",
+      "closed": "Tancat"
+    }
+  },
+  "payments": {
+    "status": {
+      "unpaid": "No pagada",
+      "paid": "Pagada",
+      "refunded": "Reemborsada",
+      "failed": "Fallida"
+    }
+  },
+  "members": {
+    "status": {
+      "trial": "Prova",
+      "active": "Actiu",
+      "inactive": "Inactiu",
+      "suspended": "Suspès"
+    }
+  },
+  "requests": {
+    "status": {
+      "pending": "Pendent",
+      "processed": "Processada",
+      "dismissed": "Descartada"
+    }
+  },
+  "allowlist": {
+    "status": {
+      "pending": "Pendent",
+      "consumed": "Consumida",
+      "revoked": "Revocada"
+    }
   }
 }

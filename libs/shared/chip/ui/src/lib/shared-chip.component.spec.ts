@@ -42,6 +42,15 @@ describe('SharedChipComponent', () => {
     expect(element.className).toContain('bg-success-50');
   });
 
+  it('should colour the info variant with the info palette', () => {
+    fixture.componentRef.setInput('type', 'info');
+    fixture.detectChanges();
+    const element: HTMLElement = fixture.nativeElement.querySelector('span');
+
+    expect(element.classList).toContain('chip-info');
+    expect(element.classList).toContain('bg-info-50');
+  });
+
   it('should colour the tertiary variant with Material roles only', () => {
     fixture.componentRef.setInput('type', 'tertiary');
     fixture.detectChanges();

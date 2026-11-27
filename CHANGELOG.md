@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-27] - Status chips for every eco state machine (AP-0 0.6c, AREF-10)
+
+### Added
+
+- **Status chip maps in `@plastik/eco/entities`** for cycle, payment, membership, request and allowlist states: label key, icon and colour per state from the frozen `Eco Admin DS` §06, built by `ecoStatusChipMaps` from one config per family. A spec checks the cycle, payment and membership states against `pb_schema.json` (AP-0 0.6c, [#123kjkdp4ku](https://app.clickup.com/t/123kjkdp4ku)).
+- **`EcoStoreOrderCycleStatus`**, **`EcoTenantRequestStatus`** and **`EcoMemberAllowlistStatus`**: the first types for `order_cycles`, `tenant_requests` and `member_allowlist` (AP-0 0.6c, [#123kjkdp4ku](https://app.clickup.com/t/123kjkdp4ku)).
+- **`info` type of `plastik-shared-chip`**, on the `--info-*` palette, for the DS's blue states (AP-0 0.6c, [#123kjkdp4ku](https://app.clickup.com/t/123kjkdp4ku)).
+- **eco-admin translations** (`ca`, `es`): `cycles.status.*`, `payments.status.*`, `members.status.*`, `requests.status.*`, `allowlist.status.*` (AP-0 0.6c, [#123kjkdp4ku](https://app.clickup.com/t/123kjkdp4ku)).
+
 ## [2026-11-27] - Eco Admin: application shell (AP-0 0.7, part 2)
 
 ### Added

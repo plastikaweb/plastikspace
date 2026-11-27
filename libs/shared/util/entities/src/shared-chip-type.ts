@@ -1,1 +1,8 @@
-export type SharedChipType = 'primary' | 'success' | 'warning' | 'error' | 'neutral' | 'tertiary';
+export type SharedChipType =
+  | 'primary'
+  | 'success'
+  | 'warning'
+  | 'error'
+  | 'neutral'
+  | 'tertiary'
+  | 'info';

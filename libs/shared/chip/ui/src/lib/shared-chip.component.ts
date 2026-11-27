@@ -58,6 +58,10 @@ export class SharedChipComponent {
         'chip-success bg-success-50 text-success-800 border-success-400 dark:bg-success-700 dark:text-success-50 dark:border-success-600',
       warning:
         'chip-warning bg-warning-50 text-warning-800 border-warning-400 dark:bg-warning-700 dark:text-warning-50 dark:border-warning-600',
+      // The eco admin's state families use it (DESIGN-BRIEF §3.4): a trial, a refund, a cycle in
+      // progress, an invitation not used yet.
+      // eslint-disable-next-line id-denylist -- `info` is the chip type's name in the design system
+      info: 'chip-info bg-info-50 text-info-800 border-info-400 dark:bg-info-700 dark:text-info-50 dark:border-info-600',
       error:
         'chip-error bg-error-50 text-error-800 border-error-400 dark:bg-error-700 dark:text-error-50 dark:border-error-600',
       neutral:
