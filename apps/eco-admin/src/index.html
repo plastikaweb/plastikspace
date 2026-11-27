@@ -40,8 +40,9 @@
     </style>
 
     <!-- Applies the stored theme before the first paint, so a dark-theme user never sees a light flash.
-         The two colors are the page background (`--eco-admin-page-background`): no stylesheet exists
-         yet to read them from. Once the app runs, the theme control reads the color from the stylesheet. -->
+         The two colors are the page background, the values of `surface-container-low` (light) and
+         `surface-container-lowest` (dark) in eco_tokens: no stylesheet exists yet to read them from.
+         Once the app runs, the theme control reads the color from the stylesheet. -->
     <script>
       (function () {
         let theme = null;
@@ -53,11 +54,11 @@
         let color = '#f2f5ea';
         if (theme === 'dark') {
           document.documentElement.classList.add('dark');
-          color = '#11140e';
+          color = '#151812';
         } else if (theme === 'light') {
           document.documentElement.classList.add('light');
         } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          color = '#11140e';
+          color = '#151812';
         }
         const meta = document.createElement('meta');
         meta.name = 'theme-color';
@@ -69,7 +70,7 @@
     <!-- The icon_names list is alphabetical and holds only the icons the app renders. -->
     <link
       rel="preload"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block&icon_names=arrow_back,check,check_circle,construction,dark_mode,desktop_mac,eco,error,how_to_reg,info,key,light_mode,lock_reset,mail,visibility,visibility_off,warning"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block&icon_names=admin_panel_settings,arrow_back,autorenew,category,check,check_circle,close,construction,corporate_fare,dark_mode,desktop_mac,eco,error,grocery,groups,home,how_to_reg,info,key,language,left_panel_close,left_panel_open,light_mode,local_shipping,lock_reset,logout,mail,monitoring,public,receipt_long,storefront,visibility,visibility_off,warning"
       as="style"
       type="text/css"
       onload="
@@ -79,7 +80,7 @@
     <noscript>
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block&icon_names=arrow_back,check,check_circle,construction,dark_mode,desktop_mac,eco,error,how_to_reg,info,key,light_mode,lock_reset,mail,visibility,visibility_off,warning" />
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block&icon_names=admin_panel_settings,arrow_back,autorenew,category,check,check_circle,close,construction,corporate_fare,dark_mode,desktop_mac,eco,error,grocery,groups,home,how_to_reg,info,key,language,left_panel_close,left_panel_open,light_mode,local_shipping,lock_reset,logout,mail,monitoring,public,receipt_long,storefront,visibility,visibility_off,warning" />
     </noscript>
   </head>
   <body class="mat-typography">

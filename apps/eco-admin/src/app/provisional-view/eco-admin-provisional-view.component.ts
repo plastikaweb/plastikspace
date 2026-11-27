@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
-import { ECO_ADMIN_LOGIN_URL } from '@plastik/eco-admin/auth/data-access';
+
+/** The heading when the route names no section. */
+const FALLBACK_TITLE_KEY = 'shell.placeholder.title';
 
 /**
- * What a signed-in administrator sees until the application shell lands (AP-0 0.7, second part).
- *
- * It is a whole page with its own main landmark, and its only action is to close the session,
- * so the login screen can be reached again without clearing the browser storage by hand.
+ * What every entry of the side navigation shows until its view is built: the section's name and a
+ * line saying it is not available yet. It renders inside the shell's main landmark, so it carries
+ * only the heading of the page.
  */
 @Component({
   selector: 'eco-admin-provisional-view',
@@ -19,14 +19,6 @@ import { ECO_ADMIN_LOGIN_URL } from '@plastik/eco-admin/auth/data-access';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EcoAdminProvisionalViewComponent {
-  readonly #router = inject(Router);
-  readonly #store = inject(pocketBaseUserProfileStore);
-
-  /**
-   * Closes the session and goes back to the login screen.
-   */
-  protected logout(): void {
-    this.#store.logout();
-    void this.#router.navigateByUrl(ECO_ADMIN_LOGIN_URL);
-  }
+  /** The route's title, which is the i18n key of its rail label. */
+  protected readonly titleKey = inject(ActivatedRoute).snapshot.title ?? FALLBACK_TITLE_KEY;
 }

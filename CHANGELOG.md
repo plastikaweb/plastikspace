@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-27] - Eco Admin: application shell (AP-0 0.7, part 2)
+
+### Added
+
+- **eco-admin application shell**, in the new library `@plastik/eco-admin/layout`: the side navigation, the top bar and the main landmark of every signed-in view. From 976 px up the rail is 256 px, or 72 px with icons and tooltips, remembered per user; it loads at its final width and only slides when the user folds or expands it. Below, it stays at 72 px and «menu» opens the navigation as Material's `mat-sidenav` in `over` mode, a modal dialog closed by Escape, the scrim, its close button or a swipe, with the focus back on «menu». «menu» is the rail's header: the mark and the panel's names as one button, with a fold icon at its end, or the mark alone in the folded rail. The top bar carries the title of the view, the shared language and theme menus and the account menu with «Tanca la sessió»; on a phone-sized bar its gaps close so the account menu always fits (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+- **Platform rail for global administrators**: three entries, a rail that stays dark in both themes, painted with Material roles under `color-scheme: dark`, headed «Eco Platform · Superadmin»; the top bar has no SUPERADMIN chip, and the rail no scope note (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+- **The two rails as data** in `@plastik/eco-admin/layout-config`: `ECO_ADMIN_TENANT_NAV`, `ECO_ADMIN_PLATFORM_NAV` and `EcoAdminNavigation`, which picks the rail by role and hides Cicles while the tenant has no cycles section (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+- **eco-admin routes for every section**: `/tauler`, `/sol-licituds`, `/socis`, `/comandes`, `/lliuraments`, `/cicles`, `/productes`, `/categories`, `/botiga` and `/estadistiques` for a tenant administrator, `/cooperatives`, `/catalegs` and `/idiomes` for a global one, each on a provisional view titled with its section. `/` and any unknown path go to the home of the role, a role is sent home from the other's sections, and the session is checked again on every move between sections, so one that expired goes to the login with its `returnUrl` (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+- **`SwipeToCloseDirective`** (`plastikSwipeToClose`) in the new library `@plastik/shared/util/swipe-to-close`: a swipe to the left closes a panel that slides in from the left, such as a `mat-sidenav` in `over` mode, which Material closes on Escape and on its backdrop only. The panel follows the finger, closes past `swipeCloseThreshold` (80 px by default) and slides back otherwise; a vertical drag stays a scroll. The slide back is a Web Animation, so `mat-drawer` never takes it for the end of its own animation. eco-admin's drawer uses it; eco-store's mobile sidenav is the same case and does not yet (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+- **`ECO_ADMIN_APP_NAME` and `ECO_ADMIN_PLATFORM_NAME`** in `@plastik/eco-admin/entities`, in place of its placeholder: the page title, the auth screens and the rail read the app's names from one place (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+- **eco-admin translations** (`ca`, `es`): `shell.nav.*`, `shell.topBar.*`, `shell.account.*` and `shared.translation.selectLanguage` (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+
+### Fixed
+
+- **eco-admin section routes written out** in `app.routes.ts` instead of built from the rails, which `tools/feature-map.cjs` could not read (CI `feature-map:check`). A route spec checks they match the rails, and the map now gives each section the one role its guard lets in (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+- **eco-admin shell buttons named after what they show** (WCAG 2.5.3, found by the eco a11y suite): the account button's name starts with the user's initials, and the navigation header keeps the space between «El Llevat» and «Eco Admin» that Angular stripped. The suite's sign-in check now expects `/tauler` (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+
+### Changed
+
+- **eco-admin provisional view**: it renders inside the shell, headed with the section's name, and loses its sign-out button to the account menu (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+- **eco-admin Material Symbols subset** (`index.html`): it lists the icons of the shell, which otherwise rendered as their names (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+- **eco-admin paints only with Material roles**: `--eco-admin-page-background` and `--eco-admin-on-surface-muted`, the last two fixed colours of `_base.scss`, are gone. The page is `surface-container-low` in light, as before, and `surface-container-lowest` in dark (#151812, one step lighter than #11140e; the pre-paint script of `index.html` follows). Muted text and the leading icon of every eco field are `on-surface-variant`, which closes the point about that variable left open in [#123kjkdqcee](https://app.clickup.com/t/123kjkdqcee) (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+- **eco-admin REQUIREMENTS v0.4.52 and TASKS v0.1.156**: the shell is the admin's own library, not `core/cms-layout`; row 0.7 records part 2, its departures and what waits (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+
 ## [2026-11-27] - Claude Code sessions get the Nx env and a sandbox exclusion list (META-33)
 
 ### Changed

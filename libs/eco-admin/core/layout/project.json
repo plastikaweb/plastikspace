@@ -1,0 +1,10 @@
+{
+  "name": "eco-admin-layout",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/eco-admin/core/layout/src",
+  "prefix": "eco-admin",
+  "projectType": "library",
+  "tags": ["scope:eco-admin", "type:feature"],
+  "// targets": "to see all targets run: nx show project eco-admin-layout --web",
+  "targets": {}
+}

@@ -6,9 +6,8 @@
    draws its fields this way by loading the partial from its global stylesheet, and sets how tall a
    field is with `--mat-field-height` (48px when it sets nothing).
 
-   The colour of the leading icon is a token only eco-admin defines so far; the storefront falls
-   back to Material's own. */
+   The leading icon takes Material's role for secondary content in both apps. */
 @include input.material-form-field(
   $height: var(--mat-field-height, 48px),
-  $leading-icon-color: var(--eco-admin-on-surface-muted, var(--mat-sys-on-surface-variant))
+  $leading-icon-color: var(--mat-sys-on-surface-variant)
 );

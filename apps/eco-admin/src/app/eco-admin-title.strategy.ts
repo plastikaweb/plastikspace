@@ -3,11 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Title } from '@angular/platform-browser';
 import { RouterStateSnapshot, TitleStrategy } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-
-/**
- * The product name shown in the browser tab. It is a brand name, so it is not translated.
- */
-export const ECO_ADMIN_APP_NAME = 'Eco Admin';
+import { ECO_ADMIN_APP_NAME } from '@plastik/eco-admin/entities';
 
 /**
  * Sets the document title to "{translated route title} · Eco Admin".

@@ -1,0 +1,50 @@
+@let name = userName();
+<!-- The name starts with the initials the button shows (WCAG 2.5.3); the dots drawn while the
+     name is unknown are left out. -->
+@let accountLabel =
+  name
+    ? initials() + ', ' + ('shell.account.menuLabelNamed' | translate: { name })
+    : ('shell.account.menuLabel' | translate);
+
+<header class="top-bar">
+  <span class="top-bar-title">{{ titleKey() ? (titleKey() | translate) : '' }}</span>
+
+  <span class="top-bar-spacer"></span>
+
+  @if (languages.length > 1) {
+    <plastik-language-switcher
+      [current]="currentLanguage()"
+      [languages]="languages"
+      (languageChange)="onLanguageChange($event)" />
+  }
+
+  <plastik-mat-theme-toggle />
+
+  <button
+    class="top-bar-account"
+    matIconButton
+    type="button"
+    [attr.aria-label]="accountLabel"
+    [matMenuTriggerFor]="accountMenu">
+    <span aria-hidden="true" class="top-bar-avatar">{{ initials() }}</span>
+  </button>
+
+  <mat-menu #accountMenu="matMenu" xPosition="before">
+    <div class="min-w-[250px] px-4 pt-1.5 pb-2.5">
+      <div class="text-[0.875rem] leading-5 font-medium">
+        {{ name || ('shell.account.menuLabel' | translate) }}
+      </div>
+      <div class="text-on-surface-variant text-xs leading-[1.1rem]">
+        {{ roleKey() | translate }}
+        @if (variant() === 'tenant' && tenantName()) {
+          · {{ tenantName() }}
+        }
+      </div>
+    </div>
+    <mat-divider />
+    <button mat-menu-item type="button" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      <span>{{ 'shell.account.logout' | translate }}</span>
+    </button>
+  </mat-menu>
+</header>

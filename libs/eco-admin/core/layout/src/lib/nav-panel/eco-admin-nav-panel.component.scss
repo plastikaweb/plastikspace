@@ -1,0 +1,262 @@
+// Measures of the frozen `00 Components/Rail`, `00 Components/Calaix mòbil` and the platform rail of
+// `10 Superadmin/Vista Superadmin` (round 40.18). The rem values resolve against the admin's 15px
+// root, as in the mocks. Every colour is a Material role from `eco_tokens`.
+
+:host {
+  display: block;
+  flex: none;
+  box-sizing: border-box;
+  width: 256px;
+  height: 100%;
+  overflow: hidden;
+  background: var(--mat-sys-surface-container-low);
+
+  --eco-admin-nav-row: 40px;
+  --eco-admin-nav-icon: 20px;
+  --eco-admin-nav-label: 0.875rem;
+}
+
+:host(.is-rail) {
+  width: 72px;
+}
+
+// Never on load: the first width is the final one, even when this stylesheet arrives after the element.
+:host(.is-animated) {
+  transition: width 0.2s ease;
+}
+
+:host(.is-drawer) {
+  width: 290px;
+
+  --eco-admin-nav-row: 48px;
+  --eco-admin-nav-icon: 21px;
+  --eco-admin-nav-label: 0.9rem;
+}
+
+.nav-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0.75rem;
+  overflow: hidden;
+  color: var(--mat-sys-on-surface);
+}
+
+:host(.is-rail) .nav-body {
+  align-items: center;
+  gap: 6px;
+}
+
+:host(.is-drawer) .nav-body {
+  overflow-y: auto;
+}
+
+.nav-head {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0.75rem;
+  padding: 0.4rem 0.35rem;
+  white-space: nowrap;
+}
+
+:host(.is-rail) .nav-head {
+  justify-content: center;
+}
+
+// The header as «menu»: a plain button reset to the header's look, with a state layer on hover and
+// the focus ring of `core_a11y`.
+.nav-head.is-toggle {
+  align-self: stretch;
+  border: 0;
+  border-radius: 9999px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+
+  &:hover {
+    background: color-mix(in srgb, var(--mat-sys-on-surface) 8%, transparent);
+  }
+}
+
+:host(.is-rail) .nav-head.is-toggle {
+  align-self: center;
+  padding: 0.25rem;
+}
+
+.nav-fold {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-left: auto;
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 20px;
+}
+
+// Folded, the mark alone is the button: it shows what it does under the pointer or the focus.
+.nav-mark-action {
+  display: none !important;
+}
+
+:host(.is-rail) .nav-head.is-toggle:is(:hover, :focus-visible) {
+  .nav-mark-icon {
+    display: none !important;
+  }
+
+  .nav-mark-action {
+    display: inline-block !important;
+  }
+}
+
+.nav-mark {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+
+  mat-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+  }
+}
+
+.nav-id {
+  min-width: 0;
+}
+
+.nav-heading,
+.nav-subheading {
+  display: block;
+  overflow: hidden;
+  font-weight: 500;
+  text-overflow: ellipsis;
+}
+
+.nav-heading {
+  font-size: 1rem;
+  line-height: 1.3rem;
+}
+
+.nav-subheading {
+  font-size: 0.688rem;
+  line-height: 1rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.nav-close {
+  margin-left: auto;
+
+  --mat-icon-button-state-layer-size: 44px;
+}
+
+// A flex column and not `display: contents`, which drops the landmark in some browsers.
+nav,
+.nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: inherit;
+}
+
+.nav-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+:host(.is-rail) nav,
+:host(.is-rail) .nav-list {
+  align-items: center;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+  height: var(--eco-admin-nav-row);
+  padding: 0 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  color: var(--mat-sys-on-surface-variant);
+  font-size: var(--eco-admin-nav-label);
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+
+  mat-icon {
+    flex: none;
+    width: var(--eco-admin-nav-icon);
+    height: var(--eco-admin-nav-icon);
+    font-size: var(--eco-admin-nav-icon);
+  }
+
+  &:hover {
+    background: var(--mat-sys-surface-container-high);
+  }
+
+  &.is-active {
+    border-color: var(--mat-sys-secondary);
+    background: var(--mat-sys-secondary-container);
+    color: var(--mat-sys-on-secondary-container);
+  }
+}
+
+:host(.is-rail) .nav-item {
+  justify-content: center;
+  width: 40px;
+  padding: 0;
+}
+
+// The platform's rail is dark in both themes (Vista Superadmin). Only its fill follows the page:
+// the mock's light fill is neutral-variant 20, and in the dark theme it sits below the content. Inside,
+// `color-scheme: dark` makes every `light-dark()` role of `eco_tokens` take its dark value, which is
+// what the mock draws: on-surface, outline, on-surface-variant, primary and on-primary-container.
+:host(.is-platform) {
+  background: light-dark(var(--mat-sys-neutral-variant20), var(--mat-sys-surface-container-lowest));
+}
+
+:host(.is-platform) .nav-body {
+  color-scheme: dark;
+
+  .nav-head {
+    margin-bottom: 0.35rem;
+  }
+
+  .nav-mark {
+    background: var(--mat-sys-primary);
+    color: var(--mat-sys-on-primary);
+  }
+
+  .nav-subheading {
+    color: var(--mat-sys-outline);
+  }
+
+  .nav-item {
+    &:hover {
+      background: color-mix(in srgb, var(--mat-sys-on-surface) 8%, transparent);
+    }
+
+    &.is-active {
+      border-color: transparent;
+      background: color-mix(in srgb, var(--mat-sys-primary) 22%, transparent);
+      color: var(--mat-sys-on-primary-container);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host(.is-animated) {
+    transition: none;
+  }
+}

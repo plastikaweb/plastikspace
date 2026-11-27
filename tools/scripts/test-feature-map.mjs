@@ -472,9 +472,16 @@ check(
     storePage('/cistella/enviament')?.access === 'signed-in' &&
     storePage('/botiga')?.access === 'public' &&
     !storePage('/') &&
-    !storePage('/perfil') &&
-    real.apps['eco-admin'].pages.find(page => page.path === '/')?.roles?.includes('TENANT_ADMIN'),
+    !storePage('/perfil'),
   JSON.stringify(real.apps['eco-store'].pages.map(page => [page.path, page.access]))
+);
+const adminPage = pagePath => real.apps['eco-admin'].pages.find(page => page.path === pagePath);
+check(
+  'the real tree: each eco-admin section names the one role its guard lets in',
+  JSON.stringify(adminPage('/tauler')?.roles) === JSON.stringify(['TENANT_ADMIN']) &&
+    JSON.stringify(adminPage('/cooperatives')?.roles) === JSON.stringify(['GLOBAL_ADMIN']) &&
+    adminPage('/accedir')?.access === 'anonymous',
+  JSON.stringify(real.apps['eco-admin'].pages.map(page => [page.path, page.access, page.roles]))
 );
 
 if (failures.length > 0) {

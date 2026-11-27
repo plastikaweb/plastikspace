@@ -36,7 +36,14 @@
 
   body {
     margin: 0;
-    background: var(--eco-admin-page-background);
+    /* The page of the admin mocks, in Material roles: exact in light (#f2f5ea), one step lighter
+       than the mock's #11140e in dark, which no role gives. The theme control reads the browser bar
+       colour (`theme-color`) from this background; the pre-paint script in index.html repeats the
+       two values for the moment before the stylesheet exists. Change both together. */
+    background: light-dark(
+      var(--mat-sys-surface-container-low),
+      var(--mat-sys-surface-container-lowest)
+    );
     color: var(--mat-sys-on-surface);
   }
 
@@ -50,16 +57,8 @@
   --focus-ring-color: var(--mat-sys-primary);
   --focus-ring-width: 2px;
 
-  /* Page background and muted text of the admin mocks. Neither has a Material role in
-     `eco_tokens`, so they are admin-owned. The theme control reads the browser bar color
-     (`theme-color`) from this background; only the pre-paint script in index.html repeats the
-     pair, for the moment before the stylesheet exists. Change both together. */
-  /* eco:check allow raw-hex: admin mock colour with no Material role in eco_tokens (see above) */
-  --eco-admin-page-background: light-dark(#f2f5ea, #11140e);
-
-  /* What a card is painted with over that page. No single Material surface role stands out in both
-     schemes: `surface-container-low` is the page colour itself in light, and
-     `surface-container-lowest` is one step from it in dark. */
+  /* What a card is painted with over that page: the two roles of the page, the other way round, so
+     the card stands one step apart in both schemes. */
   --eco-admin-card-background: light-dark(
     var(--mat-sys-surface-container-lowest),
     var(--mat-sys-surface-container-low)
@@ -67,9 +66,6 @@
 
   /* The card of the auth screens takes the panel's card colour (`eco_auth_card`, `libs/eco/styles`). */
   --eco-auth-card-background: var(--eco-admin-card-background);
-
-  /* eco:check allow raw-hex: admin mock colour with no Material role in eco_tokens (as the page background above) */
-  --eco-admin-on-surface-muted: light-dark(#5a614f, #aab29d);
 
   /* Touch-sized field height of the admin design system. */
   --mat-field-height: 48px;

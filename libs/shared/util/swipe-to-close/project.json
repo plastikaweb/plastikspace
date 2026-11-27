@@ -1,0 +1,10 @@
+{
+  "name": "swipe-to-close-util",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/util/swipe-to-close/src",
+  "prefix": "plastik",
+  "projectType": "library",
+  "tags": ["scope:shared", "type:util"],
+  "// targets": "to see all targets run: nx show project swipe-to-close-util --web",
+  "targets": {}
+}

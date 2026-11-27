@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
-import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
-import { mockPocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access/testing';
 import { axe } from 'vitest-axe';
 
 import { EcoAdminProvisionalViewComponent } from './eco-admin-provisional-view.component';
@@ -11,41 +9,42 @@ describe('EcoAdminProvisionalViewComponent', () => {
   let fixture: ComponentFixture<EcoAdminProvisionalViewComponent>;
   let host: HTMLElement;
 
-  beforeEach(async () => {
-    mockPocketBaseUserProfileStore.logout.mockReset();
-
+  const render = async (title: string | undefined): Promise<void> => {
     await TestBed.configureTestingModule({
       imports: [EcoAdminProvisionalViewComponent],
       providers: [
-        provideRouter([]),
         provideTranslateService(),
-        { provide: pocketBaseUserProfileStore, useValue: mockPocketBaseUserProfileStore },
+        { provide: ActivatedRoute, useValue: { snapshot: { title } } },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(EcoAdminProvisionalViewComponent);
     host = fixture.nativeElement;
     fixture.detectChanges();
+  };
+
+  it('heads the page with the section the route names', async () => {
+    await render('shell.nav.socis');
+
+    expect(host.querySelector('h1')?.textContent).toContain('shell.nav.socis');
+    expect(host.querySelector('p')?.textContent).toContain('shell.placeholder.body');
   });
 
-  it('keeps the landmark the skip link jumps to', () => {
-    const main = host.querySelector('main');
+  it('falls back to a generic heading when the route names no section', async () => {
+    await render(undefined);
 
-    expect(main?.id).toBe('mainContent');
-    expect(main?.getAttribute('tabindex')).toBe('-1');
     expect(host.querySelector('h1')?.textContent).toContain('shell.placeholder.title');
   });
 
-  it('closes the session and goes back to the login screen', () => {
-    const navigateByUrl = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
+  it('leaves the main landmark to the shell', async () => {
+    await render('shell.nav.tauler');
 
-    host.querySelector<HTMLButtonElement>('.provisional__logout')?.click();
-
-    expect(mockPocketBaseUserProfileStore.logout).toHaveBeenCalledTimes(1);
-    expect(navigateByUrl).toHaveBeenCalledWith('/accedir');
+    expect(host.querySelector('main')).toBeNull();
   });
 
   it('has no accessibility violations', async () => {
+    await render('shell.nav.tauler');
+
     expect(await axe(host)).toHaveNoViolations();
   });
 });

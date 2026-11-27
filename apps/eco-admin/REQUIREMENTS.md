@@ -2,7 +2,7 @@
 
 > Analysis & requirements document for **eco-admin**, the internal administration app for the Eco Store multi-tenant SaaS. Companion documents: `DESIGN-BRIEF.md` (design-system extension prompt) and `TASKS.md` (live backlog) — both derive from this file.
 
-**Document version:** 0.4.51 · 2026-11-24 · **Status: RATIFIED by Carlos on 2026-11-01** — scope, role model, MoSCoW and phase order are the plan of record; the ten decisions in §9 stay open, each gated by its own row
+**Document version:** 0.4.52 · 2026-11-27 · **Status: RATIFIED by Carlos on 2026-11-01** — scope, role model, MoSCoW and phase order are the plan of record; the ten decisions in §9 stay open, each gated by its own row
 
 **Sources.** No admin PRD exists. This document is derived from: `apps/eco-store/pocketbase/pb_schema.json` (as of 2026-08-10), `apps/eco-store/TASKS.md` v0.42, `apps/eco-store/BACKLOG.md` v0.42, and `apps/eco-store/CLAUDE.md`. Line references (`TASKS:L###`) point at eco-store's TASKS.md v0.42.
 
@@ -416,7 +416,6 @@ Verified inventory (2026-08-10). **~70% of a CRUD admin's infrastructure already
 | Table stack (definition/entities + Material component) | `@plastik/shared/table/entities`, `@plastik/shared/table/ui` (+ `@plastik/shared/formatters` — proven agnostic: nasa-images uses it) |
 | List shell (table + Formly filters, facade-driven) | `@plastik/core/list-view` |
 | Detail/edit form shell | `@plastik/core/detail-edit-view` |
-| CMS layout (header/sidenav/footer/user-menu, `VIEW_CONFIG` nav token) | `@plastik/core/cms-layout/*` — zero Firebase imports, verified |
 | PocketBase signal-store features (`withPocketBaseCrud` / `GetList` / `GetOne` + resolver + optimistic updates + notifications) | `@plastik/signal-state/pocketbase` over `@plastik/core/util/api-pocketbase` |
 | Auth (service, profile store, login/reset Formly configs, entities) | `@plastik/auth/pocketbase/data-access`, `@plastik/auth/entities`, `@plastik/auth/config/util` |
 | Forms (Formly feature + 13 Material custom types, incl. editable in-form table, color picker, img-loader) | `@plastik/shared/form/*` |
@@ -470,7 +469,7 @@ MoSCoW is embedded per requirement (§4). The phase order is ratified (2026-11-0
 
 | Phase | Content | Rationale | Est. |
 | --- | --- | --- | --- |
-| **AP-0 Foundation** | Scaffold app + scopes + CI; shell (`cms-layout` + role-partitioned nav); login (with `PARTNER` rejection) + role guard; refactoring batch AREF-01..06 + AREF-08 | Everything else stands on this; the AREF promotions are scheduled here, not discovered later | ~6d |
+| **AP-0 Foundation** | Scaffold app + scopes + CI; shell (own layout lib + role-partitioned nav); login (with `PARTNER` rejection) + role guard; refactoring batch AREF-01..06 + AREF-08 | Everything else stands on this; the AREF promotions are scheduled here, not discovered later | ~6d |
 | **AP-1 Members & requests** | AREQ (inbox, RGPD clock + derived lifecycle AREQ-09, resolution, in-app reply AREQ-07, Resolts AREQ-10) · AMBR (list, detail, transitions TRL-07/09, allowlist + CSV PRV-05a, deletion execution PRV-08) · consumes the eco-store hook `on_request_reply` (§5.6) | The only phase with a **legal deadline** attached; unblocks eco-store Phase 1/1b exit criteria; PRV-05a and TRL-07 are MUSTs assigned to eco-admin | ~9.5d |
 | **AP-2 Orders & cycles** | AORD (list, detail, transitions, payment, bulk, picking list) · ACYC (list, create, override) · ADSH v1 (cards over shipped modules) · delivery run AORD-09 (⛔ B-32, unestimated) | The weekly operating core; the missing `orders.status` actor; required before eco-store Phase 6 declares the cycle state machine "complete" | ~7d + AORD-09 |
 | **AP-3 Catalog** | APRD full CRUD + images · ACAT categories · tags read-only | Highest-volume console replacement | ~6d |
@@ -545,6 +544,7 @@ MoSCoW is embedded per requirement (§4). The phase order is ratified (2026-11-0
 
 | Version | Date | Changes |
 | --- | --- | --- |
+| 0.4.52 | 2026-11-27 | **The shell does not reuse `core/cms-layout` (AP-0 0.7, part 2).** Facts only — scope, MoSCoW and phase order are untouched, and the document stays ratified. §7.1 loses the «CMS layout» row: that library opens and closes a sidenav through an NgRx store and has no 72 px icon rail, no drawer and no role-partitioned navigation, so the frozen shell (`00 Components/Rail`, `Top bar`, `Calaix mòbil`) is built in `@plastik/eco-admin/layout`, with its navigation in `@plastik/eco-admin/layout-config` (Carlos, 2026-11-20). §8 AP-0 says «own layout lib» for «`cms-layout`». |
 | 0.4.51 | 2026-11-24 | **E2e and accessibility tooling** (§6), the owner's decision of 2026-11-24 (META-40, `123kjkdr20r`): the e2e of AMBR-07 and AORD-03 is Playwright, not Cypress, and the Playwright and axe suite replaces Pa11y. Scope, MoSCoW and phase order are untouched, and the document stays ratified. |
 | 0.4.50 | 2026-11-24 | **Accessibility target WCAG 2.2 AA** (§6), the owner's decision of 2026-11-24 for every app (META-21, `123kjkdqv3b`). Scope, MoSCoW and phase order are untouched, and the document stays ratified. |
 | 0.4.49 | 2026-11-11 | **AREF-03 delivered (AP-0 0.6); the last «GA selector» wording removed.** Facts only — scope, MoSCoW and phase order are untouched, and the document stays ratified. §7.2 AREF-03 names what shipped (`ecoAdminTenantContextStore` in `libs/eco-admin/core/tenant-context`: the tenant of a TENANT_ADMIN from the user record and the role, the continuous / Cicles answers, a wait guard) and is marked AP-0 ✅ (0.6); §7.3 layout: `tenant-context` reads DONE. **Three sentences still described the selector AQ-04 struck at round 17.2:** the AREF-03 row («selector-driven (GA) store»), the §6 Security row («the explicit tenant-selector context») and the AQ-04 residual note. The Security row keeps its rule — no implicit cross-tenant write — and now states it without a selector: a GLOBAL_ADMIN action names the tenant, the record opened from the Cooperatives list. The AQ-04 residual reads closed. TASKS.md 0.1.148 cites this version |
