@@ -31,7 +31,7 @@ The application is being built row by row (`TASKS.md`, phase AP-0). Today it has
 ## Quick Start
 
 1. **Start the backend**: `yarn eco-store:pocketbase:run` (the local PocketBase on `http://127.0.0.1:8090`).
-2. **Run the app**: `yarn eco-admin:serve`, then open `http://localhost:4204`.
+2. **Run the app**: `yarn eco-admin:serve`, then open `http://localhost:4204`. The script also runs `eco-admin:watch-scss`: the dev server does not rebuild the global stylesheet when a partial changes, so the watcher touches `src/styles/styles.scss` for it. `yarn nx run eco-admin:serve` starts the server alone.
 
 ## Development Commands
 
