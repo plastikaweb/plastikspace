@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-27] - The product chips are one list item each (A11Y-029)
+
+### Fixed
+
+- **The chips on the product page (ECO, NOVETAT, OFERTA) nested two list items:** the static `role="listitem"` filled the chip's `role` input and also stayed on its host element, so the chip's inner span was a list item inside another list item, not inside the list (WCAG 1.3.1, axe `aria-required-parent`). The product page now binds `[role]`, so only the span is a list item. The eco a11y suite no longer lists the chips as a known violation, and passes 33 of 33 ([#123kjkdr4vx](https://app.clickup.com/t/123kjkdr4vx)).
+
 ## [2026-11-25] - The terms note under the sign-in forms is readable (A11Y-027)
 
 ### Fixed

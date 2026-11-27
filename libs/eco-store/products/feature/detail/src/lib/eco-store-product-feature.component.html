@@ -26,8 +26,10 @@
     </div>
     <div class="flex flex-wrap gap-2" role="list">
       @for (tag of productTags; track tag.label) {
+        <!-- Bound, not a static attribute: a static `role` also lands on the host and nests a
+             second listitem around the chip's inner span (A11Y-029). -->
         <plastik-shared-chip
-          role="listitem"
+          [role]="'listitem'"
           [customClass]="'shadow-sm ' + tag.class"
           [icon]="tag.icon"
           [label]="tag.label | translate" />

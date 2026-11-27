@@ -11,11 +11,6 @@ const HEADER_NAMES: KnownViolation = {
   reason:
     'A11Y-028, 2.5.3: the desktop header logo, cart and user buttons are named apart from their text',
 };
-const PRODUCT_CHIPS: KnownViolation = {
-  rule: 'aria-required-parent',
-  target: /role="listitem" aria-label="(ECO|NOVETAT|OFERTA)"/,
-  reason: 'A11Y-029, 1.3.1: the product chips are list items whose list role never reaches them',
-};
 const RATING_LINK: KnownViolation = {
   rule: 'label-content-name-mismatch',
   target: /aria-label="\(124 valoracions\)"/,
@@ -56,7 +51,7 @@ test.describe('eco-store, signed out', () => {
     await expect(page.getByRole('heading', { name: 'Peres conferència' })).toBeVisible();
     await expect(page.getByRole('button', { name: /^Afegir( al cabàs)?$/ })).toBeVisible();
 
-    await audit(page, testInfo, [...STORE_KNOWN, PRODUCT_CHIPS, RATING_LINK]);
+    await audit(page, testInfo, [...STORE_KNOWN, RATING_LINK]);
   });
 
   test('the cart summary with a product in it', async ({ page }, testInfo) => {
