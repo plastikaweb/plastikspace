@@ -6,7 +6,7 @@
 > - Read one task with `yarn task <ID>`; check the docs with `yarn tasks:check`.
 > - The ClickUp ticket holds the full scope of each task. This file holds the row, the status and the order.
 
-**Document version:** 1.24 · **Last updated:** 2026-11-25
+**Document version:** 1.25 · **Last updated:** 2026-11-27
 
 ---
 
@@ -52,7 +52,7 @@
 | **META-21** ✅ | Prune Claude memory: workarounds become fixes, stale entries go | Low | `123kjkdqv3b` |
 | **META-22** ✅ | Skill evals: measure that the daily skills are actually followed | Low | `123kjkdqv3d` |
 | **META-23** ✅ | `task-audit` skill: pre-PR review of feature-sized branches | Low | `123kjkdqv3e` |
-| **META-24** 📋 | Reusable Claude Code base: private plugin + template repo | Low | `123kjkdqv3f` |
+| **META-24** 📋 | Portable setup playbook: config, security and automation, first applied to NewWebSite | Low | `123kjkdqv3f` |
 | **META-25** ✅ | ESLint 10 with flat config, on the current Nx 22.7 | Normal | `123kjkdqv9f` |
 | **META-26** ✅ | Nx 22.7 → 23 → 24.0.x with `nx migrate`, plus the legacy `nx.json` cleanup | Normal | `123kjkdqv9g` |
 | **META-27** ✅ | Remove Verdaccio: the root `local-registry` target, its config and the dependency | Low | `123kjkdqwqp` |
@@ -60,16 +60,16 @@
 | **META-29** ✅ | ESLint: make the private-fields rule fire (`ClassProperty` → `PropertyDefinition`) | Low | `123kjkdqzv8` |
 | **META-30** ✅ | Delete the 18 dead `jest.config.cts` files | Low | `123kjkdqzv9` |
 | **META-31** ✅ | `documentation/code-style.md`: match the ESLint rule list to `eslint.config.mjs` | Low | `123kjkdqzvb` |
-| **META-32** 📋 | `guard.sh`: commit message limits, temp paths, piped git and quoted PocketBase words checked before they bite | Low | `123kjkdr15p` |
-| **META-33** 📋 | Claude Code settings: the Nx env for worktrees and a sandbox exclusion list | Low | `123kjkdr15q` |
+| **META-32** ✅ | `guard.sh`: commit message limits, temp paths, piped git and quoted PocketBase words checked before they bite | Low | `123kjkdr15p` |
+| **META-33** ✅ | Claude Code settings: the Nx env for worktrees and a sandbox exclusion list | Low | `123kjkdr15q` |
 | **META-34** ✅ | Worktree bootstrap and per-worktree hooks | Low | `123kjkdr15t` |
 | **META-35** ✅ | Long runs survive: SSH keepalive, no idle sleep, no forwarded `--cache` in pre-push | Low | `123kjkdr15u` |
-| **META-36** 📋 | `eco-admin:watch-scss`: the dev server picks up changed SCSS partials | Low | `123kjkdr15v` |
+| **META-36** ✅ | `eco-admin:watch-scss`: the dev server picks up changed SCSS partials | Low | `123kjkdr15v` |
 | **META-37** ✅ | `eco-store:pb:sync` refuses to run without `POCKETBASE_ENV` | Normal | `123kjkdr15w` |
 | **META-38** ✅ | Trim root and eco-store `CLAUDE.md`: reference detail moves to the docs it belongs to | Low | `123kjkdr15x` |
 | **META-39** ✅ | WCAG 2.2 AA in practice: Pa11y checks `target-size`, audit of the new criteria, a new eco-store statement | Normal | `123kjkdr177` |
 | **META-40** ✅ | Per-screen a11y suite in Playwright with axe (WCAG 2.2), replacing Pa11y in eco-store and eco-admin | Low | `123kjkdr20r` |
-| **META-41** 📋 | `plastikaweb:a11y` points to a `.pa11yci.json` that does not exist | Low | `123kjkdr4vz` |
+| **META-41** ✅ | `plastikaweb:a11y` points to a `.pa11yci.json` that does not exist | Low | `123kjkdr4vz` |
 
 ### Order and dependencies
 
@@ -96,7 +96,7 @@
 
 ### META-06 — Task homes: one ClickUp list and one TASKS doc row per task
 
-ClickUp `123kjkdpqjq`. Phase 2 table written 2026-11-11 (`tmp/meta07/disposition.md`); Phase 3 (the moves) not started. Before Phase 3, revisit the placements that rest on "llecoop imports this library": llecoop is now discontinued and only has to keep compiling and passing its tests.
+ClickUp `123kjkdpqjq`. Phase 2 table written 2026-11-11 (`tmp/meta07/disposition.md`); refreshed 2026-11-27 (`tmp/meta07/refresh-2026-11-27.md`): 36 creates and 38 moves still apply, about 200 of the 216 doc fixes, all to be placed by content since every line moved. Owner rulings 2026-11-27: llecoop no longer counts as a non-eco consumer (llecoop-only tickets close instead of moving), and BUG-016's server-side limit splits into its own Eco Shared ticket. Phase 3 (creates, the docs PR, the moves) under way.
 
 ### META-08 — Standing ticket for task-doc maintenance PRs
 
@@ -156,7 +156,7 @@ ClickUp `123kjkdqv3e`. Done 2026-11-24 (PR #1610, `4176c74a`). The `task-audit` 
 
 ### META-24 — Reusable Claude Code base
 
-ClickUp `123kjkdqv3f`. Unblocked 2026-11-24: META-19 and META-23 merged. A private plugin (hooks, skills, CLAUDE.md skeleton) plus a template repo (Husky, lint-staged, ESLint profiles, CI).
+ClickUp `123kjkdqv3f`. Redefined by the owner 2026-11-27: not a plugin or a template repo, which would carry only the Claude Code part or tie each piece to Nx, but a playbook of what this repo applies (config, security, automation, performance), each piece with the failure it prevents, its cost and how portable it is (universal, Angular, Nx, this repo only). First target: NewWebSite, a standard Angular repo with no Nx. A kit of copyable files waits for a second repo that uses it; a plugin, for the Claude Code part only, if two repos ever share it.
 
 ### META-25 — ESLint 10 with flat config
 
@@ -188,11 +188,11 @@ ClickUp `123kjkdqzvb`. Merged 2026-11-23 (PR #1587, `edc1c5cf`). The "Lint rules
 
 ### META-32 — `guard.sh` hardening
 
-ClickUp `123kjkdr15p`. From the META-21 inventory. The guard checks five mistakes sessions now avoid from memory: PocketBase words inside quoted text (a hung agent), `eco-store:pocketbase:stop`, a commit message commitlint would reject after the whole pre-commit, `git commit -F` from `$TMPDIR` or a relative path, and `git push` or `git commit` piped into another command.
+ClickUp `123kjkdr15p`. From the META-21 inventory. Merged 2026-11-27 (PR #1633). The guard checks five mistakes sessions now avoid from memory: PocketBase words inside quoted text (a hung agent), `eco-store:pocketbase:stop`, a commit message commitlint would reject after the whole pre-commit, `git commit -F` from `$TMPDIR` or a relative path, and `git push` or `git commit` piped into another command (allowed with `PIPESTATUS` or `pipefail`). It reads command words, not quoted text or heredocs. `yarn guard:test`: 46 cases in CI, 18 fail on the old guard; replayed over 6,854 Bash commands of 12 sessions.
 
 ### META-33 — Claude Code settings for the repo
 
-ClickUp `123kjkdr15q`. From the META-21 inventory. `NX_WORKSPACE_ROOT_PATH=""` and `NX_DEFAULT_OUTPUT_STYLE=static` in `.claude/settings.json`, and sandbox exclusions for `gh`, SSH git, `git worktree` and the Angular builds; the owner weighs each exclusion's security cost.
+ClickUp `123kjkdr15q`. From the META-21 inventory. `NX_WORKSPACE_ROOT_PATH=""` and `NX_DEFAULT_OUTPUT_STYLE=static` in `.claude/settings.json`, and sandbox exclusions for `gh`, SSH git, `git worktree` and the Angular builds; the owner weighs each exclusion's security cost. Merged 2026-11-27 (PR #1635), every item approved. Excluded commands still go through the permission prompts, and a call with `cd`, a redirect to a file or a heredoc stays sandboxed.
 
 ### META-34 — Worktree bootstrap and per-worktree hooks
 
@@ -204,7 +204,7 @@ ClickUp `123kjkdr15u`. Done 2026-11-24 (PR #1614, `7c510653`). From the META-21 
 
 ### META-36 — `eco-admin:watch-scss`
 
-ClickUp `123kjkdr15v`. From the META-21 inventory. The chokidar watcher eco-store has, for `apps/eco-admin/src/styles`, so a changed partial reaches the dev server on :4204.
+ClickUp `123kjkdr15v`. From the META-21 inventory. Done 2026-11-27. `yarn eco-admin:serve` now runs the Nx serve target (`eco-admin:serve:app`) next to `eco-admin:watch-scss`, which touches `apps/eco-admin/src/styles/styles.scss` when a partial changes. It watches the app's partials and the style include paths (`libs/eco/styles/src`, `libs/core/styles/util/{material,tailwind4}/src`, the hot-toast styles): only `_base.scss` lives in the app, and a partial from a library was just as stale. Measured on a dev server: an edit to `_base.scss` or `_eco_auth_card.scss` never reached `styles.css` in 30 s without the watcher, and arrived in 4 to 6 s with it. The Nx target `eco-admin:serve`, which the e2e uses, has no watcher.
 
 ### META-37 — `pb:sync` needs `POCKETBASE_ENV`
 
@@ -240,7 +240,7 @@ Its findings are eco-store tasks A11Y-026 to A11Y-029 (BACKLOG 7.58 to 7.61), an
 
 ### META-41 — `plastikaweb:a11y` has no config
 
-ClickUp `123kjkdr4vz`. Found during META-40: `yarn plastikaweb:a11y` runs Pa11y with `apps/plastikaweb/.pa11yci.json`, which does not exist, so it fails before checking anything. Write the config, move plastikaweb to a Playwright and axe check, or remove the script; the docs follow.
+ClickUp `123kjkdr4vz`. Found during META-40: `yarn plastikaweb:a11y` runs Pa11y with `apps/plastikaweb/.pa11yci.json`, which does not exist, so it fails before checking anything. Write the config, move plastikaweb to a Playwright and axe check, or remove the script; the docs follow. Merged 2026-11-27 (PR #1634): the owner chose removal; `plastikaweb:http-server` stays.
 
 ---
 
@@ -248,6 +248,7 @@ ClickUp `123kjkdr4vz`. Found during META-40: `yarn plastikaweb:a11y` runs Pa11y 
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 1.25 | 2026-11-27 | **META-08** (`123kjkdpqjr`) — META-32 ✅ (#1633), META-33 ✅ (#1635), META-36 ✅ (#1632), META-41 ✅ (#1634). META-24 redefined as a portable setup playbook, first for NewWebSite. META-06: Phase 2 table refreshed, two owner rulings. |
 | 1.24 | 2026-11-25 | **META-08** (`123kjkdpqjr`) — META-40 ✅ (PRs #1624, #1625, #1626); its findings filed as eco-store A11Y-026 to A11Y-029. New **META-41** (`123kjkdr4vz`): `plastikaweb:a11y` has no config. |
 | 1.23 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-40 🔄: PRs 1 and 2 merged; PR 3 moves eco-admin's e2e from Cypress to Playwright after the owner changed eco-admin REQUIREMENTS §6. |
 | 1.22 | 2026-11-24 | **META-08** (`123kjkdpqjr`) — META-40 🔄: PR 1 adds the Playwright and axe suite of the eco apps next to Pa11y; its findings and the change to PR 2 (eco-admin keeps Cypress) are in its section. |
