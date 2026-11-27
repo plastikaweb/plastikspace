@@ -86,3 +86,7 @@ It asks before stopping, restarting or copying the local PocketBase on :8090, `e
 ## Keep awake
 
 A second `SessionStart` hook (META-35) runs `caffeinate -i -w <session pid>` on macOS: while a session lives, idle sleep cannot pause a long hook, push or test run it started, and the `caffeinate` ends with the session. Runs started outside a session still need `caffeinate -i` in front.
+
+## Session settings
+
+`.claude/settings.json` (META-33) sets `NX_WORKSPACE_ROOT_PATH=""`, so Nx in a worktree uses the worktree instead of the main checkout the session inherited, and `NX_DEFAULT_OUTPUT_STYLE=static`, so a failed task prints its log. Its `sandbox.excludedCommands` runs `gh`, `git fetch`/`pull`/`push`/`ls-remote`, `git worktree` and the Angular builds outside the sandbox, where they work; they still go through the permission prompts. The exclusion applies only when every command of the call matches: a call with `cd`, a redirect to a file, a heredoc or a command substitution stays sandboxed, so `git push … > "$log" 2>&1` still needs the sandbox off. Settings load from the checkout a session starts in.

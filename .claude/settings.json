@@ -10,6 +10,23 @@
   "enabledPlugins": {
     "nx@nx-claude-plugins": true
   },
+  "env": {
+    "NX_WORKSPACE_ROOT_PATH": "",
+    "NX_DEFAULT_OUTPUT_STYLE": "static"
+  },
+  "sandbox": {
+    "excludedCommands": [
+      "gh *",
+      "git fetch *",
+      "git pull *",
+      "git push *",
+      "git ls-remote *",
+      "git worktree *",
+      "yarn nx run *:build*",
+      "yarn nx build *",
+      "yarn *:build*"
+    ]
+  },
   "hooks": {
     "PreToolUse": [
       {
