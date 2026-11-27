@@ -164,5 +164,16 @@
       "consumed": "Usada",
       "revoked": "Revocada"
     }
+  },
+  "orders": {
+    "status": {
+      "pending": "Pendiente",
+      "confirmed": "Confirmado",
+      "preparing": "En preparación",
+      "ready": "Listo",
+      "delivered": "Entregado",
+      "cancelled": "Cancelado",
+      "expired": "Caducado"
+    }
   }
 }

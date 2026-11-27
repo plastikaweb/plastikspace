@@ -9,6 +9,10 @@ import { EcoStoreCartItem } from './cart';
 import { ProductUnitType } from './product';
 import { EcoStoreTenantLogisticsDeliveryType, SlotDays, TimeRange } from './tenant';
 
+/**
+ * `orders.status` without the legacy `PAID` (AQ-07): payment has its own family. `EXPIRED` is set by
+ * the system only (B-21); an order in it still needs a chip.
+ */
 export const ORDER_STATUSES = [
   'PENDING',
   'CONFIRMED',
@@ -16,18 +20,23 @@ export const ORDER_STATUSES = [
   'READY',
   'DELIVERED',
   'CANCELLED',
+  'EXPIRED',
 ] as const;
 
 export type EcoStoreOrderStatus = (typeof ORDER_STATUSES)[number];
 
-/** Single source of truth for all per-status metadata. */
+/**
+ * Single source of truth for all per-status metadata: the frozen `Eco Admin DS` §06, one chip per
+ * state in both apps (design round 25).
+ */
 const ORDER_STATUS_CONFIG: Record<EcoStoreOrderStatus, { type: SharedChipType; icon: string }> = {
-  PENDING: { type: 'warning', icon: 'clock_loader_10' },
-  CONFIRMED: { type: 'warning', icon: 'thumb_up' },
-  PREPARING: { type: 'warning', icon: 'pending' },
-  READY: { type: 'warning', icon: 'box' },
-  DELIVERED: { type: 'success', icon: 'check_circle' },
-  CANCELLED: { type: 'error', icon: 'error' },
+  PENDING: { type: 'warning', icon: 'pending' },
+  CONFIRMED: { type: 'info', icon: 'check_circle' },
+  PREPARING: { type: 'info', icon: 'package_2' },
+  READY: { type: 'primary', icon: 'order_approve' },
+  DELIVERED: { type: 'success', icon: 'local_shipping' },
+  CANCELLED: { type: 'error', icon: 'close' },
+  EXPIRED: { type: 'neutral', icon: 'history_toggle_off' },
 } as const;
 
 /** Maps order status to a Material icon name. */

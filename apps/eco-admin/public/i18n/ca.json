@@ -164,5 +164,16 @@
       "consumed": "Consumida",
       "revoked": "Revocada"
     }
+  },
+  "orders": {
+    "status": {
+      "pending": "Pendent",
+      "confirmed": "Confirmada",
+      "preparing": "En preparació",
+      "ready": "A punt",
+      "delivered": "Lliurada",
+      "cancelled": "Cancel·lada",
+      "expired": "Caducada"
+    }
   }
 }

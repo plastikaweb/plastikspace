@@ -611,12 +611,13 @@
       "pickup": "Recogida en la tienda"
     },
     "status": {
-      "delivered": "ENTREGADO",
-      "cancelled": "CANCELADO",
-      "pending": "PENDIENTE",
-      "confirmed": "CONFIRMADO",
-      "preparing": "PREPARANDO",
-      "ready": "LISTO"
+      "pending": "Pendiente",
+      "confirmed": "Confirmado",
+      "preparing": "En preparación",
+      "ready": "Listo",
+      "delivered": "Entregado",
+      "cancelled": "Cancelado",
+      "expired": "Caducado"
     },
     "filter": {
       "all": "TODAS",

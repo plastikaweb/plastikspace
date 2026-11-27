@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-27] - One order chip per state in both eco apps (AP-0 0.6c, AREF-10)
+
+### Changed
+
+- **eco-store order chips follow the frozen `Eco Admin DS` §06**: new icons, `info` for confirmed and preparing, `primary` for ready, and «A punt» and «Lliurada» instead of «Preparada» and «Rebuda», so a state has one name in both apps (design round 25). Labels are sentence case; the chip still draws them in capitals (AP-0 0.6c, [#123kjkdp4ku](https://app.clickup.com/t/123kjkdp4ku)).
+
+### Fixed
+
+- **An `EXPIRED` order gets a chip** («Caducada», neutral) instead of a blank one, and the orders filter lists it (AP-0 0.6c, [#123kjkdp4ku](https://app.clickup.com/t/123kjkdp4ku)).
+
 ## [2026-11-27] - Status chips for every eco state machine (AP-0 0.6c, AREF-10)
 
 ### Added
