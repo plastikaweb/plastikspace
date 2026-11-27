@@ -611,12 +611,13 @@
       "pickup": "Recollida a la botiga"
     },
     "status": {
-      "delivered": "REBUDA",
-      "cancelled": "CANCEL·LADA",
-      "pending": "PENDENT",
-      "confirmed": "CONFIRMADA",
-      "preparing": "EN PREPARACIÓ",
-      "ready": "PREPARADA"
+      "pending": "Pendent",
+      "confirmed": "Confirmada",
+      "preparing": "En preparació",
+      "ready": "A punt",
+      "delivered": "Lliurada",
+      "cancelled": "Cancel·lada",
+      "expired": "Caducada"
     },
     "filter": {
       "all": "TOTES",

@@ -48,7 +48,8 @@ The library is tagged `scope:eco`, `type:entity`. Only `scope:eco-store`, `scope
 ### `order.ts`
 
 - `EcoStoreOrder`, `NewEcoStoreOrder`, `EcoStoreOrderItemSnapshot`, `EcoStoreOrderStatus`, `EcoStorePaymentStatus`, `ORDER_STATUSES`
-- Status maps: `ORDER_STATUS_ICON_MAP`, `ORDER_STATUS_LABEL_MAP`, `ORDER_STATUS_TYPE_MAP`, `ORDER_STATUS_OPTIONS`
+- Status maps: `ORDER_STATUS_ICON_MAP`, `ORDER_STATUS_LABEL_MAP`, `ORDER_STATUS_TYPE_MAP`, `ORDER_STATUS_OPTIONS`.
+  Seven states, `EXPIRED` included and the legacy `PAID` left out, drawn as the frozen `Eco Admin DS` §06 draws them in both apps.
 - Delivery maps: `ORDER_DELIVERY_ICON_MAP`, `ORDER_DELIVERY_LABEL_MAP`
 - Helpers: `generateOrderNumber`, `toOrderItemSnapshot`
 
