@@ -25,7 +25,8 @@ This component provides consistent styling for various status indicators, unit b
 - **Semantic Types**: Supports multiple visual styles based on intent.
 - **Icon Integration**: Seamlessly integrates with `MatIconModule`. The icon takes the chip's text colour, so both keep the same contrast in light and dark mode.
 - **Colours**: `tertiary` uses Material roles (`bg-sys-tertiary-container`, `text-sys-on-tertiary-container`), which follow the system theme.
-  The other types still use palette classes with `dark:` variants, which follow only the `.dark` class (see `documentation/css-styles.md`, "Bad practices to avoid").
+  `info`, added for the eco status families (AREF-10), uses the `--info-*` palette as `success` uses its own.
+  The other types also use palette classes with `dark:` variants, which follow only the `.dark` class (see `documentation/css-styles.md`, "Bad practices to avoid").
 - **Accessibility**: Built-in `role="status"` and configurable `aria-label`.
 - **Performance**: Built using Angular Signals and `OnPush` change detection.
 
