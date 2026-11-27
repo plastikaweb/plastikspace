@@ -70,6 +70,7 @@ jobs:
           yarn pb-sync:test
           yarn commit-refs:test
           yarn worktree-setup:test
+          yarn guard:test
           yarn lint:delta:test
           yarn i18n:validate
           yarn tasks:test

@@ -31,6 +31,7 @@
     "pb-sync:test": "node tools/scripts/test-pb-sync-env.mjs",
     "commit-refs:test": "node tools/scripts/test-commit-refs.mjs",
     "worktree-setup:test": "node tools/scripts/test-worktree-setup.mjs",
+    "guard:test": "node tools/scripts/test-guard.mjs",
     "i18n:validate": "node tools/scripts/validate-i18n-keys.cjs",
     "i18n:test": "bash tools/scripts/test-i18n-validation.sh",
     "tasks:test": "bash tools/scripts/test-sync-tasks.sh",

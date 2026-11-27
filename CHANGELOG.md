@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-27] - The Claude Code guard checks pipes, commit messages and the PocketBase stop (META-32)
+
+### Changed
+
+- **`.claude/hooks/guard.sh` blocks `git commit` and `git push` piped into another command.** The pipe returns the last command's exit code, so a hook that failed read as success. A command that reads `PIPESTATUS` (bash), `pipestatus` (zsh) or sets `pipefail` still passes (META-32, ([#123kjkdr15p](https://app.clickup.com/t/123kjkdr15p))).
+- **A commit message commitlint rejects is blocked before the pre-commit runs**, not after it: `.claude/hooks/commit-msg-check.mjs` reads the message from an existing `-F` file, a heredoc that writes it or feeds `-F -`, or the `-m` values, and runs commitlint on it (2 to 3 s). `git commit -F` from a relative path or from `$TMPDIR`, which is another folder in the unsandboxed shell where commits run, is blocked (META-32, ([#123kjkdr15p](https://app.clickup.com/t/123kjkdr15p))).
+- **The guard reads command words, not text.** Heredoc bodies and quoted strings no longer trip it, so a `grep` pattern or a commit message that names a hook flag or PocketBase passes; `bash -c` and `eval`, whose quoted text runs, are still read whole. It now asks before `eco-store:pocketbase:stop`, and before a `kill` or a copy of `pb_data` anywhere in the command, a loop body included (META-32, ([#123kjkdr15p](https://app.clickup.com/t/123kjkdr15p))).
+- **`yarn guard:test` runs 46 cases in CI** (the Lint Affected step); 18 of them fail on the previous guard. Replayed against the 6,854 Bash commands of the last 12 sessions, the guard changes 98 decisions: pipes and `$TMPDIR` messages now blocked, one 104-character header that commitlint had rejected after the pre-commit, and greps that no longer ask. A plain command costs about 55 ms in the guard instead of 40 (META-32, ([#123kjkdr15p](https://app.clickup.com/t/123kjkdr15p))).
+
 ## [2026-11-27] - The eco-admin dev server picks up changed SCSS partials (META-36)
 
 ### Changed
