@@ -31,7 +31,7 @@ The application is being built row by row (`TASKS.md`, phase AP-0). Today it has
 ## Quick Start
 
 1. **Start the backend**: `yarn eco-store:pocketbase:run` (the local PocketBase on `http://127.0.0.1:8090`).
-2. **Run the app**: `yarn eco-admin:serve`, then open `http://localhost:4204`.
+2. **Run the app**: `yarn eco-admin:serve`, then open `http://localhost:4204`. The script also runs `eco-admin:watch-scss`: the dev server does not rebuild the global stylesheet when a partial changes, so the watcher touches `src/styles/styles.scss` for it. `yarn nx run eco-admin:serve` starts the server alone.
 
 ## Development Commands
 
@@ -43,7 +43,7 @@ The application is being built row by row (`TASKS.md`, phase AP-0). Today it has
 | **Lint**               | `yarn eco-admin:lint`      |
 | **E2E Tests**          | `yarn eco-admin:e2e`       |
 | **E2E (interactive)**  | `yarn eco-admin:e2e:local` |
-| **Accessibility**      | `yarn eco-admin:a11y`      |
+| **Accessibility**      | `yarn eco-a11y:e2e`        |
 
 ## Backends
 
@@ -54,7 +54,7 @@ The configuration decides which PocketBase the application talks to. Check it be
 | `development` | `yarn eco-admin:serve` (the default of `serve`) | `http://127.0.0.1:8090/` (local)                         |
 | `production`  | `yarn eco-admin:build` (the default of `build`) | the hosted instance in `src/environments/environment.ts` |
 
-`yarn eco-admin:a11y` and the `serve-static` target serve the **production** build: never type test credentials into them.
+The accessibility suite and the `serve-static` target serve the **production** build: never type test credentials into them.
 
 ## Routes
 
@@ -125,11 +125,12 @@ cd apps/eco-admin && npx vitest run
 ### Accessibility
 
 ```bash
-yarn eco-admin:a11y
+yarn eco-a11y:e2e
 ```
 
-Builds the application (production configuration), serves `dist/apps/eco-admin/browser` on port 8080 and runs Pa11y (WCAG 2 AA, 320 px wide) over the URLs in `.pa11yci.json`.
-Both URLs render the login screen today: `/` redirects to `/accedir` when there is no session. The CI workflow is `.github/workflows/eco-admin-pa11y.yml`.
+Builds eco-admin and eco-store (production configuration) and runs the Playwright + axe suite of `apps/eco-a11y-e2e` (META-40), which replaced Pa11y here.
+For eco-admin it audits the login screen and the first screen after signing in, at 320 px light and dark and at 1280 px, with PocketBase answered from fixtures: it never signs in to a real instance.
+The CI workflow is `.github/workflows/eco-a11y.yml`.
 
 ### End to end
 
@@ -138,25 +139,29 @@ yarn eco-admin:e2e          # headless
 yarn eco-admin:e2e:local    # interactive
 ```
 
-Cypress starts `eco-admin:serve` (development configuration, local PocketBase) on port 4204.
+A Playwright suite (`apps/eco-admin-e2e`) for the flows that need the real local PocketBase, such as AMBR-07 and AORD-03 (REQUIREMENTS §6).
+Nx starts `eco-admin:serve` (development configuration, local PocketBase) on port 4204, or uses the one already running, and the suite runs in the system Chrome.
+The local mode opens Playwright's UI. No hook or CI job runs it, and Nx never caches it.
 
-`cy.loginAs(role)` opens a session without going through the login screen. Call it before `cy.visit()`:
+The `signedInAs` option starts a test with a session, without going through the login screen:
 
 ```ts
-cy.loginAs('TENANT_ADMIN');
-cy.visit('/');
+import { expect, test } from './support/test';
+
+test.use({ signedInAs: 'TENANT_ADMIN' });
 ```
 
-It reads the credentials of a test user from the environment and never writes them to the command log:
+It reads the credentials of a test user from the environment:
 
-| Role           | Variables                                                                         |
-| :------------- | :-------------------------------------------------------------------------------- |
-| `TENANT_ADMIN` | `CYPRESS_ECO_ADMIN_TENANT_ADMIN_EMAIL`, `CYPRESS_ECO_ADMIN_TENANT_ADMIN_PASSWORD` |
-| `GLOBAL_ADMIN` | `CYPRESS_ECO_ADMIN_GLOBAL_ADMIN_EMAIL`, `CYPRESS_ECO_ADMIN_GLOBAL_ADMIN_PASSWORD` |
-| `PARTNER`      | `CYPRESS_ECO_ADMIN_PARTNER_EMAIL`, `CYPRESS_ECO_ADMIN_PARTNER_PASSWORD`           |
+| Role           | Variables                                                         |
+| :------------- | :---------------------------------------------------------------- |
+| `TENANT_ADMIN` | `ECO_ADMIN_TENANT_ADMIN_EMAIL`, `ECO_ADMIN_TENANT_ADMIN_PASSWORD` |
+| `GLOBAL_ADMIN` | `ECO_ADMIN_GLOBAL_ADMIN_EMAIL`, `ECO_ADMIN_GLOBAL_ADMIN_PASSWORD` |
+| `PARTNER`      | `ECO_ADMIN_PARTNER_EMAIL`, `ECO_ADMIN_PARTNER_PASSWORD`           |
 
-The command signs in against `http://127.0.0.1:8090` and nothing else. The address is a constant on purpose: no variable can point a test login at a hosted instance.
-A `cypress.env.json` file is ignored by git; keep test credentials there or in the shell, never in a committed file.
+It signs in against `http://127.0.0.1:8090` and nothing else. The address is a constant on purpose: no variable can point a test login at a hosted instance.
+The request goes through Node's `fetch`, so Playwright's trace and report never hold the credentials.
+Keep them in the shell or in `apps/eco-admin-e2e/.env`, which git ignores and the config loads; never in a committed file.
 
 ## Documentation
 

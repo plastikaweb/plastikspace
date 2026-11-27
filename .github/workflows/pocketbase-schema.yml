@@ -43,6 +43,8 @@ jobs:
       - name: Sync Schema to PocketBase
         run: node apps/eco-store/scripts/sync-pocketbase-schema.js
         env:
+          # The script has no default target (META-37).
+          POCKETBASE_ENV: staging
           POCKETBASE_STAGING_ADMIN_EMAIL: ${{ secrets.POCKETBASE_STAGING_ADMIN_EMAIL }}
           POCKETBASE_STAGING_ADMIN_PASSWORD: ${{ secrets.POCKETBASE_STAGING_ADMIN_PASSWORD }}
 

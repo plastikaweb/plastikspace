@@ -26,7 +26,7 @@ import { EcoUserAvatarComponent } from '../user-avatar/user-avatar.component';
 export class EcoUserMenuComponent {
   protected readonly profileStore = inject(pocketBaseUserProfileStore);
 
-  logoutEvent = output<void>();
+  readonly logoutEvent = output<void>();
 
   readonly menu = viewChild.required<MatMenu>('userMenu');
   protected readonly isTrial = this.profileStore.isTrial;

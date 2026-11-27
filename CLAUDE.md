@@ -11,13 +11,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - When running tasks (for example build, lint, test, e2e, etc.), always prefer running the task through `nx` (i.e. `nx run`, `nx run-many`, `nx affected`) instead of using the underlying tooling directly
 - Prefix nx commands with the workspace's package manager (e.g., `pnpm nx build`, `npm exec nx test`) - avoids using globally installed CLI
 - You have access to the Nx MCP server and its tools, use them to help the user
-- For Nx plugin best practices, check `node_modules/@nx/<plugin>/PLUGIN.md`. Not all plugins have this file - proceed without it if unavailable.
+- For Nx plugin best practices, check `node_modules/@nx/<plugin>/dist/PLUGIN.md` (Nx's generated agent rules say `node_modules/@nx/<plugin>/PLUGIN.md`, which does not exist). Not all plugins have this file - proceed without it if unavailable.
 - NEVER guess CLI flags - always check nx_docs or `--help` first when unsure
 
 ## Scaffolding & Generators
 
 - For scaffolding tasks (creating apps, libs, project structure, setup), ALWAYS invoke the `nx-generate` skill FIRST before exploring or calling MCP tools
-  [text](CLAUDE.md)
 
 ## When to use nx_docs
 
@@ -29,558 +28,170 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-Plastikspace is a personal Nx monorepo (the apps are listed under [Applications](#applications); `yarn nx show projects` gives the current project list), using Angular 21, Astro, and multiple backend systems (Firebase, PocketBase, HTTP APIs).
-The repository enforces strict architectural boundaries through ESLint module constraints.
+Plastikspace is a personal Nx monorepo: Angular 21 apps over Firebase, PocketBase and HTTP or GraphQL backends (apps under [Applications](#applications); `yarn nx show projects` lists every project). ESLint module constraints enforce strict architectural boundaries. Read versions in `package.json`, never from memory.
 
-**Repository**: <https://github.com/plastikaweb/plastikspace>
-**Main Branch**: `develop` (also Nx's `defaultBase` — many tools assume `main`, this workspace does not)
-**Package Manager**: Yarn
-
-### Per-app guidance
-
-When working inside an app directory, read its CLAUDE.md alongside this one:
-
-- `apps/eco-store/CLAUDE.md` — eco-store / PocketBase / multi-tenant specifics
+- **Repository**: <https://github.com/plastikaweb/plastikspace>. **Main branch**: `develop`, also Nx's `defaultBase` (many tools assume `main`; this workspace does not). **Package manager**: Yarn 4; one-time setup in `README.md`.
+- Working in `apps/eco-store/` or `libs/eco-store/*`: read `apps/eco-store/CLAUDE.md` alongside this file.
 
 ### Where things actually live
 
-| What                              | Path                                                                                                          |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Nx cache (custom)                 | `tmp/my-cache`                                                                                                |
-| Path aliases (200+)               | `tsconfig.base.json`                                                                                          |
-| Architectural boundary rules      | `.eslintrc.json` (`@nx/enforce-module-boundaries`)                                                            |
-| Workspace scripts                 | `tools/scripts/` (i18n validation, PocketBase helpers, local setup)                                           |
-| Branch-name rules                 | `branchNameLint.json`                                                                                         |
-| Commitizen config                 | `.cz-config.cjs` (scopes auto-loaded from `tsconfig.base.json`)                                               |
-| Long-form docs                    | `documentation/` (nx-architecture, code-style, accessibility, css-styles, commit-conventions, git-flow, i18n) |
-| eco-store PocketBase schema/hooks | `apps/eco-store/pocketbase/`                                                                                  |
-| Firebase emulator data (llecoop)  | gitignored under `apps/llecoop-firebase/`                                                                     |
-
-## Installation
-
-Requires [rimraf](https://www.npmjs.com/package/rimraf) installed globally:
-
-```bash
-npm install -g rimraf
-git clone git@github.com:plastikaweb/plastikspace.git
-yarn install:local  # Cleans, installs dependencies, sets up husky
-```
+- Nx config and cache: `nx.json`, cache in `tmp/my-cache`
+- Path aliases (200+): `tsconfig.base.json`. Import across libraries only through them (`@plastik/core/util/api-http`), never by relative path; each library exports through its `index.ts`
+- ESLint: the root `eslint.config.mjs` holds the boundary rules and every code rule; each project's `eslint.config.mjs` spreads it (the three Cypress e2e configs after `cypress.configs.recommended`, the two Playwright ones after `playwright.configs['flat/recommended']`)
+- Workspace scripts and their tests: `tools/scripts/` (task docs, i18n, feature map, PocketBase helpers, local setup); `decorate-angular-cli.cjs` runs on `postinstall`
+- Eco page map (URL → lib, access): `tools/feature-map.json`, generated from the routes (`yarn feature-map`); CI fails when it is stale
+- Branch-name rules: `branchNameLint.json`. Commit scopes: `.cz-config.cjs`, loaded from `tsconfig.base.json`
+- MCP servers of the repo: `.mcp.json` (pocketbase, playwright)
+- Long-form docs: `documentation/` (nx-architecture, code-style, accessibility, css-styles, commit-conventions, git-flow, i18n)
+- eco-store PocketBase schema and hooks: `apps/eco-store/pocketbase/`. llecoop's Firebase emulator data: gitignored under `apps/llecoop-firebase/`
 
 ## Common Commands
 
-### Development
-
 ```bash
-# Start development server for an app
-yarn <app-name>:serve                # e.g., yarn eco-store:serve
-yarn <app-name>:local                # With backend (llecoop, eco-store)
-
-# Build
-yarn <app-name>:build                # Production build
-yarn build                           # Build all apps
-
-# Testing
-yarn <app-name>:test                 # Run tests for specific app
-yarn test:all                        # Run all tests with coverage
-yarn affected:test                   # Test affected projects only
-
-# E2E Testing
-yarn <app-name>:e2e                  # Run E2E tests
-yarn <app-name>:e2e:local            # E2E with watch mode
-
-# Linting
-yarn <app-name>:lint                 # Lint specific app
-yarn lint:all                        # Lint all projects
-yarn affected:lint                   # Lint affected projects
-
-# Accessibility Testing
-yarn <app-name>:a11y                 # Run Pa11y accessibility tests
+yarn <app>:serve                      # dev server (eco-store with its backend: apps/eco-store/CLAUDE.md "Local dev")
+yarn nx test <project>                # unit tests of one project
+yarn nx test <project> <file> --passWithNoTests=false   # one spec file, path relative to the project root
+yarn nx test <project> --testNamePattern="<pattern>"     # tests by name
+yarn affected:test                    # affected projects vs develop
+yarn nx lint <project>                # fast lint profile, as hooks and editors run it
+yarn lint:ci                          # affected projects with the type-aware rules, as CI runs them
+yarn <app>:a11y                       # build, serve and run Pa11y (not the eco apps)
+yarn eco-a11y:e2e                     # build eco-store and eco-admin, run their Playwright + axe suite
+yarn i18n:validate                    # translation keys consistent across languages (pre-commit and CI)
+yarn format:check
+yarn plastikaweb:codegen              # plastikaweb GraphQL types
+POCKETBASE_ENV=development yarn eco-store:pb:sync   # push pb_schema.json to the local PocketBase (staging: POCKETBASE_ENV=staging; none: refused)
 ```
 
-### Monorepo Commands
-
-```bash
-yarn dep-graph                       # Visualize dependency graph
-yarn affected:build                  # Build affected projects
-yarn format:write                    # Format code with Prettier
-yarn format:check                    # Check code formatting
-```
-
-### App-Specific Local Development
-
-**LLecoop** (Firebase):
-
-```bash
-yarn llecoop:local                   # Start app + Firebase emulators
-yarn llecoop:firestore              # Firestore emulator only
-yarn llecoop:functions              # Functions emulator only
-```
-
-**Eco-store** (PocketBase):
-
-```bash
-yarn eco-store:local                 # Start app + PocketBase + SCSS watcher
-yarn eco-store:pocketbase:run       # PocketBase only
-yarn eco-store:pb:export             # Export PocketBase schema
-yarn eco-store:pb:sync               # Sync PocketBase schema
-```
-
-**Plastikaweb** (Astro):
-
-```bash
-yarn plastikaweb:serve               # Dev server (Astro)
-yarn plastikaweb:preview             # Preview built site
-yarn plastikaweb:codegen             # Generate GraphQL types
-```
-
-### Git and Commits
-
-```
-yarn husky-install                   # Setup git hooks
-yarn branch:lint                     # Validate branch names
-yarn cz                              # Interactive commit with Commitizen
-```
-
-**Commitizen Integration**:
-
-- Uses `cz-customizable` with configuration in `.cz-config.cjs`
-- Automatically loads scopes from `tsconfig.base.json` path aliases
-- Commit format: `<type>(<scope>): <subject>` with optional issue number from branch name
-- Supports conventional commit types: feat, fix, docs, test, refactor, perf, style, build, ci, chore, revert
-- Use the SKILL `commitzen-git-flow` as the source of truth to create commits
+`vitest run` runs in the project root, so a spec path from the repo root matches nothing, and the workspace's `passWithNoTests` would report that as a pass: keep `--passWithNoTests=false`. `package.json` and AGENTS.md "Common Commands" have the rest.
 
 ## Applications
 
-| Application          | Framework          | Backend    | Purpose                                    |
-| -------------------- | ------------------ | ---------- | ------------------------------------------ |
-| **nasa-images**      | Angular 21         | NASA API   | Image gallery with search                  |
-| **llecoop**          | Angular 21         | Firebase   | Discontinued: Firebase reference code only |
-| **llecoop-firebase** | Firebase Functions | -          | Cloud functions for Llecoop                |
-| **llecoop-triggers** | Firebase Functions | -          | Event triggers for Llecoop                 |
-| **eco-store**        | Angular 21         | PocketBase | E-commerce demo                            |
-| **eco-admin**        | Angular 21         | PocketBase | Admin panel for eco-store (scaffold, AP-0) |
-| **plastikaweb**      | Angular 21         | GraphQL    | Personal portfolio (static site)           |
+- **eco-store** (Angular 21, PocketBase): multi-tenant storefront for consumer cooperatives.
+- **eco-admin** (Angular 21, PocketBase): its admin panel (AP-0 scaffold). It shares the eco-store PocketBase and its `users` auth collection; a CSR SPA (no SSR) served from its own origin. Docs: `apps/eco-admin/{REQUIREMENTS,TASKS,DESIGN-BRIEF,DESIGN-REVIEWS}.md`.
+- **nasa-images** (Angular 21, NASA API): image gallery with search.
+- **plastikaweb** (Angular 21, GraphQL with Apollo): personal portfolio, a static site.
+- **llecoop** (Angular 21, Firebase), with **llecoop-firebase** and **llecoop-triggers** (Firebase Functions): discontinued, kept only as Firebase reference code. Keep it compiling and green, with no visual checks.
 
-Each app has a corresponding `-e2e` project for Cypress testing.
-
-`eco-admin` shares the eco-store PocketBase instance and its `users` auth collection; it is a CSR SPA (no SSR) served from its own origin, and its docs live in `apps/eco-admin/{REQUIREMENTS,TASKS,DESIGN-BRIEF,DESIGN-REVIEWS}.md`. Read one task from the eco task docs (eco-store, eco-admin TASKS and REQUIREMENTS, `libs/eco`) with `yarn task <ID>`, never the whole file: eco-admin TASKS is over 200 KB.
+Read one task from the eco task docs (eco-store, eco-admin TASKS and REQUIREMENTS, `libs/eco`) with `yarn task <ID>`, never the whole file: eco-admin TASKS is over 200 KB.
 
 ## Library Architecture
 
-Libraries are organized by **scope** (domain) and **type** (layer):
+Libraries are organized by **scope** (domain) and **type** (layer); `documentation/nx-architecture.md` has the long form.
 
 ### Scopes
 
-- **core**: Foundation libraries used across all apps
-- **shared**: Cross-app reusable features and utilities
-- **product-family**: Domain code shared by the apps of one product but by no other app. Currently only `eco/` (`libs/eco/*`), the eco platform domain layer shared by `eco-store` and `eco-admin`
-- **app-specific**: Libraries scoped to individual apps (e.g., `llecoop/`, `eco-store/`, `eco-admin/`, `nasa-images/`, `plastikaweb/`)
+- **core**: foundation libraries used across all apps
+- **shared**: cross-app reusable features and utilities
+- **product-family**: domain code shared by the apps of one product and by no other app. Only `eco` (`libs/eco/*`), the eco platform domain layer of `eco-store` and `eco-admin`
+- **app-specific**: libraries of one app (`llecoop/`, `eco-store/`, `eco-admin/`, `nasa-images/`, `plastikaweb/`)
 
 ### Types
 
-- **app**: Main applications in `/apps`
-- **feature**: Smart components implementing use cases (can use services, state management)
-- **data-access**: Services for APIs, state management, backend communication
-- **ui**: Presentational components (dumb, receive data via inputs)
-- **util**: Pure functions, helpers, utilities
-- **entity**: Type definitions and entity-related utilities
+- **feature**: smart components implementing use cases (services, state)
+- **data-access**: API services, state, backend communication
+- **ui**: presentational components (inputs in, outputs out)
+- **util**: pure functions and helpers
+- **entity**: type definitions and entity-related utilities
+- **app**: the applications in `/apps`
 
-### Key Core Libraries
-
-**API Abstraction**:
-
-- `api-base` - Base interfaces for all API services
-- `api-http` - Generic HTTP CRUD operations
-- `api-firebase` - Firebase Firestore CRUD
-- `api-pocketbase` - PocketBase CRUD
-
-**Shared State Management** (`shared/signal-state/`):
-
-- `data-access-http` - NgRx Signal Store for HTTP
-- `data-access-firebase` - NgRx Signal Store for Firebase
-- `data-access-pocketbase` - NgRx Signal Store for PocketBase
-
-**Auth** (`shared/auth/`):
-
-- Auth feature components (login, register, password recovery)
-- Firebase and PocketBase data access implementations
+Key core libraries: `api-base` (the interfaces every API service implements), `api-http`, `api-firebase` and `api-pocketbase` (CRUD per backend, in `libs/core/util/`); the NgRx Signal Store features per backend in `libs/shared/signal-state/`; auth features and data access in `libs/shared/auth/`.
 
 ### Module Boundaries (ESLint Enforced)
 
-The following dependency rules are enforced via `.eslintrc.json`:
+`@nx/enforce-module-boundaries` in the root `eslint.config.mjs`:
 
-> Apps → can depend on: features, ui, util, data-access, entities (from core/shared)
->
-> Features → can depend on: ui, util, data-access, entities, other features
->
-> UI → can depend on: entities, util, other UI
->
-> Data-access → can depend on: util, entities, other data-access
->
-> Utils → can depend on: util, entities only
->
-> Entities → can depend on: entities, util only
+- **By type**: apps → feature, ui, util, data-access, entity, and anything in `scope:core` or `scope:shared`; feature → ui, util, data-access, entity, feature; ui → ui, util, entity; data-access → data-access, util, entity; util → util, entity; entity → entity, util.
+- **By scope**: `scope:core` → core, shared and any `type:util` or `type:entity`; `scope:shared` → shared and any `type:util` or `type:entity`; `scope:eco` → eco, core, shared; an app scope → itself, core, shared. `scope:eco-store` and `scope:eco-admin` may also use `scope:eco`; no other app scope may, and the two never import each other.
+- No circular dependencies.
 
-**Scope constraints**:
-
-- `scope:core` → can depend on core, shared, util, entity
-- `scope:shared` → can depend on shared, util, entity only
-- `scope:eco` → can depend on eco, core, shared
-- App-scoped libs → can depend on own scope + core + shared
-- `scope:eco-store` and `scope:eco-admin` additionally depend on `scope:eco`; no other app scope may, and the two never import each other
-
-**No circular dependencies allowed**. These rules prevent architectural drift.
-
-Every library must carry **both** a `scope:*` and a `type:*` tag. The rules are ANDed, and the `type:app` rule lists no app scope — a library tagged with a scope alone cannot be imported by any app.
+Every library carries **both** a `scope:*` and a `type:*` tag: the rules are ANDed, and a library with a scope alone cannot be imported by any app. `yarn nx-tags:check` enforces it on every `libs/**/project.json` (first step of the pre-push and of CI's Lint Affected step).
 
 ### Code Quality Rules (ESLint)
 
-Beyond architectural boundaries, the following code quality rules are enforced:
+ESLint reports each rule at its line (lint-staged in the pre-commit, the Stop hook, the editor); `documentation/code-style.md` "Lint rules" lists them all with severity and scope. What to know before writing:
 
-- `no-console` is an error (except in test files) - use proper logging or remove debug statements
-- **Private fields**: Must use ES6 private fields (`#fieldName`) instead of TypeScript `private` modifier
-- **Member ordering**: Enforced order - signature, field, constructor, method
-- **JSDoc**: Required for public APIs; must start with capital letter and end with period
-- **Deprecation warnings**: Enabled for non-test files to catch deprecated API usage
-- **NgRx**: Select style is enforced; recommended NgRx patterns required
-- **Accessibility**: Comprehensive a11y rules for templates (no-positive-tabindex, alt-text, label-has-associated-control, etc.)
-- **Naming** (warnings, not errors): `id-length` 2-40 chars (short loop/callback names like `i`, `e`, `id` are whitelisted), `id-denylist` rejects vague names (`data`, `info`, `temp`, `val`, `item`), and `@typescript-eslint/naming-convention` enforces camelCase members, PascalCase types, and `is`/`has`/`can`/`should`/`will` prefixes on boolean variables. The boolean selector is the only type-aware part and is switched off for `*.spec.ts`, which lint without a TS program (`"project": null`) — leaving it on there crashes ESLint instead of reporting
-- **Statement padding**: `padding-line-between-statements` requires a blank line before every `return` and after a block of variable declarations
+- **Private fields**: `#field`, never the TypeScript `private` modifier (an error). Fields set by `input()`, `model()`, `output()` or `outputFromObservable()` can be neither (the Angular compiler rejects `#`, NG1053), and a signal query may keep `private`. Private methods and constructor parameter properties keep `private`.
+- **No `console`** outside `*.spec.*`.
+- **JSDoc**: a description starts with a capital letter and contains a period (an error); a `function` declaration needs a block, and a block's `@param`/`@returns` need their `{type}` (warnings).
+- **Angular** (META-17, errors): signal inputs and queries, `readonly` on every signal property, `inject()`, `output()`, native control flow, `type` on every `<button>`; no `standalone: true`, `@HostBinding`/`@HostListener` or `NgClass`/`NgStyle`.
+- **Warnings may not grow** (META-18): `yarn lint:delta` fails when a file the branch touches has more ESLint warnings than at the merge base (pre-push and CI).
+- **Type-aware rules run in CI only** (META-13): `prefer-readonly` (an error), `no-deprecated` and the boolean-prefix naming rule (warnings). `yarn lint:ci` runs them locally. A TypeScript file that no tsconfig includes fails the CI lint ("was not found by the project service"): add it to a tsconfig, or to `TS_DEFAULT_PROJECT` in the root `eslint.config.mjs`.
+- **Warnings**: vague names (`data`, `info`, `temp`, `val`, `item`…), booleans without `is`/`has`/`can`/`should`/`will`, no blank line before a `return`.
 
 ## Testing
 
-### Vitest (Unit Tests)
+- **Vitest**: `vitest run`, inferred per project (`documentation/nx-architecture.md`, "Inferred `lint` and `test` targets"); setup in each project's `src/test-setup.ts`.
+- **i18n**: ngx-translate; `yarn i18n:validate` (`tools/scripts/validate-i18n-keys.cjs`) checks that every language file has the same keys.
 
-```bash
-yarn <app-name>:test                 # Run tests for app
-yarn test:all                        # All tests with coverage
-nx test <lib-name>                   # Test specific library
+### E2E tests
 
-# Run single test file (use relative path from project root)
-nx test <project-name> --testFile=<file-name>
-# Example: nx test eco-store --testFile=src/app/app.component.spec.ts
-
-# Run tests matching a pattern (matches test name, not file name)
-nx test <project-name> --testNamePattern="<pattern>"
-# Example: nx test eco-store --testNamePattern="should create"
-
-# Run tests in watch mode
-nx test <project-name> --watch
-
-# Run test for a specific library (faster than running app tests)
-nx test <lib-name>
-# Example: nx test core-util-api-http
-```
-
-- Runner: `@analogjs/vitest-angular` via `@nx/vite` preset
-- Setup: `src/test-setup.ts` in each project
-- Coverage reports in `/coverage`
-
-### Cypress (E2E Tests)
-
-```bash
-yarn <app-name>:e2e                  # Headless E2E
-yarn <app-name>:e2e:local           # Interactive with watch mode
-```
-
-- Custom commands in `libs/core/util/cypress-commands`
-- Component harness utilities via `@jscutlery/cypress-harness`
+`yarn <app-name>:e2e` runs an app's e2e suite: Cypress in nasa-images, llecoop and plastikaweb, Playwright in eco-admin (`apps/eco-admin-e2e`, against the local PocketBase; its `signedInAs` option is in the app's README). No hook or CI job runs them and they are no acceptance check, so do not run them to verify a change. New e2e tests use Playwright.
 
 ### Pa11y (Accessibility Tests)
 
-```bash
-yarn <app-name>:a11y                 # Run accessibility tests
-```
+`yarn nasa-images:a11y` builds the app, serves it and runs Pa11y with its `.pa11yci.json`; eco-store and eco-admin use the Playwright suite below instead, and plastikaweb has no accessibility check (its script, which pointed to a missing config, went in META-41). Every app targets **WCAG 2.2 AA** (owner, 2026-11-24). Pa11y checks less: its `WCAG2AA` standard means 2.1 AA at most in both its runners, and axe-core's only 2.2 rule is `target-size`. Check what 2.2 adds by hand: 2.4.11 focus not obscured, 2.5.7 dragging, 2.5.8 target size, 3.2.6 consistent help, 3.3.7 redundant entry, 3.3.8 accessible authentication.
 
-- Configuration per app in `.pa11yci.json`
-- Serves built app via HTTP server, runs Pa11y checks
+### Playwright accessibility suite (eco apps)
 
-### i18n Validation
-
-```bash
-yarn i18n:validate                   # Validate translation keys consistency
-yarn i18n:test                       # Run i18n validation tests
-```
-
-- Custom script in `tools/scripts/validate-i18n-keys.cjs`
-- Ensures translation keys are consistent across all language files
-- Part of code quality checks
+`apps/eco-a11y-e2e` (META-40) checks eco-store and eco-admin screen by screen, in the state a user sees them (a product loaded, a cart with products, signed in), at 320 px light, 320 px dark and 1280 px: axe with every WCAG 2.2 AA rule, plus 2.4.11 (a walk with Tab), 3.3.7 and 3.3.8. `yarn eco-a11y:e2e` builds both apps and runs it in the system Chrome; PocketBase is answered from `src/support/records.ts`, so it needs no PocketBase. A failure the suite already knows is listed by rule and node in the spec, with the task that fixes it. The pre-push runs it when Nx finds it affected, and `eco-a11y.yml` after each CI run on `develop`; it replaced Pa11y in both apps. Details in `documentation/accessibility.md`.
 
 ## Angular & TypeScript Conventions
 
-The canonical Angular / TypeScript rules for this workspace live in [`.claude/CLAUDE.md`](.claude/CLAUDE.md) (standalone components, signals, `inject()`, `host` object, native control flow, no `ngClass`/`ngStyle`, no `mutate` on signals, etc.). Don't duplicate them here — read that file first.
-
-The sections below capture only workspace-specific patterns that go beyond those baseline rules.
+The canonical Angular and TypeScript rules live in [`.claude/CLAUDE.md`](.claude/CLAUDE.md). What goes beyond them:
 
 ### Routing
 
-- Implement lazy loading for feature routes
-- Dedicated `*.routes.ts` file for each feature/scope as entrypoint
-- Use `providedIn: 'root'` for global services; provide component-specific services in component decorator
-- Guards are functional (`CanActivateFn`), not class-based
-- Resolvers load data before route activation; guards validate state/conditions
-- Guards run before resolvers — do not rely on resolver-loaded data inside a guard on the same route
+- Lazy-load feature routes, from a `*.routes.ts` entry point per feature or scope.
+- `providedIn: 'root'` for global services; component-specific services in the component's `providers`.
+- Guards are functional (`CanActivateFn`) and run before resolvers: never rely on resolver data in a guard of the same route.
 
 ### RxJS / Signal Interop
 
-- Use `toSignal()` to convert Observables into signals for use in component templates
-- Use `toObservable()` to convert signals back to Observables for RxJS pipelines
-- Prefer `toSignal(obs$, { initialValue: ... })` to avoid `undefined` in strict templates
-- Use `takeUntilDestroyed()` (from `@angular/core/rxjs-interop`) instead of manual `ngOnDestroy` unsubscription
+- `toSignal(obs$, { initialValue: ... })` for templates (no `undefined` in strict templates); `toObservable()` back into RxJS pipelines.
+- `takeUntilDestroyed()` (from `@angular/core/rxjs-interop`) instead of a manual `ngOnDestroy` unsubscription.
 
-## Code Organization
+### Naming and Generating Libraries
 
-### Path Aliases
-
-The repository has 200+ path aliases defined in `tsconfig.base.json` for clean imports:
-
-```typescript
-import { ApiService } from '@plastik/core/util/api-http';
-import { AuthFeature } from '@plastik/shared/auth/feature';
-```
-
-### Barrel Exports
-
-Use `index.ts` files for modularization. Export related classes together when possible.
-
-### Naming Conventions
-
-Library naming pattern: `{scope}/{type}/{name}`
-
-Examples:
-
-- `libs/core/util/api-http/` → Core utility for HTTP
-- `libs/shared/auth/feature/` → Shared auth feature
-- `libs/llecoop/data-access-orders/` → Llecoop-specific data access
-
-Main module/component files must contain the full path in the filename:
-
-- Library: `libs/booking/feature-destination`
-- Main file: `booking-feature-destination.component.ts`
-
-### Generating Libraries
-
-Generate new libraries following the naming conventions and tagging strategy:
-
-```bash
-# Generate a new library following conventions
-nx g @nx/angular:lib <name> --directory=<scope>/<type> --tags=scope:<scope>,type:<type>
-
-# Example: Generate a feature library for eco-store
-nx g @nx/angular:lib checkout --directory=eco-store/feature --tags=scope:eco-store,type:feature
-
-# Example: Generate a shared UI component
-nx g @nx/angular:lib button --directory=shared/ui --tags=scope:shared,type:ui
-```
-
-**Default Generator Configuration** (from `nx.json`):
-
-- **Components**: Automatically use `OnPush` change detection, standalone architecture, SCSS styles, and `displayBlock: true`
-- **Libraries**: Standalone by default with Vitest for unit testing
-- **Applications**: Vitest for unit tests, Cypress for E2E, ESLint for linting, SCSS for styling
-
-**After generating a new library**, remove the `outputs` and `reportsDirectory` lines that the generator adds to the `test` target in `project.json`. Coverage paths are managed globally via `nx.json` `targetDefaults` (`coverage/{projectRoot}`), and the generator-added paths are wrong (lib-relative instead of workspace-root-relative). The test target should look like:
-
-```json
-"test": {
-  "executor": "@nx/vitest:test"
-}
-```
-
-- These defaults are pre-configured, so you don't need to specify these flags when generating
-
-## State Management
-
-- **NgRx Signal Store** for modern reactive state management
-- **Signals** for local component state
-- **Computed** for derived state
-- **Effects** for side effects
-- Custom data access layers per backend type (Firebase, PocketBase, HTTP)
-
-State transformations must be pure and predictable.
+- **Eco libraries** (`libs/eco-store`, `libs/eco-admin`, `libs/eco`): `yarn eco-lib` (META-19) asks for app, domain, type and name, and writes the names, tags, alias and configs; its scheme is in `tools/generators/eco-lib/generator.cjs`. The alias edits `tsconfig.base.json`, which makes every project affected: one new library per small PR.
+- **Other libraries**: `yarn nx g @nx/angular:lib libs/<scope>/<type>/<name> --tags=scope:<scope>,type:<type>`, the main file named after the full path (`booking-feature-destination.component.ts`); then match `eslint.config.mjs` and `vite.config.mts` to a sibling library.
+- `lint` and `test` are inferred from `eslint.config.mjs` and `vite.config.mts`: never add those targets to a `project.json`, and keep `angular({ tsconfig: 'tsconfig.spec.json' })` in a new `vite.config.mts`. Why, and what else the plugins infer: `documentation/nx-architecture.md`.
 
 ## Styling
 
-- **TailwindCSS 4.0** for utility-first styling
-- **Angular Material 21** for UI components
-- **SCSS** preprocessor for custom styles
-- Custom theme system in `libs/core/styles`
-- PostCSS configuration in `.postcssrc.json`
-
-See `documentation/css-styles.md` for detailed styling conventions.
+- Tailwind CSS 4, Angular Material 21 and SCSS; the theme in `libs/core/styles`, PostCSS in `.postcssrc.json`; conventions in `documentation/css-styles.md`.
+- **Eco conventions** (META-15): `yarn eco-conventions:check` (pre-commit on staged eco files, and CI) reads the templates and styles of `libs/eco*` and `apps/eco-*`. Errors: an `<input>`, `<select>` or `<textarea>` without `matInput` or `matNativeControl`; a hex colour or a `--mat-sys-*` declaration outside the token sources (`libs/eco/styles/src/_eco_tokens.css` and the eco-store `*-theme.css` files). An exception needs `/* eco:check allow <rule>: <reason> */` (`<!-- ... -->` in a template) on the line before.
 
 ## Backend Systems
 
-### Firebase (Llecoop)
-
-- Firestore for NoSQL database
-- Firebase Functions for serverless backend
-- Firebase Hosting for deployment
-- Emulators for local development (`yarn llecoop:local`)
-
-### PocketBase (Eco-store)
-
-- Self-hosted SQL backend; local emulation via `yarn eco-store:local`
-- Schema, hooks, and full workflow live in `apps/eco-store/CLAUDE.md` and `apps/eco-store/POCKETBASE.md`
-
-### GraphQL (Plastikaweb)
-
-- Apollo Client for GraphQL
-- Code generation: `yarn plastikaweb:codegen`
+- **PocketBase** (eco-store, eco-admin): `apps/eco-store/CLAUDE.md` and `apps/eco-store/POCKETBASE.md`.
+- **GraphQL** (plastikaweb): Apollo Client; types from `yarn plastikaweb:codegen`.
+- **Firebase** (llecoop): Firestore, Functions and Hosting; `yarn llecoop:local` starts the emulators.
+- Each backend has its data-access layer in `libs/core/util/api-*`, on the interfaces of `api-base`.
 
 ## CI/CD
 
 GitHub Actions workflows in `.github/workflows/`:
 
-**Main CI** (`ci.yml`):
-
-- Runs on push to `develop`
-- Format check, lint, test, build on affected projects
-- Uses NX Cloud for distribution
-- 3 parallel jobs max
-
-**Deployment**:
-
-- `llecoop-deploy-staging.yml` / `llecoop-deploy-prod.yml`
-- `eco-store-deploy-staging.yml`
-- `nasa-images-deploy-dev.yml`
-
-**Accessibility**:
-
-- `nasa-images-pa11y.yml`
-- `eco-store-pa11y.yml`
+- `ci.yml` runs on every pull request and on push to `develop`: format check, the repo checks of its "Lint Affected" step (`yarn tasks:check`, `yarn feature-map:check`…), then lint, test and build on affected projects (AGENTS.md "CI Strategy").
+- Nx Cloud runs out of credits most months; `ci.yml` then sets `NX_NO_CLOUD=true` and runs with the local cache only. Its 401 is harmless.
+- `pb-schema-guard.yml` (PRs that change `pb_schema.json`) and `pocketbase-schema.yml` (push to `develop`: syncs the schema to staging): `apps/eco-store/CLAUDE.md`.
+- Accessibility, after each CI run on `develop`: `eco-a11y.yml` (the Playwright suite of eco-store and eco-admin) and `nasa-images-pa11y.yml` (Pa11y).
+- Deploys: `eco-store-deploy-staging.yml`, `nasa-images-deploy-dev.yml`, `llecoop-deploy-{staging,prod}.yml`.
+- `claude.yml`, `claude-code-review.yml` and `jules-analysis.yml` run the review bots.
 
 ## Git Workflow
 
-- Main branch: `develop`
-- Feature branches: `<type>/<description>` or `<type>/<issue-number>-<description>`
-  - Allowed types: `feat`, `fix`, `docs`, `test`, `refactor`, `perf`, `style`, `build`, `ci`, `chore`, `revert`, `prod`
-  - Examples: `feat/user-authentication`, `fix/704-cart-persistent`, `refactor/state-management`
-  - Banned names: `wip`, `master`, `main`, `develop`, `staging`
-- Commitizen for conventional commits (use `yarn cz`)
-  - Format: `<type>(<scope>): <subject>`
-  - Issue numbers automatically appended from branch name
-- Branch name linting enforced via Husky (see `branchNameLint.json`)
-- Pre-commit hooks for linting and formatting
-
-See `documentation/git-flow.md` and `documentation/commit-conventions.md` for details.
-
-## Documentation
-
-Key documentation in `/documentation/`:
-
-- **nx-architecture.md** - Comprehensive Nx patterns, scopes, types, boundaries
-- **code-style.md** - Angular/TypeScript best practices
-- **accessibility.md** - A11y guidelines and patterns
-- **commit-conventions.md** - Git commit standards
-- **git-flow.md** - Branching strategy & deployment
-- **css-styles.md** - Styling conventions & Tailwind setup
-
-## Important Files
-
-- `nx.json` - Nx workspace configuration (custom cache: `./tmp/my-cache`, default base: `develop`)
-- `tsconfig.base.json` - TypeScript config with 200+ path aliases
-- `.eslintrc.json` - Architectural boundary rules (critical for understanding constraints)
-- `.mcp.json` - MCP server configuration (Nx CLI integration)
-- `decorate-angular-cli.cjs` - Nx CLI decoration for caching
-- `branchNameLint.json` - Branch naming rules enforced by Husky
-- `.cz-config.cjs` - Commitizen configuration with auto-generated scopes
-
-## Tech Stack
-
-**Core**:
-
-- Angular 21.0.6
-- TypeScript 5.9.3
-- Nx 22.3.3
-- RxJS 7.8
-- Astro 5.16.16
-
-**State**:
-
-- NgRx 21.0.0 (store, effects, signals)
-- @angular-architects/ngrx-toolkit
-
-**UI**:
-
-- Angular Material 21.0.5
-- TailwindCSS 4.0.0
-- Angular CDK 21.0.5
-
-**Data**:
-
-- Apollo Client 3.13.6
-- Firebase Admin SDK 12.6.0
-- PocketBase 0.36.7
-- graphql-request 7.4.0
-
-**Forms**:
-
-- @ngx-formly 7.0.1
-- Reactive Forms (Angular built-in)
-
-**Testing**:
-
-- Vitest 4.0.18 + @analogjs/vitest-angular 2.1.2
-- Cypress 15.8.1
-- Pa11y CI 4.0.1
-- vitest-axe 0.1.0
-
-**i18n**:
-
-- @ngx-translate/core 17.0.0
+- Branches: `<type>/<description>` or `<type>/<task-id>-<description>`, with a type from `branchNameLint.json` (`feat`, `fix`, `docs`, `test`, `refactor`, `perf`, `style`, `build`, `ci`, `chore`, `revert`, `prod`); `wip`, `master`, `main`, `develop` and `staging` are rejected.
+- Commits: the `commitizen-git-flow` skill is the source of truth (`<type>(<scope>): #<clickup-id> <description>`); `yarn cz` is the interactive form.
+- Worktrees: run `node tools/scripts/worktree-setup.cjs --branch <type>/<task-id>-<words>` outside the Bash sandbox before the first commit (not `yarn worktree:setup`: Yarn runs no script before the worktree is installed), so the worktree runs its own hooks and has the main checkout's ignored PocketBase files (AGENTS.md "Worktrees").
+- Hooks: AGENTS.md "Pre-commit Hook" and "Commit-msg Hook" (the ClickUp ID, a task ID on eco code and the CHANGELOG bullet are checked there); the long form is in `documentation/git-flow.md` and `documentation/commit-conventions.md`.
 
 ## Key Patterns
 
-### Smart vs Dumb Components
-
-- **Smart** (Feature libraries): Use services, state management, implement business logic
-- **Dumb** (UI libraries): Receive data via inputs, emit events via outputs, reusable
-
-### Data Access Layers
-
-Each backend type has its own abstraction:
-
-- HTTP: `libs/core/util/api-http`
-- Firebase: `libs/core/util/api-firebase`
-- PocketBase: `libs/core/util/api-pocketbase`
-
-All implement common interfaces from `libs/core/util/api-base`.
-
-### Signal Store Pattern
-
-Custom Signal Store features in `libs/shared/signal-state/` provide reusable patterns for each backend type.
-
-### Form Management
-
-- Use **@ngx-formly** for dynamic form generation
-- Form configurations live in `*.config.ts` files alongside components
-- Use Material UI types from `@ngx-formly/material`
-- Form configs define fields declaratively with validators, expressions, and hooks
-- Example: `cart-shipping-form.config.ts` defines form structure for shipping forms
-
-## Design Context
-
-### Users
-
-Users and partners of local food cooperatives who want to browse proximity and ecological products, place orders, and consult their history.
-
-### Brand Personality
-
-**Nature, Lightness, Proximity.**
-The interface should evoke feelings of organic connection, kindness, and approachability.
-
-### Aesthetic Direction
-
-**Organic and Kind.**
-The visual tone should be soft, natural, and welcoming, avoiding harsh "tech" aesthetics or overly clinical minimalism.
-
-### Design Principles
-
-1.  **Earthy Elegance:** Use colors and spacing that feel natural, light, and unforced.
-2.  **Gentle Interactions:** Animations and micro-interactions should be smooth and subtle, not jarring or aggressive.
-3.  **Clear Typographic Hierarchy:** Ensure legibility to respect a diverse user base, prioritizing accessibility without sacrificing the "kind" aesthetic.
-4.  **Emphasize Proximity:** Design choices should reduce friction, making the process of ordering local food feel intuitive and neighborly.
+- **Smart and dumb components**: feature libraries hold services, state and business logic; UI libraries take inputs and emit outputs.
+- **State**: NgRx Signal Store, with the custom store features per backend in `libs/shared/signal-state/`.
+- **Forms**: `@ngx-formly` with its Material types, fields declared with validators, expressions and hooks in a `*.config.ts` next to the component (`cart-shipping-form.config.ts`); `.claude/CLAUDE.md` "Forms" has the rules.
 
 ## Skills
 

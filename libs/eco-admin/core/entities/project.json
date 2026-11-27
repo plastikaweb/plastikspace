@@ -5,12 +5,6 @@
   "prefix": "eco-admin",
   "projectType": "library",
   "tags": ["scope:eco-admin", "type:entity"],
-  "targets": {
-    "test": {
-      "executor": "@nx/vitest:test"
-    },
-    "lint": {
-      "executor": "@nx/eslint:lint"
-    }
-  }
+  "// targets": "to see all targets run: nx show project eco-admin-entities --web",
+  "targets": {}
 }

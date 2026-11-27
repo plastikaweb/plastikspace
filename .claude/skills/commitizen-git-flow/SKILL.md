@@ -45,12 +45,14 @@ Construct the commit message using this exact structure:
 <type>(<scope>): #<clickup-task> <description>
 
 ```bash
-optional body explaining WHAT and WHY, wrapped at 72 chars
+optional body explaining WHAT and WHY: at most 500 characters in all (commitlint `body-max-length`)
 ```
 
 ```bash
-optional footer: CLOSED: \#\<clickup-task\>
+optional footer: CLOSED: \#\<clickup-task\>   (each footer line at most 100 characters)
 ```
+
+The body limit counts every line together, the `Co-Authored-By:` trailer included. The CHANGELOG carries the long prose; the body only needs the gist.
 
 ### A. Determine `<type>`
 
@@ -71,7 +73,7 @@ optional footer: CLOSED: \#\<clickup-task\>
 
 Select the affected area based on the monorepo structure:
 
-- **Apps:** `nasa-images`, `llecoop`, `plastikaweb`, `eco-store`
+- **Apps:** `nasa-images`, `llecoop`, `plastikaweb`, `eco-store`, `eco-admin`
 
 - **Libraries:** Any path from `tsconfig.base.json` under `@plastik/*`
 
@@ -102,17 +104,19 @@ If this commit completes the task, append:
 
 Unless explicitly told otherwise, **you must update `CHANGELOG.md`** for user-facing changes (`feat`, `fix`, `perf`, `docs`, `revert`). Ask the user for `refactor`, `chore`, `style`, or `build`.
 
-**Format to append:**
+The CHANGELOG entry goes in the same commit as the code it describes, never in a commit of its own. Later commits of the same branch reuse it (edit it when they change what it says).
 
-```bash
-YYYY-MM-DD
-```
+`.husky/commit-msg` refuses three omissions (`tools/scripts/check-commit-refs.cjs`): a header without the branch's `#<clickup-task>`, a header without a TASKS ID when eco code is staged, and a `feat`, `fix` or `perf` with code when no CHANGELOG line the branch adds names the ClickUp task. Task docs (`TASKS.md`, `BACKLOG.md`, `REQUIREMENTS.md`) go the other way: always in their own commit, never with code (the pre-commit rejects the mix).
 
-- <Current Feature Title>
+**Format to add at the top, under the file's preamble:**
+
+```markdown
+## [YYYY-MM-DD] - <Current Feature Title> (<TASKS ID>)
 
 ### Added | Changed | Fixed
 
-- <Description in PAST TENSE> ([#<task>](https://www.google.com/search?q=https://github.com/plastikaweb/plastikspace/issues/%3Ctask%3E))
+- <Description in PAST TENSE> (<TASKS ID>, ([#<task>](https://app.clickup.com/t/<task>)))
+```
 
 _Note: Convert the imperative commit description to past tense for the changelog (e.g., "add button" -> "Added button")._
 
@@ -130,12 +134,9 @@ git commit -m "<type>(<scope>): #<task> <description>" -m "<body>" -m "CLOSED: #
 
 2. **DO NOT PUSH AUTOMATICALLY:** After committing successfully, always ask: _"Would you like me to push these changes to the remote repository now?"_
 
-3. **Pre-commit Hook Failures:** If hooks fail during your execution (e.g., linting), **DO NOT create a new commit**. Fix the code and execute:
+3. **Pre-commit Hook Failures:** A failed hook creates no commit. Fix the cause, stage the files you changed by name (never `git add .`, which can sweep task docs or unrelated files in), and run the same `git commit` again. **Never `--amend` after a failed hook:** it would rewrite the previous commit, which may already be pushed. If you amended by mistake and the commit was pushed, do not force-push: `git reset --soft <remote head>` and commit the difference as a new commit.
 
-   git add . && git commit --amend --no-edit
-
-4. **Skipping Hooks (`--no-verify`):** \* If code changed: **NEVER** skip hooks.
-   - If _only_ the commit message was amended (fixing a typo in the description) or branch-name lint failed in a weird state: You may suggest `--no-verify`, but **always warn the user first**.
+4. **Never skip hooks.** No `--no-verify`, `-n`, `HUSKY=0` or `core.hooksPath`, whatever changed, a typo in the message included. `.claude/hooks/guard.sh` blocks them. When a hook fails, fix the cause or tell the user what blocks it.
 
 5. **Sandboxed Environments (Cursor, Antigravity, etc.):** Only if running the command fails repeatedly due to temp folder restrictions, provide the command in a copy-past bash block so the user can run it manually.
 

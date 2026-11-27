@@ -84,7 +84,8 @@ apps/eco-store/pocketbase/*
 apps/eco-store/.env
 apps/eco-store/pocketbase_back
 
-# Cypress local variables (test credentials for cy.loginAs)
+# Test credentials: eco-admin e2e (signedInAs), and the Cypress file it read before META-40
+apps/eco-admin-e2e/.env
 cypress.env.json
 
 # wrangler files
@@ -116,7 +117,10 @@ vitest.config.*.timestamp*
 .claude/worktrees/
 .claude/worktrees
 
-# macOS screenshots dropped in the repo root (pre-commit runs git add -A)
+# Screenshots and logs of the playwright MCP server (eco-page-check skill)
+.playwright-mcp/
+
+# macOS screenshots dropped in the repo root, kept out of `git add -A`
 Captura de pantalla*.png
 
 # superpowers SDD scratch

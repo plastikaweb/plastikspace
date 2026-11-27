@@ -34,13 +34,13 @@ export class LlecoopOrderListUserOrderFeatureListFacadeService implements TableW
   readonly #viewConfigSubRoute = this.#viewConfigMainRoute.children?.filter(
     item => item.name === 'all-order'
   )[0];
-  viewConfig = computed(() => {
+  readonly viewConfig = computed(() => {
     return {
       ...this.#viewConfigSubRoute,
       title: `${this.#viewConfigMainRoute.title}: ${this.#viewConfigSubRoute?.title}`,
     };
   });
-  routingToDetailPage = signal({
+  readonly routingToDetailPage = signal({
     visible: false,
   });
   viewExtraActions?:

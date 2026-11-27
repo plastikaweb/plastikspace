@@ -38,7 +38,7 @@ export class LlecoopUserOrderListFacadeService implements TableWithFilteringFaca
   readonly #currentUserOrderDone = computed(() => {
     return !!this.#userOrderStore.currentUserOrder();
   });
-  viewConfig = computed(() => {
+  readonly viewConfig = computed(() => {
     return {
       ...this.#viewConfigSubRoute,
       title: this.#viewConfigSubRoute?.title
@@ -47,7 +47,7 @@ export class LlecoopUserOrderListFacadeService implements TableWithFilteringFaca
     };
   });
 
-  routingToDetailPage = computed(() => {
+  readonly routingToDetailPage = computed(() => {
     return {
       visible: true,
       icon: this.#currentUserOrderDone() ? 'edit' : 'add',

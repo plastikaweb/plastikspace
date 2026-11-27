@@ -1,13 +1,15 @@
 import angular from '@analogjs/vite-plugin-angular';
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { defineConfig } from 'vite';
 export default defineConfig(() => ({
-  root: __dirname,
+  resolve: {
+    tsconfigPaths: true,
+  },
+  root: import.meta.dirname,
   cacheDir: '../../../../node_modules/.vite/libs/plastikaweb/skills/data-access',
-  plugins: [angular(), nxViteTsPaths()],
+  plugins: [angular({ tsconfig: 'tsconfig.spec.json' })],
   // Uncomment this if you are using workers.
   // worker: {
-  //   plugins: () => [ nxViteTsPaths() ],
+  //  plugins: [],
   // },
   test: {
     name: 'skills-data-access',

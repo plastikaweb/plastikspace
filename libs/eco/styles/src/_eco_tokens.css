@@ -470,4 +470,18 @@ html {
   --space-xxl: 4rem;
 }
 
-@custom-variant dark (&:where(.dark, .dark *));
+/* `dark:` follows the same scheme as `light-dark()` and the M3 roles (`color-scheme` above): the
+   dark theme chosen in the toggle (`html.dark`), or the OS in dark mode when no theme is chosen
+   (`html` without `.light`). With `.dark` alone, the default «system» theme kept every `dark:`
+   shade light on a dark surface (A11Y-026). */
+@custom-variant dark {
+  &:where(.dark, .dark *) {
+    @slot;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    &:where(html:not(.light), html:not(.light) *) {
+      @slot;
+    }
+  }
+}

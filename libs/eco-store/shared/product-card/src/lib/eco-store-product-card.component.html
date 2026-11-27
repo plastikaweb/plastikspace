@@ -65,6 +65,7 @@
             (quantityChange)="onQuantityChange($event)" />
         } @else {
           <button
+            type="button"
             matButton="filled"
             class="w-full"
             [routerLink]="['/botiga', productData.categorySlug, productData.normalizedName]">

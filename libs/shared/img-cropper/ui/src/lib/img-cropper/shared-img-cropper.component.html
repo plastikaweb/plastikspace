@@ -82,27 +82,65 @@
             [imageQuality]="outputQuality()"
             (imageCropped)="onImageCropped($event)"
             (imageLoaded)="onImageLoaded($event)"
+            (cropperReady)="onCropperReady($event)"
+            (cropperChange)="onCropperChange($event)"
+            (transformChange)="onTransformChange($event)"
             (loadImageFailed)="onLoadImageError()" />
         </div>
 
-        <div class="flex w-full max-w-[340px] items-center gap-6 px-6">
-          <button
-            matIconButton
-            type="button"
-            class="hover:bg-primary-50/10! shadow-sm transition-transform hover:scale-105!"
-            (click)="onZoomChange(zoom() - 0.1)">
-            <mat-icon>remove</mat-icon>
-          </button>
-          <mat-slider class="flex-1" min="1" max="4" step="0.1">
-            <input matSliderThumb [value]="zoom()" (valueChange)="onZoomChange($event)" />
-          </mat-slider>
-          <button
-            matIconButton
-            type="button"
-            class="hover:bg-primary-50/10! shadow-sm transition-transform hover:scale-105!"
-            (click)="onZoomChange(zoom() + 0.1)">
-            <mat-icon>add</mat-icon>
-          </button>
+        <div class="flex w-full max-w-[340px] flex-col items-center gap-4">
+          <div class="flex w-full items-center gap-6 px-6">
+            <button
+              matIconButton
+              type="button"
+              class="hover:bg-primary-50/10! shadow-sm transition-transform hover:scale-105!"
+              disabledInteractive
+              [attr.aria-label]="'common.image.crop.zoomOut' | translate"
+              [matTooltip]="'common.image.crop.zoomOut' | translate"
+              [disabled]="zoom() <= zoomMin"
+              (click)="onZoomChange(zoom() - zoomStep)">
+              <mat-icon>remove</mat-icon>
+            </button>
+            <mat-slider class="flex-1" [min]="zoomMin" [max]="zoomMax" [step]="zoomStep">
+              <input
+                matSliderThumb
+                [attr.aria-label]="'common.image.crop.zoom' | translate"
+                [value]="zoom()"
+                (valueChange)="onZoomChange($event)" />
+            </mat-slider>
+            <button
+              matIconButton
+              type="button"
+              class="hover:bg-primary-50/10! shadow-sm transition-transform hover:scale-105!"
+              disabledInteractive
+              [attr.aria-label]="'common.image.crop.zoomIn' | translate"
+              [matTooltip]="'common.image.crop.zoomIn' | translate"
+              [disabled]="zoom() >= zoomMax"
+              (click)="onZoomChange(zoom() + zoomStep)">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+
+          <!-- Moves the image without dragging it (WCAG 2.5.7); each button stops where the image
+               would leave part of the crop area empty. -->
+          <div
+            role="group"
+            class="flex items-center justify-center gap-2"
+            [attr.aria-label]="'common.image.crop.move' | translate">
+            @for (pan of panButtons; track pan.direction) {
+              <button
+                matIconButton
+                type="button"
+                class="hover:bg-primary-50/10! shadow-sm transition-transform hover:scale-105!"
+                disabledInteractive
+                [attr.aria-label]="pan.label | translate"
+                [matTooltip]="pan.label | translate"
+                [disabled]="!canPan()[pan.direction]"
+                (click)="onPan(pan.direction)">
+                <mat-icon>{{ pan.icon }}</mat-icon>
+              </button>
+            }
+          </div>
         </div>
       </div>
 
@@ -143,7 +181,12 @@
       <mat-icon class="scale-110">error_outline</mat-icon>
       <p>{{ error.key | translate: error.params }}</p>
     </div>
-    <button matIconButton type="button" (click)="onClearError()">
+    <button
+      matIconButton
+      type="button"
+      [attr.aria-label]="'common.close' | translate"
+      [matTooltip]="'common.close' | translate"
+      (click)="onClearError()">
       <mat-icon>close</mat-icon>
     </button>
   </div>

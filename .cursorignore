@@ -10,7 +10,6 @@
 # --- Projects and caches specific ---
 .angular/
 .nx/
-.verdaccio/
 dist/
 coverage/
 documentation/

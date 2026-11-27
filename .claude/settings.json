@@ -10,6 +10,23 @@
   "enabledPlugins": {
     "nx@nx-claude-plugins": true
   },
+  "env": {
+    "NX_WORKSPACE_ROOT_PATH": "",
+    "NX_DEFAULT_OUTPUT_STYLE": "static"
+  },
+  "sandbox": {
+    "excludedCommands": [
+      "gh *",
+      "git fetch *",
+      "git pull *",
+      "git push *",
+      "git ls-remote *",
+      "git worktree *",
+      "yarn nx run *:build*",
+      "yarn nx build *",
+      "yarn *:build*"
+    ]
+  },
   "hooks": {
     "PreToolUse": [
       {
@@ -27,6 +44,30 @@
           {
             "type": "command",
             "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/guard.sh"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/stop-check.mjs"
+          },
+          {
+            "type": "command",
+            "command": "[ \"$(uname)\" = Darwin ] && command -v caffeinate >/dev/null 2>&1 && { nohup caffeinate -i -w \"$PPID\" >/dev/null 2>&1 & } ; exit 0"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/stop-check.mjs"
           }
         ]
       }

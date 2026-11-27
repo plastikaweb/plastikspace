@@ -34,7 +34,6 @@ ignores:
   - .idea/**
   - .nx/**
   - .trae/**
-  - .verdaccio/**
   - .vscode/**
   - .windsurf/**
   - .yarn/**

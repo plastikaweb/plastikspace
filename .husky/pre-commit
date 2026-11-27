@@ -1,38 +1,171 @@
 #!/usr/bin/env sh
 set -e
 
+# --- NX ENVIRONMENT (META-12) ---
+# Nx reads NX_WORKSPACE_ROOT_PATH before the cwd when it looks for the workspace, and
+# editor or agent sessions can export it pointing at the main checkout. In a worktree,
+# every Nx lookup (here, the ESLint module-boundaries rule) then read the main
+# checkout's project graph. Pin it to this checkout. The Nx Cloud quota is off by
+# choice, so no call should wait on it.
+NX_WORKSPACE_ROOT_PATH=$(git rev-parse --show-toplevel)
+export NX_WORKSPACE_ROOT_PATH
+export NX_NO_CLOUD=true
+export NX_CLI_SET=classic
+export PAGER=cat
+# --------------------------------
+
+# --- CLEANUP ---
+# Every exit path, Ctrl-C included, stops the PocketBase the hook started, removes its
+# temporary files and puts the working copy of pb_schema.json back as it was, unless
+# the hook staged it on purpose.
+SCHEMA=apps/eco-store/pocketbase/pb_schema.json
+PB_PID=""
+SNAPSHOT=""
+SCHEMA_BEFORE=""
+SCHEMA_LIVE=""
+RESTORE_SCHEMA=false
+KEEP_SCHEMA_BEFORE=false
+stop_own_pb() {
+  if [ -n "$PB_PID" ]; then
+    kill "$PB_PID" 2>/dev/null || true
+    wait "$PB_PID" 2>/dev/null || true
+    PB_PID=""
+  fi
+}
+cleanup() {
+  stop_own_pb
+  if [ "$RESTORE_SCHEMA" = "true" ]; then
+    cp "$SCHEMA_BEFORE" "$SCHEMA"
+  fi
+  if [ -n "$SNAPSHOT" ]; then
+    rm -rf "$SNAPSHOT"
+  fi
+  if [ -n "$SCHEMA_LIVE" ]; then
+    rm -f "$SCHEMA_LIVE"
+  fi
+  if [ -n "$SCHEMA_BEFORE" ] && [ "$KEEP_SCHEMA_BEFORE" = "false" ]; then
+    rm -f "$SCHEMA_BEFORE"
+  fi
+}
+trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+# --------------------------------
+
+# `git commit <paths>` (and IDEs that commit with --only) give this hook a temporary
+# index; git then rebuilds the real one from the paths. pb_schema.json added here would
+# reach the commit but not the real index, and the next commit would quietly undo it.
+PARTIAL_COMMIT=false
+case "${GIT_INDEX_FILE:-}" in
+  */next-index-*.lock) PARTIAL_COMMIT=true ;;
+esac
+
+# --- OPERATION IN PROGRESS ---
+# A merge (a squash merge too), cherry-pick, revert or rebase decides pb_schema.json
+# itself: the hook neither exports it nor unstages it.
+OPERATION=""
+for ref in MERGE_HEAD CHERRY_PICK_HEAD REVERT_HEAD; do
+  if git rev-parse -q --verify "$ref" > /dev/null; then
+    OPERATION=$ref
+  fi
+done
+if [ -d "$(git rev-parse --git-path rebase-merge)" ] || [ -d "$(git rev-parse --git-path rebase-apply)" ]; then
+  OPERATION=rebase
+fi
+# git merge --squash writes no MERGE_HEAD, only SQUASH_MSG. git commit, a branch switch
+# and a git reset of the whole index delete it; git restore, git checkout -- <paths>, a
+# refused git merge --abort and a real git merge started later leave it. So it counts
+# only when nothing else is in progress, and an abandoned squash passes for one until the
+# next commit: the schema-only rule still applies to a squash, and the hook says how to tell.
+if [ -z "$OPERATION" ] && [ -f "$(git rev-parse --git-path SQUASH_MSG)" ]; then
+  OPERATION="merge --squash"
+fi
+# git also puts a SQUASH_MSG above the message of a merge, cherry-pick, revert or rebase
+# commit that takes its message from git (no -m or -F). A cherry-pick then gets "Squashed
+# commit of the following:" as its subject, which commitlint refuses. The file stays:
+# next to a stale ref, it may belong to the squash in progress.
+if [ -n "$OPERATION" ] && [ "$OPERATION" != "merge --squash" ] && [ -f "$(git rev-parse --git-path SQUASH_MSG)" ]; then
+  echo "ℹ️  $(git rev-parse --git-path SQUASH_MSG) is left from a squash merge. Unless -m or -F gives the"
+  echo "   message, git puts its text above this commit's: fix it once the commit lands (git commit"
+  echo "   --amend keeps a merge's parents), or delete that file if commitlint refuses the message."
+fi
+# --------------------------------
+
+# --- SCHEMA LEFT BY A COMMIT THAT DID NOT FINISH ---
+# The export is staged at the very end of this hook, but the commit can still stop
+# after it: commit-msg (commitlint) or an empty message. The hook records the blob it
+# staged, and .husky/post-commit deletes the record once a commit lands with it. A
+# record found here therefore means that such a commit stopped, and the blob is the
+# hook's own write, not the user's:
+#   - staged with other files: unstaged (the working copy too, if it still holds it),
+#     and the rules below decide again;
+#   - staged alone, or with ALLOW_SCHEMA_ONLY=1: kept, and the rules below block it or
+#     commit it. Unstaging it could leave nothing staged, and git, which looked for
+#     changes before this hook ran, would then record an empty commit;
+#   - on disk only (a stopped `git commit -a` or `-i`: git threw their index away): the
+#     working copy is put back.
+# An operation decides the schema itself, and a commit that names its paths runs on a
+# temporary index: both leave the record for a later commit.
+SCHEMA_RECORD=$(git rev-parse --git-path pre-commit-staged-schema)
+if [ "$PARTIAL_COMMIT" = "false" ] && [ -z "$OPERATION" ] && [ -f "$SCHEMA_RECORD" ]; then
+  RECORDED=$(cat "$SCHEMA_RECORD")
+  ON_DISK=$(git hash-object "$SCHEMA" 2> /dev/null || true)
+  if [ "$(git rev-parse -q --verify "HEAD:$SCHEMA" || true)" = "$RECORDED" ]; then
+    rm -f "$SCHEMA_RECORD"
+  elif [ "$(git rev-parse -q --verify ":$SCHEMA" || true)" = "$RECORDED" ]; then
+    if [ -z "$ALLOW_SCHEMA_ONLY" ] && git diff --cached --name-only | grep -qvxF "$SCHEMA"; then
+      rm -f "$SCHEMA_RECORD"
+      git reset -q -- "$SCHEMA"
+      if [ "$ON_DISK" = "$RECORDED" ]; then
+        git checkout -q -- "$SCHEMA" 2> /dev/null || true
+      fi
+      echo "ℹ️  pb_schema.json was still staged by a commit that did not finish: unstaged, decided again below."
+    else
+      echo "ℹ️  pb_schema.json is still staged by a commit that did not finish. Staged alone, or with"
+      echo "   ALLOW_SCHEMA_ONLY=1, it is kept and treated as staged by you."
+    fi
+  else
+    rm -f "$SCHEMA_RECORD"
+    if [ "$ON_DISK" = "$RECORDED" ]; then
+      git checkout -q -- "$SCHEMA" 2> /dev/null || true
+      echo "ℹ️  pb_schema.json on disk still held the export of a commit that did not finish: put back."
+    fi
+  fi
+fi
+# --------------------------------
+
+# The commit is the staged set. The hook never stages anything else: lint-staged
+# stages what its fixers change in staged files, and pb_schema.json is added only by
+# the rules below. -z, because git C-quotes paths with a double quote otherwise (the
+# tracked .agent/skills/"playwright"/ folder) and no pattern below would match them.
+STAGED=$(git diff --cached --name-only -z --diff-filter=ACMRD | tr '\0' '\n')
+if [ -z "$STAGED" ]; then
+  exit 0
+fi
+
 # --- TASK DOCS / CODE SEPARATION GUARD ---
 # The task docs of every task home (tools/scripts/task-homes.json) are living
 # planning docs and must be committed on their own — mixing them with source code
 # pollutes feature-commit history (see apps/eco-store/CLAUDE.md, "Committing
 # changes to TASKS.md / BACKLOG.md only"). A new home's doc is added to the regex
 # below; `yarn tasks:test` fails until it is.
-# NOTE: this hook ends with `git add -A`, so the commit = the whole working tree.
-# We therefore check every changed file (staged or not), not just the staged set.
 # Legitimate one-off cleanups (e.g. deleting an obsolete doc together with code)
 # can bypass:  ALLOW_BACKLOG_MIX=1 git commit ...
-CHANGED=$(git status --porcelain | awk '{print $NF}')
 if [ -z "$ALLOW_BACKLOG_MIX" ]; then
-  TASK_DOCS=$(printf '%s\n' "$CHANGED" | grep -E '^(apps/eco-store/(TASKS|BACKLOG)|apps/eco-admin/TASKS|libs/eco/TASKS|TASKS)\.md$' || true)
+  TASK_DOCS=$(printf '%s\n' "$STAGED" | grep -E '^(apps/eco-store/(TASKS|BACKLOG)|apps/eco-admin/TASKS|libs/eco/TASKS|TASKS)\.md$' || true)
   if [ -n "$TASK_DOCS" ]; then
-    NON_DOC=$(printf '%s\n' "$CHANGED" | grep -vE '\.md$' || true)
+    NON_DOC=$(printf '%s\n' "$STAGED" | grep -vE '\.md$' || true)
     if [ -n "$NON_DOC" ]; then
       DOC_ARGS=$(echo $TASK_DOCS)
-      echo "❌ task docs would be committed together with non-doc files:"
+      echo "❌ task docs are staged together with non-doc files:"
       printf '%s\n' "$TASK_DOCS" | sed 's/^/   task doc: /'
       printf '%s\n' "$NON_DOC" | sed 's/^/   other:    /'
       echo ""
       echo "   Task docs belong in their own commit. Split it:"
-      echo "     git stash push -- $DOC_ARGS"
+      echo "     git restore --staged $DOC_ARGS"
       echo "     git commit                       # the code change"
-      echo "     git checkout 'stash@{0}' -- $DOC_ARGS && git stash drop"
       echo "     git add $DOC_ARGS"
       echo "     git commit -m 'docs(<scope>): #<task> <ID> flip status'"
-      echo ""
-      echo "   Never 'git stash pop' here: a pathspec stash records the whole tree,"
-      echo "   so popping it would bring back changes the code commit already holds."
-      echo "   A new (untracked) doc doesn't fit these steps: move it out of the"
-      echo "   repo for the code commit instead."
       echo ""
       echo "   One-off cleanup that genuinely needs both? ALLOW_BACKLOG_MIX=1 git commit ..."
       exit 1
@@ -42,81 +175,336 @@ fi
 # ----------------------------------------------------
 
 # --- MARKDOWN-ONLY FAST PATH ---
-# If every changed file is a .md, skip the heavy checks (PocketBase export,
-# i18n validation, nx lint) — none of them are relevant for doc-only commits.
-# branch:lint, markdownlint and format:write still run.
-ALL_CHANGED=$(git status --porcelain | awk '{print $NF}' | grep -v '^$')
-NON_MD=$(printf '%s\n' "$ALL_CHANGED" | grep -v '\.md$' | grep -v '^$' || true)
+# If every staged file is a .md, skip the PocketBase export and i18n validation;
+# branch:lint and lint-staged (markdownlint + Prettier on the staged docs) still run.
+NON_MD=$(printf '%s\n' "$STAGED" | grep -v '\.md$' || true)
 ONLY_MD=false
-[ -z "$NON_MD" ] && ONLY_MD=true
+if [ -z "$NON_MD" ]; then
+  ONLY_MD=true
+fi
+# --------------------------------
+
+# --- LINT-STAGED (META-12) ---
+# Called from node_modules directly: npx would try to download it when a checkout has
+# not run `yarn install` since lint-staged was added, and fail without saying why.
+# Each checkout runs its own .husky once `yarn worktree:setup` has run (META-34). Where the
+# hooks still come from another checkout (core.hooksPath naming its .husky/_), a worktree
+# on a branch that predates META-12 has no lint-staged or lint-staged.config.mjs of its
+# own (`yarn install` there cannot add it): it uses the ones of the checkout this hook
+# lives in. lint-staged still runs the worktree's tools.
+HOOK_ROOT=$(cd "$(dirname "$0")/.." && pwd)
+LINT_STAGED=./node_modules/.bin/lint-staged
+if [ ! -x "$LINT_STAGED" ] && [ -x "$HOOK_ROOT/node_modules/.bin/lint-staged" ]; then
+  LINT_STAGED="$HOOK_ROOT/node_modules/.bin/lint-staged"
+  echo "ℹ️  This checkout has no lint-staged (its branch predates META-12): using $LINT_STAGED"
+fi
+if [ ! -x "$LINT_STAGED" ]; then
+  echo "❌ lint-staged is not installed. Run 'yarn install' in this checkout, or in $HOOK_ROOT"
+  echo "   when this branch predates META-12, and commit again."
+  exit 1
+fi
+LINT_STAGED_CONFIG=lint-staged.config.mjs
+if [ ! -f "$LINT_STAGED_CONFIG" ]; then
+  LINT_STAGED_CONFIG="$HOOK_ROOT/lint-staged.config.mjs"
+  echo "ℹ️  This branch has no lint-staged.config.mjs (it predates META-12): using $LINT_STAGED_CONFIG"
+fi
 # --------------------------------
 
 # --- SANDBOX BRIDGE ---
-# Redirect HOME to a temp directory to avoid EPERM on /Users/plastikaweb/.yarnrc
+# Redirect HOME to a temp directory to avoid EPERM on /Users/plastikaweb/.yarnrc.
+# lint-staged runs no Yarn but does run git (its backup stash needs the user's
+# identity from ~/.gitconfig), so it gets the original HOME back. So do nx and the
+# untracked listings, which read the user's global excludes file.
+ORIGINAL_HOME=$HOME
 export HOME=/tmp/husky-sandbox
 mkdir -p $HOME
 # Ensure we use the project-local Yarn (v4) via Corepack/NPX
 alias yarn="npx yarn"
 # ----------------------
 
-export NX_CLI_SET=classic
-export PAGER=cat
+# --- INDEX SNAPSHOT ---
+# tasks:check and i18n:validate read their files from disk, and unstaged changes stay
+# out of the commit, so both check a copy of the index: the content being committed.
+# The copy (about 1.5 s) is made once, and only when one of them runs. They are the
+# commands of `yarn tasks:check` and `yarn i18n:validate`, run with node directly.
+# validate-i18n-keys.cjs reads the cwd and needs no package, so it runs inside the copy.
+# The tasks:check scripts import packages (markdownlint), which only resolve from a
+# checkout, so they run from this one and read the copy through --root and --config.
+snapshot() {
+  if [ -z "$SNAPSHOT" ]; then
+    # No dot before the random part: validate-i18n-keys.cjs used to skip any path
+    # containing ".nx", and a name such as pre-commit-index.nx4f2a would hide everything.
+    SNAPSHOT=$(mktemp -d "${TMPDIR:-/tmp}/pre-commit-index-XXXXXX") || {
+      echo "❌ Cannot create a temporary directory for the index snapshot."
+      exit 1
+    }
+    git checkout-index -a --prefix="$SNAPSHOT/" || {
+      echo "❌ Cannot copy the index to $SNAPSHOT."
+      exit 1
+    }
+  fi
+}
+i18n_on_index() {
+  snapshot
+  (cd "$SNAPSHOT" && node tools/scripts/validate-i18n-keys.cjs)
+}
+# --------------------------------
+
+# --- ECO CONVENTIONS (META-15) ---
+# The staged eco templates and styles: no bare <input>/<select>/<textarea>, no hex colour
+# and no --mat-sys-* declaration outside the token sources (::ng-deep is listed, not
+# failed). The script of the copy runs on the copy, so it reads the content being
+# committed; it routes the paths itself (eco scope, extension, specs left out). Under 0.5 s.
+eco_conventions_on_index() {
+  if git diff --cached --name-only --diff-filter=ACMR -- 'apps/eco-*' 'libs/eco*' | grep -qE '\.(html|ts|scss|css)$'; then
+    snapshot
+    if [ ! -f "$SNAPSHOT/tools/scripts/check-eco-conventions.cjs" ]; then
+      echo "ℹ️  This branch has no tools/scripts/check-eco-conventions.cjs (it predates META-15): eco conventions not checked; CI checks them."
+      return 0
+    fi
+    git diff --cached --name-only -z --diff-filter=ACMR -- 'apps/eco-*' 'libs/eco*' |
+      (cd "$SNAPSHOT" && xargs -0 node tools/scripts/check-eco-conventions.cjs --files)
+  fi
+}
+# --------------------------------
+
+# --- NX GRAPH FOR THE BOUNDARY RULE ---
+# @nx/enforce-module-boundaries reads the cached Nx project graph. With none (a fresh
+# worktree) it skips itself with a warning that lint-staged hides, and a boundary
+# violation gets committed. `nx show projects` builds the graph or brings it up to
+# date: 1.5-3.5 s with a warm cache, 20-40 s the first time in a checkout. Only staged
+# TypeScript under apps/ or libs/ needs it.
+refresh_nx_graph() {
+  if printf '%s\n' "$STAGED" | grep -qE '^(apps|libs)/.+\.ts$'; then
+    NX_BIN=./node_modules/.bin/nx
+    if [ ! -x "$NX_BIN" ]; then
+      NX_BIN="$HOOK_ROOT/node_modules/.bin/nx"
+    fi
+    # Nx prints why it failed (a broken project.json, two projects with one name) on
+    # stdout, which a success would only fill with the project list.
+    if ! NX_OUT=$(HOME="$ORIGINAL_HOME" "$NX_BIN" show projects 2>&1); then
+      printf '%s\n' "$NX_OUT" | tail -n 25
+      echo "❌ Nx could not build the project graph (above), which ESLint needs to check module"
+      echo "   boundaries. Fix it, or run 'yarn nx show projects' to see it again."
+      return 1
+    fi
+  fi
+}
+# --------------------------------
+
+# --- UNTRACKED FILES ---
+# This hook adds no untracked file (develop's `git add -A` did): a new file left out of
+# the commit is listed, so that one the staged code imports is not forgotten. A commit
+# that names its paths runs on a temporary index, HEAD plus those paths: a file staged
+# but not named looks untracked there, and one removed with git rm --cached is still in
+# it, and in the commit. So the paths listed are those neither index tracks: untracked in
+# the real index (--git-path index would follow GIT_INDEX_FILE back to the temporary
+# one) and not in the temporary one. A directory the real index has nothing in is one
+# entry there; what the temporary index leaves untracked under it is untracked in both,
+# so one listing on the temporary index gives it. -z, because git quotes a name with a
+# double quote or a backslash even with core.quotePath=false; a newline inside a name
+# shows as ?. The listings get the user's HOME back, for the user's global excludes.
+# Six are enough to show five.
+untracked_in_path_commit() {
+  REAL_INDEX="$(git rev-parse --git-dir)/index"
+  GIT_INDEX_FILE="$REAL_INDEX" HOME="$ORIGINAL_HOME" git ls-files -z --others --exclude-standard --directory --no-empty-directory | tr '\n\0' '?\n' |
+    while IFS= read -r ENTRY; do
+      if [ -z "$(git --literal-pathspecs ls-files -- "$ENTRY" | head -n 1)" ]; then
+        printf '%s\n' "$ENTRY"
+      elif [ "${ENTRY%/}" != "$ENTRY" ]; then
+        HOME="$ORIGINAL_HOME" git --literal-pathspecs ls-files -z --others --exclude-standard --directory --no-empty-directory -- "$ENTRY" | tr '\n\0' '?\n'
+      fi
+    done | head -n 6
+}
+untracked_notice() {
+  if [ "$PARTIAL_COMMIT" = "true" ]; then
+    UNTRACKED=$(untracked_in_path_commit)
+  else
+    UNTRACKED=$(HOME="$ORIGINAL_HOME" git ls-files -z --others --exclude-standard --directory --no-empty-directory | tr '\n\0' '?\n')
+  fi
+  if [ -n "$UNTRACKED" ]; then
+    echo "ℹ️  Untracked, so not in this commit (git add them if they belong to it):"
+    printf '%s\n' "$UNTRACKED" | head -n 5 | sed 's/^/     /'
+    if [ "$(printf '%s\n' "$UNTRACKED" | wc -l)" -gt 5 ]; then
+      echo "     ..."
+    fi
+  fi
+}
+# --------------------------------
 
 # --- TASK DOCS LINT (META-11) ---
-# Any changed TASKS, BACKLOG or REQUIREMENTS doc runs `yarn tasks:check` (~1 s):
-# table rules, blank lines between rows, one Document version per home, and a
-# task with two different statuses. Matching by name also covers new homes.
-if printf '%s\n' "$CHANGED" | grep -qE '(^|/)(TASKS|BACKLOG|REQUIREMENTS)\.md$'; then
-  if ! npx yarn tasks:check; then
-    echo "❌ tasks:check failed! Fix the task docs above. Commit aborted!"
+# A staged TASKS, BACKLOG or REQUIREMENTS doc runs the tasks:check commands on the
+# staged docs (about 1 s): table rules, blank lines between rows, one Document version
+# per home, and a task with two different statuses. Matching by name also covers new homes.
+if printf '%s\n' "$STAGED" | grep -qE '(^|/)(TASKS|BACKLOG|REQUIREMENTS)\.md$'; then
+  if [ ! -f tools/scripts/check-task-docs.cjs ]; then
+    echo "❌ A task doc is staged, but this branch has no tools/scripts/check-task-docs.cjs"
+    echo "   (it predates META-11). Merge develop into it, then commit again."
+    exit 1
+  fi
+  snapshot
+  TASK_HOMES="$SNAPSHOT/tools/scripts/task-homes.json"
+  if ! (node tools/scripts/check-task-docs.cjs --root "$SNAPSHOT" --config "$TASK_HOMES" \
+    && node tools/scripts/sync-eco-store-tasks.cjs --all --offline --root "$SNAPSHOT" --config "$TASK_HOMES"); then
+    echo "❌ tasks:check failed on the staged docs! Fix the task docs above. Commit aborted!"
     exit 1
   fi
 fi
 # --------------------------------
 
 if [ "$ONLY_MD" = "true" ]; then
-  echo "📝 Markdown-only commit — skipping PocketBase export, i18n, and lint"
-  if npx yarn branch:lint \
-    && npx yarn markdownlint \
-    && npx yarn nx format:write --affected; then
-    git add -A
-  else
-    echo "❌ Checks failed! Commit aborted!"
-    exit 1
+  echo "📝 Markdown-only commit — skipping PocketBase export and i18n"
+  if npx yarn branch:lint && HOME="$ORIGINAL_HOME" "$LINT_STAGED" --config "$LINT_STAGED_CONFIG"; then
+    untracked_notice
+    exit 0
+  fi
+  echo "❌ Checks failed! Commit aborted!"
+  exit 1
+fi
+
+# --- POCKETBASE SCHEMA EXPORT ---
+# Schema edits made in the local Admin UI live only in pb_data, which git cannot see;
+# the export writes them to pb_schema.json. Every worktree exports that same local
+# PocketBase, so its schema can hold edits made for another branch. The rules:
+#   - pb_schema.json already staged (by hand or by a merge): kept as staged, no export.
+#     Staged without eco code, it stops the commit unless ALLOW_SCHEMA_ONLY=1.
+#   - a merge (squash too), cherry-pick, revert or rebase in progress: no export; it
+#     decides the schema (OPERATION, above). A squash merge still follows the rule
+#     above for a schema staged without eco code.
+#   - otherwise the hook exports. A live schema that differs from the staged one joins
+#     an eco commit once every other check has passed, and stays out of any other
+#     commit, or of a commit that names its paths, with a warning.
+# When a PocketBase already answers on :8090 (yarn eco-store:local), the export uses it
+# and no second process opens the same pb_data; otherwise the hook starts one and
+# always stops it. CI checks the schema again on every PR (pb-schema-guard.yml).
+# Eco code is any file under the eco apps and libs but Markdown: a doc that changes
+# there (a CLAUDE.md, a task doc) says nothing about whose edits the export holds.
+ECO_FILES='^(apps/eco-(store|admin)(-e2e)?|libs/eco(-store|-admin)?)/'
+ECO_COMMIT=false
+if printf '%s\n' "$STAGED" | grep -vxF "$SCHEMA" | grep -v '\.md$' | grep -qE "$ECO_FILES"; then
+  ECO_COMMIT=true
+fi
+SCHEMA_STAGED=false
+if printf '%s\n' "$STAGED" | grep -qxF "$SCHEMA"; then
+  SCHEMA_STAGED=true
+fi
+STAGE_LIVE_SCHEMA=false
+
+# A merge, cherry-pick, revert or rebase brings a schema someone already committed. A
+# squash merge cannot be told from a SQUASH_MSG left behind, so it follows the rule.
+if [ "$SCHEMA_STAGED" = "true" ] && [ "$ECO_COMMIT" = "false" ] && { [ -z "$OPERATION" ] || [ "$OPERATION" = "merge --squash" ]; } && [ -z "$ALLOW_SCHEMA_ONLY" ]; then
+  echo "❌ pb_schema.json is staged, but no eco code is (Markdown does not count). Every worktree"
+  echo "   exports the same local PocketBase, so it may hold edits made for another branch. Stage"
+  echo "   the eco code it belongs to, unstage it (git restore --staged $SCHEMA), or, for a"
+  echo "   schema-only change: ALLOW_SCHEMA_ONLY=1 git commit ..."
+  exit 1
+fi
+
+if [ "$SCHEMA_STAGED" = "true" ]; then
+  echo "ℹ️  pb_schema.json is staged: kept as staged, the live PocketBase is not exported."
+elif [ -n "$OPERATION" ]; then
+  echo "ℹ️  A merge, cherry-pick, revert or rebase is in progress ($OPERATION): the live PocketBase is"
+  echo "   not exported, that operation decides pb_schema.json."
+  if [ "$OPERATION" = "merge --squash" ]; then
+    echo "   No squash merge in progress? Then $(git rev-parse --git-path SQUASH_MSG) is left from an"
+    echo "   abandoned one, and this commit gets no export: once it lands (git deletes that file"
+    echo "   with it), undo it with git reset --soft HEAD~1 and commit again."
   fi
 else
-  # 1. Start PocketBase in the background
-  (cd apps/eco-store/pocketbase && ./pocketbase serve > /dev/null 2>&1) &
-  PB_PID=$!
-
-  # 2. Wait for initialization
-  sleep 3
-
-  # 3. Run the export (Using npx to ensure Yarn 4 is used)
-  npx yarn eco-store:pb:export
-  EXPORT_EXIT_CODE=$?
-
-  # 4. Kill the background PocketBase instance
-  kill $PB_PID 2>/dev/null || true
-  wait $PB_PID 2>/dev/null || true
-
-  # 5. Check if export failed
-  if [ $EXPORT_EXIT_CODE -ne 0 ]; then
-    echo "❌ PocketBase schema export failed!"
-    exit $EXPORT_EXIT_CODE
+  PB_HEALTH_URL=http://127.0.0.1:8090/api/health
+  pb_is_up() {
+    curl -fs -m 2 "$PB_HEALTH_URL" > /dev/null 2>&1
+  }
+  if ! pb_is_up; then
+    # exec: $! is then the PocketBase process itself, not a subshell that kill would miss.
+    (cd apps/eco-store/pocketbase && exec ./pocketbase serve > /dev/null 2>&1) &
+    PB_PID=$!
+    TRIES=0
+    until pb_is_up; do
+      if ! kill -0 "$PB_PID" 2>/dev/null; then
+        echo "❌ PocketBase exited on start. Is the binary there? (yarn eco-store:pb:download)"
+        exit 1
+      fi
+      TRIES=$((TRIES + 1))
+      if [ "$TRIES" -ge 40 ]; then
+        echo "❌ PocketBase did not answer on :8090 within 10 s."
+        exit 1
+      fi
+      sleep 0.25
+    done
   fi
 
-  # Run checks using npx yarn to ensure Yarn 4 Berry execution
-  if npx yarn branch:lint \
-    && npx yarn i18n:validate \
-    && npx yarn nx affected --target=lint --parallel --max-parallel=2 --cache \
-    && npx yarn markdownlint \
-    && npx yarn nx format:write --affected; then
-
-    # 6. Add all changes to the commit
-    git add -A
-  else
-    echo "❌ Checks failed! Commit aborted!"
+  SCHEMA_BEFORE=$(mktemp "${TMPDIR:-/tmp}/pb_schema.before.XXXXXX") || {
+    echo "❌ Cannot create a temporary copy of $SCHEMA."
+    exit 1
+  }
+  SCHEMA_LIVE=$(mktemp "${TMPDIR:-/tmp}/pb_schema.live.XXXXXX") || {
+    echo "❌ Cannot create a temporary copy of $SCHEMA."
+    exit 1
+  }
+  cp "$SCHEMA" "$SCHEMA_BEFORE"
+  RESTORE_SCHEMA=true
+  if ! npx yarn eco-store:pb:export; then
+    echo "❌ PocketBase schema export failed!"
     exit 1
   fi
+  stop_own_pb
+  # Keep the export aside and put the working copy back: the checks below run on the
+  # tree as it was, and a commit they stop leaves no trace.
+  cp "$SCHEMA" "$SCHEMA_LIVE"
+  cp "$SCHEMA_BEFORE" "$SCHEMA"
+  RESTORE_SCHEMA=false
+  if ! git show ":$SCHEMA" | cmp -s - "$SCHEMA_LIVE"; then
+    if [ "$ECO_COMMIT" = "true" ] && [ "$PARTIAL_COMMIT" = "false" ]; then
+      STAGE_LIVE_SCHEMA=true
+    elif [ "$ECO_COMMIT" = "true" ]; then
+      echo "⚠️  The live PocketBase schema differs from this branch, but this commit names its paths"
+      echo "   (git commit <paths>, or an IDE that commits that way), so the hook cannot add"
+      echo "   pb_schema.json to it. If the difference belongs to this branch, stage the export with"
+      echo "   the eco code and commit without paths:"
+      echo "     yarn eco-store:pb:export && git add $SCHEMA <eco files> && git commit"
+    else
+      echo "⚠️  The live PocketBase schema differs from this branch, but this commit stages no eco"
+      echo "   code (Markdown does not count), so pb_schema.json stays as it was: the difference may"
+      echo "   be edits made for another branch. If they belong to this one, commit them with the eco"
+      echo "   code they belong to, or on their own:"
+      echo "     yarn eco-store:pb:export && git add $SCHEMA && ALLOW_SCHEMA_ONLY=1 git commit ..."
+    fi
+  fi
 fi
+# --------------------------------
+
+# Run after every other check has passed, so that a commit this hook stops leaves
+# nothing staged. One stopped later (commit-msg, an empty message) leaves the export
+# staged, and its record: the next commit finds it (SCHEMA LEFT BY A COMMIT THAT DID
+# NOT FINISH, above). .husky/post-commit deletes the record when the commit lands.
+stage_live_schema() {
+  if [ "$STAGE_LIVE_SCHEMA" = "true" ]; then
+    if ! git show ":$SCHEMA" | cmp -s - "$SCHEMA_BEFORE" && ! cmp -s "$SCHEMA_BEFORE" "$SCHEMA_LIVE"; then
+      KEEP_SCHEMA_BEFORE=true
+      echo "ℹ️  Your unstaged pb_schema.json differed from both this branch and the live PocketBase;"
+      echo "   it is replaced by the export, and a copy stays at $SCHEMA_BEFORE"
+    fi
+    RESTORE_SCHEMA=true
+    cp "$SCHEMA_LIVE" "$SCHEMA"
+    git hash-object "$SCHEMA_LIVE" > "$SCHEMA_RECORD"
+    git add "$SCHEMA"
+    RESTORE_SCHEMA=false
+    echo "ℹ️  The live PocketBase schema differs from this branch: pb_schema.json joins this eco commit."
+    echo "   Check that every change in it is yours: git show HEAD -- $SCHEMA"
+  fi
+}
+
+# lint-staged (lint-staged.config.mjs): ESLint, markdownlint and Prettier on the staged
+# files only. CI still runs the affected lint over whole projects.
+if npx yarn branch:lint \
+  && i18n_on_index \
+  && eco_conventions_on_index \
+  && refresh_nx_graph \
+  && HOME="$ORIGINAL_HOME" "$LINT_STAGED" --config "$LINT_STAGED_CONFIG"; then
+  stage_live_schema
+  untracked_notice
+  exit 0
+fi
+echo "❌ Checks failed! Commit aborted!"
+exit 1

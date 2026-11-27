@@ -5,12 +5,6 @@
   "prefix": "eco",
   "projectType": "library",
   "tags": ["scope:eco-store", "type:feature"],
-  "targets": {
-    "test": {
-      "executor": "@nx/vitest:test"
-    },
-    "lint": {
-      "executor": "@nx/eslint:lint"
-    }
-  }
+  "// targets": "to see all targets run: nx show project eco-store-auth-feature-confirm-email-change --web",
+  "targets": {}
 }

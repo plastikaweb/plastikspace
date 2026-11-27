@@ -25,7 +25,7 @@ export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade
 
   model = this.#userOrderStore.selectedItem;
 
-  viewExtraActions = signal<ExtraFormAction<LlecoopUserOrder>[]>([
+  readonly viewExtraActions = signal<ExtraFormAction<LlecoopUserOrder>[]>([
     {
       text: formatCurrency(0, 'ca-ES', '€'),
       icon: 'shopping_basket',
@@ -35,7 +35,7 @@ export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade
     },
   ]);
 
-  viewConfig = computed(() => ({
+  readonly viewConfig = computed(() => ({
     ...this.#view,
     title: this.model() ? `Comanda #${this.model()?.name}` : 'Nova comanda',
   }));

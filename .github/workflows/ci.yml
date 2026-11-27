@@ -55,12 +55,31 @@ jobs:
 
       - name: Lint Affected
         if: always()
+        # The typed ESLint profile: the rules that need type information run here only (META-13).
+        env:
+          ESLINT_TYPED: '1'
         run: |
+          yarn nx-tags:check
+          yarn nx-tags:test
+          yarn eco-conventions:check
+          yarn eco-conventions:test
+          yarn eco-lib:test
+          yarn feature-map:check
+          yarn feature-map:test
+          yarn eco-test-user:test
+          yarn pb-sync:test
+          yarn commit-refs:test
+          yarn worktree-setup:test
+          yarn guard:test
+          yarn lint:delta:test
           yarn i18n:validate
           yarn tasks:test
           yarn tasks:check
           yarn markdownlint
+          yarn lint:profiles
           npx nx affected --target=lint --exclude=llecoop-firebase --parallel=3
+          # Last, so a failure still leaves the full lint output above (META-18).
+          yarn lint:delta
 
       - name: Test
         if: always()

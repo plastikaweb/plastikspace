@@ -5,7 +5,7 @@ description: Use when working over a Nx Monorepo
 
 # Nx Style
 
-You are in an nx workspace using Nx 21.2.0 and yarn as the package manager.
+You are in an nx workspace using Nx 24.0.6 and yarn as the package manager.
 
 You have access to the Nx MCP server and the tools it provides. Use them. Follow these guidelines in order to best help the user:
 

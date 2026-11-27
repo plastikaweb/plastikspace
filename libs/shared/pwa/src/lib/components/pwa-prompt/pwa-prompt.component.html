@@ -42,7 +42,7 @@
         <p class="text-sm font-medium text-[var(--mat-sys-on-surface)]">
           {{ 'common.pwa.iosSafariRequired' | translate }}
         </p>
-        <button mat-flat-button class="w-full" (click)="close()">
+        <button type="button" mat-flat-button class="w-full" (click)="close()">
           {{ 'common.pwa.close' | translate }}
         </button>
       </div>
@@ -92,13 +92,14 @@
             </p>
           </li>
         </ol>
-        <button matButton="filled" class="w-full" (click)="close()">
+        <button type="button" matButton="filled" class="w-full" (click)="close()">
           {{ 'common.pwa.close' | translate }}
         </button>
       } @else {
         <!-- Android / Chrome: native prompt available — one tap to install -->
         <div class="flex flex-row justify-end gap-4">
           <button
+            type="button"
             matButton="filled"
             class="w-full lg:w-auto"
             [attr.aria-label]="'common.pwa.install' | translate"
@@ -106,6 +107,7 @@
             {{ 'common.pwa.install' | translate }}
           </button>
           <button
+            type="button"
             matButton="outlined"
             class="w-full lg:w-auto"
             [attr.aria-label]="'common.pwa.later' | translate"

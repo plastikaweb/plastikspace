@@ -60,8 +60,8 @@ export const YEAR_MODE_FORMATS = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class YearPickerComponent implements ControlValueAccessor {
-  touchUi = input(false);
-  label = input<string>();
+  readonly touchUi = input(false);
+  readonly label = input<string>();
 
   formControl: FormControl = new FormControl();
 

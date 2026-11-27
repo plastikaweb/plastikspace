@@ -93,33 +93,33 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   /**
    * Data that will populate the table.
    */
-  data = input.required<T[]>();
+  readonly data = input.required<T[]>();
 
   /**
    * Table columns structure.
    */
-  columnProperties = input.required<TableColumnFormatting<T, FormattingTypes>[]>();
+  readonly columnProperties = input.required<TableColumnFormatting<T, FormattingTypes>[]>();
 
   /**
    * The total number of items available for the current table data request.
    * Used for pagination and to show the total number of items.
    */
-  resultsLength = input.required<number>();
+  readonly resultsLength = input.required<number>();
 
   /**
    * Pagination configuration.
    */
-  pagination = input<PageEventConfig>();
+  readonly pagination = input<PageEventConfig>();
 
   /**
    * Remove pagination component to the table. Present by default.
    */
-  noPagination = input<boolean>(false);
+  readonly noPagination = input<boolean>(false);
 
   /**
    * Sets the pagination elements visibility configuration.
    */
-  paginationVisibility = input<Partial<TablePaginationVisibility> | undefined>({
+  readonly paginationVisibility = input<Partial<TablePaginationVisibility> | undefined>({
     hideRangeButtons: false,
     hideRangeLabel: false,
   });
@@ -127,56 +127,56 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   /**
    * Main title of the table.
    */
-  caption = input<TableDefinition<T>['caption']>('');
+  readonly caption = input<TableDefinition<T>['caption']>('');
 
   /**
    * Table sorting configuration.
    */
-  sort = input<TableSortingConfig>();
+  readonly sort = input<TableSortingConfig>();
 
   /**
    * Table actions configuration.
    */
-  actions = input<TableDefinition<T>['actions']>();
+  readonly actions = input<TableDefinition<T>['actions']>();
 
-  filterCriteria = input<Record<string, string>>({});
+  readonly filterCriteria = input<Record<string, string>>({});
 
-  filterPredicate = input<(data: T, criteria: Record<string, string>) => boolean>();
+  readonly filterPredicate = input<(data: T, criteria: Record<string, string>) => boolean>();
 
-  extraRowStyles = input<TableDefinition<T>['extraRowStyles']>();
+  readonly extraRowStyles = input<TableDefinition<T>['extraRowStyles']>();
 
-  actionsColStyles = input<TableDefinition<T>['actionsColStyles']>();
+  readonly actionsColStyles = input<TableDefinition<T>['actionsColStyles']>();
 
-  rowHeight = input<TableDefinition<T>['rowHeight']>('unset');
+  readonly rowHeight = input<TableDefinition<T>['rowHeight']>('unset');
 
-  expandable = input<boolean>(false);
+  readonly expandable = input<boolean>(false);
 
-  expandedElementId = input<EntityId | null>(null);
+  readonly expandedElementId = input<EntityId | null>(null);
 
-  expandedDetailTpl = input<TemplateRef<unknown> | null>(null);
+  readonly expandedDetailTpl = input<TemplateRef<unknown> | null>(null);
 
   /**
    * An Output emitter to send table pagination changes.
    */
-  changePagination = output<PageEventConfig>();
+  readonly changePagination = output<PageEventConfig>();
 
   /**
    * An Output emitter to send table sorting changes.
    */
-  changeSorting = output<SortConfig>();
+  readonly changeSorting = output<SortConfig>();
 
   /**
    * An Output emitter to send table delete action.
    */
-  delete = output<T>();
+  readonly delete = output<T>();
 
-  getChangedData = output<T | undefined>();
+  readonly getChangedData = output<T | undefined>();
 
   protected readonly matSort = viewChild<MatSort | null>(MatSort);
   protected readonly matPaginator = viewChild<MatPaginator | null>(MatPaginator);
 
   protected dataSource = new MatTableDataSource<T>();
-  protected columnsToDisplay = computed(() => {
+  protected readonly columnsToDisplay = computed(() => {
     const actions = this.actions();
     const cols = this.columnProperties().map(property => property.key) || [];
 
@@ -196,7 +196,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   protected isToggle = isToggleTypeGuard;
   protected isDynamicComponent = isDynamicComponentTypeGuard;
 
-  protected expandedElement = signal<T | null>(null);
+  protected readonly expandedElement = signal<T | null>(null);
   readonly #liveAnnouncer = inject(LiveAnnouncer);
 
   constructor() {

@@ -6,7 +6,12 @@
     <p class="text-balance">{{ data.message }}</p>
   </div>
   @if (data.action; as action) {
-    <button matButton matSnackBarAction [attr.aria-label]="data.ariaLabel" (click)="dismiss()">
+    <button
+      type="button"
+      matButton
+      matSnackBarAction
+      [attr.aria-label]="data.ariaLabel"
+      (click)="dismiss()">
       {{ action }}
     </button>
   }

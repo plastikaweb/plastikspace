@@ -260,6 +260,14 @@ Try to overwrite them by using [CSS specificity](https://developer.mozilla.org/e
 
 ### Bad practices to avoid
 
+> **Prefer Material roles to a palette shade with a `dark:` twin.**
+
+In the eco apps, `dark:` matches the same scheme as `light-dark()` and the roles (`@custom-variant dark` in `libs/eco/styles/src/_eco_tokens.css`):
+the dark theme chosen in the toggle (`html.dark`), or the OS in dark mode when the default «system» theme is on (`html` without `.light`).
+Until A11Y-026 it matched only `.dark`, so with the system in dark mode every `dark:` shade stayed light on a dark surface: a chip at 1.12:1 (A11Y-022), the cart category label at 1.22:1, the «kg» unit at 1.17:1.
+A palette shade with no `dark:` twin (`text-primary-700`) never switches at all: the avatar initials were 1.36:1 in dark mode.
+Material roles (`bg-sys-primary-container`, `text-sys-on-primary-container`) switch on their own; reach for a shade and its `dark:` twin only where no role fits.
+
 > **Do not break components CSS encapsulation!**
 
 Don't use deprecated `/deep/` pseudo-class to avoid unexpected behaviors while overwritten global styles from a component.

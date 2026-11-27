@@ -41,7 +41,7 @@
   - **Firebase:** Real-time DB, Auth, and Cloud Functions (llecoop)
   - **PocketBase:** Lightweight Go backend (eco-store)
   - **GraphQL:** Apollo Client integration (plastikaweb)
-- **Quality Assurance:** Vitest, Cypress, Pa11y (Accessibility), ESLint
+- **Quality Assurance:** Vitest, Cypress, Playwright with axe and Pa11y (Accessibility), ESLint
 
 ---
 

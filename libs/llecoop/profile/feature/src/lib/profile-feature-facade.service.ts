@@ -14,7 +14,7 @@ export class LlecoopProfileFeatureFacadeService implements DetailItemViewFacade<
   readonly #view = inject(VIEW_CONFIG)().filter(item => item.name === 'profile')[0];
   model = this.#store.user;
 
-  viewConfig = computed(() => ({
+  readonly viewConfig = computed(() => ({
     ...this.#view,
     title: (this.model()?.name as string) ?? 'El meu perfil',
     icon: this.model()?.isAdmin ? 'shield' : 'face',

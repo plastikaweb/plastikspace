@@ -122,7 +122,7 @@ The repository follows **Domain-Driven Design (DDD)** principles and strict modu
 
 ## ♿ Accessibility (A11y)
 
-- **Standards:** Target WCAG compliance.
+- **Standards:** Target WCAG 2.2 AA (Pa11y checks 2.1 AA only).
 - **Testing:** Use `vitest-axe` for unit tests and `pa11y-ci` for E2E.
 - **Semantic HTML:** Always use semantic landmarks (`<main>`, `<header>`, etc.).
 - **Alt Text:** Mandatory for images (use `alt=""` for decorative ones).

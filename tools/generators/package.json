@@ -1,0 +1,7 @@
+{
+  "name": "@plastik/generators",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Local Nx generators of the workspace, run by path: yarn nx g ./tools/generators:<generator>.",
+  "generators": "./generators.json"
+}

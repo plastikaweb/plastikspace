@@ -5,19 +5,6 @@
   "sourceRoot": "libs/eco-store/store-window/src",
   "prefix": "eco",
   "tags": ["scope:eco-store", "type:ui"],
-  "targets": {
-    "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": [
-          "libs/eco-store/store-window/**/*.ts",
-          "libs/eco-store/store-window/**/*.html"
-        ]
-      }
-    },
-    "test": {
-      "executor": "@nx/vitest:test"
-    }
-  }
+  "// targets": "to see all targets run: nx show project store-window --web",
+  "targets": {}
 }

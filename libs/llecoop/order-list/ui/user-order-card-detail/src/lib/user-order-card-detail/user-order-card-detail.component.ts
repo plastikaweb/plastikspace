@@ -18,10 +18,10 @@ import { TableFormlyModule } from '@plastik/shared/form/table';
 })
 export class UserOrderCardDetailComponent {
   protected readonly userOrderUtilsService = inject(UserOrderUtilsService);
-  order = input<LlecoopUserOrder | null>(null);
-  fields = input<FormlyFieldConfig[]>([]);
-  submitConfig = input<SubmitFormConfig>({});
+  readonly order = input<LlecoopUserOrder | null>(null);
+  readonly fields = input<FormlyFieldConfig[]>([]);
+  readonly submitConfig = input<SubmitFormConfig>({});
 
-  pendingChangesEvent = output<boolean>();
-  changeEvent = output<Pick<LlecoopUserOrder, 'id' | 'cart' | 'orderListId'>>();
+  readonly pendingChangesEvent = output<boolean>();
+  readonly changeEvent = output<Pick<LlecoopUserOrder, 'id' | 'cart' | 'orderListId'>>();
 }

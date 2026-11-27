@@ -7,7 +7,7 @@
 - When running tasks (for example build, lint, test, e2e, etc.), always prefer running the task through `nx` (i.e. `nx run`, `nx run-many`, `nx affected`) instead of using the underlying tooling directly
 - Prefix nx commands with the workspace's package manager (e.g., `pnpm nx build`, `npm exec nx test`) - avoids using globally installed CLI
 - You have access to the Nx MCP server and its tools, use them to help the user
-- For Nx plugin best practices, check `node_modules/@nx/<plugin>/PLUGIN.md`. Not all plugins have this file - proceed without it if unavailable.
+- For Nx plugin best practices, check `node_modules/@nx/<plugin>/dist/PLUGIN.md`. Not all plugins have this file - proceed without it if unavailable.
 - NEVER guess CLI flags - always check nx_docs or `--help` first when unsure
 
 ## Scaffolding & Generators
@@ -57,7 +57,7 @@ Personal Nx monorepo (Angular 21, Tailwind 4, NgRx Signal Store) with 4 apps + e
 ```bash
 # Test specific project
 yarn nx test <project>                              # e.g. yarn nx test eco-store
-yarn nx test <project> --testFile=<path>              # single file
+yarn nx test <project> <path> --passWithNoTests=false # single file, path relative to the project root
 yarn nx test <project> --testNamePattern="<pattern>"  # by test name
 yarn nx test <project> --watch                        # watch mode
 
@@ -68,6 +68,7 @@ yarn affected:test                                   # affected vs develop
 # Lint
 yarn nx lint <project>
 yarn lint:all
+yarn lint:ci                                         # affected projects with the type-aware rules, as CI
 
 # Build
 yarn nx build <project>
@@ -94,26 +95,103 @@ yarn plastikaweb:codegen                             # GraphQL types
 
 ## After Generating a Library
 
-Remove `outputs` and `reportsDirectory` from the `test` target in the generated `project.json`.
-Coverage paths are managed globally via `nx.json` — the generator adds lib-relative paths that are wrong.
-The test target should be just:
-
-```json
-"test": { "executor": "@nx/vitest:test" }
-```
+An eco library comes from `yarn eco-lib` (root `CLAUDE.md`, «Naming and Generating Libraries»), which already writes what this section asks for.
+`lint` and `test` are inferred by `@nx/eslint/plugin` and `@nx/vitest` (Nx 24), so the generated `project.json` has `"targets": {}`.
+Do not add them by hand. Coverage goes to the `reportsDirectory` in the project's `vite.config.mts`.
+Check the resolved targets with `nx show project <name>`.
+In its `vite.config.mts`, call `angular({ tsconfig: 'tsconfig.spec.json' })` like every other config, or building the graph prints «Unable to resolve tsconfig».
 
 ## PocketBase Schema Workflow (eco-store)
 
-Pre-commit hook auto-exports schema. Manual workflow:
+Every worktree shares the PocketBase on :8090, so its schema can hold edits made for another branch.
+The pre-commit exports it on every commit that is not Markdown-only. When the export differs from the staged schema,
+it stages `pb_schema.json` only if the commit already stages eco code (files under `apps/eco-*` or `libs/eco*`, Markdown aside), once every other check has passed.
+Any other commit keeps the file as it was, with a warning, and so does a commit that names its paths (`git commit <paths>`).
+A `pb_schema.json` you staged yourself is kept and not exported; staged without eco code, it needs `ALLOW_SCHEMA_ONLY=1 git commit ...`.
+A merge (a squash merge too), cherry-pick, revert or rebase in progress skips the export.
+A squash still needs eco code or `ALLOW_SCHEMA_ONLY=1` for a staged schema: git cannot tell one in progress from the `SQUASH_MSG` an abandoned squash leaves, and the hook says how to recover.
+Next to a real merge or cherry-pick, git puts that `SQUASH_MSG` in the commit message (a cherry-pick then fails commitlint): the hook names the file, and deleting it fixes the message.
+A commit that stops after the pre-commit (commitlint, an empty message) leaves the export staged, or only on disk after `git commit -a`.
+The next commit unstages it and decides again, or keeps it when nothing else is staged or `ALLOW_SCHEMA_ONLY=1` is set; an export left only on disk is put back.
+The hook knows its own export by a record that `.husky/post-commit` deletes once a commit lands with it.
+
+Manual workflow:
 
 1. Make changes in PocketBase Admin UI (`http://localhost:8090/_/`)
 2. `yarn eco-store:pb:export` — exports to `apps/eco-store/pocketbase/pb_schema.json`
 3. `yarn eco-store:pb:diff` — review changes
 4. Commit schema with code changes
 
+On every PR into develop that changes `pb_schema.json`, `.github/workflows/pb-schema-guard.yml` posts a per-collection summary.
+It fails when no eco code changes (Markdown does not count), or when a collection or field disappears, unless the PR has the `pb-schema` label.
+The staging sync drops a removed field with its data; it never deletes a collection, so a removed one stays on staging.
+Like the sync, the check finds a collection by id or else by name, so a collection whose id changed under the same name is no removal.
+View fields are matched by name, because their `_clone_` ids change each time the view is saved.
+The label covers the schema of the head it was added at, which the workflow records in a comment of its bot.
+Any later run whose schema differs from that head's, as the check reads it, removes the label, even when the check passes; add it again once the new summary is reviewed.
+A record written before the label's latest addition (that run was dropped, or could not write) does not count,
+and neither does a label with no record (added before the workflow kept one): remove it and add it again.
+A re-run of an older run stops once the pull request's head has moved on (push, or remove and add the label); at the same head it takes the labels the pull request has now.
+
 ## Pre-commit Hook (`.husky/pre-commit`)
 
-Runs in order: PocketBase schema export → branch-lint → i18n:validate → lint affected → markdownlint → format:write.
+Checks the **staged** content only; nothing unstaged enters the commit. Runs in order:
+
+1. Task-docs guard, then `tasks:check` when a task doc is staged.
+2. PocketBase schema export (see above): reuses a PocketBase already on :8090, otherwise starts and stops its own.
+3. branch-lint and i18n:validate.
+4. `check-eco-conventions` (META-15) when an eco template, component or stylesheet is staged: no bare form control, no hex colour or `--mat-sys-*` declaration outside the token sources («Styling» in the root `CLAUDE.md`).
+5. `nx show projects` when TypeScript under `apps/` or `libs/` is staged: ESLint's module-boundaries rule reads the cached Nx graph and skips itself without one.
+6. `lint-staged` (`lint-staged.config.mjs`): ESLint `--fix` (problem and layout fixes only), markdownlint and Prettier on the staged files.
+7. Stages the exported `pb_schema.json` when step 2 decided to.
+
+`.husky/post-commit` only deletes the pre-commit's record of that export once the commit lands.
+`tasks:check`, i18n:validate and `check-eco-conventions` run on a copy of the index, so they read the content being committed.
+Untracked files are never added: the hook lists them after the commit, and the pre-push warns about them.
+Markdown-only commits skip the export and i18n. The affected lint over whole projects runs in CI, not in the hooks; pre-push keeps the Nx tags check, format check,
+lint-delta (no new ESLint warnings in touched files), affected test, build and a11y.
+ESLint in the hooks builds no TypeScript program, so the rules that need one (`no-deprecated`, `prefer-readonly`, the boolean `naming-convention` selector) only report in CI or with `yarn lint:ci` (META-13).
+`cypress/unsafe-to-chain-command` also flags chains that start at a helper function only there.
+Where a worktree still runs another checkout's hooks («Worktrees» below) on a branch older than META-12, which has neither lint-staged nor `lint-staged.config.mjs`, the hook uses those of the checkout it lives in.
+
+While a commit runs, lint-staged keeps a `lint-staged automatic backup` entry on the stash, which every worktree shares.
+Apply an entry by its SHA (`git stash apply <sha>`), never with `pop`: the `stash@{n}` numbers shift while any checkout is committing.
+`git stash drop` takes no SHA, so find the entry's current `stash@{n}` right before dropping it: `git stash list --format='%gd %H'`.
+
+## Commit-msg Hook (`.husky/commit-msg`)
+
+commitlint (`commitlint.config.cjs`: type, header up to 100 characters, body up to 500), then `tools/scripts/check-commit-refs.cjs` (META-22) for what commitlint cannot see:
+
+1. On a branch named `<type>/<clickup-id>-<words>`, the header names `#<clickup-id>`.
+2. A commit that stages eco code (Markdown does not count) names a task ID in its header: a family of `tools/scripts/task-homes.json` (`BOT-04`, `META-22`) or an eco-admin row (`AP-0 0.7`).
+3. A `feat`, `fix` or `perf` commit that stages anything but Markdown needs a CHANGELOG.md bullet that names the branch's ClickUp ID,
+   added on the branch since it left develop (this commit included); later commits of the branch reuse it.
+
+Merge, revert, `fixup!` and `squash!` messages, and commits made during a merge, cherry-pick, revert or rebase, are not checked. `yarn commit-refs:test` covers the script.
+
+## Worktrees (`tools/scripts/worktree-setup.cjs`)
+
+Every checkout runs its own `.husky` hooks once `tools/scripts/worktree-setup.cjs` (META-34) has run in any of them, through `yarn worktree:setup` or `yarn husky-install`.
+It writes a dispatcher into the shared git folder (`.git/husky-dispatch`) and points `core.hooksPath`, a setting all worktrees share, at it.
+Git runs each hook from the top of the checkout that triggers it, and the dispatcher runs that checkout's `.husky/<hook>` the way husky's runner does (`node_modules/.bin` on the PATH, `sh -e`, `HUSKY=0`).
+A checkout without a `.husky` folder cannot commit, merge or push, and says why; one that only lacks a hook skips it.
+Before, `core.hooksPath` named the main checkout's `.husky/_`, so every worktree ran the main checkout's hooks.
+`npx husky` sets it back to the relative `.husky/_`, which no worktree has (it is ignored), and worktrees then run no hook at all: run `yarn worktree:setup` again after it.
+It also sets the shared `core.sshCommand` to `ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=6` (META-35), unless it already holds another command; `GIT_SSH_COMMAND` still wins over it.
+Git opens the SSH connection before the pre-push and sends the pack after it, so a long pre-push used to outlast an idle connection.
+
+In a new linked worktree, run once, outside the Bash sandbox (it writes the shared git config and installs packages), with `node`:
+Yarn runs no script, `yarn worktree:setup` included, in a checkout that has not been installed.
+
+```bash
+node tools/scripts/worktree-setup.cjs --branch <type>/<task-id>-<words>
+```
+
+Besides the hooks, it links `apps/eco-store/.env` and the PocketBase binary, `pb_data` and `pb_migrations` from the main checkout when the worktree has none of its own.
+It renames the branch to the `--branch` name, checked against `branchNameLint.json`; on a `worktree-*` branch (the name `EnterWorktree` gives), which the branch lint rejects, it will not finish without one.
+It runs `yarn install --immutable` when `node_modules` is missing (`--no-install` skips it). It can run again; `yarn worktree-setup:test` covers it.
+`.claude/hooks/guard.sh` still refuses any Bash command that names `core.hooksPath`: this script is the way to change it.
+
 **Do not bypass.** If the PocketBase binary isn't available, the hook may fail — install it via `yarn eco-store:pb:download`.
 
 ## CI Strategy
@@ -121,6 +199,8 @@ Runs in order: PocketBase schema export → branch-lint → i18n:validate → li
 - **PR:** `nx affected --target=test` (fast feedback)
 - **Push to develop:** `nx run-many --target=test --all` (full validation + coverage badge)
 - **Format check** runs first, then lint → test → build (in that order)
+- **Lint** runs with `ESLINT_TYPED=1`, the profile with the rules that need type information (META-13)
+- Before it, `yarn lint:profiles` lints a fixture with both ESLint profiles and checks every ESLint config in the fast one
 - **llecoop-firebase** excluded from lint/test/build (handled separately)
 - Nx Cloud for caching; CI falls back to local cache if unavailable
 - Coverage badge updates from `coverage/**/coverage-summary.json` on push to develop

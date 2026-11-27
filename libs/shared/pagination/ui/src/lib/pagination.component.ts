@@ -23,30 +23,30 @@ export class PaginationComponent {
   /*
    * Current page size (provided by directive)
    */
-  pageSize = input.required<number>();
+  readonly pageSize = input.required<number>();
 
   /**
    * Current page index - 0-indexed for Material Paginator (provided by directive)
    */
-  pageIndex = input.required<number>();
+  readonly pageIndex = input.required<number>();
 
   /**
    * Total number of items
    */
-  count = input.required<number>();
+  readonly count = input.required<number>();
 
   /**
    * Show first and last buttons
    */
-  showFirstLastButtons = input<boolean>(false);
+  readonly showFirstLastButtons = input<boolean>(false);
 
   /**
    * Available page size options
    */
-  pageSizeOptions = input.required<number[]>();
+  readonly pageSizeOptions = input.required<number[]>();
 
   /**
    * Emitted when pagination changes - Material's PageEvent (0-indexed)
    */
-  pageChange = output<PageEvent>();
+  readonly pageChange = output<PageEvent>();
 }

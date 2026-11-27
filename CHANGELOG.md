@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2026-11-20] - Eco Admin: application shell (AP-0 0.7, part 2)
+## [2026-11-27] - Eco Admin: application shell (AP-0 0.7, part 2)
 
 ### Added
 
@@ -22,7 +22,447 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **eco-admin provisional view**: it renders inside the shell, headed with the section's name, and loses its sign-out button to the account menu (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
 - **eco-admin Material Symbols subset** (`index.html`): it lists the icons of the shell, which otherwise rendered as their names (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
 - **eco-admin paints only with Material roles**: `--eco-admin-page-background` and `--eco-admin-on-surface-muted`, the last two fixed colours of `_base.scss`, are gone. The page is `surface-container-low` in light, as before, and `surface-container-lowest` in dark (#151812, one step lighter than #11140e; the pre-paint script of `index.html` follows). Muted text and the leading icon of every eco field are `on-surface-variant`, which closes the point about that variable left open in [#123kjkdqcee](https://app.clickup.com/t/123kjkdqcee) (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
-- **eco-admin REQUIREMENTS v0.4.50 and TASKS v0.1.155**: the shell is the admin's own library, not `core/cms-layout`; row 0.7 records part 2, its departures and what waits (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+- **eco-admin REQUIREMENTS v0.4.52 and TASKS v0.1.156**: the shell is the admin's own library, not `core/cms-layout`; row 0.7 records part 2, its departures and what waits (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
+
+## [2026-11-27] - Claude Code sessions get the Nx env and a sandbox exclusion list (META-33)
+
+### Changed
+
+- **`.claude/settings.json` sets `NX_WORKSPACE_ROOT_PATH=""` and `NX_DEFAULT_OUTPUT_STYLE=static` for every session.** Sessions inherited the main checkout's path in `NX_WORKSPACE_ROOT_PATH`, so Nx in a worktree read the main checkout's branch, graph and cache until the variable was unset by hand; an empty value makes Nx use the working directory. Static output prints a failed task's log instead of hiding it (META-33, ([#123kjkdr15q](https://app.clickup.com/t/123kjkdr15q))).
+- **`sandbox.excludedCommands` runs `gh`, `git fetch`, `git pull`, `git push`, `git ls-remote`, `git worktree` and the Angular builds (`yarn nx run *:build*`, `yarn nx build *`, `yarn *:build*`) outside the sandbox.** Inside it `gh` and SSH git fail on the keychain, `git worktree` cannot write `.git/worktrees`, and the builds fail with no error. The commands still go through the permission prompts. A call is excluded only when every command in it matches, and one with `cd`, a redirect to a file or a heredoc stays sandboxed, so a push redirected to a log still needs the sandbox off. `.claude/CLAUDE.md` ("Session settings") says so (META-33, ([#123kjkdr15q](https://app.clickup.com/t/123kjkdr15q))).
+
+## [2026-11-27] - plastikaweb loses its broken accessibility script (META-41)
+
+### Removed
+
+- **`yarn plastikaweb:a11y`, `plastikaweb:a11y:run` and `preplastikaweb:a11y`.** They ran Pa11y with `apps/plastikaweb/.pa11yci.json`, which does not exist, so the script built the app and then failed before checking anything; no hook or CI job ran it. plastikaweb has no accessibility check now; `plastikaweb:http-server`, which serves its production build, stays. Root `CLAUDE.md` names `nasa-images:a11y` as the only Pa11y script left (META-41, ([#123kjkdr4vz](https://app.clickup.com/t/123kjkdr4vz))).
+
+## [2026-11-27] - The Claude Code guard checks pipes, commit messages and the PocketBase stop (META-32)
+
+### Changed
+
+- **`.claude/hooks/guard.sh` blocks `git commit` and `git push` piped into another command.** The pipe returns the last command's exit code, so a hook that failed read as success. A command that reads `PIPESTATUS` (bash), `pipestatus` (zsh) or sets `pipefail` still passes (META-32, ([#123kjkdr15p](https://app.clickup.com/t/123kjkdr15p))).
+- **A commit message commitlint rejects is blocked before the pre-commit runs**, not after it: `.claude/hooks/commit-msg-check.mjs` reads the message from an existing `-F` file, a heredoc that writes it or feeds `-F -`, or the `-m` values, and runs commitlint on it (2 to 3 s). `git commit -F` from a relative path or from `$TMPDIR`, which is another folder in the unsandboxed shell where commits run, is blocked (META-32, ([#123kjkdr15p](https://app.clickup.com/t/123kjkdr15p))).
+- **The guard reads command words, not text.** Heredoc bodies and quoted strings no longer trip it, so a `grep` pattern or a commit message that names a hook flag or PocketBase passes; `bash -c` and `eval`, whose quoted text runs, are still read whole. It now asks before `eco-store:pocketbase:stop`, and before a `kill` or a copy of `pb_data` anywhere in the command, a loop body included (META-32, ([#123kjkdr15p](https://app.clickup.com/t/123kjkdr15p))).
+- **`yarn guard:test` runs 46 cases in CI** (the Lint Affected step); 18 of them fail on the previous guard. Replayed against the 6,854 Bash commands of the last 12 sessions, the guard changes 98 decisions: pipes and `$TMPDIR` messages now blocked, one 104-character header that commitlint had rejected after the pre-commit, and greps that no longer ask. A plain command costs about 55 ms in the guard instead of 40 (META-32, ([#123kjkdr15p](https://app.clickup.com/t/123kjkdr15p))).
+
+## [2026-11-27] - The eco-admin dev server picks up changed SCSS partials (META-36)
+
+### Changed
+
+- **`yarn eco-admin:serve` runs a SCSS watcher next to the dev server.** The dev server rebuilt the global stylesheet only when `apps/eco-admin/src/styles/styles.scss` itself changed: an edit to a partial, the app's `_base.scss` or one from a library such as `_eco_auth_card.scss`, never reached the served `styles.css` (30 s, measured). `eco-admin:watch-scss` touches the entry when a partial changes, in the app or in the style include paths (`libs/eco/styles/src`, `libs/core/styles/util/{material,tailwind4}/src`, the hot-toast styles); the change now arrives in 4 to 6 s. The Nx target is `eco-admin:serve:app`, and `nx run eco-admin:serve`, which the e2e uses, starts the server alone (META-36, ([#123kjkdr15v](https://app.clickup.com/t/123kjkdr15v))).
+
+## [2026-11-27] - The product chips are one list item each (A11Y-029)
+
+### Fixed
+
+- **The chips on the product page (ECO, NOVETAT, OFERTA) nested two list items:** the static `role="listitem"` filled the chip's `role` input and also stayed on its host element, so the chip's inner span was a list item inside another list item, not inside the list (WCAG 1.3.1, axe `aria-required-parent`). The product page now binds `[role]`, so only the span is a list item. The eco a11y suite no longer lists the chips as a known violation, and passes 33 of 33 ([#123kjkdr4vx](https://app.clickup.com/t/123kjkdr4vx)).
+
+## [2026-11-25] - The terms note under the sign-in forms is readable (A11Y-027)
+
+### Fixed
+
+- **The note «En continuar, acceptes els nostres Termes i Política de Privadesa» under the sign-in and recovery forms drops its `opacity-70`:** 3.79:1 before in light and 4.46:1 in dark, 8.46:1 and 6.81:1 now (WCAG 1.4.3). The owner-name footer of the same shared auth card had the same opacity and loses it too. The eco a11y suite no longer lists the note as a known violation, and passes 33 of 33 ([#123kjkdr4vv](https://app.clickup.com/t/123kjkdr4vv)).
+
+## [2026-11-25] - Dark mode follows the system everywhere in the eco apps (A11Y-026)
+
+### Fixed
+
+- **Tailwind's `dark:` now applies when the OS is in dark mode and no theme is chosen, not only with the dark theme picked in the toggle.** With the default «system» theme, every `dark:` shade in eco-store and eco-admin (about 50 uses, from the store chips to the login screens) stayed light while the Material roles around it turned dark. In dark mode the cart summary's category label rises from 1.22:1 to about 6.3:1 and the «kg» unit of the quantity selector from 1.17:1 to 8.48:1 (WCAG 1.4.3) ([#123kjkdr4vu](https://app.clickup.com/t/123kjkdr4vu)).
+- **The avatar initials use Material's primary-container roles instead of fixed shades:** 1.36:1 before in dark mode, 6.68:1 now, and 13.25:1 in light. The eco a11y suite no longer lists the three nodes as known violations, and passes 33 of 33 ([#123kjkdr4vu](https://app.clickup.com/t/123kjkdr4vu)).
+
+## [2026-11-25] - The eco-store build no longer asks the hosted PocketBase anything (TECH-18)
+
+### Fixed
+
+- **The production build of eco-store made 7 requests to the production PocketBase, for a tenant named `localhost`, and timed out prerendering an auth route whenever PocketBase answered slowly** (`ci.yml` on 2026-11-23, `eco-a11y.yml` on 2026-11-24). At build time, on the server with no request, the tenant store no longer looks the tenant up and the product list asks for nothing; the browser loads both as before. Measured locally: 0 requests instead of 7, and the five prerendered pages come out with the same HTML ([#123kjkdr4w5](https://app.clickup.com/t/123kjkdr4w5)).
+
+## [2026-11-24] - eco-admin's end-to-end suite moves from Cypress to Playwright (META-40)
+
+### Changed
+
+- **`apps/eco-admin-e2e` runs on Playwright, and no eco app uses Cypress any more.** `yarn eco-admin:e2e` starts `eco-admin:serve` on port 4204 and runs the suite in the system Chrome; `yarn eco-admin:e2e:local` opens Playwright's UI mode. The target is not cached, since the suite will read and write the local PocketBase ([#123kjkdr20r](https://app.clickup.com/t/123kjkdr20r)).
+- **`cy.loginAs(role)` became the `signedInAs` option (`test.use({ signedInAs: 'TENANT_ADMIN' })`).** It still signs in only to `http://127.0.0.1:8090`; the credentials move from `CYPRESS_ECO_ADMIN_<ROLE>_*` to `ECO_ADMIN_<ROLE>_EMAIL` and `_PASSWORD`, read from the shell or from `apps/eco-admin-e2e/.env`, which git ignores. The sign-in request goes through Node's `fetch`, so Playwright's trace and report never hold them ([#123kjkdr20r](https://app.clickup.com/t/123kjkdr20r)).
+
+### Fixed
+
+- **The suite's only spec looked for the login fields by ids the Material rebuild of AP-0 0.7b removed**, so it had failed since then without anyone noticing: no hook or CI job runs it. It now finds them by their accessible names, and passes ([#123kjkdr20r](https://app.clickup.com/t/123kjkdr20r)).
+
+## [2026-11-24] - The Playwright suite replaces Pa11y in eco-store and eco-admin (META-40)
+
+### Changed
+
+- **The pre-push runs the eco a11y suite (`eco-a11y-e2e`) whenever Nx finds it affected, instead of Pa11y on eco-store changes only.** It now covers eco-admin too, and every lib either app uses; it reuses the production builds the hook just made and is cached when nothing changed. `.github/workflows/eco-a11y.yml` runs it after each CI run on `develop`, in place of `eco-store-pa11y.yml` and `eco-admin-pa11y.yml`, and uploads the HTML report when it fails ([#123kjkdr20r](https://app.clickup.com/t/123kjkdr20r)).
+
+### Removed
+
+- **Pa11y from eco-store and eco-admin:** both `.pa11yci.json`, both workflows and the `eco-store:a11y*`, `eco-admin:a11y*` and `*:http-server` scripts. nasa-images, llecoop and plastikaweb keep Pa11y ([#123kjkdr20r](https://app.clickup.com/t/123kjkdr20r)).
+- **`apps/eco-store-e2e`**, the Cypress project that held only the generator's spec, and its `eco-store:e2e` scripts. eco-admin keeps its Cypress project, which its REQUIREMENTS ask for ([#123kjkdr20r](https://app.clickup.com/t/123kjkdr20r)).
+
+## [2026-11-24] - eco-store and eco-admin screens audited in the state users see them (META-40)
+
+### Added
+
+- **`apps/eco-a11y-e2e`: a Playwright suite that audits 11 screens of eco-store and eco-admin with axe and every WCAG 2.2 AA rule, at 320 px light, 320 px dark and 1280 px (33 tests, about two minutes).** It reaches what Pa11y cannot: a loaded product page, a cart with a product, the delivery step and the profile signed in, eco-admin signed in, and the PWA install sheet. PocketBase is answered from fixtures, so it needs no PocketBase. It also checks 2.4.11 with a walk with Tab, 3.3.8 on both sign-in screens, 1.3.5 on the profile and 3.3.7 on the delivery step. Run it with `yarn eco-a11y:e2e`; it runs next to Pa11y, and no hook or CI job runs it yet ([#123kjkdr20r](https://app.clickup.com/t/123kjkdr20r)).
+- **Its first run found what Pa11y let through**, now listed in the specs as known violations, each limited to its nodes: in dark mode, text on a fixed palette shade at 1.2 to 1.4:1 (cart category, the «kg» unit, the avatar initials); the terms note at 3.8:1; the desktop header buttons and the rating link, whose names leave out their visible text (2.5.3); and the product chips, list items with no list (1.3.1) ([#123kjkdr20r](https://app.clickup.com/t/123kjkdr20r)).
+
+## [2026-11-24] - The browser can fill in the profile name and phone (A11Y-025)
+
+### Fixed
+
+- **The eco-store profile form marks the user's name `autocomplete="name"` and phone `autocomplete="tel"`, where both had `off`.** Browsers and assistive tools can now recognise and fill in the two fields (WCAG 1.3.5). The name's minimum drops from 8 characters to 2, as in the address form's recipient name: «Ana Gil» (7) was rejected before and is accepted now. The new specs fail on the old configuration and pass on the new one ([#123kjkdr261](https://app.clickup.com/t/123kjkdr261)).
+
+## [2026-11-24] - The avatar cropper works without dragging, and its controls have names (A11Y-016, A11Y-024)
+
+### Fixed
+
+- **Four buttons (left, up, down, right) move the image under the avatar crop area: the single-pointer alternative to dragging that WCAG 2.5.7 asks for.** Before, only a drag or the arrow keys on the crop frame moved it. Each press moves the image a twentieth of its zoomed size and stops where its edge meets the crop area's edge, so the crop never has an empty side; the button then turns `aria-disabled` and keeps focus. Measured in Chrome with a 600 × 400 test image at 1280 px: 5 presses bring the image's left edge onto the crop area's (53 px), and the cropper's output starts with the image's red left band; at zoom 2 the up and down buttons open and stop on the image's bottom and top edges. Same at 360 px ([#123kjkdr25x](https://app.clickup.com/t/123kjkdr25x)).
+- **A dragged image follows the pointer and keeps its place when zoomed.** The transform is now in pixels and bound both ways, as ngx-image-cropper asks for with `allowMoveImage`: a 30 px drag moved the image 95.6 px before (the library adds pixels to a `%` offset) and 30 px after, and zooming no longer recentres a dragged image ([#123kjkdr25x](https://app.clickup.com/t/123kjkdr25x)).
+- **Every icon-only control of the cropper has a name and a matching tooltip** (zoom out, zoom in, the four pan buttons, closing an error), and so do the zoom slider and the pan group, in ca, es and en (WCAG 4.1.2). The zoom buttons stop at the slider's range, 1 to 4 in steps of 0.1; before, they went below 1. The avatar button's hard-coded Catalan name «Canviar foto de perfil» left out the text it shows on hover; its name now starts with that text in each language («Puja una imatge per al teu perfil», WCAG 2.5.3), and the text also shows on keyboard focus. axe on the crop step: 0 violations ([#123kjkdgyjf](https://app.clickup.com/t/123kjkdgyjf)).
+
+## [2026-11-24] - A focused control no longer hides under the fixed header or the mobile bar (A11Y-023)
+
+### Fixed
+
+- **The eco-store shell's scroller (`mat-sidenav-content`) gets `scroll-pt-28` and, below `md`, `scroll-pb-24`: the same room `main` (`mt-28`) and the footer (`mb-24`) already leave for the fixed header and the bottom bar.** The page scrolls there, not in the document, so the `scroll-padding-top: 120px` on `html` protected nothing; it is gone (the auth pages that scroll the document have no fixed bar). Before, a control focused with Tab 8 px under the scroller's top edge stayed entirely behind the header (1280 px), and one 60 px above the bottom edge behind the bar (640 and 320 px), because Chrome does not scroll a control it thinks is visible (WCAG 2.4.11). After, Chrome scrolls both clear in every case, at 1280, 640 and 320 px ([#123kjkdr25w](https://app.clickup.com/t/123kjkdr25w)).
+
+## [2026-11-24] - The closed-store chip keeps its icon readable in dark mode (A11Y-022)
+
+### Fixed
+
+- **The icon of `plastik-shared-chip` takes the chip's text colour, and the `tertiary` type uses Material roles (`bg-sys-tertiary-container`, `text-sys-on-tertiary-container`).** The icon's own `light-dark()` colour follows `color-scheme`, which the default «system» theme takes from the OS, while the chip's `dark:` classes need the `.dark` class. With the OS in dark mode the closed-store chip kept its light background and its icon turned light: 1.12:1, the Pa11y failure that blocked eco-store pushes in the evening (macOS switches to dark at night, when the store is closed). Pa11y on `/botiga` in dark mode, store closed: 2 failures out of 2 before, 0 out of 2 after; light mode 0 out of 2. Contrast now 13.2:1 in light mode and 6.92:1 in dark ([#123kjkdr15y](https://app.clickup.com/t/123kjkdr15y)).
+
+## [2026-11-24] - Pa11y checks WCAG 2.2 target size in eco-store and eco-admin (META-39)
+
+### Changed
+
+- **The `.pa11yci.json` of eco-store and eco-admin check every page a second time, as `<url>#axe`, with axe and its one WCAG 2.2 rule, `target-size` (2.5.8).** Pa11y passes `"rules": ["target-size"]` through to axe: on a test page with two 10 px buttons axe reports both with the rule and none without it. HTML_CodeSniffer, the runner the pages kept, throws on that option («not a valid WCAG 2.1 rule»), so each runner gets its own entry, and the `#axe` fragment keeps pa11y-ci from filing both results under one URL. Measured on develop's production builds at 320 px: no `target-size` failure in either app, and HTML_CodeSniffer still at 0. The rest of axe found what HTML_CodeSniffer does not: `color-contrast` in both apps, and in eco-store `aria-dialog-name`, `aria-hidden-focus` and `aria-required-children`, most of them on the PWA install sheet that opens in a fresh browser. The axe entries ignore those four rules until their tasks are fixed, so the eco-store pre-push, the only a11y gate, passes: 14 of 14 pages twice, in 25 s instead of about 12 (META-39, ([#123kjkdr177](https://app.clickup.com/t/123kjkdr177))).
+
+## [2026-11-24] - Long runs survive: SSH keepalive, no idle sleep, one Nx cache for tests (META-35)
+
+### Changed
+
+- **Git's SSH connections get keepalives.** `tools/scripts/worktree-setup.cjs` sets the shared `core.sshCommand` to `ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=6`, unless it already holds another command, so pushes no longer need `GIT_SSH_COMMAND`. Git opens the connection before the pre-push and sends the pack after it, and a long pre-push outlasted an idle connection (exit 141 after "All checks passed"). Measured against GitHub: a push connection left idle for 15 minutes was closed by GitHub without keepalives (exit 255) and ended normally with them (exit 0) (META-35, ([#123kjkdr15u](https://app.clickup.com/t/123kjkdr15u))).
+- **A `SessionStart` hook runs `caffeinate -i -w <session pid>` on macOS**, so idle sleep (about 30 minutes) no longer pauses a long hook, push or test run that a session started. Checked with headless sessions: a `caffeinate` bound to the session's process ran while it lived and was gone once it ended (META-35, ([#123kjkdr15u](https://app.clickup.com/t/123kjkdr15u))).
+- **`.husky/pre-push` no longer passes `--cache` to the affected tests.** Nx caches `test` on its own: a second run read from the cache with or without the flag, so a second push without changes already ran no test. The flag only reached vitest as an argument and gave the pre-push cache entries of its own, which a `yarn nx test` run by hand never reused. `affected:lint` keeps its `--cache`, which ESLint uses for its own per-project cache (META-35, ([#123kjkdr15u](https://app.clickup.com/t/123kjkdr15u))).
+
+## [2026-11-24] - A new worktree runs the setup with node (META-34)
+
+### Fixed
+
+- **A new worktree runs `node tools/scripts/worktree-setup.cjs --branch <type>/<task-id>-<words>`, not `yarn worktree:setup`.** Yarn runs no script in a checkout that has not been installed, and installing is part of what the script does: in a fresh worktree `yarn worktree:setup` stopped with «Couldn't find the node_modules state file» before reaching it. AGENTS.md, the root CLAUDE.md and the script's usage line now give the `node` command, and `yarn worktree-setup:test` checks the two docs. Found by the first run on this repository: a fresh worktree off develop was ready in 67 s with that one command (`yarn install` included), its first non-Markdown commit went through develop's hooks in 12 s (the pre-commit started and stopped its own PocketBase), and a line added only to that worktree's `.husky/pre-commit` stopped its commit (META-34, ([#123kjkdr15t](https://app.clickup.com/t/123kjkdr15t))).
+
+## [2026-11-24] - Every checkout runs its own git hooks; a worktree is ready in one command (META-34)
+
+### Added
+
+- **`yarn worktree:setup` (`tools/scripts/worktree-setup.cjs`): every checkout runs its own `.husky` hooks.** Husky's `core.hooksPath`, a setting all worktrees share, named the main checkout's `.husky/_`, so a worktree committed and pushed through the main checkout's hooks, whatever its own branch held. The script writes a dispatcher into the shared git folder (`.git/husky-dispatch`) and points `core.hooksPath` at it. Git runs each hook from the top of the checkout that triggers it, and the dispatcher runs that checkout's `.husky/<hook>` the way husky's runner does (`node_modules/.bin` on the PATH, `sh -e`, `HUSKY=0`, husky's failure messages). A checkout without a `.husky` folder cannot commit, merge or push, and says why. The ticket asked for a relative `core.hooksPath` instead; `.husky/_` is ignored and no worktree has one, so git would have run no hook there and said nothing. In a linked worktree the same command links `apps/eco-store/.env` and the PocketBase binary, `pb_data` and `pb_migrations` from the main checkout, renames the branch with `--branch` (checked against `branchNameLint.json`; it will not finish on a `worktree-*` branch, the name `EnterWorktree` gives) and runs `yarn install --immutable` when `node_modules` is missing. `yarn husky-install`, and with it `yarn install:local`, runs it for the hooks only (META-34, ([#123kjkdr15t](https://app.clickup.com/t/123kjkdr15t))).
+- **`yarn worktree-setup:test`** (`tools/scripts/test-worktree-setup.mjs`), in CI's Lint Affected step: 22 cases on throwaway repositories with a main checkout on husky's absolute path, a worktree whose hooks differ from it and one without `.husky`, through real `git commit` and `git push`. The first case reproduces the old behaviour: the worktree's commit runs the main checkout's hooks. All 14 planted mutations fail it; a fifteenth survived because it changed a check of banned branch names that could never fire, which is now removed (META-34, ([#123kjkdr15t](https://app.clickup.com/t/123kjkdr15t))).
+
+## [2026-11-24] - `task-audit` skill: review of a finished branch before its PR (META-23)
+
+### Added
+
+- **The `task-audit` skill (`.agents/skills/task-audit`, linked from `.claude/skills`) and its read-only `audit-lens` agent (`.claude/agents/audit-lens.md`, Sonnet, medium effort).** Ported from NewWebSite with three lenses instead of eight: code (forms on Formly and Material, shared code before new, signals, layering), accessibility (WCAG 2.2 AA beyond the lint and Pa11y) and PocketBase and tenants (API rules, tenant isolation, hooks). For branches with 10 or more code files: the repo's checks run first and their output reaches the lenses as facts, then the main thread re-verifies the findings and gives one report to triage before any fix (META-23, ([#123kjkdqv3e](https://app.clickup.com/t/123kjkdqv3e))).
+- **Measured on the PR #1558 branch** (70 files), replayed headless: of the five issues fixed after that merge it reported three (the hand-written inputs, the native buttons, the reactive form instead of Formly), folded the fourth (the screen's own stylesheet) into their fixes, and lost the fifth (`autocomplete="username"` on an email field) in its own triage, which now keeps a finding that applies a lens rule. It also flagged the raw hex that META-15 later marked, and the three of its other findings checked by hand hold. 3.05 USD (2.55 Opus, 0.50 Sonnet), about 5 minutes. The lenses state rules the repo learned from that PR, so this shows they apply them, not that they find what nobody knew (META-23, ([#123kjkdqv3e](https://app.clickup.com/t/123kjkdqv3e))).
+
+## [2026-11-24] - Form-field eval (META-22)
+
+### Added
+
+- **`tools/evals/form-field/`: an eval of the form rules.** `run.mjs` asks headless Claude Code, in five throwaway worktrees that load only the project settings and no MCP server, for a delivery-method filter on the eco-store orders list; `grade.mjs` grades what each run leaves with a script: the field in the Formly config, no hand-written control, translated labels in `ca`, `es` and `en`, `i18n:validate` and the orders tests. On develop (`67767793`, Sonnet) 5 of 5 runs passed, for 2.59 USD. The README says what that leaves unproven: the status filter next to the new field can be copied, so the case cannot fail; the second batch after an edit to the rules was not run (META-22, ([#123kjkdqv3d](https://app.clickup.com/t/123kjkdqv3d))).
+
+## [2026-11-24] - Commit-msg check for the ClickUp ID, the task ID and the CHANGELOG bullet (META-22)
+
+### Added
+
+- **`.husky/commit-msg` runs `tools/scripts/check-commit-refs.cjs` after commitlint**, for three rules commitlint cannot see: the branch's ClickUp ID in the header; a task ID in the header of a commit that stages eco code (a family of `tools/scripts/task-homes.json`, or an eco-admin row such as `AP-0 0.7`); and, for a `feat`, `fix` or `perf` with code, a CHANGELOG.md bullet added on the branch that names the ClickUp task, which later commits of the branch reuse. Replayed over develop's last 150 PRs, it would have refused 2 of the 98 commits since 2026-11-01 and 46 of the 163 before. A worktree runs it only once the main checkout has develop's hooks (META-22, ([#123kjkdqv3d](https://app.clickup.com/t/123kjkdqv3d))).
+- **`yarn commit-refs:test`** (`tools/scripts/test-commit-refs.mjs`), in CI's Lint Affected step: 53 checks on throwaway git repositories, four of them through `git commit` itself (`-a`, two commits that name their paths, `--amend`). All 13 planted mutations fail it (META-22, ([#123kjkdqv3d](https://app.clickup.com/t/123kjkdqv3d))).
+
+## [2026-11-24] - Shorter CLAUDE.md files (META-38)
+
+### Changed
+
+- **Root `CLAUDE.md`, loaded on every call: 30,821 → 16,068 bytes.** The full ESLint rule list moved to `documentation/code-style.md` "Lint rules", and the root keeps what to know before writing code. The inferred `lint` and `test` targets and the generator defaults moved to `documentation/nx-architecture.md`. Command lists that `package.json` and AGENTS.md already hold shrank to the commands agents get wrong. Tables became lists. The sections that repeated `.claude/CLAUDE.md` or another section are gone, and the Design Context moved to `apps/eco-store/CLAUDE.md` (META-38, ([#123kjkdr15x](https://app.clickup.com/t/123kjkdr15x))).
+- **`apps/eco-store/CLAUDE.md`: 26,868 → 18,989 bytes.** The library tree and the stale route map gave way to `yarn nx show projects` and `tools/feature-map.json`, and the hook table to `POCKETBASE.md`, which now lists all seven hooks with their task IDs. The schema-label rules and the pre-commit export point to AGENTS.md. The typography table points to the eco tokens, and the duplicated gotcha is gone. The task-doc commit rules no longer contradict the pre-commit, which rejects task docs committed with code (META-38, ([#123kjkdr15x](https://app.clickup.com/t/123kjkdr15x))).
+
+### Fixed
+
+- **Root `CLAUDE.md` module boundaries:** `scope:core` and `scope:shared` may also import any `type:util` or `type:entity` library, as `eslint.config.mjs` says. `.mcp.json` holds the pocketbase and playwright servers, not Nx's. **eco-store gotcha 2:** `yarn eco-store:local` first stops every PocketBase and whatever holds port 4200 (META-38, ([#123kjkdr15x](https://app.clickup.com/t/123kjkdr15x))).
+
+## [2026-11-24] - `pb:sync` no longer defaults to staging (META-37)
+
+### Changed
+
+- **`yarn eco-store:pb:sync` refuses to run without `POCKETBASE_ENV`.** It used to overwrite the staging schema when the variable was missing. Now only `development` (the local PocketBase) and `staging` are accepted; anything else, or nothing, exits with code 2 and names both, before any network call. The variable is read before `apps/eco-store/.env`, so a value in that file cannot choose the target (META-37, ([#123kjkdr15w](https://app.clickup.com/t/123kjkdr15w))).
+- **`pocketbase-schema.yml` sets `POCKETBASE_ENV: staging` on its sync step**, which relied on the old default. Root `CLAUDE.md` and `apps/eco-store/POCKETBASE.md` show the variable in the command (META-37, ([#123kjkdr15w](https://app.clickup.com/t/123kjkdr15w))).
+
+### Added
+
+- **`yarn pb-sync:test`** (`tools/scripts/test-pb-sync-env.mjs`), in CI's Lint Affected step: nine checks on a copy of the script that has no environment files, so even a broken gate cannot reach a server. It covers the refused values, a value set only in `.env`, the two accepted targets, and the two callers (the deploy workflow and `populate-pocketbase.js`). All seven planted mutations fail it (META-37, ([#123kjkdr15w](https://app.clickup.com/t/123kjkdr15w))).
+
+## [2026-11-24] - Target WCAG 2.2 AA in every app (META-21)
+
+### Changed
+
+- **The accessibility target is WCAG 2.2 AA in every app, not 2.1 AA** (owner's decision): root `CLAUDE.md`, `documentation/accessibility.md`, `GEMINI.md`, `apps/eco-store/CLAUDE.md` and the eco-admin design brief (0.2.48, which already applied 2.5.8). The docs also say what the tools miss: Pa11y's `WCAG2AA` means 2.1 AA at most, and axe-core's only 2.2 rule is `target-size`, so the other criteria 2.2 adds are checked by hand. eco-store's published statement stays 2.1 AA until an audit (META-21, ([#123kjkdqv3b](https://app.clickup.com/t/123kjkdqv3b))).
+
+## [2026-11-24] - Fix what the Claude docs got wrong (META-21)
+
+### Fixed
+
+- **`apps/eco-store/CLAUDE.md` said `orders.createRule` pins the tenant.** It does not: only `carts.createRule` has `tenant = @request.auth.tenant`, so a member can still create an order for another tenant until SEC-09 lands. It also no longer calls eco-admin «not yet built» (META-21, ([#123kjkdqv3b](https://app.clickup.com/t/123kjkdqv3b))).
+- **Root `CLAUDE.md`:** plastikaweb is Angular, not Astro, and has no `plastikaweb:preview`; `yarn eco-store:pb:sync` pushes to staging unless `POCKETBASE_ENV=development`; the CI/CD section now lists every workflow, says `ci.yml` also runs on pull requests and that Nx Cloud is often out of credits; Tech Stack points to `package.json` instead of listing stale versions; the commit skill's name is spelled right and a stray `[text](CLAUDE.md)` is gone. Cypress gets one line: no hook or CI runs it and it is no acceptance check (META-21, ([#123kjkdqv3b](https://app.clickup.com/t/123kjkdqv3b))).
+- **`commitizen-git-flow`** no longer tells agents to `git add . && git commit --amend` after a failed hook (that rewrites the previous commit) or to suggest `--no-verify`. It states the 500-character body limit, where the CHANGELOG and task docs go, the real CHANGELOG format, and the `eco-admin` scope (META-21, ([#123kjkdqv3b](https://app.clickup.com/t/123kjkdqv3b))).
+- **`apps/eco-store/POCKETBASE.md`** links the real `single_default_address.pb.js` hook (META-21, ([#123kjkdqv3b](https://app.clickup.com/t/123kjkdqv3b))).
+
+### Added
+
+- **`.claude/CLAUDE.md` lists nine more places where a generic skill disagrees with this repo:** `private` fields, rxjs, `ng generate` and `yarn eco-lib`, the Vitest setup, Tailwind palette colours, injection tokens, i18n libraries, fonts and the WCAG version. The empty `<claude-mem-context>` block is gone (META-21, ([#123kjkdqv3b](https://app.clickup.com/t/123kjkdqv3b))).
+- **`apps/eco-store/SSR.md`:** asset responses carry the same security headers as the worker's, through the `_headers` file, so check with `wrangler dev` on a `build-cf` artifact (META-21, ([#123kjkdqv3b](https://app.clickup.com/t/123kjkdqv3b))).
+
+## [2026-11-24] - Reproduce a failing eco page in the browser (META-20)
+
+### Added
+
+- **The `eco-page-check` skill (`.claude/skills/eco-page-check`).** From «the X page fails» to the failure in a browser. It finds the page with `yarn feature-map:find`. It asks the user before it touches the local PocketBase, and never stops one it did not start. It serves the checkout, on another port when the usual one belongs to someone else. It signs in through the page's form as a throwaway user, meets the page's `needs`, and reads the snapshot, the console, the network calls and a screenshot. Then it deletes the user. It also records what the first run taught: an error Angular catches goes to `ErrorHandlerService`'s notification, not to the console (META-20, ([#123kjkdqv3a](https://app.clickup.com/t/123kjkdqv3a))).
+- **A `playwright` server in `.mcp.json`:** `@playwright/mcp@0.0.84` through `npx`, so `yarn.lock` is untouched. It runs a headless Chrome whose profile lives in memory, so it never touches the user's own Chrome or its sessions. Screenshots go to `.playwright-mcp/`, which git ignores (META-20, ([#123kjkdqv3a](https://app.clickup.com/t/123kjkdqv3a))).
+- **`tools/scripts/eco-test-user.cjs`:** `create` makes a verified, `ACTIVE` user of El Llevat (`--role` for eco-admin). `delete` removes its carts and orders, which would block the delete, and then the user. It signs in as the local superuser from `apps/eco-store/.env` without printing those credentials. It talks only to `127.0.0.1`, and deletes only `page-check-` users. **`yarn eco-test-user:test`**, in CI, runs it against a fake PocketBase: each of 8 deliberate bugs fails it (META-20, ([#123kjkdqv3a](https://app.clickup.com/t/123kjkdqv3a))).
+- **`yarn feature-map:find <words>`:** the pages whose app, path, title, component, project or file contain every word, with their full URL, from the routes as they are now (META-20, ([#123kjkdqv3a](https://app.clickup.com/t/123kjkdqv3a))).
+
+### Changed
+
+- **The map serves eco-store with `yarn eco-store:serve`, not `yarn eco-store:local`,** which stops any PocketBase and whatever holds port 4200 (META-20, ([#123kjkdqv3a](https://app.clickup.com/t/123kjkdqv3a))).
+
+## [2026-11-24] - A map of the eco pages (META-20)
+
+### Added
+
+- **`tools/feature-map.json`, generated by `yarn feature-map` (`tools/scripts/feature-map.cjs`).** From the `appRoutes` of eco-store and eco-admin it follows every `children`, `loadChildren` and `loadComponent` with the TypeScript parser, through aliases, barrels and re-exports. Per page: the URL path, the title key, who may open it (`signed-in` with roles, `anonymous` or `public`), what else it needs (a cart with products, a tenant that ships...), the guards, the project, the component and its file, the specs beside it, the routes file, the layout and the named outlets such as the sidenav. Redirects are listed with absolute targets, and each app gives its dev URL and serve command. Today: 27 pages (22 eco-store, 5 eco-admin) and 4 redirects, out of 71 TypeScript files, in about 1 s (META-20, ([#123kjkdqv3a](https://app.clickup.com/t/123kjkdqv3a))).
+- **It stops rather than guess:** an import it cannot resolve, a route shape it does not know, or a guard that neither its access table nor its condition table lists ends it with exit 2, so a new guard has to say what it asks for before the map can call a page public (META-20, ([#123kjkdqv3a](https://app.clickup.com/t/123kjkdqv3a))).
+- **`yarn feature-map:check`** in CI's Lint Affected step fails when the committed map differs from the routes, listing the pages added, removed and changed. **`yarn feature-map:test`**, also in CI (5 s): a fixture workspace with every route shape the script follows, the six cases that must stop it, the drift report, and checks on the real tree. Each of 13 deliberate bugs in the script fails it (META-20, ([#123kjkdqv3a](https://app.clickup.com/t/123kjkdqv3a))).
+- **Root `CLAUDE.md`:** one row in «Where things actually live» points to the map (META-20, ([#123kjkdqv3a](https://app.clickup.com/t/123kjkdqv3a))).
+
+## [2026-11-24] - A generator for new eco libraries (META-19)
+
+### Added
+
+- **`yarn eco-lib` (`tools/generators/eco-lib`).** A local Nx generator, run by path so it needs no alias and no dependency. It asks for app (`eco-store`, `eco-admin` or `eco`), domain, type and name, runs `@nx/angular:library`, and writes the names of the eco-admin scheme (the owner's choice; existing libraries keep theirs), both tags, the alias, `eslint.config.mjs` and `vite.config.mts` as the other eco libraries have them, flat `src/` files (a component with an axe spec for feature and ui, routes for feature, a placeholder export for the rest) and a README stub (META-19, ([#123kjkdqv38](https://app.clickup.com/t/123kjkdqv38))).
+- **What it no longer leaves to fix by hand:** `@nx/angular:library` here edits `.gitignore`, the root `eslint.config.mjs` (which makes every project affected) and `nx.json`, writes the alias with a `./`, calls `angular()` without `tsconfig.spec.json`, leaves out the root `vitest-setup.ts` and the `json-summary` coverage CI reads, and doubles the selector prefix (`eco-admin-eco-admin-…`). The generator puts those three files back and writes the rest right (META-19, ([#123kjkdqv38](https://app.clickup.com/t/123kjkdqv38))).
+- **Acceptance:** five libraries made with it (the five types, the three apps, `core`, one without a name) pass lint in both profiles, test, `tsc` on both tsconfigs, Prettier, markdownlint, `nx-tags:check`, `eco-conventions:check` and `lint:delta` (0 warnings) with no manual edit, in 11–17 s each (META-19, ([#123kjkdqv38](https://app.clickup.com/t/123kjkdqv38))).
+- **`yarn eco-lib:test`**, run in CI (17 s): the names and the refused options, and the generator on the real workspace in memory (the files per type, the root files untouched, the alias, the collisions it stops on). Each of 11 deliberate bugs in the generator fails it (META-19, ([#123kjkdqv38](https://app.clickup.com/t/123kjkdqv38))).
+
+### Changed
+
+- **Root `CLAUDE.md`:** «Naming Conventions» and «Generating Libraries» become one shorter «Naming and Generating Libraries» that sends eco libraries to the generator; the `nx g` example for other libraries takes the folder as Nx 24's positional argument. 30,439 → 30,129 bytes (META-19, ([#123kjkdqv38](https://app.clickup.com/t/123kjkdqv38))).
+
+## [2026-11-24] - Eco template and style conventions as a check (META-15)
+
+### Added
+
+- **`tools/scripts/check-eco-conventions.cjs` (`yarn eco-conventions:check`).** Over the templates and styles of `libs/eco*` and `apps/eco-*`, it fails on an `<input>`, `<select>` or `<textarea>` without `matInput` or `matNativeControl`, and on a hex colour or a `--mat-sys-*` declaration outside the token sources (`_eco_tokens.css` and the eco-store `*-theme.css` files). Each `::ng-deep` is listed as info. Comments are blanked first; `/* eco:check allow <rule>: <reason> */` on the line before is a justified exception (META-15, ([#123kjkdqv34](https://app.clickup.com/t/123kjkdqv34))).
+- **Where it runs:** in the pre-commit, on the staged eco files read from the copy of the index, and as a failing check in CI's Lint Affected step, which is the gate while worktrees run the main checkout's hooks. On the real tree it reads 435 files in 0.4 s (META-15, ([#123kjkdqv34](https://app.clickup.com/t/123kjkdqv34))).
+- **`yarn eco-conventions:test`**, run in CI: a clean fixture full of near misses, one fixture per rule, the markers, `--files` routing and the fatal cases. Each of 18 deliberate bugs in the script fails it (META-15, ([#123kjkdqv34](https://app.clickup.com/t/123kjkdqv34))).
+
+### Changed
+
+- **The four hex colours of `apps/eco-admin/src/styles/_base.scss`** (the admin page background and muted text, which have no Material role in `eco_tokens`) carry an allow marker with that reason; the owner chose the marker over moving them or replacing them with other colours (META-15, ([#123kjkdqv34](https://app.clickup.com/t/123kjkdqv34))).
+
+## [2026-11-24] - ESLint warnings may not grow on touched files (META-18)
+
+### Added
+
+- **`tools/scripts/lint-delta.cjs` (`yarn lint:delta`).** For each file a branch touches (committed, uncommitted or untracked, renames followed), it lints the version on disk and the version at the merge base with `origin/develop` (or `--base <ref>`) with the same config, and fails when the file has more warnings than before. The warnings a file already had never block a change to it; the report lists the rules that grew and only the warning texts that are new. Always the fast profile. `--scope-only` classifies the touched files (ts, html, scss, i18n, docs, other) for the task-audit skill (META-23); `--json`; exit 0, 1 or 2 (META-18, ([#123kjkdqv37](https://app.clickup.com/t/123kjkdqv37))).
+- **Where it runs:** in the pre-push for non-Markdown pushes, before the tests, and as a failing check in CI's Lint Affected step. That was the owner's choice: pushes from worktrees run the main checkout's hooks, so until that checkout has this step, CI is the gate (META-18, ([#123kjkdqv37](https://app.clickup.com/t/123kjkdqv37))).
+- **`yarn lint:delta:test`**, run in CI. It has 15 cases on fixture repos, and three deliberate bugs each fail it: keeping `ESLINT_TYPED`, renames taken as new files, listing every warning of a grown rule. On the real repo, the 99 files META-17 touched give 110 → 110 warnings in 24 s. A file with 4 `id-denylist` warnings passes when edited and fails with a fifth, which is the only one listed (META-18, ([#123kjkdqv37](https://app.clickup.com/t/123kjkdqv37))).
+
+## [2026-11-23] - The Angular rules of `.claude/CLAUDE.md` are lint errors (META-17)
+
+### Added
+
+- **Angular rules at error in every project, specs included.** `@angular-eslint/prefer-signals`, `prefer-inject`, `prefer-output-emitter-ref` and `prefer-output-readonly` on TypeScript; `template/prefer-control-flow` and `template/button-has-type` on templates; `no-restricted-syntax` selectors for `standalone: true` in a decorator, `@HostBinding`/`@HostListener`, the `NgClass`/`NgStyle` import and `ngClass`/`ngStyle` in templates. Counted before the change: 207 signal properties without `readonly`, 1 `@Input`, 38 buttons without `type`, 21 `output()` without `readonly`, 5 `ngClass`/`ngStyle`; 0 for the others (META-17, ([#123kjkdqv36](https://app.clickup.com/t/123kjkdqv36))).
+- **NG1053 caught at lint time.** A `#` field set by `input()`, `model()`, `output()`, `outputFromObservable()` or a signal query, or a `private` one set by the first four, is a lint error; only `ng build` caught it before (META-17, ([#123kjkdqv36](https://app.clickup.com/t/123kjkdqv36))).
+
+### Changed
+
+- **The sweep, in the same commit:** `readonly` on 207 signal properties (ESLint's own fix, limited to that rule) and on 21 outputs, `type="button"` on 38 buttons (none sits in a `<form>`; the two submit buttons already had their type), `input.required()` for the last `@Input`, and `[style.x]` bindings for the 5 `ngStyle`. Type-checking all 1,361 TypeScript files of `apps/` and `libs/` finds no assignment to a property made `readonly`. llecoop is swept too (META-17, ([#123kjkdqv36](https://app.clickup.com/t/123kjkdqv36))).
+- **The private-fields rule skips fields set by Angular's initializer APIs**, where `#` does not compile; `yarn lint:profiles` checks that a `private` query is not reported (META-17, ([#123kjkdqv36](https://app.clickup.com/t/123kjkdqv36))).
+
+### Removed
+
+- **13 component-class rules from the root `*.html` block**, which had nothing to check in a template. `prefer-output-readonly` moved to TypeScript; 8 never ran anywhere (`no-input-prefix`, `component-max-inline-declarations`, the deprecated `no-conflicting-lifecycle`, `relative-url-prefix`, `use-component-selector`, `use-injectable-provided-in`, `no-queries-metadata-property`, `component-class-suffix`), and the other 5 still reach Angular projects through nx's `flat/angular` preset (META-17, ([#123kjkdqv36](https://app.clickup.com/t/123kjkdqv36))).
+
+## [2026-11-23] - Every library carries a scope and a type tag (META-16)
+
+### Added
+
+- **`tools/scripts/check-nx-tags.cjs` (`yarn nx-tags:check`).** Each `libs/**/project.json` that git lists (tracked or untracked, ignores applied) needs a `scope:*` tag that a `sourceTag` of the root `eslint.config.mjs` names and a `type:*` tag, or no app can import the library. Errors: `missing-scope`, `missing-type`, `empty-tag`, `unknown-scope`; `--json`; exit 0, 1 or 2. It reads the scopes from the text of the config, in 0.14 s for 183 libraries, where importing the config takes about 3 s. It is the first step of the pre-push and of CI's Lint Affected step (META-16, ([#123kjkdqv35](https://app.clickup.com/t/123kjkdqv35))).
+- **`yarn nx-tags:test`**, run in CI: 14 cases on fixture workspaces in temporary git repos, each error code and exit 2 included, plus the real tree, and a check that the scopes read from the text are those of the imported config. Two deliberate bugs in the check (no `unknown-scope`, single quotes only) each fail it (META-16, ([#123kjkdqv35](https://app.clickup.com/t/123kjkdqv35))).
+
+### Fixed
+
+- **Four libraries had no valid tags:** `core/styles/util/{material,tailwind-preset,tailwind4}` had none, and `core/util/cypress-commands` had `scope:core` and an empty string. All four now carry `scope:core` and `type:util`. Before: 8 errors in 4 of 183 libraries; after: none (META-16, ([#123kjkdqv35](https://app.clickup.com/t/123kjkdqv35))).
+
+## [2026-11-23] - One list of the ESLint rules (META-31)
+
+### Fixed
+
+- **`documentation/code-style.md` listed five of the rules, and got some wrong.** It said `no-console` warns (it is an error), credited `@angular-eslint/schematics` (not installed) and linked `accessibility.md` with a broken path. Its "Lint rules" section now points to the list in the root `CLAUDE.md` and says how to print the rules of one file (META-31, ([#123kjkdqzvb](https://app.clickup.com/t/123kjkdqzvb))).
+- **The root `CLAUDE.md` list now matches the config.** JSDoc is not required "for public APIs": a missing block on a `function` declaration is a warning, exported or not, and other declarations need none. `no-console` also applies to Cypress files. Each rule now gives its severity, and the template rules say they cover inline templates too (META-31, ([#123kjkdqzvb](https://app.clickup.com/t/123kjkdqzvb))).
+
+## [2026-11-23] - The private-fields ESLint rule fires (META-29)
+
+### Fixed
+
+- **The rule against the `private` modifier on class fields never fired.** Its `no-restricted-syntax` selector in the root `eslint.config.mjs` named `ClassProperty`, a node that typescript-eslint v8 calls `PropertyDefinition`, so it matched nothing while `CLAUDE.md` presented it as enforced. It now selects `PropertyDefinition[accessibility='private']`. It stays limited to fields, as `CLAUDE.md` now spells out: private methods and constructor parameter properties keep the modifier (19 and 3 today). No class field uses `private`: the 191 lint tasks pass with no finding from the rule, and the fast profile still reports 0 errors and 656 warnings (META-29, ([#123kjkdqzv8](https://app.clickup.com/t/123kjkdqzv8))).
+
+### Added
+
+- **`yarn lint:profiles` checks that the rule fires.** In the fast profile it lints a virtual file under `libs/` and expects the rule to report the line of its `private` field and nothing else: not its `#` field, not its `private` method. With the selector put back to `ClassProperty`, the script fails (META-29, ([#123kjkdqzv8](https://app.clickup.com/t/123kjkdqzv8))).
+
+## [2026-11-23] - Dead Jest configs removed (META-30)
+
+### Removed
+
+- **The 18 `jest.config.cts` files** of nine eco-store and nine shared libraries. Jest is not installed, the `jest.preset.js` they point to does not exist, and those projects test with Vitest. Their `**/jest.config.cts` entry in `TS_UNTYPED` of the root `eslint.config.mjs` goes with them, and so does its mention in `CLAUDE.md`. Before and after: Nx lists the same 197 projects and the same `lint` and `test` targets for the 18, and ESLint reports the same findings on them, 104 warnings in the fast profile and 107 in the typed one, no error. The `jest.config.*` entries of the tsconfig `exclude` lists and of the `production` named input in `nx.json` stay: they match nothing, and editing them would make most projects affected (META-30, ([#123kjkdqzv9](https://app.clickup.com/t/123kjkdqzv9))).
+
+## [2026-11-23] - Claude Code checks its own changes before ending a turn (META-14)
+
+### Added
+
+- **`.claude/hooks/stop-check.mjs`, a Claude Code `Stop` hook.** When Claude ends a turn, the hook checks the files changed since the session started, untracked ones included: ESLint with the fast profile (errors only) on the files lint-staged lints, markdownlint on the Markdown files, `prettier --check` on all of them, `vitest related` in each project with changed TypeScript for at most two projects (an HTML template counts as its component), and `yarn tasks:check` when a task doc changed. It also reports each line added in `apps/` or `libs/` that silences a check instead of fixing it (`eslint-disable`, `@ts-ignore`, `@ts-expect-error`, `@ts-nocheck`, `prettier-ignore`, `.skip` or `.only` in a test), once: in a trial run Claude first cleared a `no-console` error with an `eslint-disable` comment. A failure exits 2, so Claude Code keeps the turn open and hands Claude the findings. If they are still there at the next stop, the turn ends, the user gets a one-line message, and those files are not checked again until they change. Above 60 changed files, or two projects with tests, it skips those checks and says which command to run instead (META-14, ([#123kjkdqv33](https://app.clickup.com/t/123kjkdqv33))).
+- **A `SessionStart` hook** (the same script) records the files already modified when a session starts, with their content hash, so work in progress from before the session is never checked as if Claude had written it. Each check remembers the content hash of the files it passed. Measured on a worktree: a turn without new changes adds 0.4 s; a lint error in one eco-store library is reported in 27 s, its fix checked in 20 s (ESLint and `vitest related` in parallel); a Markdown or task-doc change takes 2.5 s (META-14, ([#123kjkdqv33](https://app.clickup.com/t/123kjkdqv33))).
+
+### Changed
+
+- **`lint-staged.config.mjs` exports `ESLINT_FILES` and `MARKDOWN_FILES`**, so the Stop hook lints the same files as the pre-commit. `.claude/CLAUDE.md` says what the hook checks (META-14, ([#123kjkdqv33](https://app.clickup.com/t/123kjkdqv33))).
+
+## [2026-11-23] - ESLint without type information in the hooks (META-13)
+
+### Changed
+
+- **ESLint builds no TypeScript program by default.** The root `eslint.config.mjs` gave every file but the specs `parserOptions.project`, so each lint task, and each ESLint call of the pre-commit with a TypeScript file other than a spec staged, built one program of the whole monorepo from `tsconfig.base.json` (about 1,600 files). Hooks, editors and local runs now lint without one: a lint task takes 2.0–2.9 s instead of 6.8–8.2 s (10 projects, one at a time), all 190 tasks with 3 in parallel 178 s instead of 685 s, and the pre-commit's ESLint call on one staged file about 2 s instead of 7 s (META-13, [#123kjkdqv32](https://app.clickup.com/t/123kjkdqv32)).
+- **The three rules that need type information run in CI only:** `@typescript-eslint/no-deprecated`, `@typescript-eslint/prefer-readonly` and the boolean selector of `@typescript-eslint/naming-convention`. They run with `ESLINT_TYPED=1`, which CI's «Lint Affected» step and `yarn lint:ci` set. That profile types each file with its own project's tsconfig through typescript-eslint's project service: a lint task takes 4.1–7.7 s, and all 190 tasks 516 s. Both profiles report what the old config did across the 190 tasks: the typed one the same 675 warnings, the fast one the same minus the 19 of those three rules. Without a program, `cypress/unsafe-to-chain-command` also leaves chains that start at a helper function to CI; none exists today (META-13, [#123kjkdqv32](https://app.clickup.com/t/123kjkdqv32)).
+- **Files the project service cannot place** would stop the typed lint with a parse error: it looks in the nearest `tsconfig.json`, the tsconfigs that one references and any `tsconfig.json` further up (the repo has none), never in `tsconfig.base.json`. The typed profile types them with the options of `tsconfig.base.json` (`TS_DEFAULT_PROJECT`): the e2e Vite and Vitest configs, which sit in an unreferenced `tsconfig.spec.json`; the eco-store scripts, which no project tsconfig takes in; and the test-only mock store of `product-categories/data-access`, which its `tsconfig.lib.json` excludes. The 18 dead `jest.config.cts` files and Wrangler's `worker-configuration.d.ts` lint without types in both profiles; the three rules found nothing in them (META-13, [#123kjkdqv32](https://app.clickup.com/t/123kjkdqv32)).
+- **The Nx lint cache also hashes `ESLINT_TYPED` and the ESLint plugin packages**, through a `targetDefaults` entry for the `@nx/eslint/plugin` targets that keeps their inferred inputs (`"..."`). A CI run with `ESLINT_TYPED=1` thus never reuses a fast result, and upgrading `typescript-eslint`, `angular-eslint` or `typescript` invalidates the lint results. Until now a lint task hashed `eslint` and the npm packages that its project and the projects it depends on import (`@nx/eslint-plugin` in 188 of 190 tasks), but not `typescript` or the plugins only the root config loads (META-13, [#123kjkdqv32](https://app.clickup.com/t/123kjkdqv32)).
+- **`CLAUDE.md`, `AGENTS.md`, `documentation/code-style.md` and `lint-staged.config.mjs`** say that the hooks skip those rules, which report in CI and with `yarn lint:ci`; `CLAUDE.md` and `AGENTS.md` list `yarn lint:ci` among the lint commands (META-13, [#123kjkdqv32](https://app.clickup.com/t/123kjkdqv32)).
+
+### Added
+
+- **`yarn lint:profiles`** (`tools/scripts/test-eslint-profiles.mjs`) lints a fixture with both profiles. The typed one must report exactly the three findings the fixture marks; the fast one none, without throwing. In the fast profile it also reads every block of the 191 tracked ESLint configs, whatever files the block targets, and probes a virtual file of each TypeScript extension in the 190 project folders that have one: none may turn on a rule that needs types or ask for a TypeScript program. CI runs it in the lint step, where it also fails if `ESLINT_TYPED` is not `1` (META-13, [#123kjkdqv32](https://app.clickup.com/t/123kjkdqv32)).
+
+### Removed
+
+- **`tsconfig.eslint.json`**: only the old `parserOptions.project` read it (META-13, [#123kjkdqv32](https://app.clickup.com/t/123kjkdqv32)).
+
+## [2026-11-22] - Explicit tsconfig for Analog in the Vite configs (META-26)
+
+### Fixed
+
+- **CI printed 178 «Unable to resolve tsconfig» errors from `@analogjs/vite-plugin-angular`** in its first Nx step, while every task passed. Since Nx 24, `@nx/vitest` resolves each `vite.config.mts` outside Vitest to infer the targets. There Analog does not know it is under test, looks for `tsconfig.app.json`, and libraries have none. The 185 configs now call `angular({ tsconfig: 'tsconfig.spec.json' })`, the file Analog already used inside Vitest, so tests compile as before. Building the graph from scratch prints none of them; `CLAUDE.md` and `AGENTS.md` ask for the option in new libraries (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+
+## [2026-11-22] - Nx 24.0.6, with inferred lint and test tasks (META-26)
+
+### Changed
+
+- **Nx 23.3.2 → 24.0.6, Nx packages only**, through `nx migrate 24.0.6` and its 14 migrations, run with `--no-agentic --no-create-commits`: without them, Nx 24 detects an agent and makes its own checkpoint commit with `--no-verify` (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **`lint` and `test` are inferred tasks.** The 186 `project.json` files that used them lose their `@nx/eslint:lint` and `@nx/vitest:test` targets. `@nx/eslint/plugin` now runs `eslint .` and the newly registered `@nx/vitest` plugin runs `vitest run` (`testMode: "run"`), both cached, and `passWithNoTests` moves to a `targetDefaults` entry filtered by plugin. The `@nx/vitest` plugin excludes `apps/*-e2e/**`, so the same 191 projects have `lint` and the same 184 have `test`. `store-window` and `shared-countdown-util` lose their own `lintFilePatterns` (`.ts` and `.html` only) and lint the whole project like the rest, with the same warnings. `llecoop-triggers` sets `"nx": { "includedScripts": [] }`, because its `package.json` scripts `test` and `lint` call `nx test` and `nx lint` on itself and would otherwise replace the inferred targets (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **The 188 Vite and Vitest configs** use Vite's own `resolve.tsconfigPaths` instead of `nxViteTsPaths()`, and the 187 that had it drop `nxCopyAssetsPlugin()`. No project builds with Vite, so there were no assets to copy (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **Dev servers and `serve-static` targets get `readyWhen: { signal: true }`** from the migrations, and `serve-static` now depends on `build`. No hook, workflow or script calls `serve-static`. The `nxReadySignal()` plugin the migration also added to seven Vite configs was removed: it only feeds `@nx/vite/plugin`, which this workspace does not register (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **`nx.json`** gets `affected.legacy: true` from the migration, so `nx affected` keeps selecting whole projects, as in Nx 23, instead of individual affected tasks (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **`nasa-images-e2e` and `llecoop-e2e`** lose `@nx/cypress:cypress` and run the inferred, cached `cypress run`, like the other three e2e projects. Their `cypress.config.ts` start the web server with `npx nx`. The scripts that pass `--watch` (`*:e2e:local`, `e2e:all`, `e2e:ci`) now exit 1 for them too, as they already did for the other three. They were not checked or fixed: Cypress e2e are out of scope (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **`CLAUDE.md` and `AGENTS.md`** explain that a generated library has `"targets": {}` and must not get `lint` or `test` by hand. A single spec now runs with `nx test <project> <file> --passWithNoTests=false`, the path relative to the project root: Vitest rejects `--testFile`, and without the flag a path that matches nothing passes. Both point at `node_modules/@nx/<plugin>/dist/PLUGIN.md`, where the file really is, and `.agent/rules/nx-style.md` names Nx 24.0.6 instead of 21.2.0 (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+
+### Removed
+
+- **`tasksRunnerOptions`** in `nx.json`, the legacy `nx-cloud` runner with an empty token. `nxCloudId` stays, and CI keeps falling back to `NX_NO_CLOUD` when the free quota runs out (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+
+## [2026-11-22] - Nx 23.3.2 (META-26)
+
+### Changed
+
+- **Nx 23.0.2 → 23.3.2, Nx packages only.** `nx migrate 23.3.2` also proposed Angular 22.1, TypeScript 6.0.3, Cypress 15.21.2, NgRx 22 and `angular-eslint` 22.8. Those changes, and the 18 migrations that come with them or need them, were left out by hand: the 10 from Angular, CDK and Material, 5 from `@nx/angular` that require Angular 22, 2 that require TypeScript 6, and `upgrade-to-cypress-16`. Of the 9 that ran, only one changed files (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **The 188 `vite.config.mts` and `vitest.config.mts` files** use `import.meta.dirname` instead of `__dirname` for `root`, as Vite's native config loader expects (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **`CLAUDE.md` names Nx 23.3.2, Vitest 4.1.5 and `@analogjs/vitest-angular` 2.9.7** (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+
+## [2026-11-22] - Nx 23.0.2, with Vite 8 for Vitest (META-26)
+
+### Changed
+
+- **Nx 22.7.1 → 23.0.2**, through `nx migrate 23.0.2` and its 25 migrations, none of which changed a file. `nx` and the twelve `@nx/*` packages move together, and `@nrwl/nx-cloud` goes from 19.1.3 to 19.1.5. Angular 21.2.9, TypeScript 5.9.3 and Cypress 15.14.2 stay where they were. Every project keeps the same targets: 191 with `lint`, 184 with `test`, 7 with `build`, 5 with `e2e` and 5 with `serve-static` (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **`vite` `^7.0.0` → 8.3.8**, the only third-party update the migration brings. It reaches Vitest, Analog and the Nx Vite plugins. Angular builds and dev servers keep the 7.3.2 that `@angular/build` 21.2.9 pins in its own copy (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **`@analogjs/vite-plugin-angular` and `@analogjs/vitest-angular` ^2.5.0 → ^2.9.7.** With Vite 8, the 2.5.0 test plugin hands every file to Oxc as JavaScript (`lang: 'js'`). Every spec then fails before it runs, on the `import type` in `vitest-setup.ts`. 2.9.7 passes `ts` or `tsx` per file and lists Vite 8 among its peers (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+
+## [2026-11-22] - Legacy Nx settings and scripts removed before the Nx 23 migration (META-26)
+
+### Removed
+
+- **Dead `nx.json` settings.**
+  - `defaultProject: "llecoop"`: no command reached it, because the root project `plastikspace` contains every folder.
+  - The `targetDefaults` for `@nx/jest:jest`, `@angular-devkit/build-angular:browser` and `@nx/js:tsc`, executors that no target uses.
+  - The two `sharedGlobals` entries. One pointed at a `.cursorrules` file that does not exist. The other, `.cursor/rules/*.mdc`, made any edit to that file invalidate every cached task.
+  - The project graph of the 197 projects is the same before and after (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **Root `package.json` scripts and the Zed task that ran without a project.**
+  - `start`, `test`, `test:watch`, `test:coverage` and `lint` worked only through `defaultProject`. The Zed task «NG: Serve (Default Project)» ran `nx serve` the same way.
+  - `affected:apps`, `affected:libs`, `affected:dep-graph` and `workspace-generator` call Nx commands that no longer exist.
+  - `update` ran `nx migrate latest`, which from Nx 23.1 also upgrades Angular, TypeScript and Cypress.
+  - `test:all` and `affected:test` stay, but drop `--ci`, `--run-in-band` and `--code-coverage`, flags Vitest does not define; `test:all` keeps coverage through `--coverage` (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+- **`@nrwl/cli` 15.9.3 and `@nx/powerpack-license`.** No file used them. `@nrwl/cli` installed two extra copies of nx 15.9.3. `yarn.lock` loses 39 entries and gains none (META-26, [#123kjkdqv9g](https://app.clickup.com/t/123kjkdqv9g)).
+
+## [2026-11-22] - Remove Verdaccio and the root `local-registry` target (META-27)
+
+### Removed
+
+- **The `local-registry` target of the root project**, its `.verdaccio/config.yml` and the `verdaccio` dev dependency, which takes 90 of the 3,450 `yarn.lock` entries with it (3,360 left; no other entry changes version). The target ran a local npm registry for publishing packages, and the workspace publishes none. Each run pointed the user-level npm and Yarn configs at `http://localhost:4873/` and put them back only from its exit and signal handlers, so a run killed before they ran, or whose npm reset failed, left every `yarn install` on the machine failing. The root project `plastikspace` stays, now with no target, so the graph keeps its 197 projects, and `.markdownlint-cli2.yaml` and `.cursorignore` no longer list the folder (META-27, [#123kjkdqwqp](https://app.clickup.com/t/123kjkdqwqp)).
+
+## [2026-11-22] - ESLint 10 with flat config (META-25)
+
+### Changed
+
+- **ESLint 10.15 with flat config, and the same rules as before.** The root `eslint.config.mjs` and 190 project `eslint.config.mjs` files, each of which spreads the root one, replace the 191 `.eslintrc.json` files and the root `.eslintignore`, without `FlatCompat`. On `nx run-many -t lint`, every project reports the same errors and warnings, rule by rule, as with ESLint 8.57 (2,672 files, 0 errors, 675 warnings), and every file linted today resolves to the same rules, except where ESLint changed `eslint:recommended`: six rules added (`no-constant-binary-expression`, `no-empty-static-block`, `no-unassigned-vars`, `no-unused-private-class-members`, `no-useless-assignment`, `preserve-caught-error`, whose nine findings are fixed, see below), `no-inner-declarations` dropped, `no-new-symbol` replaced by `no-new-native-nonconstructor`, and two new default options, which change no count today: `no-constant-condition` no longer reports `while (true)`, and `no-shadow-restricted-names` also reports a binding named `globalThis`. ESLint 9 began reporting `eslint-disable` comments that disable nothing; that stays off (`reportUnusedDisableDirectives: 'off'`) until they are cleaned up (META-25, [#123kjkdqv9f](https://app.clickup.com/t/123kjkdqv9f)).
+- **Two rule families have new names.** `deprecation/deprecation` is now `@typescript-eslint/no-deprecated`, and the NgRx rules come from `@ngrx/eslint-plugin` as `@ngrx/*`. The root config lists the 25 rules of the former `eslint-plugin-ngrx` recommended set that still exist: `select-style` and `no-effects-in-providers` are errors, the rest warn. `no-effect-decorator` and `no-effect-decorator-and-creator` went away with the `@Effect` decorator. The store rules now also check a store kept in a field that is not private (`protected readonly store = inject(Store)`); a store kept in `#store` is still not checked (META-25, [#123kjkdqv9f](https://app.clickup.com/t/123kjkdqv9f)).
+- **The former `.eslintignore`, and what the root `ignorePatterns` of eslintrc, which matched every file, left out, become global ignores.** Eight of that file's eleven lines are in the root config, each written `**/<name>`, since the file matched them at any depth. Two, `apps/eco-store/pocketbase` and `apps/eco-store/scripts`, moved to the eco-store config; `scripts` keeps its own config and the `eco-store-scripts` lint target. The last, `**/ .wrangler/`, a typo for `.wrangler/`, is gone. One block of the root config stands for what the root pattern still skipped, the part no project config took back: every file at the root, every folder beside `apps/` and `libs/` (`dist`, `tmp`, `tools`, `.agent`...) and the eight paths under them that no ESLint config covers today (`apps/llecoop-firebase`, five style and asset libs, `libs/shared/table/index.ts` and `libs/shared/testing`). That block and the eco-store one are pinned with `basePath`: a pattern without it resolves from the folder of the config ESLint finds for the file, but from the workspace root under the Nx executor, which passes the project config itself. Measured over 2,982 paths, every tracked file of either tree with an extension ESLint lints and 16 made-up ones in ignored or missing folders, ESLint 10 skips what ESLint 8 skipped from the workspace root, whether it looks each file up or is handed the file's project config, as the Nx executor is, except the files under `apps/eco-store/scripts` (13 in each tree) and three made-up paths in new folders under `apps/` and `libs/`. A root run that names that folder or its files now lints them with the folder's config instead of skipping them; `eslint .`, `eslint apps` and `eslint apps/eco-store` still skip the folder, since ESLint 10 judges a folder with its parent's config, lint-staged leaves it out of ESLint, and the `eco-store-scripts` target lints it from inside, as before. A new folder or file under `apps/` or `libs/` without an ESLint config is linted with the root one, and a directory run that starts above a project (`eslint .`, `eslint libs`) goes into the projects below it, all but `apps/eco-store/scripts`, where ESLint 8 found no file (META-25, [#123kjkdqv9f](https://app.clickup.com/t/123kjkdqv9f)).
+- **Spec files lint without a TypeScript program**, as the root `CLAUDE.md` says they do: under eslintrc, the merge of the `parserOptions.project` arrays gave the Angular specs one anyway. The only rule on specs marked as needing types, `@typescript-eslint/naming-convention`, runs there without its one type-aware selector, as before. They keep the Jest globals of the former `env: { jest: true }`, three of them (`fdescribe`, `pit`, `require`) listed by name, since the `globals` package has dropped them from its Jest set (META-25, [#123kjkdqv9f](https://app.clickup.com/t/123kjkdqv9f)).
+- **`nx.json`**: the inputs of `@nx/eslint:lint` are `default`, `^default` and the root `eslint.config.mjs`, instead of the root `.eslintrc.json`, `.eslintignore`, `eslint.config.js` and `tools/eslint-rules/**/*`, which does not exist; the `production` set leaves out `eslint.config.mjs` instead of `.eslintrc.json` and `eslint.config.js` (META-25, [#123kjkdqv9f](https://app.clickup.com/t/123kjkdqv9f)).
+- **`eslint` ~10.15.0** (from ~8.57.0), **`eslint-plugin-jsdoc` ^63.3.3** (from ^61.5.0) and **`eslint-plugin-cypress` ^7.1.0** (from ^3.5.0), whose own flat `configs.recommended` the e2e configs apply before the root config, as their `.eslintrc.json` did (META-25, [#123kjkdqv9f](https://app.clickup.com/t/123kjkdqv9f)).
+- **Docs**: `CLAUDE.md`, `documentation/code-style.md`, `documentation/nx-architecture.md` and `documentation/accessibility.md` name the flat configs and the new rule ids (META-25, [#123kjkdqv9f](https://app.clickup.com/t/123kjkdqv9f)).
+
+### Added
+
+- **`typescript-eslint` 8.59.1, `angular-eslint` 21.3.1 and `@ngrx/eslint-plugin` 21.1.0**, the flat-config entry points of the plugins in use; **`@eslint/js` ^10.0.1**, which the Nx flat presets import and ESLint 10 no longer installs; and **`espree` ^11.2.0 and `globals` ^17.14.0**: `espree` parses the JavaScript files of `plastikaweb`, `nasa-images-e2e` and the eco-store scripts, as their `.eslintrc.json` said, and `globals` gives the scripts their Node globals and the specs their Jest globals (META-25, [#123kjkdqv9f](https://app.clickup.com/t/123kjkdqv9f)).
+
+### Removed
+
+- **`eslint-plugin-deprecation` and `eslint-plugin-ngrx`**, and with them `@typescript-eslint/experimental-utils` and the 5.62 and 7.18 copies of `@typescript-eslint/utils` in `yarn.lock` (META-25, [#123kjkdqv9f](https://app.clickup.com/t/123kjkdqv9f)).
+- **Every `.eslintrc.json` and the root `.eslintignore`**, and `documentation/img/ngrx-linter.png`, the screenshot of `eslint-plugin-ngrx` in the code-style guide (META-25, [#123kjkdqv9f](https://app.clickup.com/t/123kjkdqv9f)).
+
+### Fixed
+
+- **The nine findings of the rules ESLint 10 adds to `eslint:recommended`.** Three injected dependencies that nothing read are gone (in `cart-summary`, `eco-store-orders-detail` and `CountdownService`). `MatThemeToggleService` creates its theme effect in the constructor instead of keeping it in a private field that nothing read; it works as before, and its spec fails without it. Four initial values that every path overwrote before reading them are gone (two in `download-pocketbase.js`, one each in `calculateStoreWindowStatus` and `ErrorHandlerService`). The error thrown when a tenant cannot be loaded keeps the original one as its `cause` (META-25, [#123kjkdqv9f](https://app.clickup.com/t/123kjkdqv9f)).
+
+## [2026-11-22] - Cache and coverage paths of the eco-store orders feature libs (META-28)
+
+### Fixed
+
+- **`libs/eco-store/orders/feature/{created,detail,list}/vite.config.mts`** climbed four levels where their projects sit five deep, so their Vite cache and coverage went to `libs/node_modules/.vite/...` and `libs/coverage/...`, which no rule ignores. `created` also left out its own folder, so its coverage folder was the parent of those of `detail` and `list`: Vitest empties its coverage folder when it starts, and a `created` run beside `detail` deleted the files `detail` was writing (CI on PR #1570 failed on `eco-store-orders-detail:test` that way). Both paths now end in `coverage/<project>` and `node_modules/.vite/<project>` at the root, like the other 185 configs, and CI's coverage summary counts these three projects for the first time (META-28, [#123kjkdqwrm](https://app.clickup.com/t/123kjkdqwrm)).
+
+## [2026-11-20] - Fast git hooks: lint-staged in pre-commit (META-12)
+
+### Changed
+
+- **`.husky/pre-commit` checks the staged content only**, through lint-staged (`lint-staged.config.mjs`): ESLint `--fix` limited to problem and layout fixes, markdownlint and Prettier on what is staged, one process per tool for each chunk of about a thousand files. `tasks:check` and `i18n:validate` run on a copy of the index, so they read what is being committed. It no longer runs `nx affected --target=lint` against `develop`, markdownlint over all ~200 docs or `nx format:write --affected`, and it no longer ends with `git add -A`: unstaged files stay out of the commit, and the task-doc guard reads the staged set. Paths with a double quote are handled. A worktree on a branch older than META-12, where `yarn install` cannot add lint-staged, uses the lint-staged and `lint-staged.config.mjs` of the checkout the hook runs from. When TypeScript under `apps/` or `libs/` is staged, the hook first brings the Nx project graph up to date (`nx show projects`, 1.5–3.5 s warm): ESLint's module-boundaries rule reads it, and without one it skipped itself behind a warning nobody saw. When Nx cannot build the graph, the commit stops and shows Nx's reason. Untracked files are never added; the hook lists them after the commit, and in a commit that names its paths it lists only what neither the real index nor the commit tracks. Measured on a 4-core machine: a one-line change in a feature lib went from 199 s to 63 s, one in `libs/core/entities` from 45 min to 49 s, and a Markdown-only commit from 20 s to 8 s (META-12, [#123kjkdqv31](https://app.clickup.com/t/123kjkdqv31)).
+- **The PocketBase schema export in the pre-commit** reuses a PocketBase that already answers on :8090 instead of opening the same `pb_data` with a second process. When it has to start its own, it waits for `/api/health` instead of `sleep 3` and always stops it, also when the export fails. Every worktree exports the same local PocketBase, whose schema can hold edits made for another branch, so an export that differs from the staged schema joins the commit only when the commit already stages eco code (files under `apps/eco-*` or `libs/eco*`, Markdown aside), and only after every other check has passed, so a commit the hook stops leaves nothing staged. The hook records the export it stages, and a new `.husky/post-commit` deletes that record once a commit lands with it. When the commit stops later instead (commitlint, an empty message), the next commit unstages the export and decides again, or keeps it when nothing else is staged or `ALLOW_SCHEMA_ONLY=1` is set, since emptying the index would make git record an empty commit; an export that a stopped `git commit -a` left only on disk is put back. Any other commit keeps `pb_schema.json` as it was and warns, and so does a commit that names its paths (`git commit <paths>`, some IDEs), where git would keep the export out of the real index. A schema staged by hand is kept and not exported; staged without eco code, it stops the commit unless `ALLOW_SCHEMA_ONLY=1`. During a merge (a squash merge too), cherry-pick, revert or rebase the hook neither exports nor unstages the schema; a squash still follows the schema-only rule, since git cannot tell one in progress from the `SQUASH_MSG` an abandoned squash leaves behind, and the hook says how to recover from that. Next to a real merge or cherry-pick, the hook names that `SQUASH_MSG`, which git puts in the commit message. A failed export or Ctrl-C puts the file back (META-12, [#123kjkdqv31](https://app.clickup.com/t/123kjkdqv31)).
+- **`.husky/pre-push`** no longer repeats the affected lint; CI runs it on every pull request and every push to develop. Format check, affected test, build and a11y stay. Test and build now use the same range as the format check (the upstream, or the merge-base with `origin/develop`) instead of the local `develop`, the changed-file list compares with three dots, so a branch is no longer charged with what develop changed, and the hook warns when tracked files differ from `HEAD` or untracked files are present, since tests and builds run on the files on disk. It reads the refs being pushed: a push of a branch other than the checked-out one stops, since the checks would test another commit, and so does a tag pushed to a branch; deletions and pushes outside `refs/heads/` (tags, notes) pass without checks. A branch whose upstream is gone from the remote (merged with `--delete-branch`, then pruned) is checked from its merge-base with `origin/develop`, as one without an upstream; a push whose upstream shares no history with `HEAD` stops instead of running on a range that means nothing (META-12, [#123kjkdqv31](https://app.clickup.com/t/123kjkdqv31)).
+- **Both hooks pin `NX_WORKSPACE_ROOT_PATH`** to the checkout they run in and set `NX_NO_CLOUD`. Editor and agent sessions can export that variable pointing at the main checkout, which made Nx in a worktree read the main checkout's git state and project graph: a one-line change was reported as affecting all 197 projects (META-12, [#123kjkdqv31](https://app.clickup.com/t/123kjkdqv31)).
+
+### Added
+
+- **`lint-staged` 16.4.0** as a dev dependency; the 17.x line needs Node 22.22.1 or later. A checkout that has not run `yarn install` since gets a clear error from the pre-commit instead of an `npx` download (META-12, [#123kjkdqv31](https://app.clickup.com/t/123kjkdqv31)).
+- **A PR check for `pb_schema.json`** (`.github/workflows/pb-schema-guard.yml`, `tools/scripts/check-pb-schema-change.cjs`) on pull requests into develop. It posts a per-collection summary of the schema change and fails when the schema changes without any eco code (Markdown does not count), or loses a collection or a field: the staging sync drops a removed field with its data, and never deletes a removed collection, which stays on staging without the file describing it. Like the sync, it finds a collection by id or else by name, so a collection whose id changed under the same name is no removal, and a relation is compared through that pairing. View fields are matched by name, since PocketBase gives them new `_clone_` ids each time a view is saved. The `pb-schema` label acknowledges the schema of the head it was added at, which the run of that event records in a comment; any later run whose schema differs from that head's, as the check reads it (new view ids or a new order do not count), removes the label, even when the check passes, to be added again once the new summary is reviewed. A record written before the label's latest addition (that run was dropped, or could not write) does not count, and neither does a label with no record. A re-run of an older run stops once the head has moved on, and otherwise takes the labels the pull request has now. Runs for one pull request take turns. Every problem also shows as an annotation. Its 36 fixture tests (`tools/scripts/test-pb-schema-check.sh`) run first (META-12, [#123kjkdqv31](https://app.clickup.com/t/123kjkdqv31)).
+
+### Fixed
+
+- **`tools/scripts/validate-i18n-keys.cjs`** skipped every directory whose absolute path contained `node_modules`, `dist` or `.nx`, so a checkout under such a path checked no file and passed. It now looks at each directory's own name (META-12, [#123kjkdqv31](https://app.clickup.com/t/123kjkdqv31)).
 
 ## [2026-11-20] - Eco Admin: login on Angular Material, password recovery and one auth screen for both eco apps (AP-0 0.7b)
 

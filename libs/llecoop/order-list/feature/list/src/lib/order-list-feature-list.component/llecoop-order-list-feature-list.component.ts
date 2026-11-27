@@ -22,5 +22,5 @@ import { LlecoopOrderListFeatureListFacadeService } from '../order-list-feature-
 })
 export class LlecoopOrderListFeatureListComponent {
   protected facade = inject(LlecoopOrderListFeatureListFacadeService);
-  pendingChanges = signal(false);
+  readonly pendingChanges = signal(false);
 }

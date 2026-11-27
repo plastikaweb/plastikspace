@@ -7,7 +7,7 @@
       [attr.aria-label]="addon['aria'] || ''"
       [attr.tabindex]="!addon['onClick'] ? '-1' : '0'"
       [class]="addon.classes"
-      [ngStyle]="{ cursor: addon.onClick ? 'pointer' : 'inherit' }"
+      [style.cursor]="addon.onClick ? 'pointer' : 'inherit'"
       (click)="clickHandler($event)">
       <span>{{ addon.text }}</span>
     </button>
@@ -20,7 +20,7 @@
       [attr.aria-label]="addon['aria'] || ''"
       [attr.tabindex]="!addon['onClick'] ? '-1' : '0'"
       [class]="addon.classes"
-      [ngStyle]="{ cursor: addon.onClick ? 'pointer' : 'inherit' }"
+      [style.cursor]="addon.onClick ? 'pointer' : 'inherit'"
       (click)="clickHandler($event)">
       <mat-icon>{{ addon.icon }}</mat-icon>
     </button>

@@ -45,11 +45,11 @@ export type ProductPriceSize = 'sm' | 'md' | 'lg' | 'detail';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EcoStoreProductPriceComponent {
-  price = input.required<EcoStoreProduct['priceWithIva']>();
-  unitType = input.required<EcoStoreProduct['unitType']>();
-  unitBase = input.required<EcoStoreProduct['unitBase']>();
-  size = input<ProductPriceSize>('md');
-  unitChipVisible = input<boolean>(true);
+  readonly price = input.required<EcoStoreProduct['priceWithIva']>();
+  readonly unitType = input.required<EcoStoreProduct['unitType']>();
+  readonly unitBase = input.required<EcoStoreProduct['unitBase']>();
+  readonly size = input<ProductPriceSize>('md');
+  readonly unitChipVisible = input<boolean>(true);
 
   protected getPriceParts() {
     const formatted = new Intl.NumberFormat('ca-ES', {

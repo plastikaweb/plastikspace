@@ -4,5 +4,5 @@
   "projectType": "library",
   "sourceRoot": "libs/core/styles/util/tailwind-preset/src",
   "targets": {},
-  "tags": []
+  "tags": ["scope:core", "type:util"]
 }

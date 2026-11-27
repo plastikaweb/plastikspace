@@ -18,20 +18,21 @@ export class MatThemeToggleService implements OnDestroy {
   readonly #liveAnnouncer = inject(LiveAnnouncer);
   readonly #query = window.matchMedia('(prefers-color-scheme: dark)');
 
-  readonly #setSystemTheme = effect(() => {
-    const currentTheme = this.#theme();
-    const htmlClassList = this.#document.documentElement.classList;
-
-    htmlClassList.remove('light', 'dark');
-
-    if (currentTheme !== 'system') {
-      htmlClassList.add(currentTheme);
-    }
-
-    this.#updateThemeColorMeta();
-  });
-
   constructor() {
+    // Puts the chosen theme on <html> and the browser bar, now and on every change. Created here
+    // rather than kept in a field, which nothing would read.
+    effect(() => {
+      const currentTheme = this.#theme();
+      const htmlClassList = this.#document.documentElement.classList;
+
+      htmlClassList.remove('light', 'dark');
+
+      if (currentTheme !== 'system') {
+        htmlClassList.add(currentTheme);
+      }
+
+      this.#updateThemeColorMeta();
+    });
     this.#query.addEventListener('change', this.#onSystemThemeChange);
   }
 

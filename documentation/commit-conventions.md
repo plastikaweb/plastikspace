@@ -108,6 +108,10 @@ Commitizen will show us a summary of the commit message and ask for confirmation
 
 [Commitlint](https://github.com/conventional-changelog/commitlint) checks that the message of the commit complies with the default format.
 
+Then `tools/scripts/check-commit-refs.cjs` checks three rules commitlint cannot see: the branch's ClickUp ID in the header,
+a task ID in the header of a commit with eco code, and a CHANGELOG.md bullet on the branch for a `feat`, `fix` or `perf` with code
+(AGENTS.md, "Commit-msg Hook").
+
 > **Tip:** In the same way any script added to a pre-commit hook or similar (linting, test ...), will be executed at this point.
 
 ## AI Agent Skill

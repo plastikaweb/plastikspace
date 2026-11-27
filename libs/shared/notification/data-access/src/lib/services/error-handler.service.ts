@@ -10,7 +10,7 @@ export class ErrorHandlerService implements ErrorHandler {
 
   handleError(error: ErrorEvent | Error | string): void {
     const store = this.#injector.get(notificationStore);
-    let message = '';
+    let message: string;
 
     if (
       (typeof ErrorEvent !== 'undefined' && error instanceof ErrorEvent) ||

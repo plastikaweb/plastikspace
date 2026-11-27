@@ -76,6 +76,20 @@ describe('StoreWindowComponent', () => {
     expect(chip.textContent).toContain('store.status.closed');
   });
 
+  it.each(['CLOSED', 'CLOSED_MANUALLY', 'CANCELLED'] as const)(
+    'should show %s with the role-coloured tertiary chip',
+    status => {
+      fixture.componentRef.setInput('status', status);
+      fixture.detectChanges();
+
+      const chip: HTMLElement = fixture.nativeElement.querySelector('plastik-shared-chip > span');
+
+      expect(chip.classList).toContain('chip-tertiary');
+      expect(chip.classList).toContain('bg-sys-tertiary-container');
+      expect(chip.classList).toContain('text-sys-on-tertiary-container');
+    }
+  );
+
   it('should render OPENING_SOON status correctly', () => {
     fixture.componentRef.setInput('status', 'OPENING_SOON');
     fixture.detectChanges();

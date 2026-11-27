@@ -27,10 +27,32 @@
     - [Lighthouse](#lighthouse)
     - [Angular ESLint](#angular-eslint)
     - [Pa11y CI Accessibility Test Runner](#pa11y-ci-accessibility-test-runner)
+    - [Playwright and axe (eco apps)](#playwright-and-axe-eco-apps)
     - [jest axe](#jest-axe)
   - [Useful links](#useful-links)
 
 ## Analysis
+
+Every app targets **WCAG 2.2 AA** (since 2026-11-24).
+eco-store and eco-admin are checked by the [Playwright suite](#playwright-and-axe-eco-apps) (META-40), which replaced Pa11y there:
+axe with every WCAG 2.2 AA rule, of which only `target-size` is new in 2.2, plus 2.4.11, 3.3.7 and 3.3.8 on the screens it opens.
+The PWA install sheet failures that Pa11y's axe reported in eco-store (`aria-dialog-name`, `aria-hidden-focus`, `aria-required-children`) do not show there.
+The other apps use Pa11y, whose `WCAG2AA` standard means 2.1 AA at most.
+Wherever the suite does not reach, review the other five AA criteria 2.2 adds by hand:
+
+- 2.4.11 Focus Not Obscured (Minimum)
+- 2.5.7 Dragging Movements
+- 3.2.6 Consistent Help
+- 3.3.7 Redundant Entry
+- 3.3.8 Accessible Authentication (Minimum)
+
+The first review (META-39, 2026-11-24) found three failures, all fixed since. Look for the same patterns:
+
+- 2.4.11: the eco-store shell scrolls inside `mat-sidenav-content`, so the scroll padding that keeps focus clear of the fixed bars belongs there, not on `html`.
+- 2.5.7: every drag needs a single-pointer alternative, as the image cropper's pan and zoom buttons.
+- 1.3.5: a field that collects the user's own data takes its `autocomplete` token (`name`, `tel`, `email`), not `off`.
+
+Its open points are in the META-39 section of the root `TASKS.md`.
 
 A todo list of accessibility actions and related information can be found in the [Accessibility](https://github.com/plastikaweb/plastikspace/wiki/Accessibility) wiki page.
 
@@ -235,47 +257,27 @@ Some lint patterns are used to review accessibility.
 
 See [@angular-eslint/schematics](https://github.com/angular-eslint/angular-eslint#readme) for further information.
 
-```json
-// .eslintrc.json
-// to see the current configuration please take a look at the root eslint file.
+```js
+// Root eslint.config.mjs, abridged: every *.html file gets the template presets, then the
+// accessibility rules below (and more template rules; the file has the full list).
+...scoped([...angular.configs.templateRecommended, ...angular.configs.templateAccessibility], ['**/*.html']),
 {
-      "files": ["*.html"],
-      "extends": ["plugin:@angular-eslint/template/recommended"],
-      "rules": {
-        "@angular-eslint/template/no-positive-tabindex": 2,
-        "@angular-eslint/template/no-autofocus": 2,
-        "@angular-eslint/template/mouse-events-have-key-events": 2,
-        "@angular-eslint/template/click-events-have-key-events": 2,
-        "@angular-eslint/template/accessibility-interactive-supports-focus": 2,
-        "@angular-eslint/template/accessibility-valid-aria": 2,
-        "@angular-eslint/template/accessibility-role-has-required-aria": 2,
-        "@angular-eslint/template/accessibility-label-for": 2,
-        "@angular-eslint/template/accessibility-label-has-associated-control": 2,
-        "@angular-eslint/template/accessibility-alt-text": 2,
-        "@angular-eslint/template/accessibility-elements-content": 2,
-        "@angular-eslint/template/accessibility-table-scope": 2,
-        "@angular-eslint/template/no-any": 2,
-        "@angular-eslint/no-input-prefix": 2,
-        "@angular-eslint/use-lifecycle-interface": 2,
-        "@angular-eslint/prefer-output-readonly": 2,
-        "@angular-eslint/component-max-inline-declarations": 2,
-        "@angular-eslint/template/no-call-expression": 2,
-        "@angular-eslint/template/use-track-by-function": 2,
-        "@angular-eslint/use-pipe-transform-interface": 2,
-        "@angular-eslint/no-conflicting-lifecycle": 2,
-        "@angular-eslint/relative-url-prefix": 2,
-        "@angular-eslint/use-component-selector": 2,
-        "@angular-eslint/template/conditional-complexity": 2,
-        "@angular-eslint/use-injectable-provided-in": 2,
-        "@angular-eslint/no-host-metadata-property": 2,
-        "@angular-eslint/no-inputs-metadata-property": 2,
-        "@angular-eslint/no-outputs-metadata-property": 2,
-        "@angular-eslint/no-queries-metadata-property": 2,
-        "@angular-eslint/template/no-distracting-elements": 2,
-        "@angular-eslint/component-class-suffix": 2
-      }
-    }
-
+  files: ['**/*.html'],
+  rules: {
+    '@angular-eslint/template/no-positive-tabindex': 'error',
+    '@angular-eslint/template/alt-text': 'error',
+    '@angular-eslint/template/click-events-have-key-events': 'error',
+    '@angular-eslint/template/elements-content': 'error',
+    '@angular-eslint/template/interactive-supports-focus': 'error',
+    '@angular-eslint/template/label-has-associated-control': 'error',
+    '@angular-eslint/template/mouse-events-have-key-events': 'error',
+    '@angular-eslint/template/no-autofocus': 'error',
+    '@angular-eslint/template/role-has-required-aria': 'error',
+    '@angular-eslint/template/table-scope': 'error',
+    '@angular-eslint/template/valid-aria': 'error',
+    '@angular-eslint/template/no-distracting-elements': 'error',
+  },
+},
 ```
 
 ### Pa11y CI Accessibility Test Runner
@@ -306,6 +308,36 @@ In `package.json` you must add a script to run the test runner:
 ```
 
 This script (`my-app:a11y`) can be used with `husky hooks` and `github actions CI`. You can see an example in the [git-flow](./git-flow.md#pull-request-github-actions) section.
+
+### Playwright and axe (eco apps)
+
+Pa11y loads a URL and audits what is there.
+For eco-store that is little: without products the product page never leaves its loading screen, the cart pages redirect with an empty cart, and nothing is signed in.
+`apps/eco-a11y-e2e` (META-40) audits each screen in the state a user sees it instead:
+
+- **Screens.** eco-store: the catalogue, the catalogue sorted 75 a page, a product page, the cart summary with a product, the delivery step after signing in,
+  the sign-in and password recovery screens, the personal details form, and the catalogue with the PWA install sheet open.
+  eco-admin: the sign-in screen and the first screen after signing in.
+  Each one at 320 px light, 320 px dark and 1280 px.
+- **Data.** The production builds talk to the hosted PocketBase; the suite answers every request to it from `src/support/records.ts`
+  (a tenant open every day, one category, two products, a member and an administrator) and aborts anything else but Google Fonts.
+  Sign-in accepts any password and returns an unsigned token, which the PocketBase SDK takes as a session.
+  No PocketBase runs, local or remote.
+- **Checks.** axe with every WCAG 2.2 AA rule (`wcag2a` to `wcag22aa`), after Material Symbols loads:
+  until then an icon is the word of its ligature, and axe reads it as the button's text.
+  Then, in the light projects, 2.4.11: 40 presses of Tab, failing when a focused element is wholly covered by fixed or sticky content it is not part of.
+  The sign-in screens check 3.3.8 (`autocomplete` tokens, paste allowed), the personal details form 1.3.5,
+  and the delivery step 3.3.7 (home delivery offers the saved address).
+- **Known violations.** A failure found before its fix is listed in the spec as a `KnownViolation`: one rule, the nodes it hits, the criterion and the task.
+  It passes and shows in the report as `known violation`; once fixed, the report says `known violation not found`, and the entry goes.
+  A whole rule is never switched off.
+- **Running it.** `yarn eco-a11y:e2e` builds both apps (`dependsOn: ["^build"]`), serves them on 4300 (as `el-llevat.localhost`, the tenant's host) and 4304,
+  and runs in the system Chrome (`channel: 'chrome'`), with no browser download.
+  It takes about two minutes on four cores; Playwright's default of two workers was faster there than four.
+  The HTML report, with each test's axe results, is in `dist/.playwright/apps/eco-a11y-e2e/playwright-report`.
+
+The pre-push runs it when Nx finds `eco-a11y-e2e` affected, and `.github/workflows/eco-a11y.yml` after each CI run on `develop`,
+with the HTML report as an artifact when it fails.
 
 ### jest axe
 

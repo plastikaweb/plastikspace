@@ -9,6 +9,7 @@
     "build": {
       "executor": "@angular/build:application",
       "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/apps/nasa-images",
         "index": "libs/core/ng-entry-html/util/src/index.html",
@@ -89,11 +90,12 @@
           "extractLicenses": false,
           "sourceMap": true
         }
-      },
-      "defaultConfiguration": "production"
+      }
     },
     "serve": {
       "executor": "@angular/build:dev-server",
+      "defaultConfiguration": "development",
+      "continuous": true,
       "configurations": {
         "production": {
           "buildTarget": "nasa-images:build:production"
@@ -102,8 +104,9 @@
           "buildTarget": "nasa-images:build:development"
         }
       },
-      "defaultConfiguration": "development",
-      "continuous": true
+      "readyWhen": {
+        "signal": true
+      }
     },
     "extract-i18n": {
       "executor": "@angular/build:extract-i18n",
@@ -111,21 +114,19 @@
         "buildTarget": "nasa-images:build"
       }
     },
-    "lint": {
-      "executor": "@nx/eslint:lint"
-    },
     "serve-static": {
       "continuous": true,
       "executor": "@nx/web:file-server",
+      "readyWhen": {
+        "signal": true
+      },
+      "dependsOn": ["build"],
       "options": {
         "buildTarget": "nasa-images:build",
         "port": 4202,
         "staticFilePath": "dist/apps/nasa-images/browser",
         "spa": true
       }
-    },
-    "test": {
-      "executor": "@nx/vitest:test"
     }
   }
 }

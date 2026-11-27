@@ -7,23 +7,9 @@
   "implicitDependencies": ["llecoop"],
   "targets": {
     "e2e": {
-      "executor": "@nx/cypress:cypress",
       "options": {
-        "cypressConfig": "apps/llecoop-e2e/cypress.config.ts",
-        "testingType": "e2e",
-        "devServerTarget": "llecoop:serve:development"
-      },
-      "configurations": {
-        "production": {
-          "devServerTarget": "llecoop:serve:production"
-        },
-        "ci": {
-          "devServerTarget": "llecoop:serve-static"
-        }
+        "config-file": "./cypress.config.ts"
       }
-    },
-    "lint": {
-      "executor": "@nx/eslint:lint"
     }
   }
 }

@@ -12,11 +12,11 @@ import { IsActiveMatchOptions, RouterModule } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MobileNavItemComponent {
-  label = input<string>();
-  routerLink = input<string>();
-  active = input<boolean>(false);
-  disabled = input<boolean>(false);
-  routerLinkActiveOptions = input<
+  readonly label = input<string>();
+  readonly routerLink = input<string>();
+  readonly active = input<boolean>(false);
+  readonly disabled = input<boolean>(false);
+  readonly routerLinkActiveOptions = input<
     | {
         exact: boolean;
       }

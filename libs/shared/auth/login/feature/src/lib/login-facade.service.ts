@@ -9,7 +9,7 @@ import { AUTH_SERVICE } from '@plastik/auth/entities';
 export class LoginFacadeService implements AuthFormFacade<LoginData> {
   authService = inject(AUTH_SERVICE);
   formConfig = inject(FORM_TOKEN) as FormConfig<LoginData>;
-  extraLinks = signal([
+  readonly extraLinks = signal([
     { label: 'auth.register.label', route: '/registre' },
     { label: 'auth.request-password.label', route: '/peticio-clau' },
   ]);

@@ -92,14 +92,14 @@ The automation logic is located in `apps/eco-store/scripts/`.
 
 ### Core Scripts
 
-| Script                        | Command                      | Description                                                           |
-| :---------------------------- | :--------------------------- | :-------------------------------------------------------------------- |
-| `download-pocketbase.js`      | `yarn eco-store:pb:download` | Downloads the PocketBase binary for your OS.                          |
-| `sync-pocketbase-schema.js`   | `yarn eco-store:pb:sync`     | Pushes local `pb_schema.json` to a PB instance (defaults to staging). |
-| `export-pocketbase-schema.js` | `yarn eco-store:pb:export`   | Pulls schema, data (JSON), and files from local instance to the repo. |
-| `populate-pocketbase.js`      | `yarn eco-store:pb:populate` | Orchestrator for full local DB initialization.                        |
-| `import-pocketbase-data.js`   | `yarn eco-store:pb:import`   | Imports JSON data files from `pocketbase/data/` into local instance.  |
-| `load-environment.js`         | N/A                          | Shared helper for loading `.env` and Angular environments.            |
+| Script                        | Command                      | Description                                                                                                                   |
+| :---------------------------- | :--------------------------- | :---------------------------------------------------------------------------------------------------------------------------- |
+| `download-pocketbase.js`      | `yarn eco-store:pb:download` | Downloads the PocketBase binary for your OS.                                                                                  |
+| `sync-pocketbase-schema.js`   | `yarn eco-store:pb:sync`     | Pushes local `pb_schema.json` to the instance `POCKETBASE_ENV` names (`development` or `staging`); refuses to run without it. |
+| `export-pocketbase-schema.js` | `yarn eco-store:pb:export`   | Pulls schema, data (JSON), and files from local instance to the repo.                                                         |
+| `populate-pocketbase.js`      | `yarn eco-store:pb:populate` | Orchestrator for full local DB initialization.                                                                                |
+| `import-pocketbase-data.js`   | `yarn eco-store:pb:import`   | Imports JSON data files from `pocketbase/data/` into local instance.                                                          |
+| `load-environment.js`         | N/A                          | Shared helper for loading `.env` and Angular environments.                                                                    |
 
 ### Data Workflows
 
@@ -122,12 +122,14 @@ Server-side logic is implemented as standard PocketBase JavaScript hooks.
 
 ### Hooks
 
-- **[on_create_order.pb.js](./pocketbase/pb_hooks/on_create_order.pb.js)**: Handles order cycle linking, duplicate prevention, cart cleanup, and confirmation emails.
-- **[on_password_reset.pb.js](./pocketbase/pb_hooks/on_password_reset.pb.js)**: Localized password-reset email (overrides the native mailer).
+- **[on_create_order.pb.js](./pocketbase/pb_hooks/on_create_order.pb.js)**: Handles order cycle linking, duplicate prevention, cart cleanup, and the NOT-01 confirmation email.
+- **[on_password_reset.pb.js](./pocketbase/pb_hooks/on_password_reset.pb.js)**: Localized password-reset email, PRV-03 (overrides the native mailer).
   One file for both frontends: the link opens the admin panel (`eco-admin`) when the request came from the panel's origin and the account is an administrator's,
   and the storefront of the user's cooperative otherwise.
-- **[on_email_change.pb.js](./pocketbase/pb_hooks/on_email_change.pb.js)**: Localized email-change confirmation email pointing at the app's `/confirmar-correu` page (overrides the native mailer).
-- **[single_default_address.js](./pocketbase/pb_hooks/single_default_address.js)**: Ensures unique default user addresses.
+- **[on_email_change.pb.js](./pocketbase/pb_hooks/on_email_change.pb.js)**: Localized email-change confirmation email pointing at the app's `/confirmar-correu` page, PRV-02b (overrides the native mailer).
+- **[single_default_address.pb.js](./pocketbase/pb_hooks/single_default_address.pb.js)**: Ensures unique default user addresses (PRV-04c).
+- **[normalize_user_name.pb.js](./pocketbase/pb_hooks/normalize_user_name.pb.js)**: Normalizes user names for search.
+- **[validate_fiscal_profile.pb.js](./pocketbase/pb_hooks/validate_fiscal_profile.pb.js)**: NIF/NIE/CIF checksum on `user_fiscal_profiles` create and update (PRV-04d).
 
 Both mail hooks localize via the optional `users.language` field (`ca|es|en`, fallback `ca`), which the eco-store app keeps in sync with the `eco-lang` preference on login and on language switch.
 
@@ -168,18 +170,18 @@ Run `yarn eco-store:pb:seed` to pull records and images from the staging environ
 
 ### Essential Commands
 
-| Task                     | Command                         | Description                                          |
-| :----------------------- | :------------------------------ | :--------------------------------------------------- |
-| **Start Backend**        | `yarn eco-store:pocketbase:run` | Runs local PocketBase on port 8090.                  |
-| **Export Schema & Data** | `yarn eco-store:pb:export`      | Exports local schema, data, and files to the repo.   |
-| **Sync Schema**          | `yarn eco-store:pb:sync`        | Pushes `pb_schema.json` to a PB instance.            |
-| **Clone Staging Data**   | `yarn eco-store:pb:seed`        | Pulls real records and images from staging to local. |
-| **Generate Fake Data**   | `yarn eco-store:pb:seed-gen`    | Generates dummy history for local testing.           |
-| **Push to Staging**      | `yarn eco-store:pb:push-gen`    | Pushes local records and files to staging.           |
-| **Download Binary**      | `yarn eco-store:pb:download`    | Downloads PocketBase for your OS.                    |
-| **Initial Populate**     | `yarn eco-store:pb:populate`    | Sets up superuser, schema, and initial data.         |
-| **View Diff**            | `yarn eco-store:pb:diff`        | Shows git diff for the schema file.                  |
-| **Full Local Env**       | `yarn eco-store:local`          | Starts PB + App + SCSS watcher.                      |
+| Task                     | Command                                             | Description                                                     |
+| :----------------------- | :-------------------------------------------------- | :-------------------------------------------------------------- |
+| **Start Backend**        | `yarn eco-store:pocketbase:run`                     | Runs local PocketBase on port 8090.                             |
+| **Export Schema & Data** | `yarn eco-store:pb:export`                          | Exports local schema, data, and files to the repo.              |
+| **Sync Schema**          | `POCKETBASE_ENV=development yarn eco-store:pb:sync` | Pushes `pb_schema.json` to the instance `POCKETBASE_ENV` names. |
+| **Clone Staging Data**   | `yarn eco-store:pb:seed`                            | Pulls real records and images from staging to local.            |
+| **Generate Fake Data**   | `yarn eco-store:pb:seed-gen`                        | Generates dummy history for local testing.                      |
+| **Push to Staging**      | `yarn eco-store:pb:push-gen`                        | Pushes local records and files to staging.                      |
+| **Download Binary**      | `yarn eco-store:pb:download`                        | Downloads PocketBase for your OS.                               |
+| **Initial Populate**     | `yarn eco-store:pb:populate`                        | Sets up superuser, schema, and initial data.                    |
+| **View Diff**            | `yarn eco-store:pb:diff`                            | Shows git diff for the schema file.                             |
+| **Full Local Env**       | `yarn eco-store:local`                              | Starts PB + App + SCSS watcher.                                 |
 
 ---
 

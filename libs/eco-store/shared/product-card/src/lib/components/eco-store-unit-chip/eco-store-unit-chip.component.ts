@@ -14,9 +14,9 @@ type UnitIconName = 'balance' | 'water_drop' | 'package_2';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EcoStoreUnitChipComponent {
-  unitType = input.required<EcoStoreProduct['unitType']>();
-  unitBase = input.required<EcoStoreProduct['unitBase']>();
-  label = input<string>('');
+  readonly unitType = input.required<EcoStoreProduct['unitType']>();
+  readonly unitBase = input.required<EcoStoreProduct['unitBase']>();
+  readonly label = input<string>('');
 
   protected readonly iconName = computed((): UnitIconName => {
     const unitTypeValue: string = this.unitType().toLowerCase();

@@ -5,12 +5,6 @@
   "sourceRoot": "libs/core/util/api-base/src",
   "prefix": "plastik",
   "tags": ["scope:core", "type:util"],
-  "targets": {
-    "lint": {
-      "executor": "@nx/eslint:lint"
-    },
-    "test": {
-      "executor": "@nx/vitest:test"
-    }
-  }
+  "// targets": "to see all targets run: nx show project core-util-api-base --web",
+  "targets": {}
 }

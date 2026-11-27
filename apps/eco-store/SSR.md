@@ -35,6 +35,9 @@ We use a **Hybrid Rendering Strategy** to balance speed and SEO:
    - Auth routes (`/accedir`, `/recuperar-contrasenya`, etc.).
    - Shop landing page (`/botiga`).
    - These pages are generated at build time for maximum performance.
+   - At build time the host is `localhost`, which names no tenant, so these pages hold no tenant data and the build asks PocketBase nothing (TECH-18):
+     `injectIsBuildTimeRender()` (`@plastik/eco-store/tenant`) is true on the server with no `REQUEST`, the tenant store then stays unloaded, and the product list stays loading.
+     The browser loads the tenant. Asking the hosted PocketBase from every build made the prerender time out when it answered slowly.
 2. **Server (SSR)**:
    - Dynamic product catalog (`/botiga/:category`, `/botiga/:category/:slug`).
    - User-specific pages (`/cistella`, `/comandes`, `/perfil`).
@@ -75,6 +78,17 @@ must be emitted by the worker, the only layer that sees the request `Host`:
 
 Pure helpers live in `src/tenant-branding.ts` (unit-tested); the Cloudflare glue
 lives in `src/server.ts`.
+
+Two traps when checking which layer answered:
+
+- A static asset carries the same security headers as a worker response: the
+  `_headers` file that `scripts/generate-cf-headers.cjs` writes during
+  `build-cf` stamps them on every path. Headers do not prove the worker ran.
+- Check with `wrangler dev` (`yarn eco-store:cf:dev`) on a `build-cf` artifact,
+  never on `build:production`, which writes no `_headers` and skips
+  `add-cfasync`. For the manifest, the worker answers
+  `application/manifest+json; charset=utf-8`; the static file answers with
+  wrangler's `max-age=0, must-revalidate`.
 
 ## Development Commands
 

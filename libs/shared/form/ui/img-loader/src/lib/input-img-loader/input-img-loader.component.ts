@@ -34,30 +34,30 @@ const LOADER_IMG_ACCESSOR = {
 })
 export class InputImgLoaderComponent implements ControlValueAccessor {
   protected readonly cdr = inject(ChangeDetectorRef);
-  protected isDragOver = signal<boolean>(false);
+  protected readonly isDragOver = signal<boolean>(false);
   protected readonly bytesToSize = inject(BytesToSizePipe);
 
-  value = signal<string | null>(null);
-  disabled = signal<boolean>(false);
+  readonly value = signal<string | null>(null);
+  readonly disabled = signal<boolean>(false);
 
-  folder = input<string>('');
-  title = input<string>();
-  progress = input<number>(0);
-  upload = input<InputImgLoaderProps['upload']>();
-  maxSize = input<number>(1 * 1024 * 1024);
-  minHeight = input<number>(1024);
-  minWidth = input<number>(1024);
-  fileUrl = input<string | null>(null);
-  cdnUrl = input<string>();
-  dimensions = input<ImageDimensions>();
-  lcpImage = input<boolean>(false);
-  isLoading = linkedSignal({
+  readonly folder = input<string>('');
+  readonly title = input<string>();
+  readonly progress = input<number>(0);
+  readonly upload = input<InputImgLoaderProps['upload']>();
+  readonly maxSize = input<number>(1 * 1024 * 1024);
+  readonly minHeight = input<number>(1024);
+  readonly minWidth = input<number>(1024);
+  readonly fileUrl = input<string | null>(null);
+  readonly cdnUrl = input<string>();
+  readonly dimensions = input<ImageDimensions>();
+  readonly lcpImage = input<boolean>(false);
+  readonly isLoading = linkedSignal({
     source: this.progress,
     computation: (progress: number) => progress > 0,
   });
 
-  protected imgHeight = computed(() => this.dimensions()?.height);
-  protected imgWidth = computed(() => this.dimensions()?.width);
+  protected readonly imgHeight = computed(() => this.dimensions()?.height);
+  protected readonly imgWidth = computed(() => this.dimensions()?.width);
 
   constructor() {
     effect(() => {

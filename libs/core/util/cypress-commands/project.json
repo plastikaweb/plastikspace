@@ -3,13 +3,7 @@
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/core/util/cypress-commands/src",
   "projectType": "library",
-  "tags": ["scope:core", ""],
-  "targets": {
-    "lint": {
-      "executor": "@nx/eslint:lint"
-    },
-    "test": {
-      "executor": "@nx/vitest:test"
-    }
-  }
+  "tags": ["scope:core", "type:util"],
+  "// targets": "to see all targets run: nx show project core-util-cypress-commands --web",
+  "targets": {}
 }

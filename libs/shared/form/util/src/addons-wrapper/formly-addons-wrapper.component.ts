@@ -1,4 +1,4 @@
-import { NgStyle, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,13 +15,13 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'plastik-formly-addons-wrapper',
   templateUrl: './formly-addons-wrapper.component.html',
   styleUrls: ['./formly-addons-wrapper.component.scss'],
-  imports: [MatIconModule, MatButtonModule, NgStyle, NgTemplateOutlet],
+  imports: [MatIconModule, MatButtonModule, NgTemplateOutlet],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyAddonsWrapperComponent extends FieldWrapper {
-  matPrefix = viewChild('matPrefix', { read: TemplateRef });
-  matSuffix = viewChild('matSuffix', { read: TemplateRef });
+  readonly matPrefix = viewChild('matPrefix', { read: TemplateRef });
+  readonly matSuffix = viewChild('matSuffix', { read: TemplateRef });
 
   constructor() {
     super();
