@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **eco-admin section routes written out** in `app.routes.ts` instead of built from the rails, which `tools/feature-map.cjs` could not read (CI `feature-map:check`). A route spec checks they match the rails, and the map now gives each section the one role its guard lets in (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
 - **eco-admin shell buttons named after what they show** (WCAG 2.5.3, found by the eco a11y suite): the account button's name starts with the user's initials, and the navigation header keeps the space between «El Llevat» and «Eco Admin» that Angular stripped. The suite's sign-in check now expects `/tauler` (AP-0 0.7, [#123kjkdp4kw](https://app.clickup.com/t/123kjkdp4kw)).
 
 ### Changed

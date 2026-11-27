@@ -68,7 +68,7 @@ The accessibility suite and the `serve-static` target serve the **production** b
 | `/cooperatives`, `/catalegs`, `/idiomes`                                     | `ecoAdminSessionGuard`, `ecoAdminTenantContextGuard`, `GLOBAL_ADMIN` only | the same, with the platform's dark rail                       |
 | `/` and any unknown path                                                     | —                                                                         | Redirect to the home of the role, or to `/accedir`.           |
 
-Every screen is lazy-loaded. The paths under the shell come from the two rails in `@plastik/eco-admin/layout-config`, so the side navigation and the route table cannot drift apart.
+Every screen is lazy-loaded. The routes under the shell are written out in `app.routes.ts`, one per entry of the two rails in `@plastik/eco-admin/layout-config`, so `tools/feature-map.cjs` can read them; `app.routes.spec.ts` fails when a rail entry and its route drift apart.
 A role that opens the other role's section is sent to its own home. A deep link opened without a session keeps its path in `returnUrl` through the login.
 The session and tenant guards also run as `canActivateChild`, so moving between sections notices a session that expired; the role guard sits on each section.
 

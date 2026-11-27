@@ -6,7 +6,7 @@
 The side navigation of **eco-admin** as data (AP-0 0.7, part 2): which entries each role gets, in which order, with which icon and label.
 Project `eco-admin-layout-config`, tags `scope:eco-admin` + `type:data-access`.
 
-The shell ([`@plastik/eco-admin/layout`](../layout/README.md)) draws these entries, and the app builds its route table from the same records, so a rail entry and its route cannot drift apart.
+The shell ([`@plastik/eco-admin/layout`](../layout/README.md)) draws these entries. The app writes one route per entry, with its path and label; its route spec fails when an entry and its route drift apart.
 
 ## Rails
 

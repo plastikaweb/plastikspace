@@ -67,6 +67,9 @@ const ACCESS_GUARDS = {
   pocketBaseIsNotLoggedGuard: { access: 'anonymous' },
   ecoAdminSessionGuard: { access: 'signed-in', roles: ['TENANT_ADMIN', 'GLOBAL_ADMIN'] },
   ecoAdminAnonymousGuard: { access: 'anonymous' },
+  // The section guards of the eco-admin shell: under ecoAdminSessionGuard, they narrow its roles.
+  ecoAdminTenantRoleGuard: { access: 'signed-in', roles: ['TENANT_ADMIN'] },
+  ecoAdminPlatformRoleGuard: { access: 'signed-in', roles: ['GLOBAL_ADMIN'] },
 };
 // What else the page needs to open (`needs`), or null for a guard that never keeps anyone out.
 const CONDITION_GUARDS = {
@@ -601,9 +604,13 @@ function walk(ctx, routes, inherited, out) {
     if (!component && !children)
       throw new FatalError(`${at(route)}: a route with no component, children or redirect`);
     if (component && !children?.elements.some(matchesEmpty)) {
-      const access = guards.map(guard => ACCESS_GUARDS[guard]).find(Boolean) ?? {
-        access: 'public',
-      };
+      // The outermost access guard says who may open the page; the innermost one that names
+      // roles narrows them (a section guard under the shell's session guard).
+      const accesses = guards.map(guard => ACCESS_GUARDS[guard]).filter(Boolean);
+      const narrowest = accesses.filter(entry => entry.roles).at(-1);
+      const access = accesses.length
+        ? { ...accesses[0], ...(narrowest && { roles: narrowest.roles }) }
+        : { access: 'public' };
       const unique = [...new Set(guards)];
       out.pages.push({
         path: url,

@@ -4,18 +4,12 @@ import {
   pocketBaseRoleGuard,
   pocketBaseUserProfileStore,
 } from '@plastik/auth/pocketbase/data-access';
-import { PocketBaseUserRoles } from '@plastik/core/entities';
 import {
   ECO_ADMIN_LOGIN_URL,
   ecoAdminHomeFor,
   ecoAdminSessionGuard,
   isEcoAdminRole,
 } from '@plastik/eco-admin/auth/data-access';
-import {
-  ECO_ADMIN_PLATFORM_NAV,
-  ECO_ADMIN_TENANT_NAV,
-  EcoAdminNavItem,
-} from '@plastik/eco-admin/layout-config';
 import { ecoAdminTenantContextGuard } from '@plastik/eco-admin/tenant-context';
 
 /**
@@ -31,30 +25,19 @@ const toRoleHome: RedirectFunction = () => {
 };
 
 /**
- * One route per entry of a rail, behind the role the rail belongs to.
- * All load the provisional view until their own lands; the other role is sent back to its home.
+ * The role guards of the sections, one per rail; the other role is sent back to its home.
  *
- * The role guard sits on each section, not on a parent: Angular reuses a parent while moving
- * between its children and would not ask its `canActivate` again, and a parent's
- * `canActivateChild` would outrank the shell's session guard and drop the `returnUrl` of a session
- * that expired. A section's own `canActivate` runs on every visit, after the shell's guards.
- * @param {readonly EcoAdminNavItem[]} entries The entries of the rail.
- * @param {PocketBaseUserRoles} role The role that may open them.
- * @returns {Route[]} One route per entry.
+ * Each sits on the section, not on a parent: Angular reuses a parent while moving between its
+ * children and would not ask its `canActivate` again, and a parent's `canActivateChild` would
+ * outrank the shell's session guard and drop the `returnUrl` of a session that expired. A
+ * section's own `canActivate` runs on every visit, after the shell's guards.
  */
-function sectionRoutes(entries: readonly EcoAdminNavItem[], role: PocketBaseUserRoles): Route[] {
-  const roleGuard = pocketBaseRoleGuard([role], { loginUrl: ECO_ADMIN_LOGIN_URL });
-
-  return entries.map(entry => ({
-    path: entry.path,
-    title: entry.labelKey,
-    canActivate: [roleGuard],
-    loadComponent: () =>
-      import('./provisional-view/eco-admin-provisional-view.component').then(
-        m => m.EcoAdminProvisionalViewComponent
-      ),
-  }));
-}
+const ecoAdminTenantRoleGuard = pocketBaseRoleGuard(['TENANT_ADMIN'], {
+  loginUrl: ECO_ADMIN_LOGIN_URL,
+});
+const ecoAdminPlatformRoleGuard = pocketBaseRoleGuard(['GLOBAL_ADMIN'], {
+  loginUrl: ECO_ADMIN_LOGIN_URL,
+});
 
 /**
  * Routes of AP-0 0.7: the login screen, the three screens that set a new password, and the
@@ -92,9 +75,127 @@ export const appRoutes: Route[] = [
     canActivate: [ecoAdminSessionGuard, ecoAdminTenantContextGuard],
     canActivateChild: [ecoAdminSessionGuard, ecoAdminTenantContextGuard],
     loadComponent: () => import('@plastik/eco-admin/layout').then(m => m.EcoAdminLayoutComponent),
+    // One route per rail entry, in rail order, written out so tools/feature-map.cjs can read them;
+    // app.routes.spec.ts fails when they drift from ECO_ADMIN_TENANT_NAV / ECO_ADMIN_PLATFORM_NAV.
+    // All load the provisional view until their own lands.
     children: [
-      ...sectionRoutes(ECO_ADMIN_TENANT_NAV, 'TENANT_ADMIN'),
-      ...sectionRoutes(ECO_ADMIN_PLATFORM_NAV, 'GLOBAL_ADMIN'),
+      {
+        path: 'tauler',
+        title: 'shell.nav.tauler',
+        canActivate: [ecoAdminTenantRoleGuard],
+        loadComponent: () =>
+          import('./provisional-view/eco-admin-provisional-view.component').then(
+            m => m.EcoAdminProvisionalViewComponent
+          ),
+      },
+      {
+        path: 'sol-licituds',
+        title: 'shell.nav.solLicituds',
+        canActivate: [ecoAdminTenantRoleGuard],
+        loadComponent: () =>
+          import('./provisional-view/eco-admin-provisional-view.component').then(
+            m => m.EcoAdminProvisionalViewComponent
+          ),
+      },
+      {
+        path: 'socis',
+        title: 'shell.nav.socis',
+        canActivate: [ecoAdminTenantRoleGuard],
+        loadComponent: () =>
+          import('./provisional-view/eco-admin-provisional-view.component').then(
+            m => m.EcoAdminProvisionalViewComponent
+          ),
+      },
+      {
+        path: 'comandes',
+        title: 'shell.nav.comandes',
+        canActivate: [ecoAdminTenantRoleGuard],
+        loadComponent: () =>
+          import('./provisional-view/eco-admin-provisional-view.component').then(
+            m => m.EcoAdminProvisionalViewComponent
+          ),
+      },
+      {
+        path: 'lliuraments',
+        title: 'shell.nav.lliuraments',
+        canActivate: [ecoAdminTenantRoleGuard],
+        loadComponent: () =>
+          import('./provisional-view/eco-admin-provisional-view.component').then(
+            m => m.EcoAdminProvisionalViewComponent
+          ),
+      },
+      {
+        path: 'cicles',
+        title: 'shell.nav.cicles',
+        canActivate: [ecoAdminTenantRoleGuard],
+        loadComponent: () =>
+          import('./provisional-view/eco-admin-provisional-view.component').then(
+            m => m.EcoAdminProvisionalViewComponent
+          ),
+      },
+      {
+        path: 'productes',
+        title: 'shell.nav.productes',
+        canActivate: [ecoAdminTenantRoleGuard],
+        loadComponent: () =>
+          import('./provisional-view/eco-admin-provisional-view.component').then(
+            m => m.EcoAdminProvisionalViewComponent
+          ),
+      },
+      {
+        path: 'categories',
+        title: 'shell.nav.categories',
+        canActivate: [ecoAdminTenantRoleGuard],
+        loadComponent: () =>
+          import('./provisional-view/eco-admin-provisional-view.component').then(
+            m => m.EcoAdminProvisionalViewComponent
+          ),
+      },
+      {
+        path: 'botiga',
+        title: 'shell.nav.botiga',
+        canActivate: [ecoAdminTenantRoleGuard],
+        loadComponent: () =>
+          import('./provisional-view/eco-admin-provisional-view.component').then(
+            m => m.EcoAdminProvisionalViewComponent
+          ),
+      },
+      {
+        path: 'estadistiques',
+        title: 'shell.nav.estadistiques',
+        canActivate: [ecoAdminTenantRoleGuard],
+        loadComponent: () =>
+          import('./provisional-view/eco-admin-provisional-view.component').then(
+            m => m.EcoAdminProvisionalViewComponent
+          ),
+      },
+      {
+        path: 'cooperatives',
+        title: 'shell.nav.cooperatives',
+        canActivate: [ecoAdminPlatformRoleGuard],
+        loadComponent: () =>
+          import('./provisional-view/eco-admin-provisional-view.component').then(
+            m => m.EcoAdminProvisionalViewComponent
+          ),
+      },
+      {
+        path: 'catalegs',
+        title: 'shell.nav.catalegs',
+        canActivate: [ecoAdminPlatformRoleGuard],
+        loadComponent: () =>
+          import('./provisional-view/eco-admin-provisional-view.component').then(
+            m => m.EcoAdminProvisionalViewComponent
+          ),
+      },
+      {
+        path: 'idiomes',
+        title: 'shell.nav.idiomes',
+        canActivate: [ecoAdminPlatformRoleGuard],
+        loadComponent: () =>
+          import('./provisional-view/eco-admin-provisional-view.component').then(
+            m => m.EcoAdminProvisionalViewComponent
+          ),
+      },
     ],
   },
   // Not `redirectTo: ''`: Angular applies one relative redirect per level, so the empty path could

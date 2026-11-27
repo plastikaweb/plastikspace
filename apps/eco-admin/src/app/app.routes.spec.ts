@@ -141,4 +141,26 @@ describe('appRoutes', () => {
 
     expect(title).toBe('shell.nav.socis');
   });
+
+  it('has one section route per rail entry, in rail order, with its label as the title', () => {
+    const shell = appRoutes.find(route => route.path === '' && route.children);
+    const sections = shell?.children?.map(route => ({ path: route.path, title: route.title }));
+    const rails = [...ECO_ADMIN_TENANT_NAV, ...ECO_ADMIN_PLATFORM_NAV].map(entry => ({
+      path: entry.path,
+      title: entry.labelKey,
+    }));
+
+    expect(sections).toEqual(rails);
+  });
+
+  it("guards each rail's sections with the same role guard", () => {
+    const sections = appRoutes.find(route => route.path === '' && route.children)?.children ?? [];
+    const guardOf = (path: string) => sections.find(route => route.path === path)?.canActivate?.[0];
+    const tenantGuards = new Set(ECO_ADMIN_TENANT_NAV.map(entry => guardOf(entry.path)));
+    const platformGuards = new Set(ECO_ADMIN_PLATFORM_NAV.map(entry => guardOf(entry.path)));
+
+    expect(tenantGuards.size).toBe(1);
+    expect(platformGuards.size).toBe(1);
+    expect([...tenantGuards][0]).not.toBe([...platformGuards][0]);
+  });
 });

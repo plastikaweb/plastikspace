@@ -1,6 +1,6 @@
 /**
- * One entry of the side navigation. The same record names the route under the shell, so the rail and
- * the route table cannot drift apart.
+ * One entry of the side navigation. Its path and label are also those of its route under the shell,
+ * which `app.routes.spec.ts` of eco-admin checks.
  */
 export interface EcoAdminNavItem {
   /** The route path under the shell, without the leading slash. */

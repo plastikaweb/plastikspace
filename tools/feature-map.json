@@ -508,11 +508,33 @@
         },
         {
           "path": "/",
-          "title": "shell.placeholder.title",
+          "title": null,
           "access": "signed-in",
           "roles": ["TENANT_ADMIN", "GLOBAL_ADMIN"],
           "needs": [],
           "guards": ["ecoAdminSessionGuard", "ecoAdminTenantContextGuard"],
+          "project": "eco-admin-layout",
+          "component": "EcoAdminLayoutComponent",
+          "file": "libs/eco-admin/core/layout/src/lib/eco-admin-layout.component.ts",
+          "specs": [
+            "libs/eco-admin/core/layout/src/lib/eco-admin-layout.component.spec.ts",
+            "libs/eco-admin/core/layout/src/lib/eco-admin-shell-state.spec.ts"
+          ],
+          "routes": "apps/eco-admin/src/app/app.routes.ts",
+          "layout": [],
+          "outlets": {}
+        },
+        {
+          "path": "/tauler",
+          "title": "shell.nav.tauler",
+          "access": "signed-in",
+          "roles": ["TENANT_ADMIN"],
+          "needs": [],
+          "guards": [
+            "ecoAdminSessionGuard",
+            "ecoAdminTenantContextGuard",
+            "ecoAdminTenantRoleGuard"
+          ],
           "project": "eco-admin",
           "component": "EcoAdminProvisionalViewComponent",
           "file": "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.ts",
@@ -520,14 +542,270 @@
             "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.spec.ts"
           ],
           "routes": "apps/eco-admin/src/app/app.routes.ts",
-          "layout": [],
+          "layout": ["EcoAdminLayoutComponent"],
+          "outlets": {}
+        },
+        {
+          "path": "/sol-licituds",
+          "title": "shell.nav.solLicituds",
+          "access": "signed-in",
+          "roles": ["TENANT_ADMIN"],
+          "needs": [],
+          "guards": [
+            "ecoAdminSessionGuard",
+            "ecoAdminTenantContextGuard",
+            "ecoAdminTenantRoleGuard"
+          ],
+          "project": "eco-admin",
+          "component": "EcoAdminProvisionalViewComponent",
+          "file": "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.ts",
+          "specs": [
+            "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.spec.ts"
+          ],
+          "routes": "apps/eco-admin/src/app/app.routes.ts",
+          "layout": ["EcoAdminLayoutComponent"],
+          "outlets": {}
+        },
+        {
+          "path": "/socis",
+          "title": "shell.nav.socis",
+          "access": "signed-in",
+          "roles": ["TENANT_ADMIN"],
+          "needs": [],
+          "guards": [
+            "ecoAdminSessionGuard",
+            "ecoAdminTenantContextGuard",
+            "ecoAdminTenantRoleGuard"
+          ],
+          "project": "eco-admin",
+          "component": "EcoAdminProvisionalViewComponent",
+          "file": "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.ts",
+          "specs": [
+            "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.spec.ts"
+          ],
+          "routes": "apps/eco-admin/src/app/app.routes.ts",
+          "layout": ["EcoAdminLayoutComponent"],
+          "outlets": {}
+        },
+        {
+          "path": "/comandes",
+          "title": "shell.nav.comandes",
+          "access": "signed-in",
+          "roles": ["TENANT_ADMIN"],
+          "needs": [],
+          "guards": [
+            "ecoAdminSessionGuard",
+            "ecoAdminTenantContextGuard",
+            "ecoAdminTenantRoleGuard"
+          ],
+          "project": "eco-admin",
+          "component": "EcoAdminProvisionalViewComponent",
+          "file": "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.ts",
+          "specs": [
+            "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.spec.ts"
+          ],
+          "routes": "apps/eco-admin/src/app/app.routes.ts",
+          "layout": ["EcoAdminLayoutComponent"],
+          "outlets": {}
+        },
+        {
+          "path": "/lliuraments",
+          "title": "shell.nav.lliuraments",
+          "access": "signed-in",
+          "roles": ["TENANT_ADMIN"],
+          "needs": [],
+          "guards": [
+            "ecoAdminSessionGuard",
+            "ecoAdminTenantContextGuard",
+            "ecoAdminTenantRoleGuard"
+          ],
+          "project": "eco-admin",
+          "component": "EcoAdminProvisionalViewComponent",
+          "file": "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.ts",
+          "specs": [
+            "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.spec.ts"
+          ],
+          "routes": "apps/eco-admin/src/app/app.routes.ts",
+          "layout": ["EcoAdminLayoutComponent"],
+          "outlets": {}
+        },
+        {
+          "path": "/cicles",
+          "title": "shell.nav.cicles",
+          "access": "signed-in",
+          "roles": ["TENANT_ADMIN"],
+          "needs": [],
+          "guards": [
+            "ecoAdminSessionGuard",
+            "ecoAdminTenantContextGuard",
+            "ecoAdminTenantRoleGuard"
+          ],
+          "project": "eco-admin",
+          "component": "EcoAdminProvisionalViewComponent",
+          "file": "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.ts",
+          "specs": [
+            "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.spec.ts"
+          ],
+          "routes": "apps/eco-admin/src/app/app.routes.ts",
+          "layout": ["EcoAdminLayoutComponent"],
+          "outlets": {}
+        },
+        {
+          "path": "/productes",
+          "title": "shell.nav.productes",
+          "access": "signed-in",
+          "roles": ["TENANT_ADMIN"],
+          "needs": [],
+          "guards": [
+            "ecoAdminSessionGuard",
+            "ecoAdminTenantContextGuard",
+            "ecoAdminTenantRoleGuard"
+          ],
+          "project": "eco-admin",
+          "component": "EcoAdminProvisionalViewComponent",
+          "file": "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.ts",
+          "specs": [
+            "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.spec.ts"
+          ],
+          "routes": "apps/eco-admin/src/app/app.routes.ts",
+          "layout": ["EcoAdminLayoutComponent"],
+          "outlets": {}
+        },
+        {
+          "path": "/categories",
+          "title": "shell.nav.categories",
+          "access": "signed-in",
+          "roles": ["TENANT_ADMIN"],
+          "needs": [],
+          "guards": [
+            "ecoAdminSessionGuard",
+            "ecoAdminTenantContextGuard",
+            "ecoAdminTenantRoleGuard"
+          ],
+          "project": "eco-admin",
+          "component": "EcoAdminProvisionalViewComponent",
+          "file": "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.ts",
+          "specs": [
+            "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.spec.ts"
+          ],
+          "routes": "apps/eco-admin/src/app/app.routes.ts",
+          "layout": ["EcoAdminLayoutComponent"],
+          "outlets": {}
+        },
+        {
+          "path": "/botiga",
+          "title": "shell.nav.botiga",
+          "access": "signed-in",
+          "roles": ["TENANT_ADMIN"],
+          "needs": [],
+          "guards": [
+            "ecoAdminSessionGuard",
+            "ecoAdminTenantContextGuard",
+            "ecoAdminTenantRoleGuard"
+          ],
+          "project": "eco-admin",
+          "component": "EcoAdminProvisionalViewComponent",
+          "file": "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.ts",
+          "specs": [
+            "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.spec.ts"
+          ],
+          "routes": "apps/eco-admin/src/app/app.routes.ts",
+          "layout": ["EcoAdminLayoutComponent"],
+          "outlets": {}
+        },
+        {
+          "path": "/estadistiques",
+          "title": "shell.nav.estadistiques",
+          "access": "signed-in",
+          "roles": ["TENANT_ADMIN"],
+          "needs": [],
+          "guards": [
+            "ecoAdminSessionGuard",
+            "ecoAdminTenantContextGuard",
+            "ecoAdminTenantRoleGuard"
+          ],
+          "project": "eco-admin",
+          "component": "EcoAdminProvisionalViewComponent",
+          "file": "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.ts",
+          "specs": [
+            "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.spec.ts"
+          ],
+          "routes": "apps/eco-admin/src/app/app.routes.ts",
+          "layout": ["EcoAdminLayoutComponent"],
+          "outlets": {}
+        },
+        {
+          "path": "/cooperatives",
+          "title": "shell.nav.cooperatives",
+          "access": "signed-in",
+          "roles": ["GLOBAL_ADMIN"],
+          "needs": [],
+          "guards": [
+            "ecoAdminSessionGuard",
+            "ecoAdminTenantContextGuard",
+            "ecoAdminPlatformRoleGuard"
+          ],
+          "project": "eco-admin",
+          "component": "EcoAdminProvisionalViewComponent",
+          "file": "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.ts",
+          "specs": [
+            "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.spec.ts"
+          ],
+          "routes": "apps/eco-admin/src/app/app.routes.ts",
+          "layout": ["EcoAdminLayoutComponent"],
+          "outlets": {}
+        },
+        {
+          "path": "/catalegs",
+          "title": "shell.nav.catalegs",
+          "access": "signed-in",
+          "roles": ["GLOBAL_ADMIN"],
+          "needs": [],
+          "guards": [
+            "ecoAdminSessionGuard",
+            "ecoAdminTenantContextGuard",
+            "ecoAdminPlatformRoleGuard"
+          ],
+          "project": "eco-admin",
+          "component": "EcoAdminProvisionalViewComponent",
+          "file": "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.ts",
+          "specs": [
+            "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.spec.ts"
+          ],
+          "routes": "apps/eco-admin/src/app/app.routes.ts",
+          "layout": ["EcoAdminLayoutComponent"],
+          "outlets": {}
+        },
+        {
+          "path": "/idiomes",
+          "title": "shell.nav.idiomes",
+          "access": "signed-in",
+          "roles": ["GLOBAL_ADMIN"],
+          "needs": [],
+          "guards": [
+            "ecoAdminSessionGuard",
+            "ecoAdminTenantContextGuard",
+            "ecoAdminPlatformRoleGuard"
+          ],
+          "project": "eco-admin",
+          "component": "EcoAdminProvisionalViewComponent",
+          "file": "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.ts",
+          "specs": [
+            "apps/eco-admin/src/app/provisional-view/eco-admin-provisional-view.component.spec.ts"
+          ],
+          "routes": "apps/eco-admin/src/app/app.routes.ts",
+          "layout": ["EcoAdminLayoutComponent"],
           "outlets": {}
         }
       ],
       "redirects": [
         {
+          "path": "/",
+          "to": "(dynamic)"
+        },
+        {
           "path": "/**",
-          "to": "/"
+          "to": "(dynamic)"
         }
       ]
     }
