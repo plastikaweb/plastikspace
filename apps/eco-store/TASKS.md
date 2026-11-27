@@ -9,7 +9,7 @@
 > - **`apps/eco-store/POCKETBASE.md`** — backend workflow & scripts
 > - **`apps/eco-store/CLAUDE.md`** — app-specific guidance for AI agents
 
-**Document version:** 0.65 · **Last updated:** 2026-11-25
+**Document version:** 0.66 · **Last updated:** 2026-11-27
 
 ---
 
@@ -505,7 +505,7 @@ All `COULD`, pending discovery.
 - **A11Y-026** ✅ — In OS dark mode, text on fixed palette shades fell to 1.2 to 1.4:1 (WCAG 1.4.3): the cart summary's category label, the quantity unit «kg», the avatar initials. The `dark:` variant matched only `html.dark`; it now also matches the OS dark mode when `html` has no `.light`, and the avatar uses primary-container roles. 6.3, 8.48 and 6.68:1 in dark; `DARK_FIXED_SHADES` left the spec.
 - **A11Y-027** ✅ — The terms note under the sign-in forms was 3.79:1 light, 4.46:1 dark (WCAG 1.4.3) because of `opacity-70`. Both footer notes of `auth-feature.component.html` drop the opacity: 8.46:1 light, 6.81:1 dark. `LEGAL_NOTE` left the suite, which passes 33 of 33.
 - **A11Y-028** _(new)_ — Desktop header logo, cart and user buttons, and the rating link: their names leave out the visible text (WCAG 2.5.3). Found by META-40's suite (`HEADER_NAMES`, `RATING_LINK`).
-- **A11Y-029** _(new)_ — Product chips: `listitem` on an inner span, so no list item sits under the `list` (WCAG 1.3.1). Found by META-40's suite (`PRODUCT_CHIPS`).
+- **A11Y-029** ✅ — The product chips nested two list items: the static `role="listitem"` set the chip's `role` input and also stayed on its host, so the inner span's `listitem` sat under another `listitem`, not under the `list` (WCAG 1.3.1). `eco-store-product-feature.component.html` binds `[role]` instead: only the span is a list item. `PRODUCT_CHIPS` left the suite, which passes 33 of 33.
 - Playwright and axe suite: `yarn eco-a11y:e2e` (`apps/eco-a11y-e2e`, META-40), run by the pre-push and `eco-a11y.yml`
 
 ### i18n
@@ -623,6 +623,7 @@ ClickUp `86c9uwmzf`. Internal tooling — first slice of a multi-phase workflow 
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| 0.66 | 2026-11-27 | **A11Y-029** ✅ (`123kjkdr4vx`): the product chips bind `[role]`, so each one is a single list item under the list. |
 | 0.65 | 2026-11-25 | **A11Y-027** ✅ (`123kjkdr4vv`): the terms note under the sign-in forms drops `opacity-70` and reaches 8.46:1. |
 | 0.64 | 2026-11-25 | **TECH-18** ✅ (`123kjkdr4w5`): the build asks PocketBase nothing at prerender time. |
 | 0.63 | 2026-11-25 | **A11Y-026** ✅ (`123kjkdr4vu`): `dark:` follows the OS dark mode as `light-dark()` does, and the avatar initials use roles. |
