@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-27] - plastikaweb loses its broken accessibility script (META-41)
+
+### Removed
+
+- **`yarn plastikaweb:a11y`, `plastikaweb:a11y:run` and `preplastikaweb:a11y`.** They ran Pa11y with `apps/plastikaweb/.pa11yci.json`, which does not exist, so the script built the app and then failed before checking anything; no hook or CI job ran it. plastikaweb has no accessibility check now; `plastikaweb:http-server`, which serves its production build, stays. Root `CLAUDE.md` names `nasa-images:a11y` as the only Pa11y script left (META-41, ([#123kjkdr4vz](https://app.clickup.com/t/123kjkdr4vz))).
+
 ## [2026-11-27] - The Claude Code guard checks pipes, commit messages and the PocketBase stop (META-32)
 
 ### Changed
