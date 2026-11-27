@@ -70,7 +70,14 @@ Add a line here each time a skill and the repo conflict again.
 
 ## Guards
 
-`.claude/hooks/guard.sh` runs before every Edit, Write and Bash call (`.claude/settings.json`). It blocks edits to `apps/eco-store/pocketbase/pb_schema.json` and `yarn.lock`, blocks git commands that skip the Husky hooks (`--no-verify`, `commit -n`, `HUSKY=0`, `core.hooksPath`), and asks before killing, restarting or copying the local PocketBase on :8090. When it blocks, do what its message says; do not look for another way around it.
+`.claude/hooks/guard.sh` runs before every Edit, Write and Bash call (`.claude/settings.json`). It blocks:
+
+- edits to `apps/eco-store/pocketbase/pb_schema.json` and `yarn.lock`;
+- git commands that skip the Husky hooks (`--no-verify`, `commit -n`, `HUSKY=0`, `core.hooksPath`);
+- `git commit` or `git push` piped into another command, whose exit code then hides the hook's;
+- `git commit -F` from a relative or `$TMPDIR` path, and a message commitlint rejects (`.claude/hooks/commit-msg-check.mjs`), before the pre-commit runs.
+
+It asks before stopping, restarting or copying the local PocketBase on :8090, `eco-store:pocketbase:stop` included. It reads command words only: a grep pattern or a commit message that names a flag or PocketBase trips nothing, except inside `bash -c` and `eval`. When it blocks, do what its message says; do not look for another way around it. Tests: `yarn guard:test` (META-32).
 
 ## Stop check
 
