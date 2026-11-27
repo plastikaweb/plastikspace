@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`.claude/settings.json` sets `NX_WORKSPACE_ROOT_PATH=""` and `NX_DEFAULT_OUTPUT_STYLE=static` for every session.** Sessions inherited the main checkout's path in `NX_WORKSPACE_ROOT_PATH`, so Nx in a worktree read the main checkout's branch, graph and cache until the variable was unset by hand; an empty value makes Nx use the working directory. Static output prints a failed task's log instead of hiding it (META-33, ([#123kjkdr15q](https://app.clickup.com/t/123kjkdr15q))).
 - **`sandbox.excludedCommands` runs `gh`, `git fetch`, `git pull`, `git push`, `git ls-remote`, `git worktree` and the Angular builds (`yarn nx run *:build*`, `yarn nx build *`, `yarn *:build*`) outside the sandbox.** Inside it `gh` and SSH git fail on the keychain, `git worktree` cannot write `.git/worktrees`, and the builds fail with no error. The commands still go through the permission prompts. A call is excluded only when every command in it matches, and one with `cd`, a redirect to a file or a heredoc stays sandboxed, so a push redirected to a log still needs the sandbox off. `.claude/CLAUDE.md` ("Session settings") says so (META-33, ([#123kjkdr15q](https://app.clickup.com/t/123kjkdr15q))).
 
+## [2026-11-27] - plastikaweb loses its broken accessibility script (META-41)
+
+### Removed
+
+- **`yarn plastikaweb:a11y`, `plastikaweb:a11y:run` and `preplastikaweb:a11y`.** They ran Pa11y with `apps/plastikaweb/.pa11yci.json`, which does not exist, so the script built the app and then failed before checking anything; no hook or CI job ran it. plastikaweb has no accessibility check now; `plastikaweb:http-server`, which serves its production build, stays. Root `CLAUDE.md` names `nasa-images:a11y` as the only Pa11y script left (META-41, ([#123kjkdr4vz](https://app.clickup.com/t/123kjkdr4vz))).
+
 ## [2026-11-27] - The Claude Code guard checks pipes, commit messages and the PocketBase stop (META-32)
 
 ### Changed
