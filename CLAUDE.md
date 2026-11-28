@@ -48,7 +48,7 @@ Plastikspace is a personal Nx monorepo: Angular 21 apps over Firebase, PocketBas
 ## Common Commands
 
 ```bash
-yarn <app>:serve                      # dev server (eco-store with its backend: apps/eco-store/CLAUDE.md "Local dev")
+yarn <app>:serve                      # dev server (eco-store with its backend: apps/eco-store/POCKETBASE.md "Essential Commands")
 yarn nx test <project>                # unit tests of one project
 yarn nx test <project> <file> --passWithNoTests=false   # one spec file, path relative to the project root
 yarn nx test <project> --testNamePattern="<pattern>"     # tests by name
@@ -138,18 +138,7 @@ ESLint reports each rule at its line (lint-staged in the pre-commit, the Stop ho
 
 ## Angular & TypeScript Conventions
 
-The canonical Angular and TypeScript rules live in [`.claude/CLAUDE.md`](.claude/CLAUDE.md). What goes beyond them:
-
-### Routing
-
-- Lazy-load feature routes, from a `*.routes.ts` entry point per feature or scope.
-- `providedIn: 'root'` for global services; component-specific services in the component's `providers`.
-- Guards are functional (`CanActivateFn`) and run before resolvers: never rely on resolver data in a guard of the same route.
-
-### RxJS / Signal Interop
-
-- `toSignal(obs$, { initialValue: ... })` for templates (no `undefined` in strict templates); `toObservable()` back into RxJS pipelines.
-- `takeUntilDestroyed()` (from `@angular/core/rxjs-interop`) instead of a manual `ngOnDestroy` unsubscription.
+ESLint enforces most Angular rules ("Code Quality Rules" above); the few it does not check are in [`.claude/CLAUDE.md`](.claude/CLAUDE.md). Beyond them:
 
 ### Naming and Generating Libraries
 
@@ -165,8 +154,6 @@ The canonical Angular and TypeScript rules live in [`.claude/CLAUDE.md`](.claude
 ## Backend Systems
 
 - **PocketBase** (eco-store, eco-admin): `apps/eco-store/CLAUDE.md` and `apps/eco-store/POCKETBASE.md`.
-- **GraphQL** (plastikaweb): Apollo Client; types from `yarn plastikaweb:codegen`.
-- **Firebase** (llecoop): Firestore, Functions and Hosting; `yarn llecoop:local` starts the emulators.
 - Each backend has its data-access layer in `libs/core/util/api-*`, on the interfaces of `api-base`.
 
 ## CI/CD
@@ -177,8 +164,6 @@ GitHub Actions workflows in `.github/workflows/`:
 - Nx Cloud runs out of credits most months; `ci.yml` then sets `NX_NO_CLOUD=true` and runs with the local cache only. Its 401 is harmless.
 - `pb-schema-guard.yml` (PRs that change `pb_schema.json`) and `pocketbase-schema.yml` (push to `develop`: syncs the schema to staging): `apps/eco-store/CLAUDE.md`.
 - Accessibility, after each CI run on `develop`: `eco-a11y.yml` (the Playwright suite of eco-store and eco-admin) and `nasa-images-pa11y.yml` (Pa11y).
-- Deploys: `eco-store-deploy-staging.yml`, `nasa-images-deploy-dev.yml`, `llecoop-deploy-{staging,prod}.yml`.
-- `claude.yml`, `claude-code-review.yml` and `jules-analysis.yml` run the review bots.
 
 ## Git Workflow
 
@@ -189,8 +174,6 @@ GitHub Actions workflows in `.github/workflows/`:
 
 ## Key Patterns
 
-- **Smart and dumb components**: feature libraries hold services, state and business logic; UI libraries take inputs and emit outputs.
-- **State**: NgRx Signal Store, with the custom store features per backend in `libs/shared/signal-state/`.
 - **Forms**: `@ngx-formly` with its Material types, fields declared with validators, expressions and hooks in a `*.config.ts` next to the component (`cart-shipping-form.config.ts`); `.claude/CLAUDE.md` "Forms" has the rules.
 
 ## Skills

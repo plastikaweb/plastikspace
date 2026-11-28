@@ -39,6 +39,16 @@ PocketBase serves as the backend for the eco-store application. The schema and s
 3. **Hooks & Cron**: Located in `apps/eco-store/pocketbase/pb_hooks/`.
 4. **Automation**: Utilities in `apps/eco-store/scripts/` for data seeding and environment sync.
 
+```text
+apps/eco-store/pocketbase/
+├── pocketbase                 # Binary (gitignored)
+├── pb_schema.json             # Schema export (committed)
+├── pb_migrations/             # Auto-generated migrations
+├── pb_hooks/                  # JavaScript hooks (one file per hook)
+├── pb_data/                   # Local dev data (gitignored)
+└── backup-host/, data/        # Staging clone targets
+```
+
 ---
 
 ## Installation & Setup

@@ -2,7 +2,7 @@
 
 App-specific guidance for AI agents (Claude Code, Cursor, etc.) working in `apps/eco-store/` and `libs/eco-store/*`.
 
-It complements the root `CLAUDE.md` (workspace, conventions, boundaries, commits) and does not repeat it: read that one first.
+It complements the root `CLAUDE.md` and does not repeat it: read that one first.
 
 ---
 
@@ -84,23 +84,7 @@ Libraries live in `libs/eco-store/<domain>/<type>` behind `@plastik/eco-store/*`
 
 > Before editing anything under `apps/eco-store/pocketbase/` (schema, hooks, migrations, API rules), invoke the `pocketbase-best-practices` skill. For collection-level work, consult the matching `rules-*` sub-rule (e.g. `rules-locked-vs-open` for new collections, `rules-cross-collection` for multi-tenant access).
 
-The PocketBase instance lives **inside the app**: `apps/eco-store/pocketbase/`. Schema and hooks are versioned with the code.
-
-### Layout
-
-```
-apps/eco-store/pocketbase/
-├── pocketbase                 # Binary (gitignored)
-├── pb_schema.json             # Schema export (committed)
-├── pb_migrations/             # Auto-generated migrations
-├── pb_hooks/                  # JavaScript hooks (one file per hook)
-├── pb_data/                   # Local dev data (gitignored)
-└── backup-host/, data/        # Staging clone targets
-```
-
-### Hooks (PocketBase 0.36.7)
-
-Each `pb_hooks/*.pb.js` file loads on its own (no single `main.pb.js`). `POCKETBASE.md` "PocketBase Hooks & Cron Jobs" lists them with what each does.
+The PocketBase instance lives **inside the app**: `apps/eco-store/pocketbase/`. Schema and hooks are versioned with the code. `POCKETBASE.md` maps the folder ("Key Components") and lists the hooks ("PocketBase Hooks & Cron Jobs"); each `pb_hooks/*.pb.js` loads on its own, with no single `main.pb.js`.
 
 ### Schema workflow
 
@@ -155,15 +139,6 @@ user = @request.auth.id
 `carts.createRule` has all of it. `orders.createRule` has the user and membership checks but **not** `tenant = @request.auth.tenant`: a member can create an order for another tenant until SEC-09 lands (`TASKS.md`). The membership part implements TRL-05 server-side on both; the frontend block (TRL-04) is for UX only. Read the live rules in `pocketbase/pb_schema.json`, not here.
 
 The `membershipStatus` enum has exactly **4 values**: `TRIAL`, `ACTIVE`, `INACTIVE`, `SUSPENDED`. Trial expiry is gated by `trialEndsAt > @now`; status stays as `TRIAL` until manually converted.
-
-### Local dev
-
-```bash
-yarn eco-store:local              # PocketBase + app + SCSS watcher
-yarn eco-store:pocketbase:run     # PocketBase only
-yarn eco-store:pb:seed             # Clone real data from staging
-yarn eco-store:pb:seed-gen         # Generate fake data for local testing
-```
 
 ---
 
