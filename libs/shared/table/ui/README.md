@@ -18,6 +18,10 @@
 
 A container component to inject a configuration object and a data object to create a table automatically. It uses internally **Material Table**.
 
+**Server-side pagination (PocketBase).** The built-in paginator paginates in the browser: the table hands it to its `MatTableDataSource`, which slices the rows it received and overwrites the total with their count.
+A list paged by the server sets `[noPagination]="true"` and puts `<plastik-pagination plastikPocketbasePaginationNavigation>` under the table.
+The paginator (`@plastik/pagination/ui`, `@plastik/pagination/util`) reads the store's `getPagination()`, as in eco-store's product and order lists.
+
 ## HTML element
 
 `<plastik-shared-table>`
@@ -29,7 +33,7 @@ A container component to inject a configuration object and a data object to crea
 | `data`                    | `<T[]>`                                                  | The data to fill the table with a generic type annotation.             | `[]`                                         |
 | `columnProperties`        | `TableColumnFormatting<T, FormattingTypes>[]`            | Table structure skeleton.                                              | Required                                     |
 | `resultsLength`           | `number`                                                 | The total number of items available for the current table data fields. | Required                                     |
-| `sort`                    | `SortConfig`                                             | The sorting configuration based on column and direction.               |                                              |
+| `sort`                    | `TableSortingConfig`                                     | The sorting configuration as an `[active, direction]` tuple.           |                                              |
 | `pagination`              | `PageEventConfig`                                        | The table pagination configuration.                                    |                                              |
 | `noPagination`            | `boolean`                                                | Remove pagination component to the table.                              | `false`                                      |
 | `paginationVisibility`    | `Partial<TablePaginationVisibility>`                     | Pagination visibility configuration.                                   | All properties are set to `false` by default |
