@@ -231,19 +231,7 @@
       "opensIn": "Abre en",
       "cancelled": "No disponible",
       "closedOpensAt": "Cerrado. Abre el {date} a las {time}",
-      "closedMessage": "La tienda está cerrada. No puedes modificar tu carrito.",
-      "statusBanner": {
-        "closedTitle": "Tienda en mode consulta",
-        "closedDescription": "Los pedidos abren el día {date} a las {time}",
-        "openingSoonTitle": "¡Preparad las cestas!",
-        "openingSoonDescription": "Estamos a punto de abrir la ventana de pedidos.",
-        "closingSoonTitle": "¡La tienda cerrará pronto!",
-        "closingSoonDescription": "Haz tu pedido antes de las {time}.",
-        "closedManuallyTitle": "Cierre temporal",
-        "cancelledTitle": "Servicio no disponible",
-        "cancelledDescription": "Esta tienda está desactivada actualmente. Contacta con soporte para más información.",
-        "dismiss": "Cerrar aviso del estado de la tienda"
-      }
+      "closedMessage": "La tienda está cerrada. No puedes modificar tu carrito."
     },
     "menu": {
       "home": "Inicio",

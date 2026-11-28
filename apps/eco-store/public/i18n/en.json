@@ -231,19 +231,7 @@
       "opensIn": "Opens in",
       "cancelled": "Not available",
       "closedOpensAt": "Closed. Opens {date} at {time}",
-      "closedMessage": "The store is closed. You cannot modify your cart.",
-      "statusBanner": {
-        "closedTitle": "Store in browse mode",
-        "closedDescription": "Orders open on {date} at {time}",
-        "openingSoonTitle": "Get your baskets ready!",
-        "openingSoonDescription": "We are about to open the ordering window.",
-        "closingSoonTitle": "Store closing soon!",
-        "closingSoonDescription": "Place your order before {time}.",
-        "closedManuallyTitle": "Temporary closure",
-        "cancelledTitle": "Service suspended",
-        "cancelledDescription": "This store is currently disabled. Contact support for more information.",
-        "dismiss": "Close store status notice"
-      }
+      "closedMessage": "The store is closed. You cannot modify your cart."
     },
     "menu": {
       "home": "Home",
