@@ -1,4 +1,4 @@
-import baseConfig from '../../../../eslint.config.mjs';
+import baseConfig from '../../../eslint.config.mjs';
 import nx from '@nx/eslint-plugin';
 
 export default [
@@ -26,7 +26,4 @@ export default [
     },
   },
   ...nx.configs['flat/angular-template'],
-  {
-    ignores: ['**/vitest.config.*.timestamp*'],
-  },
 ];

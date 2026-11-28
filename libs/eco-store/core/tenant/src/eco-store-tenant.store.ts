@@ -10,7 +10,6 @@ import { signalStore, withComputed, withHooks, withMethods, withProps } from '@n
 import { TranslateService } from '@ngx-translate/core';
 import { FormSelectOption, LocalizedFields } from '@plastik/core/entities';
 import {
-  DAYS_MAP,
   EcoStoreTenant,
   EcoStoreTenantAddress,
   EcoStoreTenantLogisticsDeliveryOption,
@@ -25,12 +24,8 @@ import { map } from 'rxjs/operators';
 import { injectIsBuildTimeRender } from './eco-store-build-time-render';
 import { EcoStoreTenantAddressService } from './eco-store-tenant-address.service';
 import { EcoStoreTenantBaseService } from './eco-store-tenant-base.service';
-import {
-  calculateStoreWindowStatus,
-  formatTenantAddresses,
-  getNextDateFromTime,
-  isShippingMethodConfigured,
-} from './eco-store-tenant.utils';
+import { getTenantNextOpenDate, getTenantWindowStatus } from '@plastik/eco/util';
+import { formatTenantAddresses, isShippingMethodConfigured } from './eco-store-tenant.utils';
 
 export interface EcoStoreTenantState {
   tenant: EcoStoreTenant | null;
@@ -129,44 +124,12 @@ export const ecoStoreTenantStore = signalStore(
     };
   }),
   withComputed(store => ({
-    storeStatus: computed(() => {
-      const tenant = store.tenant();
-      const now = store._now();
-
-      return calculateStoreWindowStatus(
-        now,
-        !!tenant?.logisticsConfig?.orderWindow?.enabled,
-        tenant?.logisticsConfig?.orderWindow?.openDay,
-        tenant?.logisticsConfig?.orderWindow?.openTime,
-        tenant?.logisticsConfig?.orderWindow?.closeDay,
-        tenant?.logisticsConfig?.orderWindow?.closeTime,
-        tenant?.active,
-        tenant?.closed
-      );
-    }),
+    storeStatus: computed(() => getTenantWindowStatus(store.tenant(), store._now())),
   })),
   withComputed(store => ({
-    nextOpenDate: computed(() => {
-      const tenant = store.tenant();
-      const now = store._now();
-      const status = store.storeStatus();
-
-      if (!tenant?.logisticsConfig?.orderWindow?.enabled) {
-        return null;
-      }
-
-      const { openDay, openTime, closeDay, closeTime } = tenant.logisticsConfig.orderWindow;
-
-      if (status === 'CLOSING_SOON') {
-        return closeDay && closeTime
-          ? getNextDateFromTime(now, DAYS_MAP[closeDay], closeTime)
-          : null;
-      }
-
-      if (!openDay || !openTime) return null;
-
-      return getNextDateFromTime(now, DAYS_MAP[openDay], openTime);
-    }),
+    nextOpenDate: computed(() =>
+      getTenantNextOpenDate(store.tenant(), store._now(), store.storeStatus())
+    ),
 
     isStoreOpen: computed(() => {
       const status = store.storeStatus();

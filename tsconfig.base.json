@@ -224,9 +224,6 @@
       "@plastik/core/paginator": ["libs/core/paginator/src/index.ts"],
       "@plastik/sort-selector": ["libs/shared/sort-selector/src/index.ts"],
       "@plastik/eco-store/shared/utils": ["libs/eco-store/shared/utils/src/index.ts"],
-      "@plastik/eco-store/status-banner": [
-        "libs/eco-store/shared/store-status-banner/src/index.ts"
-      ],
       "@plastik/eco-store/shared/tokens": ["libs/eco-store/shared/tokens/src/index.ts"],
       "@plastik/eco-store/product": ["libs/eco-store/products/feature/detail/src/index.ts"],
       "@plastik/eco-store/product-category-label": [
@@ -318,7 +315,8 @@
       "@plastik/eco-admin/auth/login": ["libs/eco-admin/auth/feature/login/src/index.ts"],
       "@plastik/eco-admin/auth/recovery": ["libs/eco-admin/auth/feature/recovery/src/index.ts"],
       "@plastik/eco-admin/layout": ["libs/eco-admin/core/layout/src/index.ts"],
-      "@plastik/shared/util/swipe-to-close": ["libs/shared/util/swipe-to-close/src/index.ts"]
+      "@plastik/shared/util/swipe-to-close": ["libs/shared/util/swipe-to-close/src/index.ts"],
+      "@plastik/eco/util": ["libs/eco/util/src/index.ts"]
     }
   },
   "angularCompilerOptions": {
