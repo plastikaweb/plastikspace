@@ -318,7 +318,8 @@
       "@plastik/eco-admin/auth/login": ["libs/eco-admin/auth/feature/login/src/index.ts"],
       "@plastik/eco-admin/auth/recovery": ["libs/eco-admin/auth/feature/recovery/src/index.ts"],
       "@plastik/eco-admin/layout": ["libs/eco-admin/core/layout/src/index.ts"],
-      "@plastik/shared/util/swipe-to-close": ["libs/shared/util/swipe-to-close/src/index.ts"]
+      "@plastik/shared/util/swipe-to-close": ["libs/shared/util/swipe-to-close/src/index.ts"],
+      "@plastik/eco/util": ["libs/eco/util/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

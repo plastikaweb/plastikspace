@@ -1,0 +1,10 @@
+{
+  "name": "eco-util",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/eco/util/src",
+  "prefix": "eco",
+  "projectType": "library",
+  "tags": ["scope:eco", "type:util"],
+  "// targets": "to see all targets run: nx show project eco-util --web",
+  "targets": {}
+}
