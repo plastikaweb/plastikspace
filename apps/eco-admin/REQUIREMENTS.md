@@ -2,7 +2,7 @@
 
 > Analysis & requirements document for **eco-admin**, the internal administration app for the Eco Store multi-tenant SaaS. Companion documents: `DESIGN-BRIEF.md` (design-system extension prompt) and `TASKS.md` (live backlog) — both derive from this file.
 
-**Document version:** 0.4.52 · 2026-11-27 · **Status: RATIFIED by Carlos on 2026-11-01** — scope, role model, MoSCoW and phase order are the plan of record; the ten decisions in §9 stay open, each gated by its own row
+**Document version:** 0.4.53 · 2026-11-28 · **Status: RATIFIED by Carlos on 2026-11-01** — scope, role model, MoSCoW and phase order are the plan of record; the ten decisions in §9 stay open, each gated by its own row
 
 **Sources.** No admin PRD exists. This document is derived from: `apps/eco-store/pocketbase/pb_schema.json` (as of 2026-08-10), `apps/eco-store/TASKS.md` v0.42, `apps/eco-store/BACKLOG.md` v0.42, and `apps/eco-store/CLAUDE.md`. Line references (`TASKS:L###`) point at eco-store's TASKS.md v0.42.
 
@@ -414,7 +414,7 @@ Verified inventory (2026-08-10). **~70% of a CRUD admin's infrastructure already
 | Piece | Lib |
 | --- | --- |
 | Table stack (definition/entities + Material component) | `@plastik/shared/table/entities`, `@plastik/shared/table/ui` (+ `@plastik/shared/formatters` — proven agnostic: nasa-images uses it) |
-| List shell (table + Formly filters, facade-driven) | `@plastik/core/list-view` |
+| List shell (table + Formly filters, facade-driven) — **a candidate, not decided** (AP-0 0.8, 2026-11-28): it draws its own title and «Crear» button, a Formly filter box and no row selection, against the frozen list views; the first list module decides | `@plastik/core/list-view` |
 | Detail/edit form shell | `@plastik/core/detail-edit-view` |
 | PocketBase signal-store features (`withPocketBaseCrud` / `GetList` / `GetOne` + resolver + optimistic updates + notifications) | `@plastik/signal-state/pocketbase` over `@plastik/core/util/api-pocketbase` |
 | Auth (service, profile store, login/reset Formly configs, entities) | `@plastik/auth/pocketbase/data-access`, `@plastik/auth/entities`, `@plastik/auth/config/util` |
@@ -431,8 +431,8 @@ Nx boundaries seal `scope:eco-store` off from `scope:eco-admin`: everything both
 | AREF-01 | Domain entities both apps share: `EcoStoreTenant` + logistics types, `EcoStoreProduct`, `ProductCategory`, order and cart types (with the order status maps and helpers) | `libs/eco-store/core/entities` → new `libs/eco/entities` (`scope:eco`, `type:entity`, alias `@plastik/eco/entities`); eco-store re-exports from its old alias to avoid a big-bang import rewrite | **Medium** | AP-0 ✅ (0.3) |
 | AREF-02 | Breadcrumbs UI | `libs/eco-store/shared/breadcrumbs` → `libs/shared/breadcrumbs/ui` | Low | AP-0 ⏸️ (0.4, deferred to 0.7) |
 | AREF-03 | Tenant context for admin: `ecoAdminTenantContextStore` holds the `EcoStoreTenant` (AREF-01) of the signed-in TENANT_ADMIN, read from their user record and gated by role; a GLOBAL_ADMIN has none (AQ-04 — no selector). It also answers whether the tenant is continuous and whether the Cicles section exists, and ships a wait guard for the shell route. The storefront's host-based `provideEcoStoreTenant` stays where it is | `libs/eco-admin/core/tenant-context` (alias `@plastik/eco-admin/tenant-context`) | Medium | AP-0 ✅ (0.6) |
-| AREF-04 | `core/list-view` facade: de-Firebase the filter generic | in place | Low (≈2 lines) | AP-0 |
-| AREF-05 | Pagination/sort adapter: `PageEventConfig` (0-based, tuple sort) ⇄ PocketBase store (`page` 1-based, object sort) | new shared util | Low | AP-0 |
+| AREF-04 | `core/list-view` facade: de-Firebase the filter generic | in place | Low (≈2 lines) | AP-0 ⏸️ (0.8, deferred to the first list module, which decides whether `core/list-view` draws admin lists) |
+| AREF-05 | Pagination/sort adapter: `PageEventConfig` (0-based, tuple sort) ⇄ PocketBase store (`page` 1-based, object sort) | new `libs/shared/table/util` (`scope:shared`, `type:util`, alias `@plastik/shared/table/util`) | Low | AP-0 ✅ (0.8) |
 | AREF-06 | Role infra: `isTenantAdmin`/`isGlobalAdmin` computeds + `pocketBaseRoleGuard`, a typed login outcome with `allowedRoles`, and the AQ-05 email-code flow (`requestLoginCode` / `verifyLoginCode`) | `@plastik/auth/pocketbase/data-access` | Low | AP-0 ✅ (0.5) |
 | AREF-07 | Storefront utils the admin forms need (`HumanizeUnitPipe`, image-placeholder helper) | `libs/eco-store/shared/utils` → `libs/eco/util` | Low | AP-3 (with APRD) |
 | AREF-08 | Housekeeping + boundaries: `shared/notification/entities` mis-tagged `scope:core`; stale `sourceRoot` in `core/table-with-filtering/project.json`; `.eslintrc.json` dep-constraints — new `scope:eco → [scope:eco, scope:core, scope:shared]`, new `scope:eco-admin → [scope:eco-admin, scope:eco, scope:core, scope:shared]`, and add `scope:eco` to `scope:eco-store`'s allowed list | in place | Low | AP-0 ✅ (0.2) |
@@ -544,6 +544,7 @@ MoSCoW is embedded per requirement (§4). The phase order is ratified (2026-11-0
 
 | Version | Date | Changes |
 | --- | --- | --- |
+| 0.4.53 | 2026-11-28 | **`core/list-view` is no longer the assumed list shell (AP-0 0.8).** Facts only — scope, MoSCoW and phase order are untouched, and the document stays ratified. §7.1 marks the «List shell» row as a candidate: `@plastik/core/list-view` draws its own title and «Crear» button, a Formly filter box and no row selection, so it does not draw the frozen list views (design rounds 8, 12, 27, D.39); the first list module decides (Carlos, 2026-11-28). §7.2: AREF-04 is deferred with that choice; AREF-05 is delivered in `@plastik/shared/table/util`. |
 | 0.4.52 | 2026-11-27 | **The shell does not reuse `core/cms-layout` (AP-0 0.7, part 2).** Facts only — scope, MoSCoW and phase order are untouched, and the document stays ratified. §7.1 loses the «CMS layout» row: that library opens and closes a sidenav through an NgRx store and has no 72 px icon rail, no drawer and no role-partitioned navigation, so the frozen shell (`00 Components/Rail`, `Top bar`, `Calaix mòbil`) is built in `@plastik/eco-admin/layout`, with its navigation in `@plastik/eco-admin/layout-config` (Carlos, 2026-11-20). §8 AP-0 says «own layout lib» for «`cms-layout`». |
 | 0.4.51 | 2026-11-24 | **E2e and accessibility tooling** (§6), the owner's decision of 2026-11-24 (META-40, `123kjkdr20r`): the e2e of AMBR-07 and AORD-03 is Playwright, not Cypress, and the Playwright and axe suite replaces Pa11y. Scope, MoSCoW and phase order are untouched, and the document stays ratified. |
 | 0.4.50 | 2026-11-24 | **Accessibility target WCAG 2.2 AA** (§6), the owner's decision of 2026-11-24 for every app (META-21, `123kjkdqv3b`). Scope, MoSCoW and phase order are untouched, and the document stays ratified. |
