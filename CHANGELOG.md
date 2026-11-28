@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-11-28] - Pagination and sort adapter for PocketBase lists (AP-0 0.8, AREF-05)
+
+### Added
+
+- **`@plastik/shared/table/util`**, a new lib of pure functions between a PocketBase list store and `plastik-shared-table`: `toTablePagination` and `fromTablePagination` move between the store's `page`, counted from 1, and the table's `pageIndex`, counted from 0 (page 1 after a page-size change, never a page or size below 1), and `toTableSorting` turns the store's sort object into the table's `[active, direction]` tuple (AP-0 0.8, [#123kjkdp4kx](https://app.clickup.com/t/123kjkdp4kx)).
+
+### Changed
+
+- **`PocketbasePaginationNavigationDirective` builds its query parameters with `fromTablePagination`**, with the same result as before, so the offset between the two page counts is written in one place (AP-0 0.8, [#123kjkdp4kx](https://app.clickup.com/t/123kjkdp4kx)).
+
 ## [2026-11-27] - One order chip per state in both eco apps (AP-0 0.6c, AREF-10)
 
 ### Changed
