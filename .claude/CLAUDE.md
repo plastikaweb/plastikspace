@@ -3,54 +3,16 @@
 You are an expert in TypeScript, Angular, and scalable web application development.
 You write maintainable, performant, and accessible code following Angular and TypeScript best practices.
 
-## TypeScript Best Practices
+## Angular rules ESLint does not check
 
-- Use strict type checking
-- Prefer type inference when the type is obvious
-- Avoid the `any` type; use `unknown` when type is uncertain
+ESLint turns most Angular rules into errors (META-17: `standalone: true`, `@HostBinding`/`@HostListener`, decorator inputs and outputs, `NgClass`/`NgStyle`, structural directives, constructor injection): the Angular item of "Code Quality Rules (ESLint)" in the root `CLAUDE.md` lists them. What it does not check:
 
-## Angular Best Practices
-
-ESLint turns most of the Angular rules below into errors (META-17): the Angular item of "Code Quality Rules (ESLint)" in the root `CLAUDE.md` lists which.
-
-- Always use standalone components over NgModules
-- Must NOT set `standalone: true` inside Angular decorators. It's the default.
-- Use signals for state management
-- Implement lazy loading for feature routes
-- Do NOT use the `@HostBinding` and `@HostListener` decorators. Put host bindings inside the `host` object of the `@Component` or `@Directive` decorator instead
-- **Animations:** Do NOT use `provideAnimations()` or `provideAnimationsAsync()`; both are deprecated as of Angular v20+. Prefer native CSS animations/transitions and the new compiler-supported `animate.enter` and `animate.leave` APIs for element lifecycle animations.
-- Use `NgOptimizedImage` for all static images.
-  - `NgOptimizedImage` does not work for inline base64 images.
-
-## Components
-
-- Keep components small and focused on a single responsibility
-- Use `input()` and `output()` functions instead of decorators
-- Use `computed()` for derived state
-- Set `changeDetection: ChangeDetectionStrategy.OnPush` in `@Component` decorator
-- Prefer inline templates for small components
-- Prefer Reactive forms instead of Template-driven ones
-- Do NOT use `ngClass`, use `class` bindings instead
-- Do NOT use `ngStyle`, use `style` bindings instead
-
-## State Management
-
-- Use signals for local component state
-- Use `computed()` for derived state
-- Keep state transformations pure and predictable
-- Do NOT use `mutate` on signals, use `update` or `set` instead
-
-## Templates
-
-- Keep templates simple and avoid complex logic
-- Use native control flow (`@if`, `@for`, `@switch`) instead of `*ngIf`, `*ngFor`, `*ngSwitch`
-- Use the async pipe to handle observables
-
-## Services
-
-- Design services around a single responsibility
-- Use the `providedIn: 'root'` option for singleton services
-- Use the `inject()` function instead of constructor injection
+- **Animations:** never `provideAnimations()` or `provideAnimationsAsync()`, both deprecated since Angular v20. Use CSS transitions and the compiler's `animate.enter` / `animate.leave`.
+- **Images:** `NgOptimizedImage` for every static image; it does not work for inline base64 images.
+- **Components:** `changeDetection: ChangeDetectionStrategy.OnPush` (the generators set it; hand-written components must too).
+- **Services:** `providedIn: 'root'` for singletons; component-specific services in the component's `providers`.
+- **Routing:** lazy-load feature routes from a `*.routes.ts` entry point per feature or scope. Guards are functional (`CanActivateFn`) and run before resolvers: never rely on resolver data in a guard of the same route.
+- **RxJS interop:** `toSignal(obs$, { initialValue: ... })` for templates (no `undefined` in strict templates); `takeUntilDestroyed()` instead of a manual `ngOnDestroy` unsubscription.
 
 ## When a skill and this file disagree, this file wins
 
